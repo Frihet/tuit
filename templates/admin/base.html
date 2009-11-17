@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="{{ LANGUAGE_CODE }}" xml:lang="{{ LANGUAGE_CODE }}" {% if LANGUAGE_BIDI %}dir="rtl"{% endif %}>
+<head>
+<title>TUIT - {% block title %}{% endblock %}</title>
+
+<link rel="stylesheet" href="/static/common/common.css" type="text/css" media="screen,projection" />
+<link rel="stylesheet" href="/static/jquery-autocomplete/jquery.autocomplete.css" type="text/css" media="screen,projection" />
+<link rel="stylesheet" href="/static/tuit.css" type="text/css" media="screen,projection" />    
+<link rel="stylesheet" href="/static/admin.css" type="text/css" media="screen,projection" />    
+<link rel="stylesheet" href="/static/tuit-print.css" type="text/css" media="print" />
+
+<script type="text/javascript" src="/static/common/jquery.js"></script>
+<script type="text/javascript" src="/static/common/common.js"></script>
+
+{% block extrastyle %}{% endblock %}
+{% block extrahead %}{% endblock %}
+{% block blockbots %}<meta name="robots" content="NONE,NOARCHIVE" />{% endblock %}
+</head>
+{% load i18n %}
+
+<body class="{% if is_popup %}popup {% endif %}{% block bodyclass %}{% endblock %}">
+
+
+  <div class='main_menu no_print'>
+    <iframe src='/tuit/menu/' width='100%' height='80px' frameborder='no'></iframe>
+  </div>
+
+  <div class='action_menu'>
+
+
+<ul class="actionlist">
+  {% if user.is_authenticated and user.is_staff %}
+  <li>{% trans 'User' %}: <a href='/tuit/account/{{ user.username|escape}}'>{{ user.username|escape }} - {{ user.first_name|escape }} {{ user.last_name|escape }}</a></li> 
+  <li><a href="/tuit/account/logout/">{% trans 'Log out' %}</a></li>
+  <li><a href="/tuit/admin/doc/">{% trans 'Documentation' %}</a></li>
+  {% endif %}
+{% block sidebar %}
+{% endblock %}
+</ul>
+
+  </div>
+
+    <div class='content'>
+      <div class='content_inner'>
+
+<!-- Container -->
+
+    {% if not is_popup %}
+    <!-- Header -->
+    <div id="header">
+        <div id="branding">
+        {% block branding %}{% endblock %}
+        </div>
+    {% block breadcrumbs %}<div class="breadcrumbs"><a href="/">{% trans 'Home' %}</a>{% if title %} &rsaquo; {{ title|escape }}{% endif %}</div>{% endblock %}
+
+
+        {% block nav-global %}{% endblock %}
+    </div>
+    <!-- END Header -->
+    {% endif %}
+
+        {% if messages %}
+        <ul class="messagelist">{% for message in messages %}<li>{{ message|escape }}</li>{% endfor %}</ul>
+        {% endif %}
+
+    <!-- Content -->
+    <div id="content" class="{% block coltype %}colM{% endblock %}">
+        {% block pretitle %}{% endblock %}
+        {% block content_title %}{% if title %}<h1>{{ title|escape }}</h1>{% endif %}{% endblock %}
+        {% block content %}
+        {% block object-tools %}
+        {% endblock %}
+        {{ content }}
+        {% endblock %}
+    </div>
+
+    {% block footer %}<div id="footer"></div>{% endblock %}
+
+	<div class='content_post'>
+	</div>
+      </div>
+    </div>
+
+    
+    <div class='copyright'>
+      <a href='http://www.freecode.no'>© 2009 Freecode AS</a>
+    </div>
+    <script>stripe();</script>
+
+
+</body>
+</html>

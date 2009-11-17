@@ -1,0 +1,182 @@
+{% load tuit_extras %}
+{% load i18n %}
+
+<tbody class='ticket_edit no_print'>
+<tr>
+<td class='label'>
+  <label for='assigned_to'>{%trans "Assigned to" %}:</label>
+</td>
+<td>
+  <input id='assigned_to' name='assigned_to_string' value="{{ issue.assigned_to_string }}" class='user'/><input type='checkbox' name='assigned_to_email' value='yes' id='assigned_to_email' class='checkbox email_checkbox' {{ assigned_to_email }}/><label for='assigned_to_email'>{%trans "Send email" %}</label>
+</td>
+</tr>
+
+<tr>
+<td>
+  <label for='requester'>{%trans "Requester" %}:</label>
+</td>
+<td>
+  <input id='requester' name='requester_string' value="{{ issue.requester_string }}" class='user'/><input type='checkbox' name='requester_email' value='yes' id='requester_email' class='checkbox email_checkbox' {{ requester_email }}/><label for='requester_email'>{%trans "Send email" %}</label>
+</td>
+</tr>
+
+</tbody>
+
+{% if issue.has_location %}
+
+<tbody id='contact_head' class='ticket_edit no_print'>
+<tr>
+<th colspan='2'>
+<button type='button' class='contact' onclick='$(".contact input").removeAttr("disabled");$(".contact input").removeClass("disabled");$("#contact_head button").hide();'>{%trans "Edit contact information" %}</button>&nbsp;
+</th>
+</tr>
+</tbody>
+<tbody class='contact ticket_edit'>
+
+<tr>
+  <td>
+    <label for='location'>{%trans "Location" %}:</label>
+  </td>
+  <td>
+    <input id='location' name='location' value='{{ issue.location|escape }}'/>
+  </td>
+</tr>
+
+<tr>
+  <td>
+    <label for='building'>{%trans "Building" %}:</label>
+  </td>
+  <td>
+    <input id='building' name='building' value='{{ issue.building }}'/>
+  </td>
+</tr>
+
+<tr>
+  <td>
+    <label for='office'>{%trans "Office" %}:</label>
+  </td>
+  <td>
+    <input id='office' name='office' value='{{ issue.office }}'/>
+  </td>
+</tr>
+
+<tr>
+<th colspan='2'>
+&nbsp;
+</td>
+</tr>
+
+</tbody>
+{% endif %}
+
+
+<tbody class='ticket_edit no_print'>
+  
+<tr>
+  <td>
+    <label for='co_responsible'>{%trans "Co-responsible" %}:</label>
+  </td>
+  <td>
+    <textarea id='co_responsible' name='co_responsible_string' class='user'/>{{ issue.co_responsible_string }}</textarea>
+<input type='checkbox' name='co_responsible_email' value='yes' id='co_responsible_email' class='checkbox email_checkbox' {{ co_responsible_email }}/><label for='co_responsible_email'>{%trans "Send email" %}</label>
+</td>
+</tr>
+
+<tr>
+  <td>
+    <label for='cc'>{%trans "CC" %}:</label>
+  </td>
+  <td>
+    <textarea id='cc' name='cc_string' class='user free contact'/>{{ issue.cc_string }}</textarea>
+    <input type='checkbox' name='cc_email' value='yes' id='cc_email' class='checkbox email_checkbox' {{ cc_email }} /><label for='cc_email'>{%trans "Send email" %}</label>
+</td>
+</tr>
+
+<tr>
+<td>
+{%trans "Impact" %}
+</td>
+<td>
+
+{% for i in impacts %}
+  <input class='radio' type='radio' id='impact{{ i }}' name='impact_string' value="{{ i }}" {% ifequal i issue.impact_string %}checked='yes'{% endifequal %} /><label for='impact{{ i }}'>{{ i }}</label>
+{% endfor %}
+</td>
+</tr>
+
+<tr>
+<td>
+{%trans "Urgency" %}
+</td>
+<td>
+{% for i in urgencies %}
+  <input class='radio' type='radio' id='urgency{{ i }}' name='urgency_string' value="{{ i }}" {% ifequal i issue.urgency_string %}checked='yes'{% endifequal %} /><label for='urgency{{ i }}'>{{ i }}</label>
+{% endfor %}
+
+</td>
+</tr>
+
+
+<tr>
+<td>
+  <label for='status'>{%trans "Status" %}:</label>
+</td>
+<td>
+  <select name='current_status_string' id='status'>
+{% for s in status %}    
+    <option value='{{s.id}}' {% ifequal s.id issue.current_status.id %}selected{% endifequal %}>{{s.name|escape}}</option>
+{% endfor %}
+  </select>
+</td>
+</tr>
+
+
+<tr>
+<td>
+  <label for='category'>{%trans "Category" %}:</label>
+</td>
+<td>
+  <select name='category_string' id='category'>
+{% for s in category %}    
+    <option value='{{s.id}}' {% ifequal s.id issue.category.id %}selected{% endifequal %}>{{s.name|escape}}</option>
+{% endfor %}
+  </select>
+</td>
+</tr>
+
+
+
+<tr>
+  <td>
+    <label for='ci'>{%trans "Depends on CIs" %}:</label>
+  </td>
+  <td>
+    <textarea class='ci' name='ci_string' id='ci'>{{ issue.ci_string }}</textarea>
+    <div id='ci_picker_code'></div>
+    <script>
+      $('#ci_picker_code').load('/FreeCMDB/plugins/drilldown/drilldown?update_target=ci&embed_point=ci_picker_root');
+    </script>
+  </td>
+</tr>
+
+<tr>
+  <td>
+    <label for='dependencies'>{%trans "Depends on issues" %}:</label>
+  </td>
+  <td>
+    <textarea class='depend' name='dependencies_string' id='dependencies'>{{ issue.dependencies_string }}</textarea>
+  </td>
+</tr>
+
+{% for it in issue.extra_fields %}
+<tr>
+  <td>
+    <label for='{{ it.field.name|escape }}'>{{ it.field.short_description|escape }}:</label>
+  </td>
+  <td>
+    {{ it.render_input }}
+  </td>
+</tr>
+{% endfor %}
+
+</tbody>

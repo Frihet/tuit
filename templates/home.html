@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% load tuit_extras %}
+
+{%block content %} 
+{% for widget in widgets %}
+{{ widget.html }}
+{% endfor %}
+{% endblock %}

@@ -1,0 +1,948 @@
+# Translation to Swedish for the Tuit software.
+# Copyright (C) 2009
+# This file is distributed under the same license as the Tuit package.
+# Axel Liljencrantz <axel.liljencrantz@freecode.no>, 2009.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-11-16 10:38+0000\n"
+"PO-Revision-Date: 2009-11-10 11:13+1\n"
+"Last-Translator: Axel Liljencrantz <axel.liljencrantz@freecode.no>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: search/views.py:15 templates/search.html:94
+msgid "Search"
+msgstr "Sök"
+
+#: templates/search.html:9
+msgid "Freetext search"
+msgstr "Fritextsökning"
+
+#: templates/search.html:19
+msgid "Advanced issue search options"
+msgstr "Avancerade sökinställningar"
+
+#: templates/search.html:51
+msgid "Issue status"
+msgstr "Sakens status"
+
+#: templates/search.html:55
+msgid "All not closed"
+msgstr "Alla som inte är stängda"
+
+#: templates/search.html:56 log/views.py:19
+msgid "All"
+msgstr "Alla"
+
+#: templates/search.html:66
+msgid "Updated after"
+msgstr "Uppdaterade efter"
+
+#: templates/search.html:76 ticket/models.py:242 ticket/models.py:811
+msgid "Priority"
+msgstr "Prioritet"
+
+#: templates/search.html:79
+msgid "4..7 means priority between 4 and 7."
+msgstr "4..7 betyder alla prioriteter mellan 4 och 7."
+
+#: templates/search.html:100
+#, python-format
+msgid "Searching for \"%(text)s\"..."
+msgstr "Söker efter “%(text)s“..."
+
+#: templates/search.html:109
+#, python-format
+msgid "Search results from %(name)s"
+msgstr "Sökresultat från %(name)s"
+
+#: templates/search.html:121
+msgid "Show more"
+msgstr "Visa mera"
+
+#: templates/search.html:138
+#, python-format
+msgid "Found a total of %s message(s)"
+msgstr "Hittade totalt %s meddelande(n)"
+
+#: templates/log.html:11
+msgid "Minimum event severity level"
+msgstr "Lägsta viktighetsgrad på händelse"
+
+#: templates/log.html:21
+msgid "Event category"
+msgstr "Händelsekategori"
+
+#: templates/log.html:31
+msgid "Filter"
+msgstr "Filter"
+
+#: templates/base.html:49 templates/admin/base.html:33
+msgid "User"
+msgstr "Användare"
+
+#: templates/base.html:50 templates/admin/base.html:34
+msgid "Log out"
+msgstr "Logga ut"
+
+#: templates/ticket_common.html:7 templates/ticket_view.html:83
+msgid "Assigned to"
+msgstr "Tilldelad till"
+
+#: templates/ticket_common.html:10 templates/ticket_common.html.py:19
+#: templates/ticket_common.html:81 templates/ticket_common.html.py:91
+msgid "Send email"
+msgstr "Skicka epost"
+
+#: templates/ticket_common.html:16 templates/ticket_view.html:29
+#: ticket/models.py:242 ticket/models.py:811
+msgid "Requester"
+msgstr "Källa"
+
+#: templates/ticket_common.html:30
+msgid "Edit contact information"
+msgstr "Redigera kontaktinformation"
+
+#: templates/ticket_common.html:38 templates/ticket_view.html:38
+msgid "Location"
+msgstr "Plats"
+
+#: templates/ticket_common.html:47 templates/ticket_view.html:47
+msgid "Building"
+msgstr "Byggnad"
+
+#: templates/ticket_common.html:56 templates/ticket_view.html:56
+msgid "Office"
+msgstr "Kontor"
+
+#: templates/ticket_common.html:77
+msgid "Co-responsible"
+msgstr "Medansvarig"
+
+#: templates/ticket_common.html:87
+msgid "CC"
+msgstr "CC"
+
+#: templates/ticket_common.html:97
+msgid "Impact"
+msgstr "Hur viktigt är utfallet av saken"
+
+#: templates/ticket_common.html:109
+msgid "Urgency"
+msgstr "Hur brådskande är saken"
+
+#: templates/ticket_common.html:122 templates/ticket_view.html:65
+msgid "Status"
+msgstr "Status"
+
+#: templates/ticket_common.html:136 templates/ticket_view.html:74
+msgid "Category"
+msgstr "Kategori"
+
+#: templates/ticket_common.html:151 templates/ticket_view.html:148
+msgid "Depends on CIs"
+msgstr "Beror på följande CIs"
+
+#: templates/ticket_common.html:164
+msgid "Depends on issues"
+msgstr "Beror på följande saker"
+
+#: templates/ticket_view.html:7
+msgid "Recent tickets"
+msgstr "Senaste öppnade saker"
+
+#: templates/ticket_view.html:14
+msgid "Toggle internal update visibility"
+msgstr "Växla synlighet av interna saker"
+
+#: templates/ticket_view.html:23
+msgid "Overview"
+msgstr "Översikt"
+
+#: templates/ticket_view.html:94
+msgid "Priority (Impact + Urgency)"
+msgstr "Prioritet (Utfall + brådska)"
+
+#: templates/ticket_view.html:103
+msgid "Creation date"
+msgstr "Skapelsedatum"
+
+#: templates/ticket_view.html:112
+msgid "Last update date"
+msgstr "Senaste uppdateringsdatum"
+
+#: templates/ticket_view.html:121
+msgid "Depends on these issues"
+msgstr "Beror på följande saker"
+
+#: templates/ticket_view.html:135
+msgid "Depended on by these issues"
+msgstr "Dessa saker beror på denna sak"
+
+#: templates/ticket_view.html:161 templates/ticket_new.html:52
+msgid "Description of problem"
+msgstr "Beskrivning av problem"
+
+#: templates/ticket_view.html:192
+msgid "Create KB article from update"
+msgstr "Skapa KB-artikel från uppdatering"
+
+#: templates/ticket_view.html:197
+#, python-format
+msgid "Internal update on %(date)s by %(updater)s"
+msgstr "Intern uppdatering på %(date)s av %(updater)s"
+
+#: templates/ticket_view.html:199
+#, python-format
+msgid "Update on %(date)s by %(updater)s"
+msgstr "Uppdatering på %(date)s av %(updater)s"
+
+#: templates/ticket_view.html:217
+msgid "Attachments"
+msgstr "Bifogade filer"
+
+#: templates/ticket_view.html:244 templates/ticket_view.html.py:253
+#: templates/ticket_view.html:297
+msgid "Add new update"
+msgstr "Lägg till uppdatering"
+
+#: templates/ticket_view.html:262
+msgid "Also update dependant issues"
+msgstr "Uppdatera också beroende saker"
+
+#: templates/ticket_view.html:271 templates/ticket_view.html.py:340
+msgid "Internal"
+msgstr "Intern"
+
+#: templates/ticket_view.html:281
+msgid "Problem update"
+msgstr "Problemuppdatering"
+
+#: templates/ticket_view.html:286
+msgid "Insert KB article"
+msgstr "Infoga KB-artikel"
+
+#: templates/ticket_view.html:286
+msgid "Insert"
+msgstr "Infoga"
+
+#: templates/ticket_view.html:286
+msgid "Preview"
+msgstr "Förhandsgranska"
+
+#: templates/ticket_view.html:288
+msgid "Hide"
+msgstr "Dölj"
+
+#: templates/ticket_view.html:297 templates/ticket_view.html.py:345
+msgid "Cancel"
+msgstr "Avbryt"
+
+#: templates/ticket_view.html:316
+msgid "Create Knowledgebase article"
+msgstr "Skapa artikel i kunskapsdatabasen"
+
+#: templates/ticket_view.html:329
+msgid "Article name"
+msgstr "Artikelnamn"
+
+#: templates/ticket_view.html:344
+msgid "Submit"
+msgstr "Skicka"
+
+#: templates/ticket_new.html:26
+msgid "Quickfill"
+msgstr "Snabbifyllning"
+
+#: templates/ticket_new.html:30
+msgid "None"
+msgstr "Ingen"
+
+#: templates/ticket_new.html:43
+msgid "Subject"
+msgstr "Titel"
+
+#: templates/ticket_new.html:118
+msgid "Create issue"
+msgstr "Skapa sak"
+
+#: templates/admin/base.html:35
+msgid "Documentation"
+msgstr ""
+
+#: templates/admin/base.html:54 home/views.py:55
+msgid "Home"
+msgstr ""
+
+#: templates/admin/index.html:29
+#, python-format
+msgid "Models available in the %(name)s application."
+msgstr ""
+
+#: templates/admin/index.html:30
+#, python-format
+msgid "%(name)s"
+msgstr ""
+
+#: templates/admin/index.html:40
+msgid "Add"
+msgstr ""
+
+#: templates/admin/index.html:46
+msgid "Change"
+msgstr ""
+
+#: templates/admin/index.html:56
+msgid "You don't have permission to edit anything."
+msgstr ""
+
+#: templates/admin/index.html:64
+msgid "Recent Actions"
+msgstr ""
+
+#: templates/admin/index.html:66
+msgid "None available"
+msgstr ""
+
+#: templates/admin/base_site.html:4
+msgid "Django site admin"
+msgstr ""
+
+#: templates/registration/login.html:17
+msgid "Username:"
+msgstr ""
+
+#: templates/registration/login.html:20
+msgid "Password:"
+msgstr ""
+
+#: templates/registration/login.html:25
+msgid "Log in"
+msgstr ""
+
+#: home/widget.py:67
+msgid "No matching items found"
+msgstr "Inga matchningar kunde hittas"
+
+#: home/widget.py:73
+#, python-format
+msgid "Showing items %(first)d to %(last)d of %(total)d"
+msgstr "Visar sake %(first)d till %(last)d av %(total)d"
+
+#: home/widget.py:78
+msgid "Page"
+msgstr "Sida"
+
+#: home/views.py:21
+msgid "My latest open tickets"
+msgstr "Mina senaste öppna saker"
+
+#: home/views.py:24
+msgid "My oldest open tickets"
+msgstr "Mina äldsta öppna saker"
+
+#: home/views.py:28
+msgid "My highest priority open tickets"
+msgstr "Mina högst prioriterade öppna saker"
+
+#: home/views.py:31
+msgid "My last updates"
+msgstr "Min senaste uppdatering"
+
+#: home/views.py:33
+msgid "Latest unassigned, open tickets"
+msgstr "Senaste öppna saker utan ägare"
+
+#: home/views.py:36
+msgid "Oldest unassigned, open tickets"
+msgstr "Äldsta öppna saker utan ägare"
+
+#: home/views.py:39
+msgid "Highest priority unassigned, open tickets"
+msgstr "Högst prioriterade öppna saker utan ägare"
+
+#: home/views.py:42
+msgid "Latest open tickets"
+msgstr "Senaste öppna saker"
+
+#: home/views.py:45
+msgid "Oldest open tickets"
+msgstr "Äldsta öppna saker"
+
+#: home/views.py:48
+msgid "Highest priority open tickets"
+msgstr "Högst prioriterade öppna saker"
+
+#: account/views.py:50
+msgid "Open issues assigned to this user"
+msgstr "Öppna saker tilldelade till denna användare"
+
+#: account/views.py:54
+msgid "Open issues requested by this user"
+msgstr "Öppna saker skapade av denna användare"
+
+#: account/views.py:58
+msgid "This users last updates"
+msgstr "Denna användares senaste uppdateringar"
+
+#: log/views.py:45
+msgid "Event log"
+msgstr "Händelselogg"
+
+#: log/views.py:46
+msgid "Filtered log"
+msgstr "Filtrerad logg"
+
+#: ticket/models.py:83
+msgid "statuses"
+msgstr "statusar"
+
+#: ticket/models.py:84
+msgid "status"
+msgstr "status"
+
+#: ticket/models.py:100
+msgid "types of issues"
+msgstr "typer av saker"
+
+#: ticket/models.py:101
+msgid "type of issue"
+msgstr "typ av sak"
+
+#: ticket/models.py:114
+msgid "issue categories"
+msgstr "Sakskategorier"
+
+#: ticket/models.py:115
+msgid "issue category"
+msgstr "sakskategori"
+
+#: ticket/models.py:136
+msgid "quick fills"
+msgstr "Snabbifyllningar"
+
+#: ticket/models.py:137
+msgid "quick fill"
+msgstr "snabbifyllning"
+
+#: ticket/models.py:152
+msgid "Field for quick fills"
+msgstr "Fält för snabbifyllningar"
+
+#: ticket/models.py:153
+msgid "Field for quick fill"
+msgstr "Fält för snabbifyllning"
+
+#: ticket/models.py:199
+msgid "external contacts"
+msgstr "externa kontakter"
+
+#: ticket/models.py:200
+msgid "external contact"
+msgstr "extern kontakt"
+
+#: ticket/models.py:242 ticket/models.py:811
+msgid "Issue name"
+msgstr "Saknamn"
+
+#: ticket/models.py:383
+msgid "Invalid value: %s."
+msgstr "Ogiltigt värde: %s"
+
+#: ticket/models.py:396
+msgid "This field is required."
+msgstr ""
+
+#: ticket/models.py:410
+msgid "Invalid status"
+msgstr "Ogiltig status"
+
+#: ticket/models.py:425
+msgid "Invalid category"
+msgstr "Ogiltig kategori"
+
+#: ticket/models.py:447
+#, python-format
+msgid "Unknown user: %(value)s, %(type)s"
+msgstr "Okänd användare: %(value)s, %(type)s"
+
+#: ticket/models.py:464
+#, python-format
+msgid "Unknown user: %s"
+msgstr "Okänd användare: %s"
+
+#: ticket/models.py:487
+#, python-format
+msgid "Invalid user or contact: %s"
+msgstr "Ogiltig användare eller kontakt: %s"
+
+#: ticket/models.py:507
+#, python-format
+msgid "Invalid user: %s"
+msgstr "Ogiltig användare: %s"
+
+#: ticket/models.py:530 ticket/models.py:545
+#, python-format
+msgid "Value out of range: %d"
+msgstr "Otillåtet värde: %d"
+
+#: ticket/models.py:534 ticket/models.py:549
+#, python-format
+msgid "Not an integer number: %s"
+msgstr "Inte en siffra: %s"
+
+#: ticket/models.py:566
+#, python-format
+msgid "Invalid issue: %s"
+msgstr "Ogiltig sak: %s"
+
+#: ticket/models.py:689
+msgid "Text field"
+msgstr "Textfält"
+
+#: ticket/models.py:690
+msgid "Grade from 1 to 5"
+msgstr "Gradering från 1 till 5"
+
+#: ticket/models.py:691
+msgid "Dropdown box"
+msgstr "Lista"
+
+#: ticket/models.py:692
+msgid "Multiline text area"
+msgstr "Flerradstextfält"
+
+#: ticket/models.py:693 ticket/models.py:997
+msgid "Date"
+msgstr "Datum"
+
+#: ticket/models.py:756
+msgid "Extra fields for issues"
+msgstr "Extrafält för saker"
+
+#: ticket/models.py:757
+msgid "Extra field for issues"
+msgstr "Extrafält för saker"
+
+#: ticket/models.py:772
+msgid "items for extra fields of dropdown type"
+msgstr ""
+
+#: ticket/models.py:773
+msgid "item for extra field of dropdown type"
+msgstr ""
+
+#: ticket/models.py:811
+msgid "Update"
+msgstr "Uppdatering"
+
+#: ticket/models.py:811
+msgid "Update date"
+msgstr "Uppdateringsdatum"
+
+#: ticket/models.py:888
+msgid "properties"
+msgstr "egenskaper"
+
+#: ticket/models.py:889
+msgid "property"
+msgstr "egenskap"
+
+#: ticket/models.py:905
+msgid "SMTP configurations"
+msgstr ""
+
+#: ticket/models.py:906
+msgid "SMTP configuration"
+msgstr ""
+
+#: ticket/models.py:924
+msgid "IMAP configurations"
+msgstr ""
+
+#: ticket/models.py:925
+msgid "IMAP configuration"
+msgstr ""
+
+#: ticket/models.py:973
+msgid "Nofified by email"
+msgstr "Notifierad via epost"
+
+#: ticket/models.py:982
+msgid "email templates"
+msgstr "epostmallar"
+
+#: ticket/models.py:983
+msgid "email template"
+msgstr "epostmall"
+
+#: ticket/models.py:997
+msgid "Event catecory"
+msgstr "Händelsekategori"
+
+#: ticket/models.py:997
+msgid "Event severity"
+msgstr "Händelsens allvarlighet"
+
+#: ticket/models.py:997
+msgid "Message"
+msgstr "Meddelanden"
+
+#: ticket/models.py:1071
+msgid "scripted evants"
+msgstr "skriptade händelser"
+
+#: ticket/models.py:1072
+msgid "scripted event"
+msgstr "skriptad händelse"
+
+#: ticket/views.py:56
+#, python-format
+msgid "New %s"
+msgstr "Ny %s"
+
+#: ticket/views.py:170
+#, python-format
+msgid "Viewing %(issue_type)s \"%(subject)s\""
+msgstr "Visar %(issue_type)s “%(subject)s“"
+
+#: ticket/views.py:208 tralala/views.py:5
+msgid "Choose date"
+msgstr "Välj datum"
+
+#: ticket/views.py:209 tralala/views.py:6
+msgid "Previous month"
+msgstr "Föregåående månad"
+
+#: ticket/views.py:210 tralala/views.py:7
+msgid "Previous year"
+msgstr "Föregående år"
+
+#: ticket/views.py:211 tralala/views.py:8
+msgid "Next month"
+msgstr "Nästa måånad"
+
+#: ticket/views.py:212 tralala/views.py:9
+msgid "Next year"
+msgstr "Nästa år"
+
+#: ticket/views.py:213 tralala/views.py:10
+msgid "Close"
+msgstr "Stäng"
+
+#: ticket/views.py:214 tralala/views.py:11
+msgid "Sunday"
+msgstr "Söndag"
+
+#: ticket/views.py:214 tralala/views.py:11
+msgid "Monday"
+msgstr "Måndag"
+
+#: ticket/views.py:214 tralala/views.py:11
+msgid "Tuesday"
+msgstr "Tisdag"
+
+#: ticket/views.py:214 tralala/views.py:11
+msgid "Wednesday"
+msgstr "Onsdag"
+
+#: ticket/views.py:214 tralala/views.py:11
+msgid "Thursday"
+msgstr "Torsdag"
+
+#: ticket/views.py:214 tralala/views.py:11
+msgid "Friday"
+msgstr "Fredag"
+
+#: ticket/views.py:214 tralala/views.py:11
+msgid "Saturday"
+msgstr "Lördag"
+
+#: ticket/views.py:215 tralala/views.py:12
+msgid "January"
+msgstr ""
+
+#: ticket/views.py:215 tralala/views.py:12
+msgid "February"
+msgstr ""
+
+#: ticket/views.py:215 tralala/views.py:12
+msgid "March"
+msgstr ""
+
+#: ticket/views.py:215 tralala/views.py:12
+msgid "April"
+msgstr ""
+
+#: ticket/views.py:215 tralala/views.py:12
+msgid "May"
+msgstr ""
+
+#: ticket/views.py:215 tralala/views.py:12
+msgid "June"
+msgstr ""
+
+#: ticket/views.py:215 tralala/views.py:12
+msgid "July"
+msgstr ""
+
+#: ticket/views.py:215 tralala/views.py:12
+msgid "August"
+msgstr ""
+
+#: ticket/views.py:215 tralala/views.py:12
+msgid "September"
+msgstr ""
+
+#: ticket/views.py:215 tralala/views.py:12
+msgid "October"
+msgstr ""
+
+#: ticket/views.py:215 tralala/views.py:12
+msgid "November"
+msgstr ""
+
+#: ticket/views.py:215 tralala/views.py:12
+msgid "December"
+msgstr ""
+
+#: ticket/templatetags/tuit_extras.py:72
+#, python-format
+msgid "%(field)s changed to %(new)s"
+msgstr "%(field)s ändrad till %(new)s"
+
+#: ticket/templatetags/tuit_extras.py:78
+msgid "Toggle details"
+msgstr "Växla detaljvy"
+
+#: mail/__init__.py:228 mail/__init__.py:240
+#, python-format
+msgid "Message signed with unknown key: %s"
+msgstr "Meddelande signerat med okänd nyckel: %s"
+
+#: mail/__init__.py:231
+#, python-format
+msgid "Message signed with an expired key: %s"
+msgstr "Meddelande signerat med utgången nyckel: %s"
+
+#: mail/__init__.py:234
+#, python-format
+msgid "Message signed with a revoked key: %s"
+msgstr "Meddelande signerat med tillbakadragen nyckel: %s"
+
+#: mail/__init__.py:237
+msgid "Invalid PGP signature detected."
+msgstr "Ogiltig PGP-signatur detekterad"
+
+#: mail/__init__.py:648
+msgid "Unknown multipart/encrypted version."
+msgstr "Okänd version av multipart/encrypted."
+
+#: mail/__init__.py:657
+msgid "Unable to decrypt your message."
+msgstr ""
+
+#: mail/__init__.py:686
+msgid "No PGP signature found in message."
+msgstr ""
+
+#: mail/__init__.py:1137
+msgid ""
+"\n"
+"Emails to Roundup trackers must include a Subject: line!\n"
+msgstr ""
+
+#: mail/__init__.py:1261
+#, python-format
+msgid ""
+"\n"
+"The message you sent to roundup did not contain a properly formed subject\n"
+"line. The subject must contain a class name or designator to indicate the\n"
+"'topic' of the message. For example:\n"
+"    Subject: [issue] This is a new issue\n"
+"      - this will create a new issue in the tracker with the title 'This is\n"
+"        a new issue'.\n"
+"    Subject: [issue1234] This is a followup to issue 1234\n"
+"      - this will append the message's contents to the existing issue 1234\n"
+"        in the tracker.\n"
+"\n"
+"Subject was: '%(subject)s'\n"
+msgstr ""
+
+#: mail/__init__.py:1299
+#, python-format
+msgid ""
+"\n"
+"The class name you identified in the subject line (\"%(classname)s\") does\n"
+"not exist in the database.\n"
+"\n"
+"Valid class names are: %(validname)s\n"
+"Subject was: \"%(subject)s\"\n"
+msgstr ""
+
+#: mail/__init__.py:1307
+#, python-format
+msgid ""
+"\n"
+"You did not identify a class name in the subject line and there is no\n"
+"default set for this tracker. The subject must contain a class name or\n"
+"designator to indicate the 'topic' of the message. For example:\n"
+"    Subject: [issue] This is a new issue\n"
+"      - this will create a new issue in the tracker with the title 'This is\n"
+"        a new issue'.\n"
+"    Subject: [issue1234] This is a followup to issue 1234\n"
+"      - this will append the message's contents to the existing issue 1234\n"
+"        in the tracker.\n"
+"\n"
+"Subject was: '%(subject)s'\n"
+msgstr ""
+
+#: mail/__init__.py:1348
+#, python-format
+msgid ""
+"\n"
+"I cannot match your message to a node in the database - you need to either\n"
+"supply a full designator (with number, eg \"[issue123]\") or keep the\n"
+"previous subject title intact so I can match that.\n"
+"\n"
+"Subject was: \"%(subject)s\"\n"
+msgstr ""
+
+#: mail/__init__.py:1381
+#, python-format
+msgid ""
+"\n"
+"The node specified by the designator in the subject of your message\n"
+"(\"%(nodeid)s\") does not exist.\n"
+"\n"
+"Subject was: \"%(subject)s\"\n"
+msgstr ""
+
+#: mail/__init__.py:1409
+#, python-format
+msgid ""
+"\n"
+"The mail gateway is not properly set up. Please contact\n"
+"%(mailadmin)s and have them fix the incorrect class specified as:\n"
+"  %(current_class)s\n"
+msgstr ""
+
+#: mail/__init__.py:1432
+#, python-format
+msgid ""
+"\n"
+"The mail gateway is not properly set up. Please contact\n"
+"%(mailadmin)s and have them fix the incorrect properties:\n"
+"  %(errors)s\n"
+msgstr ""
+
+#: mail/__init__.py:1472
+#, python-format
+msgid ""
+"\n"
+"You are not a registered user.%(registration_info)s\n"
+"\n"
+"Unknown address: %(from_address)s\n"
+msgstr ""
+
+#: mail/__init__.py:1480
+msgid "You are not permitted to access this tracker."
+msgstr ""
+
+#: mail/__init__.py:1487
+#, python-format
+msgid "You are not permitted to edit %(classname)s."
+msgstr ""
+
+#: mail/__init__.py:1491
+#, python-format
+msgid "You are not permitted to create %(classname)s."
+msgstr ""
+
+#: mail/__init__.py:1538
+#, python-format
+msgid ""
+"\n"
+"There were problems handling your subject line argument list:\n"
+"- %(errors)s\n"
+"\n"
+"Subject was: \"%(subject)s\"\n"
+msgstr ""
+
+#: mail/__init__.py:1591
+msgid ""
+"\n"
+"This tracker has been configured to require all email be PGP signed or\n"
+"encrypted."
+msgstr ""
+
+#: mail/__init__.py:1598
+msgid ""
+"\n"
+"Roundup requires the submission to be plain text. The message parser could\n"
+"not find a text/plain part to use.\n"
+msgstr ""
+
+#: mail/__init__.py:1615
+msgid "You are not permitted to create files."
+msgstr ""
+
+#: mail/__init__.py:1629
+#, python-format
+msgid "You are not permitted to add files to %(classname)s."
+msgstr ""
+
+#: mail/__init__.py:1647
+msgid "You are not permitted to create messages."
+msgstr ""
+
+#: mail/__init__.py:1655
+#, python-format
+msgid ""
+"\n"
+"Mail message was rejected by a detector.\n"
+"%(error)s\n"
+msgstr ""
+
+#: mail/__init__.py:1663
+#, python-format
+msgid "You are not permitted to add messages to %(classname)s."
+msgstr ""
+
+#: mail/__init__.py:1690
+#, python-format
+msgid "You are not permitted to edit property %(prop)s of class %(classname)s."
+msgstr ""
+
+#: mail/__init__.py:1698
+#, python-format
+msgid ""
+"\n"
+"There was a problem with the message you sent:\n"
+"   %(message)s\n"
+msgstr ""
+
+#: mail/__init__.py:1720
+msgid "not of form [arg=value,value,...;arg=value,value,...]"
+msgstr ""
+
+#~ msgid "View all"
+#~ msgstr "Visa alla"
+
+#~ msgid "Last updated tickets"
+#~ msgstr "Senast uppdaterade saker"
+
+#~ msgid ""
+#~ "Update on %(update.creation_date|datetime_format)s by %(update.creator."
+#~ "tuit_description)s"
+#~ msgstr ""
+#~ "Uppdatering på %(update.creation_date|datetime_format)s av %(update."
+#~ "creator.tuit_description)s"
+
+#~ msgid "Add update..."
+#~ msgstr "Lägg till uppdatering"

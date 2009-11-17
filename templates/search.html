@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{%block content %} 
+
+<form action=''>
+
+<span class='no_print'>
+ {%trans "Freetext search" %}: <input name='freetext' value='{{ get.freetext|escape }}'>
+
+<table class='striped wide'>
+
+{% if has_advanced %}
+{% else %}
+<thead class='advanced_show'>
+<tr>
+<th colspan='2'>
+<button type='button' onclick='$(".advanced_show").hide();$(".advanced").fadeIn();'>
+{%trans "Advanced issue search options" %}
+</button>
+</th>
+</tr>
+</thead>
+{% endif %}
+{% if has_advanced %}
+<tbody>
+{% else %}
+<tbody class='advanced'>
+{% endif %}
+
+<!--
+<tr>
+<td>
+Search only for
+</td>
+<td>
+<select>
+<option>Everything</option>
+<option>Incident</option>
+<option>Problem</option>
+<option>RfC</option>
+<option>Knowledge base articles</option>
+<option>MSDN articles</option>
+</select>
+</td>
+</tr>
+-->
+
+<tr>
+<td>
+{%trans "Issue status" %}
+</td>
+<td>
+<select name='status' id='status'>
+    <option value='' {% if status %}{% else %}selected{% endif %}>{%trans "All not closed" %}</option>
+    <option value='all' {% ifequal status 'all' %}selected{% endifequal %}>{%trans "All" %}</option>
+{% for s in status_all %}    
+    <option value='{{s.id}}' {% ifequal s.id status %}selected{% endifequal %}>{{s.name|escape}}</option>
+{% endfor %}
+</select>
+</td>
+</tr>
+
+<tr>
+<td>
+{%trans "Updated after" %}
+</td>
+<td>
+<input name='from_date' class='date_picker' value='{{ from_date|escape }}'>
+</td>
+</tr>
+
+
+<tr>
+  <td>
+    {%trans "Priority" %}
+  </td>
+  <td>
+    <input name='priority' class='priority' value='{{ priority }}'> {%trans "4..7 means priority between 4 and 7." %}
+  </td>
+</tr>
+
+
+
+</tbody>
+</table>
+
+<script>
+$(".advanced").hide();
+</script>
+
+
+</span>
+<button type='submit'>{%trans "Search" %}</button>
+</form>
+
+{% if get.freetext %}
+
+
+{% blocktrans with get.freetext|escape as text %}Searching for "{{ text }}"...{% endblocktrans %}
+
+
+<table class='striped wide'>
+{% for typ in types %}
+
+<thead>
+<tr>
+<th>
+{% blocktrans with typ.name as name %}Search results from {{ name }}{% endblocktrans %}
+</th>
+</tr>
+</thead>
+
+<tbody id='results_{{ typ.id|escape }}'>
+
+</tbody>
+<tbody>
+<tr class='no_print' id='toggle_{{ typ.id|escape }}'>
+<td>
+<button type='button' id='toggle_button_{{ typ.id|escape }}'>
+{% trans "Show more" %}
+</button>
+<span id='search_message_{{ typ.id|escape }}'></span>
+</td>
+</tr>
+</tbody>
+
+{% endfor %}
+
+</table>
+<script>
+$(".ticket_hidden").hide();
+</script>
+
+</table>
+
+<script>
+var tuitSearchTotalMessage = "{% trans "Found a total of %s message(s)" %}";
+tuit.search({{ results }});
+</script>
+
+{% endif %}
+
+{% endblock %}

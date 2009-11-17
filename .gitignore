@@ -1,2 +1,9 @@
 *~
-#*#
+\#*\#
+*.pyc
+.\#*
+attachments
+ad_csv
+*.mo
+jquery-autocomplete
+.goutput*

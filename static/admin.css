@@ -1,0 +1,203 @@
+/* CSS to make the auto-generated html from djangos admin interface
+  look more or less in line with the rest of Tuit. Far from perfect,
+  but close enough that things look reasonably consistent.  */
+
+.submit-row .deletelink
+{
+    text-decoration: none;
+    padding: 4px 12px 4px 12px;
+    /* 
+
+Kludge: This would ideally be the total size of the text box (which
+is defined in pt) plus the size of the borders, margins, etc.,
+which are defined in pixels, as well as a bit of extra margin,
+which is also defined in pixels. Sadly, that is impossible, so
+we have this semi-arbitrary number, which looks good most of the time.
+
+It's worth investigating if all links could be wrapped in a div in a
+box, to add the top/bottom margins, thus working around the problem.
+
+*/
+    line-height: 20pt;
+}
+
+.submit-row .deletelink:active,
+.submit-row input:active
+{
+    background-image: url('/common/static/button_bg_active.png');
+    background-color: #25262c;
+    color: #aaa;
+}
+
+.submit-row .deletelink:hover,
+.submit-row input:hover
+{
+    background-image: url('/common/static/button_bg_hover.png');
+    background-color: #3b3d47;
+    cursor:pointer;cursor:hand
+    color: white;
+}
+
+
+
+.submit-row input,
+.submit-row .deletelink
+{
+    background-color: #35373f;
+    border: 1px solid #111;
+	border-radius: 3px;
+    -moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	background-image: url('/common/static/button_bg.png');
+	background-repeat: repeat-x;
+
+    padding: 2px 10px 2px 10px;
+    color: white;
+}
+
+#user-tools, 
+.breadcrumbs
+{
+    float: right;
+    clear: right;
+}
+
+.quiet
+{
+    font-size:80%;
+    color:gray;
+}
+
+tr.row1 th,
+tr.row2 th
+{
+    background-color: white;
+}
+
+tr.row1 a,
+tr.row2 a
+{
+    color: black;
+}
+
+tr.row1 a:hover,
+tr.row2 a:hover
+{
+    color: #999;
+}
+
+tr.row1 a:visited,
+tr.row2 a:visited
+{
+    color: #888;
+}
+
+#emailtemplate_form textarea
+{
+    height: 20em;
+}
+
+#content-main form .form-row label
+{
+    display:-moz-inline-stack;
+    display:inline-block;
+    width: 10em;
+    text-align: right;
+    vertical-align: middle;
+}
+
+.checkbox-row
+{
+    margin-left: 10em;
+}
+
+#content-main form .form-row label.vCheckboxLabel
+{
+    display:inline;
+}
+
+fieldset
+{
+    border: none;
+}
+
+.vTextField
+{
+    width: 80%;
+}
+
+ul.errorlist
+{
+    padding-left: 0px;
+    margin-left: 10em;
+    color: #900;
+}
+
+ul.errorlist li
+{
+    list-style-type: none;
+}
+
+#content-main form .form-row input
+{
+    margin-top: 3pt;
+}
+
+#content-main .module table
+{
+    min-width: 50%;
+}
+
+#content-main .module table th
+{
+    width: 50%;
+}
+
+table caption
+{
+    margin-top: 1em;
+    text-align: left;
+}
+
+body.popup
+{
+    display: block;
+    background-color:#fff;
+    border: none;
+    position: inherit;
+    margin: 0%;
+    padding: 0%;
+}
+
+body.popup .main_menu,
+body.popup .action_menu
+{
+    display: none;
+}
+
+body.popup .content
+{
+    display: block;
+    width: 100%;
+    margin: 0%;
+}
+
+body.popup .content_inner
+{
+    border: none;
+}
+
+div.form-row
+{
+    padding: 1em;
+    /*
+      This invisible border is exactly the same size ar the red border around error rows, so that things don't become unaligned bacuase of the border.
+    */
+    border: 1px solid white;
+}
+
+div.form-row.errors
+{
+    border: 1px solid #990000;
+}
+

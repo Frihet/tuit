@@ -1,0 +1,350 @@
+{% extends "base.html" %}
+{% load tuit_extras %}
+{% load i18n %}
+
+{%block sidebar %} 
+<!--
+<li><h3>{%trans "Recent tickets" %}:</h3></li>
+-->
+{% endblock %}
+
+{%block content %} 
+
+<span class='no_print'>
+  <button type='button' onclick='$(".internal").toggle()'>{%trans "Toggle internal update visibility" %}</button>
+</span>
+
+
+<table class='striped wide'>
+
+  <tbody>
+    <tr>
+      <th colspan='2'>
+	{%trans "Overview" %}
+      </th>
+    </tr>
+
+    <tr>
+      <td class='label'>
+	{%trans "Requester" %}
+      </td>
+      <td>
+	{{ issue.requester.tuit_description }}
+      </td>
+    </tr>
+
+    <tr>
+      <td class='label'>
+	{%trans "Location" %}
+      </td>
+      <td>
+	{{ issue.location }}
+      </td>
+    </tr>
+
+    <tr>
+      <td class='label'>
+	{%trans "Building" %}
+      </td>
+      <td>
+	{{ issue.building }}
+      </td>
+    </tr>
+
+    <tr>
+      <td class='label'>
+	{%trans "Office" %}
+      </td>
+      <td>
+	{{ issue.office }}
+      </td>
+    </tr>
+
+    <tr>
+      <td class='label'>
+	{%trans "Status" %}
+      </td>
+      <td>
+	{{ issue.current_status.name }}
+      </td>
+    </tr>
+
+    <tr>
+      <td class='label'>
+	{%trans "Category" %}
+      </td>
+      <td>
+	{{ issue.category.name }}
+      </td>
+    </tr>
+
+    <tr>
+      <td class='label'>
+	{%trans "Assigned to" %}
+      </td>
+      <td>
+	{%if issue.assigned_to %}
+	{{ issue.assigned_to.tuit_description }}
+	{%endif %}
+      </td>
+    </tr>
+
+    <tr>
+      <td class='label'>
+	{%trans "Priority (Impact + Urgency)" %}
+      </td>
+      <td>
+	{{ issue.priority }} ({{ issue.impact }} + {{ issue.urgency }}) 
+      </td>
+    </tr>
+
+    <tr>
+      <td class='label'>
+	{%trans "Creation date" %}
+      </td>
+      <td>
+	{{ issue.creation_date|datetime_format }} 
+      </td>
+    </tr>
+
+    <tr>
+      <td class='label'>
+	{%trans "Last update date" %}
+      </td>
+      <td>
+	{{ issue.last_update_date|datetime_format }} 
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+	{%trans "Depends on these issues" %}:
+      </td>
+      <td>
+	<ul>
+	  {% for dep in issue.dependencies.all %}
+	  <li><a href='../{{ dep.id }}'>{{ dep.id }} - {{ dep.subject|escape }}</a></li>
+	  {% endfor %}
+	</ul>
+      </td>
+    </tr>
+
+
+    <tr>
+      <td class='label'>
+	{%trans "Depended on by these issues" %}:
+      </td>
+      <td>
+	<ul>
+	  {% for dep in issue.dependants.all %}
+	  <li><a href='../{{ dep.id }}'>{{ dep.id }} - {{ dep.subject|escape }}</a></li>
+	  {% endfor %}
+	</ul>
+      </td>
+    </tr>
+
+    <tr>
+      <td class='label'>
+	{%trans "Depends on CIs" %}:
+      </td>
+      <td>
+	<ul>
+	  {% for ci in issue.ci_list %}
+	  <li><a href='{{ ci.url }}'>{{ ci.id }} - {{ ci.name|escape }}</a></li>
+	  {% endfor %}
+	</ul>
+      </td>
+    </tr>
+
+    <tr>
+      <th colspan='2'>
+	{%trans "Description of problem" %}:
+      </th>
+    </tr>
+    <tr>
+      <td colspan='2'>
+	{{ issue.description }}
+      </td>
+    </tr>
+
+    {% for it in issue.extra_fields.itervalues %}
+    <tr>
+      <td>
+	{{ it.field.short_description|escape }}:
+      </td>
+      <td>
+	{{ it.render_value }}
+      </td>
+    </tr>
+    {% endfor %}
+
+    <tr>
+      <td colspan='2'>
+	{{ issue.description_data|description_format }}
+      </td>
+    </tr>
+
+    {% for update in issue.updates %}
+    {% if show_internal or not update.internal %}
+  <tbody class='{% if update.internal %}internal{% else %}external{% endif %}'>
+    <tr>
+      <th colspan='2'>
+	<div class='update_buttons'><button type='button' class='kb_button' onclick='tuit.createKbArticle("update_comment_{{ update.id }}");'>{%trans "Create KB article from update" %}</button></div>
+
+
+
+	{% if update.internal %}
+	{% blocktrans with update.creation_date|datetime_format as date and update.creator.tuit_description as updater %}Internal update on {{ date }} by {{ updater }}{% endblocktrans %}
+	{% else %}
+	{% blocktrans with update.creation_date|datetime_format as date and update.creator.tuit_description as updater %}Update on {{ date }} by {{ updater }}{% endblocktrans %}
+	{% endif %}
+
+      </th>
+    </tr>
+    <tr>
+      <td colspan='2'>
+	<div id='update_comment_{{ update.id }}'>{{ update.comment }}</div>
+
+
+
+      </td>
+    </tr>
+
+
+    {% if update.issueupdateattachment_set.all.count %}
+    <tr>
+      <td>
+	{%trans "Attachments" %}
+      </td>
+      <td>
+
+	<ul>
+
+	  {% for attachment in update.issueupdateattachment_set.all %}
+	  <li><a href='{{ attachment.url|escape }}'>{{ attachment.name|escape }}</a></li>
+	  {% endfor %}
+	</ul>
+      </td>
+    </tr>
+    {% endif %}
+
+
+    <tr>
+      <td colspan='2'>
+	{{ update.description_data|description_format }}
+      </td>
+    </tr>
+
+  </tbody>
+  {% endif %}
+  {% endfor %}
+
+  <tr id='update_head' class='no_print'>
+    <th colspan='2'>
+      <button type='button' onclick='$("#update_head").hide();$(".ticket_edit").show();'>{%trans "Add new update" %}</button>
+    </th>
+  </tr>
+
+  <form method='post' action='' accept-charset='utf-8'>
+    <tbody class='no_print ticket_edit'>
+      <input type='hidden' name='id' value='{{ issue.id }}'/>
+      <tr>
+	<th colspan='2'>
+	  {%trans "Add new update" %}
+	</th>
+      </tr>
+
+{% if issue.dependants.all.count %}
+      <tr>
+	<td>
+	</td>
+	<td>
+	  <input class='checkbox' type='checkbox' name='update_dependants' id='update_dependants' {{ update_dependants }}/><label for='update_dependants'>{%trans "Also update dependant issues" %}</label>
+	</td>
+      </tr>
+{% endif %}
+
+      <tr>
+	<td>
+	</td>
+	<td>
+	  <input class='checkbox' type='checkbox' name='internal' id='internal' onchange='tuit.checkEmailCheckboxes(this.checked?internal_default_mail:external_default_mail);;' {{ internal }} /><label for='internal'>{%trans "Internal" %}</label>
+	</td>
+      </tr>
+    </tbody>
+    {% include "ticket_common.html" %}
+
+    <tbody class='no_print ticket_edit'>
+      
+      <tr>
+	<td>
+	  <label for='comment'>{%trans "Problem update" %}:</label>
+	</td>
+	<td>
+	  <textarea id='comment' name='comment' class='rich_edit' style='height:20em; width:30em;'>{{ update.comment }}</textarea>
+	  <br>
+	  {%trans "Insert KB article" %}: <input class='kb' id='kb_insert'> <button type='button' onclick='javascript:tuit.insertKbArticle();'>{%trans "Insert" %}</button> <button type='button' onclick='javascript:tuit.previewKbArticle();'>{%trans "Preview" %}</button>
+	  <div id='kb_preview' style='display:none'>
+	    <a id='kb_preview_hide' onclick='javascript:tuit.previewKbArticleHide();'>{%trans "Hide" %}</a>
+	    <div id='kb_preview_content'>
+	    </div>
+	  </div>
+	</td>
+      </tr>
+
+      <tr>
+	<td>
+	  <button type='submit'>{%trans "Add new update" %}</button> <button type='reset' onclick='$("#update_head").show();$("#update").hide();'>{%trans "Cancel" %}</button>
+	</td>
+	<td>
+	</td>
+      </tr>
+  </form>
+  </tbody>
+
+</table>
+<script>
+{% if not errors %}
+  $(".ticket_edit").hide();
+{% endif %}
+var internal_default_mail = {{ internal_default_mail_json }};
+var external_default_mail = {{ external_default_mail_json }};
+</script>
+
+<div class='popup' id='kb_popup'>
+  <div class='popup_title'>
+    {% trans "Create Knowledgebase article" %}
+    <a href="javascript:popupHide('kb_popup')">x</a>
+  </div>
+  <div class='popup_content'>
+    <form method='post' action='/cgi-bin/foswiki/manage/KB/' id='kb_form' accept-charset='iso-8859-1' accept-charset='utf-8'>
+      <input type='hidden' name='action' value='create'/>
+      <input type='hidden' name='onlynewtopic' value='on'/>
+      <input type='hidden' name='topicparent' value='WebHome'/>
+      <input type='hidden' name='templatetopic' value=''/>
+      <input type='hidden' name='text' value='' id='kb_content'/>
+      <table class='striped'>
+	<tr>
+	  <td>
+	    <label for='kb_topic'>{% trans "Article name" %}</label>
+	  </td>
+	  <td>
+	    <input id='kb_topic' name='topic' value='{{ kb_name|escape }}'/>
+	  </td>
+	</tr>
+	<tr>
+	  <td>
+	  </td>
+	  <td>
+	    <input id='kb_internal' class='checkbox' type='checkbox' onchange="$('#kb_form')[0].action=($('#kb_internal')[0].checked)?'/cgi-bin/foswiki/manage/IKB/':'/cgi-bin/foswiki/manage/KB/';" />
+	    <label for='kb_internal'>{% trans "Internal" %}</label>
+	  </td>
+	</tr>
+      </table>
+      <button type='submit'>{% trans "Submit" %}</button>
+      <button type='button' onclick='javascript:popupHide("kb_popup");'>{% trans "Cancel" %}</button>
+    </form>
+  </div>
+</div>
+
+{% endblock %}

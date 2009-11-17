@@ -1,0 +1,76 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+
+{% block stylesheet %}{% load adminmedia %}{% admin_media_prefix %}css/dashboard.css{% endblock %}
+{% block coltype %}colMS{% endblock %}
+{% block bodyclass %}dashboard{% endblock %}
+{% block breadcrumbs %}{% endblock %}
+{% block content %}
+<div id="content-main">
+
+
+        <div class="module">
+        <table class='striped'>
+        <caption>Tools</caption>
+            <tr>
+                <td scope="row"><a href="/FreeCMDB/admin">CMDB Adminstration</a></td>
+            </tr>
+            <tr>
+                <td scope="row"><a href="/tuit/log">TUIT log viewer</a></td>
+            </tr>
+        </table>
+        </div>
+
+
+{% load adminapplist %}
+
+{% get_admin_app_list as app_list %}
+
+{% if app_list %}
+    {% for app in app_list %}
+        <div class="module">
+        <table summary="{% blocktrans with app.name as name %}Models available in the {{ name }} application.{% endblocktrans %}" class='striped'>
+        <caption>{% blocktrans with app.name as name %}{{ name }}{% endblocktrans %}</caption>
+        {% for model in app.models %}
+            <tr>
+            {% if model.perms.change %}
+                <th scope="row"><a href="{{ model.admin_url }}">{{ model.name|escape }}</a></th>
+            {% else %}
+                <th scope="row">{{ model.name|escape }}</th>
+            {% endif %}
+
+            {% if model.perms.add %}
+                <td><a href="{{ model.admin_url }}add/" class="addlink">{% trans 'Add' %}</a></td>
+            {% else %}
+                <td>&nbsp;</td>
+            {% endif %}
+
+            {% if model.perms.change %}
+                <td><a href="{{ model.admin_url }}" class="changelink">{% trans 'Change' %}</a></td>
+            {% else %}
+                <td>&nbsp;</td>
+            {% endif %}
+            </tr>
+        {% endfor %}
+        </table>
+        </div>
+    {% endfor %}
+{% else %}
+    <p>{% trans "You don't have permission to edit anything." %}</p>
+{% endif %}
+</div>
+{% endblock %}
+
+{% block sidebar %}
+            {% load log %}
+            {% get_admin_log 10 as admin_log for_user user %}
+                <li><h3>{% trans 'Recent Actions' %}</h3></li>
+            {% if not admin_log %}
+                <li>{% trans 'None available' %}</li>
+            {% else %}
+            {% for entry in admin_log %}
+                <li class="{% if entry.is_addition %}addlink{% endif %}{% if entry.is_change %}changelink{% endif %}{% if entry.is_deletion %}deletelink{% endif %}">{% if not entry.is_deletion %}<a href="{{ entry.get_admin_url }}">{% endif %}{{ entry.object_repr|escape }}{% if not entry.is_deletion %}</a>{% endif %} <span class="mini quiet">({{ entry.content_type.name|capfirst|escape }})</span></li>
+            {% endfor %}
+            {% endif %}
+{% endblock %}
+

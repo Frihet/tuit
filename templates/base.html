@@ -1,0 +1,78 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	  "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+{% load i18n %}
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    
+{% for i in css_links %}    
+    <link rel="stylesheet" href="{{ i.url }}" type="text/css" media="{{ i.media|default:"screen,projection" }}" />
+{% endfor %}
+{% for i in js_links %}    
+    <script type="text/javascript" src="{{ i }}"></script>
+{% endfor %}
+    
+    <title>TUIT - {{ title }}</title>
+
+    <script type="text/javascript">
+      
+      tinyMCE.init({
+      mode : "specific_textareas",
+      editor_selector : "rich_edit",
+      theme : "simple"
+      });
+
+Date.format = '{{ js_date_format }}';
+
+
+    </script>
+  </head>
+  
+  <body>
+  <div class='main_menu no_print'>
+    <iframe src='/tuit/menu/' width='100%' height='80px' frameborder='no'></iframe>
+  </div>
+    
+{%if messages %}
+<div class='messages no_print'>
+<div class='messages_inner'>
+{{messages}}
+</div>
+</div>
+{%endif %}
+
+<div id='debug'>
+</div>
+
+<div class='action_menu no_print'>
+  <ul>
+    <li>{%trans "User" %}: {{ user.tuit_description }}</li>
+    <li><a href='/tuit/account/logout'>{%trans "Log out" %}</a></li>
+    {%block sidebar %}
+    {%endblock %}
+    
+  </ul>
+</div>
+
+<div class='content'>
+  <div class='content_inner'>
+    
+    <h1>{{ title }}</h1>
+    
+    {%block content %}
+    {%endblock %}
+    
+    <div class='content_post'>
+    </div>
+  </div>
+</div>
+
+
+<div class='copyright'>
+  <a href='http://www.freecode.no'>© 2009 Freecode AS</a>
+</div>
+<script>
+  stripe();
+</script>
+  </body>
+</html>

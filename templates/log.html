@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% load tuit_extras %}
+{% load i18n %}
+
+{%block content %}
+<form method='get' action='' accept-charset='utf-8'>
+  <table class='striped'>
+    <tr>
+      <th>
+	<label for='min_level'>
+	  {% trans "Minimum event severity level" %}
+	</label>
+      </th>
+      <td>
+	<input id='min_level' name='min_level' value='{{ min_level|escape }}' />
+      </td>
+    </tr>
+    <tr>
+      <th>
+	<label for='record_type'>
+	  {% trans "Event category" %}
+	</label>
+      </th>
+      <td>
+	<select id='record_type' name='record_type'>
+	  {{ record_options }}
+	</select>
+      </td>
+    </tr>
+  </table>
+  <button type='submit'>{% trans "Filter" %}</button>
+</form>
+{{ log_widget.html }}
+{% endblock %}

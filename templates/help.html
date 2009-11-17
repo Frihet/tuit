@@ -1,0 +1,28 @@
+{% extends "ticket.html" %}
+{% load tuit_extras %}
+
+{%block content %} 
+<h1>Welcome to Tuit</h1>
+
+<p>
+Tuit is The Ultimate ITIL Toolbox. It is a set of software components
+designed to support ITIL based workflow for service managment. Tuit currently consists of the following components:
+</p>
+
+<ul>
+<li><a href=''>An issue handling system</a>, based on <a href='http://roundup.sourceforge.net/'>Roundup</a></li>
+<li><a href='/FreeCMDB/help'>A CMDB</a> based on FreeCMDB</li>
+<li><a href=''>A knowledge base</a>, based on <a href='http://foswiki.org/'>Foswiki</a>.</li>
+</ul>
+
+
+
+
+<h1>Tuit Issue Managment</h1>
+
+<p>
+
+The Tuit issue handling component is an issue tracker losely based on <a href='http://roundup.sourceforge.net/'>Roundup</a>. It is intended to be used to track incidents, problems and requests for change as they make their way through your IT organization. 
+
+</p>
+{% endblock %}

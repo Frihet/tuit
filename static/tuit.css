@@ -1,0 +1,72 @@
+table.wide
+{
+    width: 100%;
+}
+
+.disabled{
+color:grey;
+}
+
+.ticket_hidden {
+    display: none;
+}
+
+textarea
+{
+    width: 80%;
+    height: 6em;
+}
+
+td.label
+{
+    width: 30%;
+}
+
+td input
+{
+    width: 80%;
+    min-width: 30em;
+}
+
+td input.kb
+{
+    width: 50%;
+}
+
+.update_buttons
+{
+    float:right;
+}
+
+#kb_preview_hide
+{
+    margin: 2pt;
+    float: right;
+    display: block;
+}
+
+#kb_preview_content
+{
+    background-color: white;
+    border: 1px solid #888;
+}
+
+.widget
+{
+    display: inline-block;
+    width: 45%;
+    min-width: 30em;
+    margin: 1%;
+}
+
+.widget.full_width
+{
+    width: 95%;
+}
+
+#ci_picker_root
+{
+    background-color: white;
+    border: 1px solid #888;
+    width: 80%;
+}
