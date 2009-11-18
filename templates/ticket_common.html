@@ -154,7 +154,7 @@
     <textarea class='ci' name='ci_string' id='ci'>{{ issue.ci_string }}</textarea>
     <div id='ci_picker_code'></div>
     <script>
-      $('#ci_picker_code').load('/FreeCMDB/plugins/drilldown/drilldown?update_target=ci&embed_point=ci_picker_root');
+      $('#ci_picker_code').load('/FreeCMDB/plugins/drilldown/drilldown?update_target=ci&embed_point=ci_picker_root&time={{counter}}');
     </script>
   </td>
 </tr>
@@ -167,6 +167,27 @@
     <textarea class='depend' name='dependencies_string' id='dependencies'>{{ issue.dependencies_string }}</textarea>
   </td>
 </tr>
+
+{% if ticket_new %}
+<tr>
+<td>
+ <label for='subject'>{%trans "Subject" %}:</label>
+</td>
+<td>
+<input id='subject' name='subject' value='{{ issue.subject|escape }}'/>
+</td>
+</tr>
+
+<tr>
+<td>
+ <label for='description'>{%trans "Description of problem" %}:</label>
+</td>
+<td>
+<textarea id='description' name='description' class='rich_edit' style='height:20em; width:80%;'>{{ issue.description }}</textarea>
+</td>
+</tr>
+{% endif %}
+
 
 {% for it in issue.extra_fields %}
 <tr>

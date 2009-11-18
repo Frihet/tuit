@@ -37,25 +37,6 @@ tuit.checkEmailCheckboxes(default_mail);
 </tbody>
 {% include "ticket_common.html" %}
 
-<tbody>
-<tr>
-<td>
- <label for='subject'>{%trans "Subject" %}:</label>
-</td>
-<td>
-<input id='subject' name='subject' value='{{ issue.subject|escape }}'/>
-</td>
-</tr>
-
-<tr>
-<td>
- <label for='description'>{%trans "Description of problem" %}:</label>
-</td>
-<td>
-<textarea id='description' name='description' class='rich_edit' style='height:20em; width:80%;'>{{ issue.description }}</textarea>
-</td>
-</tr>
-
 <!--
 <tr>
 <td>
@@ -67,7 +48,6 @@ tuit.checkEmailCheckboxes(default_mail);
 </tr>
 -->
 
-</tbody>
 <!--
 <tbody>
 <tr>

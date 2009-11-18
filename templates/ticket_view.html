@@ -268,7 +268,7 @@
 	<td>
 	</td>
 	<td>
-	  <input class='checkbox' type='checkbox' name='internal' id='internal' onchange='tuit.checkEmailCheckboxes(this.checked?internal_default_mail:external_default_mail);;' {{ internal }} /><label for='internal'>{%trans "Internal" %}</label>
+	  <input class='checkbox' type='checkbox' name='internal' id='internal' onchange='tuit.checkEmailCheckboxes(this.checked?internal_default_mail:external_default_mail);' onclick='tuit.checkEmailCheckboxes(this.checked?internal_default_mail:external_default_mail);' {{ internal }} /><label for='internal'>{%trans "Internal" %}</label>
 	</td>
       </tr>
     </tbody>
@@ -281,7 +281,7 @@
 	  <label for='comment'>{%trans "Problem update" %}:</label>
 	</td>
 	<td>
-	  <textarea id='comment' name='comment' class='rich_edit' style='height:20em; width:30em;'>{{ update.comment }}</textarea>
+	  <textarea id='comment' name='comment' class='rich_edit' style='height:20em; width:80%;'>{{ update.comment }}</textarea>
 	  <br>
 	  {%trans "Insert KB article" %}: <input class='kb' id='kb_insert'> <button type='button' onclick='javascript:tuit.insertKbArticle();'>{%trans "Insert" %}</button> <button type='button' onclick='javascript:tuit.previewKbArticle();'>{%trans "Preview" %}</button>
 	  <div id='kb_preview' style='display:none'>
