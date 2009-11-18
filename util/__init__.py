@@ -6,6 +6,7 @@ from settings import LOGIN_URL
 from urllib import quote
 import django.contrib.auth.models
 import cgi
+import time
 
 import logging
 #from tuit.ticket.models import DbLogRecord
@@ -21,7 +22,6 @@ def tuit_render(name, keys, request):
     
     keys['js_links'] = ["/static/common/jquery.js",
                         "/static/common/common.js",
-                        "/static/common/static/date.js",
                         "/static/tuit.js",
                         "/static/jquery-autocomplete/jquery.autocomplete.js",
                         "/static/common/date.js",
@@ -30,6 +30,7 @@ def tuit_render(name, keys, request):
                         "/tuit/ticket/i18n.js",
                         ]
     keys['user']=request.user
+    keys['counter'] = "%.4f" % time.time()
 
     def js_date_format(python_format):
         for (old,new) in (('%Y','yyyy'),('%m','mm'),('%d','dd')):

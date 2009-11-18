@@ -418,11 +418,10 @@ class Issue(models.Model):
     current_status_string = property(get_current_status_string, set_current_status_string)
 
     def set_category_string(self, value):
-
         try:
             self.category = Category.objects.get(id=int(value))
         except:
-            self.error('category', _("Invalid category"))
+            self.error('category', _("Invalid category %d") % value)
 
     def get_category_string(self):
         if self.id and self.category:

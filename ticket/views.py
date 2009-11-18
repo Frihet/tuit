@@ -53,6 +53,7 @@ def new(request, type_name=None):
         type_name=request.GET['type']
     type = IssueType.objects.get(name=type_name)
     keys['type'] = type
+    keys['ticket_new'] = True
 
     keys['title'] = _('New %s') % type.name
     i = Issue()
