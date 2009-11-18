@@ -201,7 +201,7 @@ var tuit = {
     },
 
     insertKbArticle: function(){
-	var articleName = $('#kb_insert')[0].value;
+	var articleName = tuit.strip($('#kb_insert')[0].value);
 	var url = 'http://fhi-dev.freecode.no/cgi-bin/foswiki/view/KB/'+escape(articleName)+'?skin=text';
 	$.get(url,
 	      function (result, status) {
@@ -211,8 +211,10 @@ var tuit = {
     },
 
     previewKbArticle: function(){
-	var articleName = $('#kb_insert')[0].value;
+	var articleName = tuit.strip($('#kb_insert')[0].value);
+	
 	var url = 'http://fhi-dev.freecode.no/cgi-bin/foswiki/view/KB/'+escape(articleName)+'?skin=text';
+	
 	$.get(url,
 	      function (result, status) {
 		  $('#kb_preview_content')[0].innerHTML=result;
@@ -220,9 +222,11 @@ var tuit = {
 		  
 	      });
     },
+
     previewKbArticleHide: function(){
 	$('#kb_preview').hide(200);
     },
+
     createKbArticle: function(contentId){
 	var content = $('#'+contentId)[0].innerHTML;
 	$('#kb_content')[0].value = content;
@@ -243,6 +247,11 @@ var tuit = {
 	    var el = $('#'+lst[i]+"_email")[0];
 	    el.checked=true;
 	}
+    },
+    
+    strip: function(str)
+    {
+	return str.replace(/^\s+|\s+$/g,"");
     }
 }
 
