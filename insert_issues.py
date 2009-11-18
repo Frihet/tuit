@@ -135,9 +135,15 @@ for it in range(9800):
                 fallback_plan="woo!",
                 evaluation="abc",
                 change_status="1",
-                change_manager_comment="Hmmm..."
+                change_manager_comment="Hmmm...",
+                create_description='[]',
                 )
     events = i.apply_post(data)
+    err = i.validate()
+    if len(err):
+        print 'Error', err
+        print 'Data', data
+        raise "Ajaj"
     try:
         i.save()
     except:
@@ -182,7 +188,7 @@ for it in range(9800):
         if random.random() < 0.1:
             data['urgancy_string'] = str(random.randint(1,5))
         if random.random() < 0.1:
-            data['category_string']=str(random_category().id),
+            data['category_string']=str(random_category().id)
 
         events=i.apply_post(data)
         iu.description_data={'type':'web','events':events}
@@ -211,7 +217,7 @@ delete from ticket_contact;
 
 # Set more reasonable dates for fake entries
 """
-update ticket_issue set current_status_id = 2 where random() < 0.9;
+update ticket_issue set current_status_id = 2 where random() < 0.8;
 update ticket_issue set creation_date = now() - interval '6 year' * random();
 update ticket_issueupdate iu set creation_date = (select creation_date + interval '5 months'*random() from ticket_issue i where i.id = iu.issue_id);
 delete from ticket_issueupdate where creation_date > now();
