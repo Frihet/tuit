@@ -57,6 +57,12 @@ td input.kb
     width: 45%;
     min-width: 30em;
     margin: 1%;
+    vertical-align: top;
+    /*
+      These two declarations fake inline-block under IE7
+    */
+    zoom: 1;
+    *display: inline;
 }
 
 .widget.full_width
