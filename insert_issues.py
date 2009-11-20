@@ -57,6 +57,7 @@ def create_user_data():
         u.save()
         u.groups.add(sd_group)
         u.is_staff = True
+        u.is_superuser = True
         u.save()
 #        print u.id
         p = UserProfile(user=u, location="fhi", building="Stora huset", office="5")
@@ -268,6 +269,8 @@ for it in range(5000):
 
 # Drop old entries
 """
+delete from ticket_issuefielddropdownvalue;
+delete from ticket_issuefieldvalue ;
 delete from ticket_cidependency;
 delete from ticket_issueupdateattachment;
 delete from ticket_issueupdate;          
@@ -277,6 +280,7 @@ delete from ticket_issue_dependencies;
 delete from ticket_issue_cc_contact;
 delete from ticket_issue;
 delete from ticket_contact;
+delete from django_admin_log;
 delete from auth_group_permissions;
 delete from auth_user_user_permissions;
 delete from auth_permission;
@@ -290,7 +294,7 @@ delete from ticket_userprofile;
 
 # Set more reasonable dates for fake entries
 """
-update ticket_issue set current_status_id = 2 where random() < 0.8;
+update ticket_issue set current_status_id = 2 where random() < 0.95;
 update ticket_issue set creation_date = now() - interval '6 year' * random();
 update ticket_issueupdate iu set creation_date = (select creation_date + interval '5 months'*random() from ticket_issue i where i.id = iu.issue_id);
 delete from ticket_issueupdate where creation_date > now();
