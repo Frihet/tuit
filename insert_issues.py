@@ -16,19 +16,81 @@ from django.contrib.auth.models import *
 import random
 
 random.seed()
-
-types = list(IssueType.objects.all())
-statuses = list(Status.objects.all())
-categorys = list(Category.objects.all())
-users = list(User.objects.all())
-
-def random_category():
-    return random_element(categorys)
+sd_group = None
+other_group = None
+other_users = []
+sd_users = []
 
 def random_element(lst):
     if not len(lst):
         return None
     return lst[random.randint(0,len(lst)-1)]
+
+def random_location():
+    return random_element(('Bergen','Oslo','Trondheim','Tromsø',''))
+
+def random_building():
+    return random_element(('Stora huset','Smittskyddslabbet','Immunologen',''))
+
+def random_name():
+    f = random_element(('bo','orvar','tord','amalia','jenny','arno','bernt','torgny','gertrud','brynhilda','ragnhild','benny','bruno','timmy','dagny','malin','märta','maja','kajsa','maria','magdalena','elisabet','gustav','carl','jörgen','rullgardina','viktualia','petronella','hermes','lisbeth','trygvar','harpo','elmhult','ångest'))
+    l = random_element(('svensson','johansson','lingongren','aktersvans','rödbeta','rosenklimp','långstrump','appelkvist','kvarnskaft','svartfot','sidenstolpe','andersson','nilsson','persson','petterson','elmhult','camenbert','långfot','gren','ek','hed','träsk','lillsjö','edensjö','luddfot','luddenberg','fluffencrans','fluffenberg','fikonberg','fikonfot','appelskrutt','rosenklimp','gulleklimp','appelklimp','akterklimp','fikonklimp','rosenskrott','akterskrott','lingonfot','lingonklimp','lingonberg','tannenfot','tannenben','tannenfjant','långben','akterben','lingonkvist','svartkvist','fikonkvist'))
+    return (f,l)
+
+def to_ascii(str):
+    return str.replace("ö","o").replace("ä","a").replace("å","a")
+
+
+def create_user_data():
+    sd_group = Group(name='sd')
+    sd_group.save()
+    other_group = map(lambda n:Group(name=n),('Labpersonal','Elever','Smittolabbet'))
+    map(lambda g:g.save(), other_group)
+
+    for (un, first, last, email) in (('jon','Jon','Johansen','JonRoy.Johansen@fhi.no'),
+                                     ('line','Line','Halvorsen','line.halvorsen@fhi.no'),
+                                     ('axel','Axel','Liljencrantz','axel.liljencrantz@freecode.no'),
+                                     ('admin','Admin','Adminsson','axel.liljencrantz@freecode.no'),
+                                     ('brynjar','Brynjar','Svalbardsen','brynjar@example.com'),
+                                     ('lorry','Lorentz','Gudmundsen','lorry@example.com')):
+        u = User(username=un, first_name=first, last_name=last, email=email,password='sha1$32ecf$347ce5abb5cc70ac9d23d8c11ee6d37cab3c04a1')
+        u.save()
+        u.groups.add(sd_group)
+        u.is_staff = True
+        u.save()
+#        print u.id
+        p = UserProfile(user=u, location="fhi", building="Stora huset", office="5")
+        p.save()
+        sd_users.append(u)
+
+    used = set()
+    for (f,l) in map(lambda x: random_name(), range(1000)):
+        un = f
+        idx = 1
+        while un in used:
+            un = f + str(idx)
+            idx += 1
+        used.add(un)
+        fa = to_ascii(f)
+        la = to_ascii(l)
+        u = User(username=un, first_name=f.capitalize(), last_name=l.capitalize(), email="%s.%s@example.com"%(fa,la),password='sha1$32ecf$347ce5abb5cc70ac9d23d8c11ee6d37cab3c04a1')
+        u.save()
+        u.groups.add(random_element(other_group))
+        u.save()
+        p = UserProfile(user=u, location=random_location(), building=random_building(), office=str(random.randint(1,200)))
+        p.save()
+        other_users.append(u)
+    
+
+
+create_user_data()
+
+types = list(IssueType.objects.all())
+statuses = list(Status.objects.all())
+categorys = list(Category.objects.all())
+
+def random_category():
+    return random_element(categorys)
 
 def or_none(el, prob=0.5):
     if random.random() > prob:
@@ -36,14 +98,14 @@ def or_none(el, prob=0.5):
     return None
 
 def random_user():
-    return random_element(users)
+    return random_element(other_users)
 
-def to_ascii(str):
-    return str.replace("ö","o").replace("ä","a").replace("å","a")
+def random_sd():
+    return random_element(sd_users)
+
 
 def random_contact():
-    f = random_element(('bo','orvar','tord','amalia','jenny','arno','bernt','torgny','gertrud','brynhilda','ragnhild','benny','bruno','timmy','dagny','malin','märta','maja','kajsa','maria','magdalena','elisabet','gustav','carl','jörgen','rullgardina','viktualia','petronella','hermes','lisbeth','trygvar','harpo','elmhult','ångest'))
-    l = random_element(('svensson','johansson','lingongren','aktersvans','rödbeta','rosenklimp','långstrump','äppelkvist','kvarnskaft','svartfot','sidenstolpe','andersson','nilsson','persson','petterson','elmhult','camenbert','långfot','gren','ek','hed','träsk','lillsjö','edensjö','luddfot','luddenberg','fluffencrans','fluffenberg','fikonberg','fikonfot','äppelskrutt','rosenklimp','gulleklimp','äppelklimp','akterklimp','fikonklimp','rosenskrott','akterskrott','lingonfot','lingonklimp','lingonberg','tannenfot','tannenben','tannenfjant','långben','akterben','lingonkvist','svartkvist','fikonkvist'))
+    (f,l) = random_name()
     fa = to_ascii(f)
     la = to_ascii(l)
     return make_contact("%s %s <%s.%s@example.com>" % (f.capitalize(), l.capitalize(), fa, la))
@@ -111,13 +173,13 @@ def random_boolean():
 
 
 old_issues = []
-for it in range(9800):
+for it in range(5000):
     if it % 100 == 0:
         print '.',
     i = Issue(type=random_element(types))
     data = dict(current_status_string=str(random_element(statuses).id),
-                assigned_to_string=or_none(random_element(users).username,0.1),
-                requester_string=random_element(users).username,
+                assigned_to_string=or_none(random_element(sd_users).username,0.1),
+                requester_string=random_element(other_users).username,
                 subject = random_subject(),
                 description = random_description(),
                 impact_string = str(random.randint(1,5)),
@@ -136,9 +198,10 @@ for it in range(9800):
                 evaluation="abc",
                 change_status="1",
                 change_manager_comment="Hmmm...",
-                create_description='[]',
+                
                 )
     events = i.apply_post(data)
+    i.create_description='[]'
     err = i.validate()
     if len(err):
         print 'Error', err
@@ -161,7 +224,7 @@ for it in range(9800):
 
 
     while random.random() < 0.3:
-        el = random_user()
+        el = random_sd()
         if el and el not in set(i.cc_user.all()):
             i.cc_user.add(el)
             i.save()
@@ -193,7 +256,9 @@ for it in range(9800):
         events=i.apply_post(data)
         iu.description_data={'type':'web','events':events}
 
-        if random.random() > 0.7:
+        if random.random() > 0.4:
+            iu.user = random_sd()
+        if random.random() > 0.25:
             iu.user = random_user()
         else:
             iu.contact = random_contact()
@@ -212,6 +277,14 @@ delete from ticket_issue_dependencies;
 delete from ticket_issue_cc_contact;
 delete from ticket_issue;
 delete from ticket_contact;
+delete from auth_group_permissions;
+delete from auth_user_user_permissions;
+delete from auth_permission;
+delete from auth_user_groups;
+delete from auth_message;
+delete from auth_user;
+delete from auth_group;
+delete from ticket_userprofile;
 
 """
 
@@ -234,5 +307,12 @@ drop table ticket_issue cascade;
 drop table ticket_contact cascade;
 drop table ticket_dblogrecord cascade;
 drop table ticket_dblogrecordtype cascade;
+drop table auth_user cascade;
+drop table auth_group cascade;
+drop table auth_message cascade;
+drop table auth_permission cascade;
+drop table auth_user_groups cascade;
+drop table auth_user_user_permissions cascade;
+drop table auth_group_permissions cascade;
 
 """
