@@ -12,8 +12,8 @@
 
 <span class='no_print'>
   <button type='button' onclick='$(".internal").toggle()'>{%trans "Toggle internal update visibility" %}</button>
+  <button type='button' class='kb_button' onclick='$("#copy_popup").show(50);'>{%trans "Create new ticket based on this ticket" %}</button>
 </span>
-
 
 <table class='striped wide'>
 
@@ -22,6 +22,15 @@
       <th colspan='2'>
 	{%trans "Overview" %}
       </th>
+    </tr>
+
+    <tr>
+      <td class='label'>
+	{%trans "Creator" %}
+      </td>
+      <td>
+	{{ issue.creator.tuit_description }}
+      </td>
     </tr>
 
     <tr>
@@ -239,67 +248,8 @@
   {% endif %}
   {% endfor %}
 
-  <tr id='update_head' class='no_print'>
-    <th colspan='2'>
-      <button type='button' onclick='$("#update_head").hide();$(".ticket_edit").show();'>{%trans "Add new update" %}</button>
-    </th>
-  </tr>
+  {% include "ticket_comment.html" %}
 
-  <form method='post' action='' accept-charset='utf-8'>
-    <tbody class='no_print ticket_edit'>
-      <input type='hidden' name='id' value='{{ issue.id }}'/>
-      <tr>
-	<th colspan='2'>
-	  {%trans "Add new update" %}
-	</th>
-      </tr>
-
-{% if issue.dependants.all.count %}
-      <tr>
-	<td>
-	</td>
-	<td>
-	  <input class='checkbox' type='checkbox' name='update_dependants' id='update_dependants' {{ update_dependants }}/><label for='update_dependants'>{%trans "Also update dependant issues" %}</label>
-	</td>
-      </tr>
-{% endif %}
-
-      <tr>
-	<td>
-	</td>
-	<td>
-	  <input class='checkbox' type='checkbox' name='internal' id='internal' onchange='tuit.checkEmailCheckboxes(this.checked?internal_default_mail:external_default_mail);' onclick='tuit.checkEmailCheckboxes(this.checked?internal_default_mail:external_default_mail);' {{ internal }} /><label for='internal'>{%trans "Internal" %}</label>
-	</td>
-      </tr>
-    </tbody>
-    {% include "ticket_common.html" %}
-
-    <tbody class='no_print ticket_edit'>
-      
-      <tr>
-	<td>
-	  <label for='comment'>{%trans "Problem update" %}:</label>
-	</td>
-	<td>
-	  <textarea id='comment' name='comment' class='rich_edit' style='height:20em; width:80%;'>{{ update.comment }}</textarea>
-	  <br>
-	  {%trans "Insert KB article" %}: <input class='kb' id='kb_insert'> <button type='button' onclick='javascript:tuit.insertKbArticle();'>{%trans "Insert" %}</button> <button type='button' onclick='javascript:tuit.previewKbArticle();'>{%trans "Preview" %}</button>
-	  <div id='kb_preview' style='display:none'>
-	    <a id='kb_preview_hide' onclick='javascript:tuit.previewKbArticleHide();'>{%trans "Hide" %}</a>
-	    <div id='kb_preview_content'>
-	    </div>
-	  </div>
-	</td>
-      </tr>
-
-      <tr>
-	<td>
-	  <button type='submit'>{%trans "Add new update" %}</button> <button type='reset' onclick='$("#update_head").show();$("#update").hide();'>{%trans "Cancel" %}</button>
-	</td>
-	<td>
-	</td>
-      </tr>
-  </form>
   </tbody>
 
 </table>
@@ -346,5 +296,35 @@ var external_default_mail = {{ external_default_mail_json }};
     </form>
   </div>
 </div>
+
+<div class='popup' id='copy_popup'>
+  <div class='popup_title'>
+    {% trans "Copy ticket" %}
+    <a href="javascript:popupHide('copy_popup')">x</a>
+  </div>
+  <div class='popup_content'>
+    <form method='get' action='/tuit/ticket/new/' id='copy_form' accept-charset='utf-8'>
+      <input type='hidden' name='copy' value='{{ issue.id }}'/>
+      <table class='striped'>
+
+	<tr>
+	  <td>
+	    <label for='type'>{%trans "Issue type" %}:</label>
+	  </td>
+	  <td>
+	    <select name='type' id='type'>
+	      {% for t in types %}    
+	      <option value='{{t.name}}' {% ifequal t.id issue.type.id %}selected{% endifequal %}>{{t.name|escape}}</option>
+	      {% endfor %}
+	    </select>
+	  </td>
+	</tr>
+      </table>
+      <button type='submit'>{% trans "Create" %}</button>
+      <button type='button' onclick='$("#copy_popup").hide();'>{% trans "Cancel" %}</button>
+    </form>
+  </div>
+</div>
+
 
 {% endblock %}

@@ -63,6 +63,7 @@ def create_user_data():
         p = UserProfile(user=u, location="fhi", building="Stora huset", office="5")
         p.save()
         sd_users.append(u)
+    print 'SD created'
 
     used = set()
     for (f,l) in map(lambda x: random_name(), range(1000)):
@@ -81,7 +82,7 @@ def create_user_data():
         p = UserProfile(user=u, location=random_location(), building=random_building(), office=str(random.randint(1,200)))
         p.save()
         other_users.append(u)
-    
+    print 'Users created'
 
 
 create_user_data()
@@ -174,9 +175,9 @@ def random_boolean():
 
 
 old_issues = []
-for it in range(5000):
+for it in range(3000):
     if it % 100 == 0:
-        print '.',
+        print 'Created', it, 'issues'
     i = Issue(type=random_element(types))
     data = dict(current_status_string=str(random_element(statuses).id),
                 assigned_to_string=or_none(random_element(sd_users).username,0.1),
@@ -193,20 +194,22 @@ for it in range(5000):
                 risk="1",
                 consequence="1",
                 difficulty="1",
-                implementation_plan="tralala",
-                test_plan="dobedido",
-                fallback_plan="woo!",
-                evaluation="abc",
+                implementation_plan="Plan! What plan?",
+                test_plan="I have a plan!<br/>It involves pancakes.",
+                fallback_plan="Run, you fools!",
+                evaluation="Nothing to see here, everbody please move along, now.",
                 change_status="1",
-                change_manager_comment="Hmmm...",
-                
+                change_manager_comment="Do you have those TPS reports I asked for. That would be great.",                
                 )
+
+    i.creator=random_element(sd_users)
     events = i.apply_post(data)
     i.create_description='[]'
     err = i.validate()
     if len(err):
         print 'Error', err
         print 'Data', data
+
         raise "Ajaj"
     try:
         i.save()
@@ -243,8 +246,6 @@ for it in range(5000):
             issue = i,
             description_data={},
             )
-        data = {}
-
         if random.random() < 0.1:
             data['current_status_string']=str(random_element(statuses).id)
         if random.random() < 0.1:
@@ -280,6 +281,7 @@ delete from ticket_issue_dependencies;
 delete from ticket_issue_cc_contact;
 delete from ticket_issue;
 delete from ticket_contact;
+delete from ticket_userprofile;
 delete from django_admin_log;
 delete from auth_group_permissions;
 delete from auth_user_user_permissions;
@@ -288,7 +290,6 @@ delete from auth_user_groups;
 delete from auth_message;
 delete from auth_user;
 delete from auth_group;
-delete from ticket_userprofile;
 
 """
 

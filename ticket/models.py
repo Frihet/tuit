@@ -224,8 +224,8 @@ class Issue(models.Model):
     urgency = models.IntegerField()
     creation_date = models.DateTimeField(auto_now_add=True)
     dependencies = models.ManyToManyField('self', symmetrical=False, related_name='dependants')
-    ci = models.CharField(maxlength=2048, blank=True)
     create_description = models.CharField(maxlength=8192)
+    creator = models.ForeignKey(User, related_name='created')
 
     location = models.CharField(maxlength=256, blank=True)
     building = models.CharField(maxlength=256, blank=True)
@@ -346,6 +346,7 @@ class Issue(models.Model):
     
     def apply_post(self, values):
         events = []
+        #print 'Applying values', values
         #print 'Applying post to issue %d'%self.id
         #print 'requester is', self.requester
         old = {}
@@ -392,8 +393,13 @@ class Issue(models.Model):
                     if old != new:
                         el.value.value = new
                         events.append({'field':el.field.name, 'old':old, 'new':new})
-                        if new == "" and not el.field.blank:
-                            self.error(el.field.name, _('This field is required.'))
+                    if new == "" and not el.field.blank:
+                        print 'EMPTY VALUE'
+                        self.error(el.field.name, _('This field is required.'))
+            elif not el.field.blank:
+                print 'NO VALUE', el.field.name
+                print 'IN', values
+                self.error(el.field.name, _('This field is required.'))
 
         return events
 
@@ -460,7 +466,10 @@ class Issue(models.Model):
             return
         u = get_user(value)
         if u is None:
+#            print 'DUN DUN DUN'
             self.error('requester', _("Unknown user: %s") % value)
+#        else:
+#            print 'requester is', u.username
         self.requester = u
 
     requester_string = property(get_requester_string, set_requester_string)

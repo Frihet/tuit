@@ -22,12 +22,14 @@ def insert_view_data(keys, request, default_checked_list):
     keys['category'] = Category.objects.all()
     keys['impacts'] = map(lambda x:str(x),range(1,6))
     keys['urgencies'] = map(lambda x:str(x),range(1,6))
+    keys['types'] = IssueType.objects.all().order_by('name')
     for box in ('update_dependants','internal','assigned_to_email','requester_email','co_responsible_email','cc_email'):
         if request.method=='POST':
             if box in request.POST:
                 keys[box]='checked'
         elif box in default_checked:
             keys[box]='checked'
+
 
 
 
@@ -57,12 +59,12 @@ def new(request, type_name=None):
 
     keys['title'] = _('New %s') % type.name
     i = Issue()
+    i.creator = request.user
 
     if request.method == 'POST': # If the form has been submitted...
 
         # We can't save more than half of the issue before getting an id for the line, so we do it in two phases
-        i = Issue()
-
+        
         # Phase 1
         i.type = IssueType.objects.get(id=request.POST['type'])
         events = i.apply_post(keys)
@@ -82,7 +84,7 @@ def new(request, type_name=None):
         
             if not errors:
                 events.extend(send_email('web_create', request.POST, i, None))
-                i.description_data={'type':'web','events':events}
+                i.description_data={'type':'web','events':events, 'by':request.user.username}
 
                 Event.fire(['web_create','create'], i)
                 i.save()
@@ -95,7 +97,12 @@ def new(request, type_name=None):
         i=ModelWrapper(i, request.POST)
     else:
         i.type = IssueType.objects.get(name=request.GET['type'])
-
+        if 'copy' in request.GET:
+            template = Issue.objects.get(id=int(request.GET['copy']))
+            wrap_dict={}
+            for it in ('subject','description','category','impact_string','urgency_string','requester_string','assigned_to_string','cc_string','co_responsible_string'):
+                wrap_dict[it] =getattr(template, it)
+            i=ModelWrapper(i, wrap_dict)
 
     keys['create_default_mail_json'] = to_json(properties['web_create_default_mail'])
 
@@ -151,7 +158,7 @@ def view(request,id=None):
 
             events.extend(send_email('web_update', request.POST, i, iu))
                                
-            iu.description_data={'type':'web','events':events}
+            iu.description_data={'type':'web','events':events,'by':request.user.username}
 
             Event.fire(['web_update','update'], i, iu)
             i.save()
@@ -205,7 +212,11 @@ def attachment(request, id):
     return res
 
 
-
+# Login not required on purpose - we might in the future wish to use
+# Norwegian in javascript for the login page.  There is nothing secret
+# on this page.
+from django.views.decorators.cache import cache_control
+@cache_control(max_age=3600*24*7)
 def i18n(request):
     trans={'$.dpText.TEXT_CHOOSE_DATE': _('Choose date'),
            '$.dpText.TEXT_PREV_MONTH': _('Previous month'),
