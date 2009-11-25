@@ -1,28 +1,483 @@
 {% extends "ticket.html" %}
 {% load tuit_extras %}
+{% load i18n %}
+
+{%block sidebar %} 
+<li><h2>{% trans "Table of contents" %}</h2></li>
+<script>
+$(document).ready(function () {
+tuit.makeTOC('.action_menu ul');
+});
+</script>
+{% endblock %}
+
 
 {%block content %} 
-<h1>Welcome to Tuit</h1>
+<div class='help'>
 
 <p>
-Tuit is The Ultimate ITIL Toolbox. It is a set of software components
-designed to support ITIL based workflow for service managment. Tuit currently consists of the following components:
-</p>
+This is the main help page for Tuit. Tuit is The Ultimate ITIL
+Toolbox, a set of software components designed to support ITIL based
+work flow for service management. Tuit currently consists of the
+following components:
 
 <ul>
 <li><a href=''>An issue handling system</a>, based on <a href='http://roundup.sourceforge.net/'>Roundup</a></li>
 <li><a href='/FreeCMDB/help'>A CMDB</a> based on FreeCMDB</li>
 <li><a href=''>A knowledge base</a>, based on <a href='http://foswiki.org/'>Foswiki</a>.</li>
 </ul>
+</p>
+
+<h1><a name='overview'>User interface overview</a></h1>
+<p>
+  This section described the basic user interface concepts of
+  Tuit. These concepts are the same in all components, e.g. the
+  Knowledge base looks and works as much like the CMDB as is possible
+  without compromising the functionality of either.
+</p>
+
+<h2><a name='overview_topmenu'>The top menu</a></h1>
+<p>
+  The top menu allows you to navigate to the different parts of the
+  site. This menu does not usually change depending on what part of
+  Tuit you are using, but because different users have access to
+  different parts of the site, it will vary depending on who is logged
+  in.
+</p>
+<p>
+  The top menu also allows you to quickly search the system. Just
+  enter a few keywords into the search box and press the «enter» key.For
+  more information on searching, see <a href='#search'>the search
+  section</a>.
+</p>
+
+<h2><a name='overview_leftmenu'>The left side menu</a></h1>
+<p>
+  The menu on the left side of every page contains page specific links
+  and options. This menu will be different in e.g. the Knowledge base
+  than in the CMDB.
+</p>
+
+<h2><a name='overview_content'>The main content area</a></h1>
+<p>
+  The remainder of the screen is called the main content area, this is
+  where the main application data is shown. What the content area
+  contains depends heavily on what page you are viewing.
+</p>
 
 
+<h1><a name='home'>The home screen</a></h1>
+<p>
+  This is the start page of Tuit. A future version of Tuit will
+  contain a user configurable dashboard showing various status
+  information and messages, but the current home screen is very
+  limited. It contains the following items:
+  <ul>
+    <li>
+      A list of all Incidents assigned to the logged in user, sorted by priority.
+    </li>
+    <li>
+      A list of all Problems assigned to the logged in user, sorted by priority.
+    </li>
+    <li>
+      A list of all RfCs assigned to the logged in user, sorted by priority.
+    </li>
+  </ul>
+</p>
+
+<h1><a name='search'>Searching Tuit</a></h1>
+<p>
+  Tuit contains a global search function that will search every
+  component of Tuit. To quickly perform a search, enter a search word
+  in the search box in the top right corner of any Tuit page, and then
+  press the «enter» key.
+</p>
+<p>
+  If a search yields many results, only the first ten results are
+  shown, and the user may press a button in order to see more results.
+</p>
+<h2><a name='search_types'>Search types</a></h2>
+<p>
+  Tuit shows the following types of search results:
+
+  <ul>
+    <li>
+      <em>Issues</em>. This shows both Incidents, Problems and
+      RfCs. Freetext searches the subject, the description, all
+      updates as well as the name of the user who requested the
+      issue. All advanced search options work.
+    </li>
+    <li>
+      <em>CIs</em>. This shows all matching items from the
+      CMDB. Freetext searches the CI name. No advanced search options
+      work.
+    </li>
+    <li>
+      <em>Knowledge base articles</em>. This shows all matching items
+      from the Knowledge base. Freetext searches title, the KB form
+      and the KB text proper. No advanced search options work.
+    </li>
+    <li>
+      <em>User search</em>. This shows all matching users. Freetext
+      searches the username, first and last name. No advanced search
+      options work.
+    </li>
+  </ul>
+</p>
+
+<h2><a name='search_advanced'>Advanced search</a></h2>
+<p>
+  To specify additional search options, click on the «Advanced search
+  options» button in a search result page. There, issue priority,
+  update date and other search criteria can be applied. Note that not
+  all types of search filters apply to all search places, e.g. User
+  search ignores all filters except the search text.
+</p>
 
 
-<h1>Tuit Issue Managment</h1>
+<h1><a name='issues'>Tuit Issue Management</a></h1>
 
 <p>
 
-The Tuit issue handling component is an issue tracker losely based on <a href='http://roundup.sourceforge.net/'>Roundup</a>. It is intended to be used to track incidents, problems and requests for change as they make their way through your IT organization. 
-
+  The Tuit issue handling component is an issue tracker loosely based
+  on <a href='http://roundup.sourceforge.net/'>Roundup</a>. It is
+  intended to be used to track Incidents, Problems and Requests for
+  Change as they make their way through your IT organization.
+  
 </p>
+<h2><a name='issues_types'>Types of issues</a></h2>
+<p>
+  Tuit is based around 3 types of issues:
+  <ul>
+    <li>
+      <em>Incidents</em> are issues that have caused or may in the
+      future cause service interruptions, that need to be handled
+      before breaching an SLA.
+    </li>
+    <li>
+      <em>Problems</em> are issues that support root cause analysis of
+      one or more incidents.
+    </li>
+    <li>
+      <em>RfCs</em> Or Requests for Change, are issues that track
+      roll out of a change in a service, often triggered by a Problem.
+    </li>
+  </ul>  
+</p>
+
+<h2><a name='issues_creating'>Creating a new issue</a></h2>
+<p>
+For each <a href='#issues_types'>issue type</a> there is a
+corresponding link in the top menu of Tuit for filing an issue of that
+type. Use one of these links in order to file a new issue. You
+will be presented with a form with various fields to fill out.
+</p>
+<p>
+When done, click the «Create issue» button at the bottom of the page,
+and you are done.
+</p>
+<h3><a name='issues_creating_user'>Filling out user fields</a></h3> 
+<p>
+  Issues have many users associated with them, including the raiser of
+  the issue, the person assigned to a specific issue, etc.. Fields for
+  filling out users in Tuit all use autocompletion. The autocompletion
+  code will search the username, first name and last name of the user
+  when performing the completion.
+</p>
+<p>
+There are several variations on how user fields work:
+<ul>
+  <li>
+    Some user fields only permit a single user, these text field for
+    these fields is only one line long. Others permit arbitrarily many
+    users. These text fields contain multiple lines.
+  </li>
+  <li>
+    Some user fields only allow registered users to be entered, others
+    also allow you to enter an email address. If you've added an email
+    address once, it will be added into Tuit as a contact. When
+    receiving an email about an issue, a contact is also
+    created. These contacts are also used for autocompletion where
+    appropriate, and they can also
+    be <a href='/tuit/admin/ticket/contact/'>edited</a> in the
+    <a href='#concepts_admin'>administration back end</a>.
+  </li>
+</ul>
+</p>
+
+<h3><a name='issues_creating_issues'>Filling out dependencies to other issues</a></h3>
+<p>
+  Issues can depend on other issues. The field for changing issue
+  dependencies uses autocompletion. The autocompletion code will search
+  the issue subject, description and the text of all updates.
+</p>
+
+<h3><a name='issues_creating_ci'>Filling out dependencies to CIs</a></h3>
+<p>
+  Issues can depend on configuration items (CIs), that is, the items
+  stored in the CMDB portion of Tuit.  The field for changing CI
+  dependencies uses autocompletion. The autocompletion code will
+  search the name of the CI. There is, however, also a second method
+  for specifying a CI, the CMDB drill down feature. This is a tree of
+  all known CIs, that can be selectively expanded to drill down
+  through dependencies until the wanted one is
+  found. See <a href='#cmdb_navigation'>for more information</a>.
+</p>
+<h3><a name='issues_creating_quickfills'>Using quick fills to automatically fill out common fields</a></h3>
+<p>
+  On many service desks, there is a great number of repetitive
+  tickets. This can be caused by a common underlying problem that
+  needs to be fixed or simply because users tend to run into the same
+  types of problems. In order to simplify the creation of such
+  repetitive issues, Tuit provides a feature called Quick fills. This
+  is simply a drop down box with common issue «templates». Select one
+  of them, and various fields will be automatically filled out for
+  you. Exactly what fields are set to what values on every Quick fill
+  can be changed in the <a href='#concepts_admin'>administration back end</a>.
+</p>
+
+<h4>Changing the available quick fills</h4>
+<p>
+  This action can only be performed by users with access rights to the
+  admin back end. 
+
+  {% if user.is_staff %}
+  You currently have this right, and can perform the steps below if you wish. Keep in mind that your changes will apply for all users, not just yourself.
+  {% else %}
+  You currently do not have this right and can not perform the steps described below.
+  {% endif %}
+
+Quick fills are created using these steps:
+
+  <ol>
+    <li>First, enter the administration back end, by clicking the link at the top of the screen.</li>
+    <li>First create a <em>Quick fill</em>. These only contain the description of what will be filled out.</li>
+    <li>Once that has been done, create multiple <em>Quick fill items</em>. Each such item contains the quick fill this item applies to, the field which is filled out and the value to set the field to.</li>    </ol>
+</p>
+
+<h3><a name='issues_creating_copy'>Creating a new issue based on another issue</a></h3>
+<p>
+  It is also possible to create a new issue by basing it on another
+  issue. Perform the following steps to create a new issue this way:
+  <ol>
+    <li>
+      First go the the web page of the original
+      issue. A link to the relevant page should be included in every email
+      from the Tuit system, or you could find the update
+      by <a href='#search'>searching Tuit</a> or browsing
+      your <a href='#home'>home page</a>.
+    </li>
+    <li>
+      Once you are on the correct page, click the «Create new ticket
+      based on this ticket» button at the top of the screen.
+    </li>
+    <li>
+      This will show a tiny dialog on the screen where you will be
+      asked what type of issue to create. Pick the desired issue type
+      from the drop down box and press the «Create» button.
+    </li>
+    <li>
+      The same issue creation form that is displayed when clicking one
+      of the issue creation links in the top menu will now be shown,
+      but with the following fields copied from the original issue:
+      <ul>
+	<li>Issue subject</li>
+	<li>Description of the issue</li>
+	<li>Issue category</li>
+	<li>Impact of issue</li>
+	<li>Urgency of issue</li>
+	<li>Requester of issue</li>
+	<li>User assigned to this issue</li>
+	<li>People CC:ed on this issue</li>
+	<li>Users who are co-responsible for this issue</li>
+      </ul>
+    </li>
+  </ol>
+</p>
+
+<h2><a name='issue_update'>Updating an issue</a></h2>
+<p>
+  There are two basic ways to update in issue. The first is through
+  the web interface, the other is through email.
+</p>
+<h3><a name='issue_update_email'>Updating an issue through email</a></h3>
+<p>
+  In order to create an update through email, simple reply to an email
+  sent from Tuit. The content of the email, including any attached
+  files, will be added as an update to the issue. If the issue was
+  closed, it will be reopened, but otherwise, no field values are
+  changed.
+</p>
+
+<h3><a name='issue_update_web'>Updating an issue through the web</a></h3>
+<p>
+  Updating an issue through the web interface allows more fine grained
+  control over an update. It is possible to change the values of all
+  fields of an issue except the subject and the original problem
+  description. It is possible to explicitly specify who should receive
+  email notification of the update, and it is possible to make the
+  update internal, e.g. hide it from non-privileged users.
+</p>
+<p>
+  To update an issue, first go the the web page of that issue. A link
+  to the relevant page should be included in every email from the Tuit
+  system, or you could find the update by <a href='#search'>searching
+  Tuit</a> or browsing your <a href='#home'>home page</a>. Once you
+  are on the correct page, click the «Add new update» button at the
+  bottom of the screen.
+
+  For more
+  information about changing specific types of fields, such as auto
+  completing user name fields, <a href='#issues_creating'>see the
+  section on creating issues</a>.
+</p>
+
+<h3><a name='issue_update_kb'>Using an issue update as the basis for a
+knowledge base article</a></h3>
+
+<p>
+  When having solved an issue, it is sometimes desirable to make that
+  solution available to others as a knowledge base article. This has
+  the potential to greatly reduce the amount of time required to solve
+  similar issues in the future. For this reason, Tuit makes it as easy
+  as possible to perform this task. The following steps are all that
+  is required:
+</p>
+
+<ol>
+  <li>
+    Locate the issue containing the relevant update and scroll down to find the correct update.
+  </li>
+
+  <li>
+    Click on the «Create KB article from this update» button.
+  </li>
+
+  <li>
+    A small dialog is presented, allowing you to choose the name of
+    the article (The default is the subject of the ticket) and to
+    specify which section of the knowledge base to use. Press the
+    «Submit» button once you are done.
+  </li>
+
+  <li>
+    Fill out the Knowledge base article form and make any changes to
+    the main article text that are needed. Press the «Save» button
+    when you are done to create the Knowledge base article.
+  </li>
+</ol>
+
+<h3><a name='issue_update_kb2'>Using a knowledge base article as the
+  basis for an issue update</a></h3>
+
+<p> A knowledge base is only useful if it is used. For this reason,
+  Tuit makes it as easy as possible to use Knowledge base information
+  when updating an issue. Below the text field for making an update
+  comment, there is a text input field. When writing into this field,
+  Tuit will search the Knowledge base, and show you
+  an <a href='#concepts_autocompletion'>autocompletion</a> list of
+  articles whose subject or content match that text. Once an article
+  has been chosen, the user can either press the «Preview» button in
+  order to see a preview of the article contents or press the «Insert»
+  button in order to insert the article contents into the update.
+</p>
+
+<h1><a name='cmdb'>Tuit CMDB</a></h1>
+
+<h2><a name='cmdb_navigation'>Navigating the CMDB</a></h2>
+
+<p>
+  Usually, the easiest way to navigate the CMDB is through
+  dependencies. The CMDB start page contains a list of suitable start
+  nodes. Each of these nodes has a small button next to them with a +
+  sign. Click on the plus to expand and show all nodes related to that
+  node. Using this method repeatedly, it is possible to drill down
+  until the desired CI is located.
+</p>
+
+<h3><a name='cmdb_navigation_root'>Changing the starting points of navigation in the CMDB</a></h3>
+<p>
+  In order to change the list of CIs displayed at the start of the
+  drill down tree, simply update the dependencies of the CI called
+  «Root».
+</p>
+
+<h2><a name='cmdb_create'>Creating and updating CIs</a></h2>
+<p>
+  Creating CIs is easy - simply press the «Create new item» button in
+  the left side menu, and start editing the item. Updating an existing
+  item can be done in two ways:
+  <ul>
+    <li>
+      Press the «Update» button of an individual field on the CI to edit that field.
+    </li>
+
+    <li>
+      Press the «Edit item» link in the left side menu to obtain a form
+      where all fields of the CI can be edited at once.
+    </li>
+  </ul>
+</p>
+<h2><a name='cmdb_history'>Using the history feature</a></h2>
+<p>
+  Every change ever performed to a CI is saved. To view the performed
+  changes, follow the «History» link in the left side menu of a CI. A
+  list of all changes will be displayed. To view a specific revision
+  of a CI, you can click the ½Show» button next to that revision. It
+  is also possible to revert all edits performed after a specific
+  edit.
+</p>
+
+<h1><a name='cmdb'>Tuit Knowledge base</a></h1>
+<p>
+Tuit uses Foswiki as its Knowledge Base system. Foswiki ships with a
+huge amount of documentation included. The following links are some of
+the most relevant pages containing useful documentation on using the
+Knowledge base:
+</p>
+
+<ul>
+<li><a href='/cgi-bin/foswiki/view/System/TwentyMinuteTutorial'>A twenty minute tutorial on Foswiki</a></li>
+<li><a href='/cgi-bin/foswiki/view/System/UsersGuide'>User's guide</a></li>
+<li><a href='/cgi-bin/foswiki/view/System/FrequentlyAskedQuestions'>FAQ</a> - this is also useful to get tips and tricks on how to set up a knowledge base.</li>
+<li><a href='/cgi-bin/foswiki/view/System/ReferenceManual'>Reference Manual</a> - mainly useful for administrators.</li>
+</ul>
+
+<h1><a name='concepts'>Tuit concepts</a></h1>
+
+<h2><a name='concepts_autocompletion'>Autocompletion</a></h2>
+<p>
+  Autocompletion or automatic completion, is technique used in many
+  places in Tuit. It is useful when picking between a very large
+  selection of items, e.g. in situations where a drop down box is
+  unsuitable, because the number of items in the list would be
+  prohibitive. Autocompletion uses a simple text input field, where
+  the user can enter text, and the entire list of items will be
+  searched, and any matching items will be shown. The user can then
+  use the up and down arrows to move around in the list and press the
+  enter key to select the highlighted item.
+</p>
+
+<h2><a name='concepts_admin'>The administration back end</a></h2>
+<p>
+  The administration back end is the location where most of the
+  configuration of Tuit is performed. It can be
+  accessed <a href='/tuit/admin'>here</a>. Because Tuit consists of
+  multiple separate components that all need to also work on their
+  own, it is unfortunately not possible to create a single place for
+  all configuration needs. When logged in as a user with
+  administration permissions, a link to the admin back end should be
+  available in the top menu.
+</p>
+{% if user.is_staff %}
+<p>
+  A short introduction to all the items that can be configured using
+  the administration interface,
+  click <a href='/tuit/admin/doc/'>here</a>.
+</p>
+{% endif %}
+
+</div>
+
+
 {% endblock %}
