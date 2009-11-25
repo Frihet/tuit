@@ -1,7 +1,13 @@
 
 
 var tuit = {
-    
+
+    /*
+      Perform all searches specified by data.
+
+      This involves sending one ajax request per search, waiting for
+      the result and displaying it.
+     */
     search: function(data)
     {
 	$.each(data, function(key, value) {
@@ -68,7 +74,7 @@ var tuit = {
 	usr_url = "/tuit/query/user_complete/";
 	usr_url2 = "/tuit/query/user_complete/?contacts=1";
 	dep_url = "/tuit/query/issue_complete/";
-	kb_url = "/cgi-bin/foswiki/search/KB/?skin=autocomplete&type=literal"	
+	kb_url = "/cgi-bin/foswiki/search/KB/?skin=autocomplete&type=literal&web=KB+IKB"	
 	ci_url = "/FreeCMDB/?controller=ciList&output=autocomplete"
 
 	var uoptions_single = {
@@ -202,7 +208,7 @@ var tuit = {
 
     insertKbArticle: function(){
 	var articleName = tuit.strip($('#kb_insert')[0].value);
-	var url = 'http://fhi-dev.freecode.no/cgi-bin/foswiki/view/KB/'+escape(articleName)+'?skin=text';
+	var url = '/cgi-bin/foswiki/view/'+escape(articleName)+'?skin=text';
 	$.get(url,
 	      function (result, status) {
 		  tinyMCE.editors['comment'].setContent(result); 
@@ -213,7 +219,7 @@ var tuit = {
     previewKbArticle: function(){
 	var articleName = tuit.strip($('#kb_insert')[0].value);
 	
-	var url = 'http://fhi-dev.freecode.no/cgi-bin/foswiki/view/KB/'+escape(articleName)+'?skin=text';
+	var url = '/cgi-bin/foswiki/view/'+escape(articleName)+'?skin=text';
 	
 	$.get(url,
 	      function (result, status) {
@@ -234,10 +240,16 @@ var tuit = {
 	//$('#kb_form')[0].submit();
     },
 
+    /*
+      Show a debug message in the main browser window
+     */
     debug: function(str){
 	$('#debug')[0].innerHTML += str + "<br/>";
     },
 
+    /*
+      Check the email boxes specified by lst, uncheck all other email boxes.
+     */
     checkEmailCheckboxes: function(lst)
     {
 	$('.email_checkbox').attr('checked',false);
@@ -249,9 +261,38 @@ var tuit = {
 	}
     },
     
+    /*
+      Utility function. Strip whitespace from both ends of string
+     */
     strip: function(str)
     {
 	return str.replace(/^\s+|\s+$/g,"");
+    },
+
+    /*
+      Go over the content section of the document and make a TOC, insert it at the specified point
+     */
+    makeTOC: function(location) {
+	var am = $(location)[0];
+	function addItem(text, anchor, tag){
+	    var li = document.createElement('li');
+	    var a = document.createElement('a');
+	    a.innerHTML = text;
+	    a.href='#' + anchor;
+	    li.className = "toc_" + tag.toLowerCase();
+	    li.appendChild(a);
+	    am.appendChild(li);
+	}
+	$('.content h1, .content h2, .content h3').each(function(idx , el){
+		if (el.innerHTML && el.innerHTML != "") { 
+		    if(el.childNodes.length == 1 && el.childNodes[0].name != null) {
+			addItem(el.childNodes[0].innerHTML,el.childNodes[0].name,el.tagName);
+		    }
+		    else {
+			addItem(el.innerHTML,"",el.tagName);
+		    }
+		}
+	    });
     }
 }
 

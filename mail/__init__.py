@@ -869,7 +869,7 @@ class MailGW:
 
         id = extract_message_id(message.subject)
         if id is None:
-            self.logger.error("Message %s could not be matched to any issue")
+            self.logger.error("Message %s could not be matched to any issue" % message.subject)
             return 'unmatched_issue'
 
         try:

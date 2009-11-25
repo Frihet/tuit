@@ -1,5 +1,6 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
 	  "http://www.w3.org/TR/html4/strict.dtd">
+{% load i18n %}
 <html>
 <head>
   <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
@@ -16,7 +17,8 @@
     {% endfor %}
     <li>
     <form target='_parent' accept-charset='utf-8' method='get' action='/tuit/search/' >
-    <input name='freetext'/></form>
+      <input name='freetext'/> <button type='submit'>{% trans "Search" %}</button>
+    </form> 
     </li>
 
 </ul>

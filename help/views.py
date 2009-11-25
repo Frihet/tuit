@@ -7,5 +7,5 @@ from django.utils.translation import gettext as _
 
 @login_required
 def help(request):
-    return tuit_render('help.html', {}, request)
+    return tuit_render('help.html', {'title':_('Tuit Help')}, request)
     

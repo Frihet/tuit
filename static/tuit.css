@@ -76,3 +76,33 @@ td input.kb
     border: 1px solid #888;
     width: 80%;
 }
+
+
+.action_menu li.toc_h2
+{
+    margin-left: 1em;
+}
+
+.action_menu li.toc_h3
+{
+    margin-left: 2em;
+}
+
+div.help
+{
+    margin-right: 20%;
+}
+
+h3 {
+    font-size:100%;
+    font-weight: normal;
+    font-style: italic;
+
+}
+
+h4 {
+    font-size:100%;
+    font-weight: normal;
+    font-style: italic;
+}
+
