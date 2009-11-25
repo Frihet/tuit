@@ -19,9 +19,15 @@ from django.template import RequestContext
 import logging
 
 def format_requst_info(request):
-    return "(" + ", ".join(map(lambda x: "%s: %s"%(x[0],request.META[x[1]]),
+    
+    return "(" + "<br/>\n".join(map(lambda x: "%s: %s"%(x[0],request.META[x[1]]),
                          filter(lambda x: x[1] in request.META,
-                                (('ip','REMOTE_ADDR'),('ua','HTTP_USER_AGENT')))))+ ")"
+                                (('IP','REMOTE_ADDR'),
+                                 ('User agent','HTTP_USER_AGENT'),
+                                 ('Forwarded from','HTTP_X_FORWARDED_FOR'))
+                                )
+                               )
+                           )+ ")"
                                
 
     
