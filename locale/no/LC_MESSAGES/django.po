@@ -154,7 +154,7 @@ msgstr "Oversikt"
 
 #: templates/ticket_view.html:93
 msgid "Priority (Impact + Urgency)"
-msgstr "Prioritet (utfall + fastefaktor)"
+msgstr "Prioritet (utfall + hastefaktor)"
 
 #: templates/ticket_view.html:102
 msgid "Creation date"
