@@ -1,0 +1,11 @@
+%TMPL:DEF{"result"}%
+{
+    url:"%ENCODE{"%SCRIPTURLPATH{"view"}%/%WEB%/%TOPICNAME%" type="quotes"}%",
+    name:"%ENCODE{"%TOPICNAME%" type="quotes"}%",
+    description:"%ENCODE{"%TEXTHEAD%" type="quotes"}%"
+}
+%TMPL:END%
+
+%SPLIT% {"ResultSet":{"Result":[//Here comes the json%SPLIT%%REPEAT%,%TMPL:P{"result"}%%REPEAT%%SPLIT%
+],"totalResultsAvailable":%NTOPICS%,"totalResultsReturned":%NTOPICS%,"firstResultPosition":0 %SPLIT% }}
+
