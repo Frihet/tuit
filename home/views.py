@@ -1,4 +1,5 @@
-# Create your views here.
+# Views for the home app of tuit
+# -*- coding: utf-8 -*-
 
 from tuit.ticket.models import *
 #from django.http import *
@@ -14,11 +15,11 @@ from tuit.home.widget import Widget
 
 @login_required
 def home(request):
-    status_open = Status.objects.get(name='Open')
-    status_closed = Status.objects.get(name='Closed')
+    """
+    Basic home view - show a few status widgets and nothing else. Widget.py does the heavy lifting...
+    """
+    status_closed = Status.objects.get(id=properties["issue_closed_id"])
     keys={}
-
-
 
     keys['widgets'] = map(lambda x: Widget(_('My highest priority open tickets of type %s') % x.name,
                                            Issue.objects.exclude(current_status = status_closed).filter(assigned_to=request.user).filter(type=x).extra(select={'priority_placeholder':'impact+urgency'}).order_by('-priority_placeholder'),

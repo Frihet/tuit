@@ -1,4 +1,5 @@
-# Create your views here.
+# Views for the account app of tuit
+# -*- coding: utf-8 -*-
 import django.contrib.auth 
 from django.http import *
 
@@ -19,7 +20,10 @@ from django.template import RequestContext
 import logging
 
 def format_requst_info(request):
-    
+    """
+    Create a html text message describing w bit about what we know
+    about a specific http request. Used for logging.
+    """
     return "(" + "<br/>\n".join(map(lambda x: "%s: %s"%(x[0],request.META[x[1]]),
                          filter(lambda x: x[1] in request.META,
                                 (('IP','REMOTE_ADDR'),
@@ -39,6 +43,11 @@ def logout(request):
 
 @login_required
 def show(request, id=None, name=None):
+    """
+    Show information about the specified user. Kind of like the home
+    page (lots of code reuse going on between the two), but for any
+    user.
+    """
     if id:
         user = User.objects.get(id=id)
     elif name:
@@ -46,7 +55,7 @@ def show(request, id=None, name=None):
     else:
         return None
     keys={}
-    status_closed = Status.objects.get(name='Closed')
+    status_closed = Status.objects.get(id=properties["issue_closed_id"])
     keys['home_user'] = user
     last_updates = IssueUpdate.objects.order_by('-creation_date').filter(user=user).distinct('issue_id')
     if not request.user.has_perm('issue.view_internal'):
@@ -97,6 +106,11 @@ def login(request, template_name='registration/login.html'):
     }, context_instance=RequestContext(request))
 
 def session(request):
+    """
+    Returns a json object containing session information. 
+    
+    Fixme: Should we also include e.g. login time?
+    """
     res = "null"
     if request.user.is_authenticated():
         res = to_json({'username':request.user.username,
