@@ -1,3 +1,6 @@
+# Models for the ticket app of tuit
+# -*- coding: utf-8 -*-
+
 from django.db import models
 from django.contrib.auth.models import *
 from django.utils.html import strip_tags
@@ -7,22 +10,55 @@ from django.utils.translation import gettext as _
 from tuit.json import to_json, from_json
 from tuit.util import email_valid, escape_recursive, encode_recursive
 from tuit.ticket.templatetags.tuit_extras import datetime_format, date_format
-# Import email handling stuff for email templates
+
 import smtplib
 import email.mime.text
 import email.mime.multipart
 import re
 import cgi
 
-def N_(str):
-    return str
+
+# Fixme:
+#
+# Move the util functions to their own namespace/file, perhaps called
+# util?  Or would that name be confusing, we already have a util
+# app... These are issue specific utils. Either way, they're polluting
+# the model namespace where they are... :-/
+
+
+def remove_html_tags(data):
+    import re
+    p = re.compile(r'<.*?>')
+    return p.sub('', data)
 
 def format_user(u):
+    """
+    Display user information
+    """
     if u:
         return "%s - %s %s" % (u.username, u.first_name, u.last_name)
     return ""
 
+def format_user_email(u):
+    """
+    Display user information
+    """
+    return "%s %s <%s>" % (u.first_name, u.last_name, u.email)
+    
+
+def user_name(u):
+    """
+    Display user information
+    """
+    return "%s %s" % (u.first_name, u.last_name)
+
+User.format = property(format_user_email)
+User.name = property(user_name)
+
 def get_user(name):
+    """
+    Return user with specified name, or None if no such user exists.
+    """
     try:
         uname = name.split(' ')[0]
         return User.objects.get(username=uname)
@@ -30,6 +66,9 @@ def get_user(name):
         return None
 
 def get_issue(name):
+    """
+    Return issue with specified id, or None if no such issue exists.
+    """
     try:
         id = int(name.split(' ')[0])
         return Issue.objects.get(id=id)
@@ -56,7 +95,7 @@ def make_contact(text):
 #    print 'email',email
 
     try:
-        c = Contact.objects.get(email__iexact=email)
+        c = Contact.objects.get(email__iexact=email) 
         if name and name != c.name:
             c.name = name
             c.save()
@@ -68,8 +107,13 @@ def make_contact(text):
             return c
     return None
 
+# Here begins the list of models proper
 
 class Status(models.Model):
+    """
+    Status of a ticket, e.g. 'Closed', 'Open', etc.
+    """
+
     name = models.CharField(maxlength=64, unique=True)
 
     def __str__(self):
@@ -85,6 +129,9 @@ class Status(models.Model):
 
 
 class IssueType(models.Model):
+    """
+    Type of issue, e.g. incident, problem or RfC.
+    """
     name = models.CharField(maxlength=64, unique=True)
     has_location = models.BooleanField()
     extra_fields = models.ManyToManyField("IssueField", blank=True)
@@ -101,6 +148,15 @@ class IssueType(models.Model):
         verbose_name = _('type of issue')
 
 class Category(models.Model):
+    """
+    A ticket category is a simple one-level dropdown (select)
+    box. This table contains all the existing dropdown items, e.g. 'MS
+    Office' or 'Citrix'.
+
+    This is significantly simpler than the 3 (or was it 4?) level
+    category system used previously. The remaining levels are replaced
+    by the CMDB. 
+    """
     name = models.CharField(maxlength=64, unique=True)
 
     def __str__(self):
@@ -171,6 +227,10 @@ class QuickFillItem(models.Model):
         pass
 
 class Contact(models.Model):
+    """
+    A contact is a person who is not a user, but still is included in
+    a ticket cc list or the originator of an issue update.
+    """
     email = models.CharField(maxlength=320, unique=True)
     name = models.CharField(maxlength=512,blank=True)
     
@@ -188,6 +248,14 @@ class Contact(models.Model):
     def tuit_description(self):
         return cgi.escape(self.format)
 
+    @property
+    def first_name(self):
+        return ""
+
+    @property
+    def last_name(self):
+        return self.name
+
     def __str__(self):
         return self.format
 
@@ -201,6 +269,12 @@ class Contact(models.Model):
         
 
 class CiDependency(models.Model):
+    """
+    A ticket dependency on a CI from the CMDB. Because we want to
+    allow the CMDB and the issue system to run on different servers
+    without dependencies, the ci_id here is in fact _not_ a true
+    foreign key, it is simply an integer.
+    """
     issue = models.ForeignKey("Issue")
     ci_id = models.IntegerField()
     description = models.CharField(maxlength=512)
@@ -210,6 +284,27 @@ class CiDependency(models.Model):
         unique_together = (('issue','ci_id'),)
 
 class Issue(models.Model):
+    """
+    This is the main issue table. Contains the bulk of the data about
+    an issue except for updates.
+
+    Note that this data is not static - the status column in this
+    table always has the latest status of the issue, not any
+    history. We need to check the json-data to find the historic data
+    for a specific point in time.
+
+    This class has a very large number of properties. These are used
+    during form submission to provide mapping from string data as
+    provided by a web form into issue data. For a db field
+    (e.g. requester) there will typically be a property
+    requester_string, which will perform mapping junction table
+    traversal and everything else that may be needed in order to parse
+    and perform the assignment.
+
+    These properties are in turn typically used by the apply_post
+    function. Any errors encounders are stored in the __errors member.
+    """
+
     current_status = models.ForeignKey(Status)
     type = models.ForeignKey(IssueType)
     category = models.ForeignKey(Category)
@@ -219,11 +314,16 @@ class Issue(models.Model):
     cc_contact = models.ManyToManyField(Contact, related_name='cc_on')
     requester = models.ForeignKey(User, related_name='requested')
     subject = models.CharField(maxlength=256)
+    
+    # HTML is ok in this field
     description = models.CharField(maxlength=8192)
     impact = models.IntegerField()
     urgency = models.IntegerField()
     creation_date = models.DateTimeField(auto_now_add=True)
     dependencies = models.ManyToManyField('self', symmetrical=False, related_name='dependants')
+    
+    # This field contains optional additional information about this
+    # update, serialized in the JSON format. Leave it blank.
     create_description = models.CharField(maxlength=8192)
     creator = models.ForeignKey(User, related_name='created')
 
@@ -231,18 +331,30 @@ class Issue(models.Model):
     building = models.CharField(maxlength=256, blank=True)
     office = models.CharField(maxlength=256, blank=True)
 
+    # Any errors encoundered during apply_post go here.
     __errors={}
+
+    # Cached list of extra fields.
     __extra_fields = None
+
+    # Cached list of dependencies.
     __ci_dependencies = None
+
     # Dummy variable needed to get some searches working - never use it for anything!!!
     priority_placeholder=None
 
     @property
     def html_default_columns(self):
+        """
+        The default columns to show when displaying an issue in a Widget
+        """
         return ((_('Issue name'),'name'),(_('Priority'),'priority'),(_('Requester'),'requester'))
 
     @property
     def extra_fields(self):
+        """
+        Return extra fields of this issue type
+        """
         if self.__extra_fields is None:
             try:
                 self.load_extra_fields()
@@ -292,6 +404,9 @@ class Issue(models.Model):
 
 
     def save(self):
+        """
+        Save not only this issue, but also all of its extra fields.
+        """
         models.Model.save(self)
         for i in self.extra_fields:
             i.value.issue=self
@@ -299,14 +414,19 @@ class Issue(models.Model):
 
     @property
     def has_location(self):
-#        print self.type.has_location
         return self.type.has_location
 
     @property
     def html(self):
+        """
+        Returns an html-stykle anchor link to the issue
+        """
         return "<a href='%s'>%d - %s</a>" % (self.url_internal,self.id, self.subject)
 
     def html_row(self, columns):
+        """
+        Used for widget rendering
+        """
         res = ""
 
         for col in columns:
@@ -315,6 +435,9 @@ class Issue(models.Model):
         return "<tr>%s</tr>" % res
 
     def html_cell(self, col):
+        """
+        Used for widget rendering
+        """
         try:
             def user_desc(user):
                 if not user:
@@ -328,7 +451,7 @@ class Issue(models.Model):
                 'requester':lambda: user_desc(self.requester),
                 }[col]() + "</td>"
         except:
-            print 'Issue.html_cell failed while fetching column', col,'for issue',self.id
+            logging.getLogger('ticket').error('Issue.html_cell failed while fetching column', col,'for issue',self.id)
             raise
         
 
@@ -345,6 +468,14 @@ class Issue(models.Model):
     description_data = property(get_description_data, set_description_data)
     
     def apply_post(self, values):
+        """
+        This is the main work engine of incident and update
+        creation. It takes a bunch of incident data in string format
+        (as supplied by a web form) and maps it to the correct fields,
+        performing foreign key lookups, traversing junction tables,
+        etc. as needed.
+        """
+
         events = []
         #print 'Applying values', values
         #print 'Applying post to issue %d'%self.id
@@ -361,14 +492,10 @@ class Issue(models.Model):
 
         for el in attrs:
             if el in values:
-#                print "Assign value ", values[el], 'to', el
                 new = values[el]
                 if old[el] != new:
                     events.append({'field':el, 'old':old[el], 'new':new})
                     setattr(self, el, values[el])
-
-#        if self.id:
-#            self.save_ci_ids()
         
         for el in self.extra_fields:
             if el.field.name in values:
@@ -394,22 +521,21 @@ class Issue(models.Model):
                         el.value.value = new
                         events.append({'field':el.field.name, 'old':old, 'new':new})
                     if new == "" and not el.field.blank:
-                        print 'EMPTY VALUE'
                         self.error(el.field.name, _('This field is required.'))
             elif not el.field.blank:
-                print 'NO VALUE', el.field.name
-                print 'IN', values
                 self.error(el.field.name, _('This field is required.'))
 
         return events
 
     def error(self, name, msg):
+        """
+        Add new error to form application/validation pass
+        """
         if name not in self.__errors:
             self.__errors[name]=[]
         self.__errors[name].append(msg)
 
     def set_current_status_string(self, value):
-        #print 'try'
         try:
             self.current_status = Status.objects.get(id=int(value))
         except:
@@ -468,8 +594,6 @@ class Issue(models.Model):
         if u is None:
 #            print 'DUN DUN DUN'
             self.error('requester', _("Unknown user: %s") % value)
-#        else:
-#            print 'requester is', u.username
         self.requester = u
 
     requester_string = property(get_requester_string, set_requester_string)
@@ -520,6 +644,9 @@ class Issue(models.Model):
     co_responsible_string = property(get_co_responsible_string, set_co_responsible_string)
 
     def validate(self):
+        """
+        Perform regular validation but also return any errrors from apply_post()-call.
+        """
         res = self.__errors.copy()
         for name, value_list in models.Model.validate(self).iteritems():
             if name in res:
@@ -584,7 +711,6 @@ class Issue(models.Model):
             return "\n".join(map(lambda x: "%d - %s" % (x.ci_id, x.description),
                                  list(self.cidependency_set.order_by('view_order'))))
         except:
-            print 'TRALALA'
             import traceback as tb
             tb.print_exc()
             raise
@@ -652,7 +778,6 @@ class Issue(models.Model):
 
         all = self.updates
         str(all)
-#        print 'lalala'#, all
         if len(all) > 0:
             return all[len(all)-1]
         return None
@@ -667,12 +792,14 @@ class Issue(models.Model):
         return self.creation_date
 
     def __getattr__(self, name):
+        """
+        Conveniance function. You may use extra fields as regular
+        attributes if you wish.
+        """
         if name[0] == '_':
             raise AttributeError()
                 
-#        print 'Accessing', name
         extra_fields = set(map(lambda x:x.name, self.type.extra_fields.all()))
-        
 
         for val in list(self.issuefieldvalue_set.all()):
             if val.field.name == name:
@@ -688,11 +815,19 @@ class Issue(models.Model):
 
     class Meta:
         permissions = (
-            ('view_internal', 'Can view internal updates'),
+            ('view_internal', _('Can view internal updates')),
+            ('is_sd', _('Is Service Desk staff')),
             )
     
 
 class IssueField(models.Model):
+    """
+    This is an extra issue field, used to create extra fields for
+    specific issue types. E.g. the RfC issue type should have various
+    extra dropdowns and text fields that other issue types do not
+    have.
+    """
+
     FIELD_TYPE_CHOICES = (
         ('text',_('Text field')),
         ('grading',_('Grade from 1 to 5')),
@@ -701,7 +836,11 @@ class IssueField(models.Model):
         ('date',_('Date')),
         )
 
+    # This is a short 'slug' name, should only countain letters,
+    # numbers and underscores. Will not be shown to the user.
     name = models.CharField(maxlength=64)
+    
+    # The human-eradable name 
     short_description = models.CharField(maxlength=64)
     long_description = models.CharField(maxlength=256)
     field_type = models.CharField(maxlength=16, choices=FIELD_TYPE_CHOICES)
@@ -712,6 +851,11 @@ class IssueField(models.Model):
         return self.short_description
 
     def render_input(self, data):
+        """
+        FIXME: This function needs a bit of cleanup.
+
+        Render an extra field in the correct manner depending on field type.
+        """
         try:
             if self.field_type == 'text':
                 return "<input value='%s' id='%s' name='%s' />" % escape_recursive(data.value, self.name, self.name)
@@ -754,6 +898,9 @@ class IssueField(models.Model):
     def render_value(self, data):
         if self.field_type == 'dropdown':
             return escape_recursive(data.item.name)
+        if self.field_type == 'textarea':
+            return data.value
+
         return escape_recursive(data.value)
 
     class Admin: 
@@ -766,6 +913,10 @@ class IssueField(models.Model):
        
 
 class IssueFieldDropdownItem(models.Model):
+    """
+    A row in this table represents a dropdown item in for a dropdown
+    (select) widget.
+    """
     field = models.ForeignKey(IssueField)                     
     name = models.CharField(maxlength=64)
 
@@ -781,22 +932,46 @@ class IssueFieldDropdownItem(models.Model):
         verbose_name = _('item for extra field of dropdown type')
         
     
-class IssueFieldDropdownValue(models.Model):                          
+class IssueFieldDropdownValue(models.Model):      
+    """
+    A row in this table represents a selected value for a dropdown widget. 
+    """
     issue = models.ForeignKey(Issue)                          
     field = models.ForeignKey(IssueField)                     
     item = models.ForeignKey(IssueFieldDropdownItem)                     
 
 class IssueFieldValue(models.Model):                          
+    """
+    A value for a 'ticket_issuefield' extra field in text format.
+    """
+
     issue = models.ForeignKey(Issue)                          
     field = models.ForeignKey(IssueField)                     
     value = models.CharField(maxlength=8192)                  
    
 class IssueUpdate(models.Model):
+    """
+    This is a single update for a given ticket. It can represent
+    either an update sent through the web interface or through email.
+    """
+
+
+    #Either user_id or contact_id must always be set, but never
+    #both. The contact or user pointed to is the originator of this
+    #update.
     user = models.ForeignKey(User,null=True,blank=True)
     contact = models.ForeignKey(Contact,null=True,blank=True)
+    
+    # HTML ok in this field
     comment = models.CharField(maxlength=8192)
+
+    # This field contains optional additional information about this
+    # update, serialized in the JSON format.
     description = models.CharField(maxlength=8192)
+
     creation_date = models.DateTimeField(auto_now_add=True)
+
+    # If set, this update should only be visible to the SD staff
     internal = models.BooleanField()
     issue = models.ForeignKey(Issue)
 
@@ -815,19 +990,26 @@ class IssueUpdate(models.Model):
     description_data = property(get_description_data, set_description_data)
 
     @property
+    def summary(self):
+        return "%s: %s..." % (self.creator.name, remove_html_tags(self.comment)[:32])
+
+    @property
     def html_default_columns(self):
+        """
+        Default columns for widget rendering.
+        """
         return ((_('Issue name'),'name'),(_('Update'),'update'),(_('Priority'),'priority'),(_('Requester'),'requester'),(_('Update date'),'creation_date'))
 
     def html_row(self, columns):
+        """
+        Used for widget rendering.
+        """
+
         res = ""
 
         for col in columns:
             try:
                 if col == 'update':
-                    def remove_html_tags(data):
-                        import re
-                        p = re.compile(r'<.*?>')
-                        return p.sub('', data)
                     def truncate(str, l):
                         if len(str) > l:
                             return str[0:l] + "..."
@@ -848,8 +1030,19 @@ class IssueUpdate(models.Model):
     
     
 class IssueUpdateAttachment(models.Model):
+    """
+    This table contains information about attachments. No fiels are
+    stored in the DB, we only have the filename of the attachment
+    proper.
+    """
+
+    # This is the issue update that included the attachment.
     update = models.ForeignKey(IssueUpdate)
+
+    # This is the original filename for the attachment, e.g. what the file was called in the email or under what name it was uploaded.
     name = models.CharField(maxlength=8192)
+
+    # This is the on disk filename of the attachment.
     filename = models.CharField(maxlength=8192)
     mime = models.CharField(maxlength=128)
 
@@ -857,20 +1050,6 @@ class IssueUpdateAttachment(models.Model):
     def url(self):
         return properties['site_url'] + properties['site_location'] + '/ticket/attachment/%d/%s' % (self.id, self.name)
 
-
-    
-#    def __init__(self, issue, status, user, comment, **kw):
-#        super(IssueUpdate, self).__init__()
-#        issue.status = status
-#        self.comment = comment
-#        self.user = user
-#        self.description = ""
-
-#        for key, value in kw.iteritems():
-#            field = IssueField.objects.get(name=key)
-#            if value != getattr(issue,field.name):
-#                IssueFieldValue(issue=issue, field=field, value=value)
-#                description += ("<p>Updated field %s</p>" % (field,))
 
 class IssueFieldValue(models.Model):
     # The issue that is updated
@@ -882,6 +1061,12 @@ class IssueFieldValue(models.Model):
 
 
 class Property(models.Model):
+    """
+    Fixme: Move to separate app.
+
+    General purpose key/value pair store. Why doesn't django have one of these OOTB?
+    """
+
     name = models.CharField(maxlength=1024, unique=True)
     value = models.TextField(maxlength=8192)
     
@@ -898,6 +1083,9 @@ class Property(models.Model):
 
 
 class SmtpConfiguration(models.Model):
+    """
+    Smtp email server config data
+    """
     host = models.CharField(maxlength=256)
     port = models.IntegerField()
     username = models.CharField(maxlength=256, null=True, blank=True)
@@ -915,6 +1103,9 @@ class SmtpConfiguration(models.Model):
         
 
 class ImapConfiguration(models.Model):
+    """
+    IMAP email server config data
+    """
     host = models.CharField(maxlength=256)
     port = models.IntegerField()
     mailbox = models.CharField(maxlength=256, blank=True)
@@ -934,6 +1125,9 @@ class ImapConfiguration(models.Model):
         
 
 class EmailTemplate(models.Model):
+    """
+    Email template. Used for sending emails after e.g. issue updates.
+    """
     subject = models.CharField(maxlength=1024)
     body = models.TextField(maxlength=8192)
     name = models.CharField(maxlength=512)
@@ -943,6 +1137,9 @@ class EmailTemplate(models.Model):
 
 
     def send(self, recipients, issue, **kw):
+        """
+        Format message and send it.
+        """
         from tuit.mail import Mailer
         events = []
         kw['issue']=issue
@@ -995,6 +1192,9 @@ class DbLogRecordType(models.Model):
     
 
 class DbLogRecord(models.Model):
+    """
+    A log item
+    """
     record_type = models.ForeignKey(DbLogRecordType)
     lvl = models.IntegerField()
     msg = models.TextField(maxlength=8192)
@@ -1002,9 +1202,16 @@ class DbLogRecord(models.Model):
 
     @property
     def html_default_columns(self):
+        """
+        The default columns to show when displaying an issue in a Widget
+        """
         return ((_('Event catecory'),'category_name'),(_('Event severity'),'lvl'),(_('Message'),'msg'),(_('Date'),'log_date'))
 
     def html_row(self, columns):
+        """
+        Used for widget rendering
+        """
+        
         res = ""
 
         for col in columns:
@@ -1052,6 +1259,9 @@ class DbLogRecord(models.Model):
 
 
 class Event(models.Model):
+    """
+    A simple event handler, stored in the db.
+    """
     description = models.TextField(maxlength=256)
     event = models.CharField(maxlength=64)
     code = models.TextField(maxlength=8192)
@@ -1080,6 +1290,10 @@ class Event(models.Model):
         verbose_name = _('scripted event')
         
 class UserProfile(models.Model):
+    """
+    Extra data to store about each user. Django has a bit of automagic
+    to tie this up with the main user object.
+    """
     user = models.ForeignKey(User, unique=True)
     location = models.TextField(maxlength=512, blank=True)
     building = models.TextField(maxlength=512, blank=True)
