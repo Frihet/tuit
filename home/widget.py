@@ -1,11 +1,22 @@
+# Views for the widget class
 # -*- coding: utf-8 -*-
 
 from datetime import datetime
 import logging
 
 class Widget:
+    """
+    A class for displaying ticket Model results in a nice, paginated
+    way. The model needs to have a few extra methods for formatting
+    the results.
+    """
 
     def __init__(self, name, items, request, slug='issues', columns=None, item_count=10,class_names=""):
+        """
+        Construct the widget. The items need to be a django orm search
+        result. No limit or other silliness should be pallied, the
+        widget figures those things out itself. It's so clever. yes.
+        """
         self.name=name
         self.items=items
         self.columns=columns
@@ -16,6 +27,9 @@ class Widget:
 
     @property
     def current_page(self):
+        """
+        What apge are we on?
+        """
         try:
             return int(self.request.GET[self.slug + '_page'])
         except:
@@ -25,6 +39,9 @@ class Widget:
 
     @property
     def pager(self):
+        """
+        Returns html for a complete pager thingee. A bit hackish.
+        """
         def page_url(page):
             d={}#self.request.GET.copy()#dict(self.request.GET.iteritems())
             for i in self.request.GET:
@@ -51,8 +68,12 @@ class Widget:
         else:
             return "&nbsp;".join(map(render_item, range(1,self.current_page+5))) + "..." + render_item(pages) 
 
+        
     @property
     def html(self):
+        """
+        Render the widget to html
+        """
         start_time = datetime.now()
 
         page = self.current_page
