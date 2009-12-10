@@ -71,11 +71,11 @@ var tuit = {
 
     init: function()
     {
-	usr_url = "/tuit/query/user_complete/";
-	usr_url2 = "/tuit/query/user_complete/?contacts=1";
-	dep_url = "/tuit/query/issue_complete/";
-	kb_url = "/cgi-bin/foswiki/search/KB/?skin=autocomplete&type=literal&web=KB+IKB"	
-	ci_url = "/FreeCMDB/?controller=ciList&output=autocomplete"
+	var usr_url = "/tuit/query/user_complete/";
+	var usr_url2 = "/tuit/query/user_complete/?contacts=1";
+	var dep_url = "/tuit/query/issue_complete/";
+	var kb_url = "/cgi-bin/foswiki/search/KB/?skin=autocomplete&type=literal&web=KB+IKB";	
+	var ci_url = "/FreeCMDB/?controller=ciList&output=autocomplete";
 
 	var uoptions_single = {
 	    matchContains: true,
@@ -155,9 +155,10 @@ var tuit = {
 	var quickChange = function(obj)
 	{
 	    var idx = $('#quick')[0].value;
-	    if(idx == "")
+	    if(idx === "") {
 		return;
-	    
+	    }
+
 	    $.each(quick_fill,function(key2, value2)
 	{
 	    if( value2.id == idx ) {
