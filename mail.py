@@ -10,8 +10,14 @@ except ImportError:
 project_directory = setup_environ(settings)
 
 import tuit.mail
+import logging
 #from tuit.ticket.models import *
-
-m=tuit.mail.MailGW(None)
-m.do_work()
+try:
+    m=tuit.mail.MailGW(None)
+    m.do_work()
+except:
+    import traceback as tb
+    msg = tb.format_exc()
+    logging.getLogger('mail').error('Error while retriving email: %s' % msg)
+logging.getLogger('mail').info('Finished email check')
 
