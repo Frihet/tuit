@@ -97,6 +97,7 @@ def new(request, type_name=None):
         i=ModelWrapper(i, request.POST)
     else:
         i.type = IssueType.objects.get(name=request.GET['type'])
+        i.current_status = Status.objects.get(id=properties['issue_default_status'])
         if 'copy' in request.GET:
             template = Issue.objects.get(id=int(request.GET['copy']))
             wrap_dict={}
@@ -195,6 +196,7 @@ def send_email(template_name, post, issue, update=None):
             var = contact + '_email'
             if var in post:
                 events.extend(e.send(getattr(issue, contact), issue=issue, update=update))
+                
     else:
         logging.getLogger('ticket').error('No email template of type %s could be found' % template_name)
     return events

@@ -16,7 +16,7 @@ import email.mime.text
 import email.mime.multipart
 import re
 import cgi
-
+import logging
 
 # Fixme:
 #
@@ -364,6 +364,15 @@ class Issue(models.Model):
                 raise
         return self.__extra_fields
 
+    @property
+    def cc(self):
+        """
+        Return array of all objects in cc_user and cc_contact.
+        """
+        if self.id is None:
+            return []
+        return list(self.cc_user.all()) + list(self.cc_contact.all()) 
+
     def load_extra_fields(self):
         values = dict(map(lambda x:(x.field.name,x),self.issuefieldvalue_set.all()))
         dropdown_values = dict(map(lambda x:(x.field.name,x),self.issuefielddropdownvalue_set.all()))
@@ -451,7 +460,8 @@ class Issue(models.Model):
                 'requester':lambda: user_desc(self.requester),
                 }[col]() + "</td>"
         except:
-            logging.getLogger('ticket').error('Issue.html_cell failed while fetching column', col,'for issue',self.id)
+            logging.getLogger('ticket').error('Issue.html_cell failed while fetching column %s for issue %d' %
+                                              (col,self.id))
             raise
         
 
@@ -625,7 +635,7 @@ class Issue(models.Model):
     def get_co_responsible_string(self):
         if self.id is None:
             return ""
-        return "\n".join(map(lambda x: "%d - %s %s" % (x.username, x.first_name, x.last_name), self.co_responsible.all()))
+        return "\n".join(map(lambda x: "%s - %s %s" % (x.username, x.first_name, x.last_name), self.co_responsible.all()))
 
 
     def set_co_responsible_string(self, val):
@@ -1171,11 +1181,19 @@ class EmailTemplate(models.Model):
             plain = html2text(html)
             plain = plain.decode('utf-8')
             #print plain
-            
-            Mailer.send_email(subject, recipient, plain, html)
-
-            events.append({'field':recipient.email, 
-                           'comment':_('Nofified by email')})
+           
+            try:
+                Mailer.send_email(subject, recipient, plain, html)
+                events.append({'field':recipient.email, 
+                               'comment':_('Nofified by email')})
+            except:
+                import traceback as tb
+                msg = tb.format_exc()
+                logging.getLogger('ticket').error('Failed to send email to %s. Error: %s' % 
+                                                  (recipient.email, msg))
+                
+                events.append({'field':recipient.email, 
+                               'comment':(_('Email notification failed!'))})
 
         return events
 
