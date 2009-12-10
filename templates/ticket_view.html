@@ -11,8 +11,11 @@
 {%block content %} 
 
 <span class='no_print'>
-  <button type='button' onclick='$(".internal").toggle()'>{%trans "Toggle internal update visibility" %}</button>
+  <button type='button' class='kb_button' onclick='$(".internal").toggle()'>{%trans "Toggle internal update visibility" %}</button>
   <button type='button' class='kb_button' onclick='$("#copy_popup").show(50);'>{%trans "Create new ticket based on this ticket" %}</button>
+<!--
+  <button type='button' class='kb_button' onclick='$("#forward_popup").show(50);'>{%trans "Send this ticket by email" %}</button>
+-->
 </span>
 
 <table class='striped wide'>
@@ -176,7 +179,7 @@
       </td>
     </tr>
 
-    {% for it in issue.extra_fields.itervalues %}
+    {% for it in issue.extra_fields %}
     <tr>
       <td>
 	{{ it.field.short_description|escape }}:
@@ -322,6 +325,48 @@ var external_default_mail = {{ external_default_mail_json }};
       </table>
       <button type='submit'>{% trans "Create" %}</button>
       <button type='button' onclick='$("#copy_popup").hide();'>{% trans "Cancel" %}</button>
+    </form>
+  </div>
+</div>
+
+<div class='popup' id='forward_popup'>
+  <div class='popup_title'>
+    {% trans "Send this ticket by email" %}
+    <a href="javascript:popupHide('forward_popup')">x</a>
+  </div>
+  <div class='popup_content'>
+    <form method='get' action='/tuit/ticket/email/{{ issue.id }}/' id='copy_form' accept-charset='utf-8'>
+      <table class='striped'>
+
+	{% for update in issue.updates %}
+	<tr>
+	  <td>
+	    {% trans "Update" %}: {{ update.summary }} 
+	  </td>
+	  <td>
+	    <input id='update_{{ update.id }}' name='update_{{ update.id }}' class='checkbox' type='checkbox' checked />
+<label for='update_{{ update.id }}'>{% trans "Include" %}</label>
+
+	  </td>
+	</tr>
+	
+	{% for attachment in update.issueupdateattachment_set.all %}
+	<tr>
+	  <td>
+	    {% trans "Attachment" %}: {{ attachment.name|escape }} 
+	  </td>
+	  <td>
+	    <input id='attachment_{{ attachment.id }}' name='attachment_{{ attachment.id }}' class='checkbox' type='checkbox' checked />
+	    <label for='attachment_{{ attachment.id }}'>{% trans "Include" %}</label>
+	  </td>
+	</tr>
+	{% endfor %}
+	
+	{% endfor %}
+
+      </table>
+      <button type='submit'>{% trans "Send" %}</button>
+      <button type='button' onclick='$("#forward_popup").hide();'>{% trans "Cancel" %}</button>
     </form>
   </div>
 </div>

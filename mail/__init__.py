@@ -244,7 +244,7 @@ def check_pgp_sigs(sig, gpgctx, author):
 class Mailer:
 
     @staticmethod
-    def send_email(subject, recipient, body_text, body_html):
+    def send_email(subject, recipient, body_text, body_html, attachments=[]):
         config = SmtpConfiguration.objects.all()
         if len(config) != 1:
             raise "Could not find exactly one SMTP configuration object"
@@ -927,7 +927,7 @@ class MailGW:
             # live in the same directory, in order to make stuff a bit
             # more logical.
             full_dir = save_dir + '/%d/issue_%d' % (i.id%1000, i.id)
-            fullname = full_dir + '/update_%d_attachment_%d' % (i.id,iu.id,idx) 
+            fullname = full_dir + '/update_%d_attachment_%d' % (iu.id,idx) 
             try:
                 os.makedirs(full_dir)
             except:

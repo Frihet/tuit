@@ -1,3 +1,5 @@
+# Views for the search app of tuit
+# -*- coding: utf-8 -*-
 from tuit.util import *
 from tuit.search.models import *
 from django.http import HttpResponse
@@ -11,6 +13,12 @@ from tuit.util import check_permission
 
 @login_required
 def results(request):
+    """
+    Display search results.
+    
+    Or rather, display a page containing javescript that will download
+    and display the search results. :-/
+    """
     vars = {'get':request.GET}
     vars['title'] = _("Search")
     vars['has_advanced']=False

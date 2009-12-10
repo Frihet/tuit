@@ -1,3 +1,6 @@
+# Misc utility functions for tuit
+# -*- coding: utf-8 -*-
+
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django import template
@@ -9,11 +12,11 @@ import cgi
 import time
 
 import logging
-#from tuit.ticket.models import DbLogRecord
-
-
 
 def tuit_render(name, keys, request):
+    """
+    Add common rendering keys like various js and css links and call render_to_response
+    """
     keys['css_links']=[{'url':'/static/common/common.css'},
                        {'url':'/static/jquery-autocomplete/jquery.autocomplete.css'},
                        {'url':"/static/tuit.css"},
@@ -42,6 +45,9 @@ def tuit_render(name, keys, request):
     return render_to_response(name, keys)
 
 class ModelWrapper:
+    """
+    A wrapper to place around a model with an extra dict to place overrides for attribute values in
+    """
     def __init__(self, model, dictionary):
         self.__model = model
         self.__dictionary = dictionary
@@ -54,7 +60,11 @@ class ModelWrapper:
 
 
 class ModelDict:
-
+    """
+    A dict that makes a model or dict have hierarchical keys,
+    e.g. "issue.user.username" becomes tha name of a key. Only
+    supports attibute access.
+    """
     def __init__(self, keys=None):
         if keys is None:
             keys={}
@@ -93,7 +103,9 @@ class ModelDict:
 
 
 class PropertyHandler:
-
+    """
+    A loader/saver thingiee for ticket.model.Property lines
+    """
     data=None
 
     def __init__(self):
@@ -146,8 +158,12 @@ class PropertyHandler:
 
 properties = PropertyHandler()
 
+
 class DbHandler(logging.Handler):
-    
+    """
+    A logging.Handler implementation that uses the ticket.models.DbLogRecord
+    """
+
     def __init__(self):
         # Log all events, we filter them when viewing them instead
         logging.Handler.__init__(self) 
@@ -165,7 +181,8 @@ def log_init():
 
 
 def email_valid(emailkey):
-    """Email validation, checks for syntactically invalid email
+    """
+    Email validation, checks for syntactically invalid email
     courtesy of Mark Nenadov.
     See
     http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/65215"""
@@ -192,6 +209,11 @@ def login_required(view_func):
 
 
 def escape_recursive(*arg):
+    """
+    Performs cgi.escape recursively on lists, tuples, dicts, etc of
+    items. Also converts unicode objects to utf-8 encoded regular
+    strings.
+    """
     if len(arg) == 0:
         return tuple()
     if len(arg) == 1:
@@ -200,11 +222,6 @@ def escape_recursive(*arg):
 
 
 def escape_recursive_internal(obj):
-    """
-    Recursively CGI-escape a set of objects. Can handle strings,
-    unicode strings, list-like and dict-like objects. Always returns a
-    tuple for tuple input.
-    """
     if type(obj) is str:
         return cgi.escape(obj)
     if type(obj) is int:
@@ -222,6 +239,9 @@ def escape_recursive_internal(obj):
     
 
 def encode_recursive(*arg):
+    """
+    Performs unicode object to utf-8 string conversion recurseivlely.
+    """
     if len(arg) == 0:
         return tuple()
     if len(arg) == 1:
@@ -230,11 +250,6 @@ def encode_recursive(*arg):
 
 
 def encode_recursive_internal(obj):
-    """
-    Recursively CGI-escape a set of objects. Can handle strings,
-    unicode strings, list-like and dict-like objects. Always returns a
-    tuple for tuple input.
-    """
     if type(obj) is str:
         return obj
     if type(obj) is unicode:
@@ -256,6 +271,11 @@ log_init()
 django.contrib.auth.models.User.tuit_description = property(lambda user:"<a href='%s/account/%s'>%s - %s %s</a>" %(properties['site_location'], user.username, user.username, user.first_name, user.last_name))
 
 def check_permission(perm, user):
+    """
+    Checks if the specified user has the specified permission, which
+    may also be is_staff for checking if the user has the staff flag
+    set.
+    """
     if perm == '':
         return True
     if perm == 'is_staff':

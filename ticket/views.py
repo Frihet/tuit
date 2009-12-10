@@ -1,4 +1,4 @@
-# Create your views here.
+# Views for the ticket app of tuit
 # -*- coding: utf-8 -*-
 
 from tuit.ticket.models import *
@@ -12,10 +12,19 @@ from django.utils.translation import gettext as _
 import logging
 
 def studly(str):
+    """
+    Converts a sentence into a StudlyCaps word.
+    """
     return "".join(map(lambda x:x.capitalize(),re.sub(r'[^a-zA-Z0-9_ åæøäö]', '', str).split(" ")))
 
-
 def insert_view_data(keys, request, default_checked_list):
+    """
+    Inserts common data to all types of query views into the dict.
+
+    This includes data about default checkboxes, a list of available
+    categories, statuses, urgencies and impacts and various other
+    data.
+    """
     default_checked = set(map(lambda x: x + '_email',default_checked_list))
     i = keys['issue']
     keys['status'] = Status.objects.all()
@@ -31,10 +40,11 @@ def insert_view_data(keys, request, default_checked_list):
             keys[box]='checked'
 
 
-
-
-
 def format_errors(errors):
+    """
+    Turns a django-stykle list of validation errors into a html status
+    message text.
+    """
     res = ""
     for key, val in errors.iteritems():
         for msg in val:
@@ -43,8 +53,15 @@ def format_errors(errors):
 
 @login_required
 def new(request, type_name=None):
-    print request.user
+    """
+    View for creating a new ticket
+    """
+
+    # Do a copy to get a real dict, no a weird django-style query-dict
+    # with their pseudo-list interface.
     keys = request.POST.copy()
+
+    
     keys['quick_fill'] = QuickFill.objects.all()
     keys['quick_fill_json'] = to_json(QuickFill.objects.all())
     keys['status'] = Status.objects.all()
@@ -61,8 +78,8 @@ def new(request, type_name=None):
     i = Issue()
     i.creator = request.user
 
-    if request.method == 'POST': # If the form has been submitted...
-
+    if request.method == 'POST': 
+        # If the form has been submitted...
         # We can't save more than half of the issue before getting an id for the line, so we do it in two phases
         
         # Phase 1
@@ -85,19 +102,25 @@ def new(request, type_name=None):
             if not errors:
                 events.extend(send_email('web_create', request.POST, i, None))
                 i.description_data={'type':'web','events':events, 'by':request.user.username}
-
+                
+                # Fire of event handler
                 Event.fire(['web_create','create'], i)
                 i.save()
+                
+                # If everything went ok with form submission, this is where we return
                 return HttpResponseRedirect('/tuit/ticket/view/%d' % i.id) # Redirect after successfull POST
 
+        # This code is only reached oif we get an error while processing the form
         logging.getLogger('ticket').error('Tried to create issue, but got the following errors: %s' % str(errors));
         keys['errors'] = errors
         keys['messages'] += format_errors(errors)
 
         i=ModelWrapper(i, request.POST)
     else:
+        # This is not a form submission, show an empty form
         i.type = IssueType.objects.get(name=request.GET['type'])
         i.current_status = Status.objects.get(id=properties['issue_default_status'])
+        # But wait! It should not be empty, it should be a copy of an already existing ticket
         if 'copy' in request.GET:
             template = Issue.objects.get(id=int(request.GET['copy']))
             wrap_dict={}
@@ -112,6 +135,13 @@ def new(request, type_name=None):
     return tuit_render('ticket_new.html', keys, request)
 
 def update_dependants(issue, update, send_to, ignore):
+    """
+    An issue with other issues depending on it has been updated, and
+    the «update dependants» box has been checked.
+
+    Update all dependant tickets as well, and send emails to the
+    relevant people.
+    """
     for i in issue.dependants.all():
         if i in ignore:
             continue
@@ -130,15 +160,23 @@ def update_dependants(issue, update, send_to, ignore):
 
 @login_required
 def view(request,id=None):
+    """
+    This is the main issue viewing view. It shows an issue, and
+    provides the option to send an issue update as well.
+    """
     if id is None:
         id = request.GET['id']
     i=Issue.objects.get(id=id)
     keys = request.POST.copy()
     keys['messages'] = ""
     keys['update']=None
-    keys['show_internal'] = request.user.has_perm('issue.view_internal')
+    keys['show_internal'] = request.user.has_perm('ticket.view_internal')
 
-    if request.method == 'POST': # If the form has been submitted...
+    if request.method == 'POST': 
+        # If the form has been submitted...
+        #
+        # That means we're makinnng an issue update. So exciting. 
+
         events = i.apply_post(request.POST)
 
         iu = IssueUpdate(issue=i, 
@@ -147,7 +185,6 @@ def view(request,id=None):
                          user=request.user,
                          description_data={})
         errors = i.validate()
-        print errors
         
         for name, value_list in iu.validate().iteritems():
             if name in errors:
@@ -168,6 +205,7 @@ def view(request,id=None):
                 update_dependants(i, iu, request.POST, set())
 
             return HttpResponseRedirect('/tuit/ticket/view/%d' % i.id) # Redirect after successfull POST
+        # We failed. Show errors!
         logging.getLogger('ticket').error('Tried to create issue update, but got the following errors: %s' % str(errors));
         keys['errors'] = errors
         keys['update']=iu
@@ -177,16 +215,18 @@ def view(request,id=None):
     keys['internal_default_mail_json'] = to_json(properties['web_internal_default_mail'])
     keys['external_default_mail_json'] = to_json(properties['web_external_default_mail'])
 
-    keys['title'] = _('Viewing %(issue_type)s "%(subject)s"')% {'issue_type':i.type.name, 'subject':i.subject}
+    keys['title'] = _('Viewing %(issue_type)s "%(id)d - %(subject)s"')% {'id': i.id, 'issue_type':i.type.name, 'subject':i.subject}
     keys['issue'] = i
     keys['kb_name'] = studly(i.subject)
     insert_view_data(keys, request, properties['web_external_default_mail'])
     return tuit_render('ticket_view.html', keys, request)
     
 
-
-
 def send_email(template_name, post, issue, update=None):
+    """
+    Send an email defined by template emplate_name to user groups
+    defined by post about the specified issue.
+    """
     events=[]
     e=EmailTemplate.objects.filter(name=template_name)
 #    print('We have %d templates of specified type' % len(e)) 
@@ -201,9 +241,11 @@ def send_email(template_name, post, issue, update=None):
         logging.getLogger('ticket').error('No email template of type %s could be found' % template_name)
     return events
 
-
 @login_required
 def attachment(request, id):
+    """
+    Download an update attachment.
+    """
     a = IssueUpdateAttachment.objects.get(id=id)
     res = HttpResponse(mimetype=a.mime)
     f = open(a.filename,'r')
@@ -217,9 +259,15 @@ def attachment(request, id):
 # Login not required on purpose - we might in the future wish to use
 # Norwegian in javascript for the login page.  There is nothing secret
 # on this page.
+#
+# Fixme: Move to new location
 from django.views.decorators.cache import cache_control
 @cache_control(max_age=3600*24*7)
 def i18n(request):
+    """
+    Send gettext-translated data in javascript format for various UI components.
+    """
+
     trans={'$.dpText.TEXT_CHOOSE_DATE': _('Choose date'),
            '$.dpText.TEXT_PREV_MONTH': _('Previous month'),
            '$.dpText.TEXT_PREV_YEAR': _('Previous year'),
@@ -229,6 +277,14 @@ def i18n(request):
            'Date.dayNames': [_('Sunday'),_('Monday'),_('Tuesday'),_('Wednesday'),_('Thursday'),_('Friday'),_('Saturday'),],
            'Date.monthNames': [_('January'), _('February'), _('March'), _('April'), _('May'), _('June'), _('July'), _('August'), _('September'), _('October'), _('November'), _('December')]
            }
-#    trans_json = dict(map(lambda (x,y): (x, to_json(y)), trans.iteritems()))
     return tuit_render('i18n.js', {'strings':trans}, request)
     
+@login_required
+def email(request, id):
+    """
+    Download an update attachment.
+    """
+    i = Issue.objects.get(id=id)
+    send_email('web_email', request.POST, i, None)
+
+

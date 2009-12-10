@@ -4,15 +4,42 @@ from tuit.util import *
 from django.http import HttpResponse
 from django.contrib.auth.models import *
 from tuit.json import to_json
-from django.db.models import Q
+from django.db.models.query import Q, QOr, QAnd
 from tuit.ticket.models import *
 import datetime
 import re
+
+class QLeftOuterJoins(Q):
+    """
+    Replaces all INNER JOINs with LEFT OUTER JOINs inside
+
+    This code from DjangoSnippets, 
+
+    http://www.djangosnippets.org/snippets/274/
+
+    Without it, any issues without updates would fail, which is bad.
+    """
+    def __init__(self, q):
+        self.q = q
+
+    def __and__(self, other):
+        return QAnd(self, other)
+
+    def __or__(self, other):
+        return QOr(self, other)
+
+    def get_sql(self, opts):
+        joins, where, params = self.q.get_sql(opts)
+        for join_name, join in joins.iteritems():
+            joins[join_name] = (join[0], "LEFT OUTER JOIN", join[2])
+        return joins, where, params
 
 # Go over all the words in the search, filter on all of them
 def make_Q(query, fld):
     q=None
     for i in query.split(' '):
+        print 'TRALALA', i
+
         if i == '-':
             continue
         nq = None
@@ -21,22 +48,24 @@ def make_Q(query, fld):
             nq2 = Q(**kw)
             if nq:
                 nq = nq | nq2
+                print 'OR'
             else:
                 nq=nq2
+
 
         try:
             num = int(i)
             kw={'id': num,}
-            nq = nq | Q(**kw)
+            nq = nq | Q(**kw)            
         except:
             pass
         if q:
             q = q & nq
+            print 'AND'
         else:
             q=nq
-#    print str(q)
+    return QLeftOuterJoins(q)
 
-    return q
 
 @login_required
 def user_complete(request):

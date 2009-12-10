@@ -382,6 +382,202 @@ knowledge base article</a></h3>
   button in order to insert the article contents into the update.
 </p>
 
+
+<h2><a name='issue_email_templates'>Changing the content of emails sent by Tuit</a></h2>
+<p>
+  Tuit is designed to be usable either through the web interface or
+  through email. When an issue is updated through email, an update is
+  sent to the people assigned to that ticket. In the web interface,
+  the user can specifically choose which parties should recive that
+  particular update. But for Tuit to be able to send these emails, one
+  must first specify template emails. This is done through
+  the <a href='#concepts_admin'>administration interface</a>.
+</p>
+<p>
+  Take the following steps:
+</p>
+<ol>
+  <li>Access <a href='/tuit/admin/'>the administration interface</a>.</li>
+  <li>Click on the «change» link next to the item labeled <a href='/tuit/admin/ticket/emailtemplate/'>Email templates</a>.</li>
+  <li>Select which template you wish to change</li>
+  <li>Edit the template. The subject is in plaintext, the body is HTML formated. A future version of Tuit will include a graphical html editor.</li>
+  <li>Click the save button</a>
+</ol>
+<p>
+  In order to insert specific data about a ticket or an update, there are special tags, beginning with a percent symbol that will be replaced with the suitable text when sending the email. These are described in the table below.
+</p>
+<table class='striped'>
+  <tr>
+    <th>
+      Tag
+    </th>
+    <th>
+      Description
+    </th>
+  </tr>
+  <tr>
+    <td>
+      %%
+    </td>
+    <td>
+      A single percent symbol.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      %(recipient.first_name)s
+    </td>
+    <td>
+      The email recipients first name.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      %(recipient.last_name)s
+    </td>
+    <td>
+      The email recipients last name.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      %(recipient.name)s
+    </td>
+    <td>
+      The email recipients full name, first and last.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      %(recipient.username)s
+    </td>
+    <td>
+      The email recipients username.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      %(issue.id)d
+    </td>
+    <td>
+      The issue number for this issue.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      %(issue.url)s
+    </td>
+    <td>
+      The URL containing the full information on this issue.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      %(issue.subject)s
+    </td>
+    <td>
+      The subject for this issue.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      %(issue.description)s
+    </td>
+    <td>
+      The main description for this issue.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      %(update.comment)s
+    </td>
+    <td>
+      The comment for the latest update to this issue. This will be empty if
+      the issue has never been updated, e.g. if the issue is only just
+      being created.
+    </td>
+  </tr>
+</table>
+
+<p>
+  There are many users connected to an issue, including the original
+  requester, the person who created the issue, the person who created
+  an issue update, etc. These are all available, and all have the same
+  fields available to them as the recipient does in the table
+  above. For example, «%(issue.assigned_to.email)s» is the email address of
+  the person assigned to fixing this issue. The list of available
+  users are desbribed in the table below.
+</p>
+
+<table class='striped'>
+  <tr>
+    <th>
+      User
+    </th>
+    <th>
+      Description
+    </th>
+  </tr>
+  <tr>
+    <td>
+      %(recipient)s
+    </td>
+    <td>
+      The person who will recieve the email.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      %(issue.requester)s
+    </td>
+    <td>
+      The person who requested that the issue should be created.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      %(issue.creator)s
+    </td>
+    <td>
+      The person who created the original issue.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      %(issue.assigned_to)s
+    </td>
+    <td>
+      The person who is assigned to solving this issue.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      %(update.creator)s
+    </td>
+    <td>
+      The person who made the latest update to the issue.
+    </td>
+  </tr>
+</table>
+
+
+<h2><a name='issue_contact_admin'>Purging the contact list</a></h2>
+<p>
+  Whenever a person who is not a Tuit user is assigned as CC for an
+  issue, or whenever a person sends an email to Tuit in relation to an
+  issue, a contact entry for that person is created. This contact
+  entry is used for e.g. autocompletion. Sometimes, it is desirable to
+  purge old contact entries, in order to make the suggestions given by
+  Tuit more relevant. To do this, take the following steps:
+</p>
+
+<ol>
+  <li>Access <a href='/tuit/admin/'>the administration interface</a>.</li>
+  <li>Click on the «change» link next to the item labeled <a href='/tuit/admin/ticket/contact/'>External contacts</a>.</li>
+  <li>Click on the contact you wish to remove</li>
+  <li>Click the remove button</a>
+</ol>
+
 <h1><a name='cmdb'>Tuit CMDB</a></h1>
 
 <h2><a name='cmdb_navigation'>Navigating the CMDB</a></h2>
@@ -392,7 +588,12 @@ knowledge base article</a></h3>
   nodes. Each of these nodes has a small button next to them with a +
   sign. Click on the plus to expand and show all nodes related to that
   node. Using this method repeatedly, it is possible to drill down
-  until the desired CI is located.
+  until the desired CI is located. Then, simply click on the CI to
+  access the main page of that CI.
+</p>
+<p>
+  When like adding a new CI dependency, either in the CMDB or in the
+  issue tracker, the same drilldown interface is also available.
 </p>
 
 <h3><a name='cmdb_navigation_root'>Changing the starting points of navigation in the CMDB</a></h3>
@@ -418,6 +619,7 @@ knowledge base article</a></h3>
     </li>
   </ul>
 </p>
+
 <h2><a name='cmdb_history'>Using the history feature</a></h2>
 <p>
   Every change ever performed to a CI is saved. To view the performed
@@ -428,7 +630,42 @@ knowledge base article</a></h3>
   edit.
 </p>
 
-<h1><a name='cmdb'>Tuit Knowledge base</a></h1>
+<h2><a name='cmdb_ci_types'>Configuring CI types</a></h2>
+<p>
+  The types of CIs (e.g. Server, Service, Firewall) that are available can be configured freely. Perform the following steps:
+</p>
+<ol>
+  <li>Access the administration interface.
+    {% if user.is_staff %}
+    It can be found <a href='/tuit/admin/'>here</a>.
+    {% endif %}
+  </li>
+  <li>Click the CMDB Administration link.</li>
+  <li>Click the sidebar item «CI types»</li>
+  <li>Update the list of CI types as you require, and press «Update».</li>
+</ol>
+
+<h2><a name='cmdb_ci_types'>Configuring CI fields</a></h2>
+<p>
+  The fields availalbe to various CI types can be configured freely. Perform the following steps:
+</p>
+<ol>
+  <li>Access the administration interface.
+    {% if user.is_staff %}
+    It can be found <a href='/tuit/admin/'>here</a>.
+    {% endif %}
+  </li>
+  <li>Click the CMDB Administration link.</li>
+  <li>Click the sidebar item «CI columns»</li>
+  <li>Update the list of CI columns as you require, and press «Update».</li>
+</ol>
+<p>
+  It is strongly recommended that the default column (which is used
+  for CI description, etc.) be of the unformated text type.
+</p>
+
+
+<h1><a name='kb'>Tuit Knowledge base</a></h1>
 <p>
 Tuit uses Foswiki as its Knowledge Base system. Foswiki ships with a
 huge amount of documentation included. The following links are some of
@@ -442,6 +679,45 @@ Knowledge base:
 <li><a href='/cgi-bin/foswiki/view/System/FrequentlyAskedQuestions'>FAQ</a> - this is also useful to get tips and tricks on how to set up a knowledge base.</li>
 <li><a href='/cgi-bin/foswiki/view/System/ReferenceManual'>Reference Manual</a> - mainly useful for administrators.</li>
 </ul>
+
+
+
+
+
+<h1><a name='log'>View event log</a></h1>
+<p>
+  Important events in the Tuit system are logged in the main Tuit
+  log. Currently, events in the knowledge base and CMDB are not logged
+  in the main log, but this will change in a future version of Tuit.
+</p>
+{% if user.is_staff %}
+<p>
+  The log is available <a href='/tuit/log/'>here</a>. There is also a
+  link available in the index page of the administration interface.
+</p>
+{% else %}
+<p>
+  You do not have sufficient privilidges to view the event log. If you
+  did, the log would be available <a href='/tuit/log/'>here</a>. There
+  would also be a link available in the index page of the
+  administration interface.
+</p>
+{% endif %}
+
+
+<p>
+  To view the log, simply go to 
+</p>
+
+<ul>
+<li><a href='/cgi-bin/foswiki/view/System/TwentyMinuteTutorial'>A twenty minute tutorial on Foswiki</a></li>
+<li><a href='/cgi-bin/foswiki/view/System/UsersGuide'>User's guide</a></li>
+<li><a href='/cgi-bin/foswiki/view/System/FrequentlyAskedQuestions'>FAQ</a> - this is also useful to get tips and tricks on how to set up a knowledge base.</li>
+<li><a href='/cgi-bin/foswiki/view/System/ReferenceManual'>Reference Manual</a> - mainly useful for administrators.</li>
+</ul>
+
+
+
 
 <h1><a name='concepts'>Tuit concepts</a></h1>
 
