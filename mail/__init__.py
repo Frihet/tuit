@@ -265,7 +265,7 @@ class Mailer:
         # Create the message
         msg = email.mime.multipart.MIMEMultipart("alternative")
         msg['Subject'] = subject
-        msg['From'] = "%s <%s>" % (properties['site_url'],sender)
+        msg['From'] = "%s <%s>" % (properties['site_description'],sender)
         msg['To'] = recipient.email
 
         if not type(body_html) is str:
@@ -283,6 +283,8 @@ class Mailer:
             s = smtplib.SMTP_SSL(host, port)
         else:
             s = smtplib.SMTP(host, port)
+
+        s.helo()
 
         if use_tls:
             s.starttls()
@@ -776,7 +778,7 @@ class MailGW:
         fcntl.flock(f.fileno(), FCNTL.LOCK_UN)
         return 0
 
-    def do_imap(self, server, user='', password='', mailbox='', ssl=0):
+    def do_imap(self, host, user='', password='', mailbox='', ssl=0):
         ''' Do an IMAP connection
         '''
         import getpass, imaplib, socket
@@ -792,11 +794,13 @@ class MailGW:
         # open a connection to the server and retrieve all messages
         try:
             if ssl:
-                server = imaplib.IMAP4_SSL(server)
+                server = imaplib.IMAP4_SSL(host)
             else:
-                server = imaplib.IMAP4(server)
+                server = imaplib.IMAP4(host)
         except (imaplib.IMAP4.error, socket.error, socket.sslerror):
-            self.logger.exception('IMAP server error')
+            import traceback as tb
+            msg = tb.format_exc()
+            self.logger.error('IMAP server error on host %s: %s'% (host,msg))
             return 1
 
         try:
@@ -912,8 +916,7 @@ class MailGW:
 
         for (idx,attachment) in enumerate(attachments):
             if not attachment.name:
-                logging.getLogger('mail').error('Tried to save name-less attachment of issue update %d' % (iu.id))
-                continue
+                attachment.name = "unnamed"
             save_dir = properties['attachment_directory']
 
             # We make 1000 subdirectories of the attachment
