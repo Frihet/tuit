@@ -1,8 +1,8 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django import template
-from json import to_json, from_json
-from settings import LOGIN_URL
+from tuit.json import to_json, from_json
+from tuit.settings import LOGIN_URL
 from urllib import quote
 import django.contrib.auth.models
 import cgi
