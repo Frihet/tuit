@@ -1,4 +1,5 @@
 %TMPL:INCLUDE{"view"}%
+
 %TMPL:DEF{"top:toolbarbuttons"}%%TMPL:P{"more_link"}%%TMPL:END%
 %TMPL:DEF{"topbar"}%
         <div class='main_menu no_print'>
@@ -18,6 +19,8 @@
 <link rel="stylesheet" href="/static/foswiki.css" type="text/css" media="screen,projection" />
 %TMPL:END%
 
+
+
 %TMPL:DEF{"main"}%
 <div class="foswikiPage">
   <div id="patternScreen">
@@ -30,6 +33,7 @@
 %TMPL:P{"sidebar"}%
             <div id="patternMain">%TMPL:P{"topbarspacer"}%
               <div id="patternMainContents">
+
 %TMPL:P{"logo"}%
 %TMPL:P{"patterntopiccontents"}%
               </div><!-- /patternMainContents-->
