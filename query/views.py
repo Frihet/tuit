@@ -133,7 +133,10 @@ def issue_complete(request):
             pass
     else:
         # Default: show only non-open tickets
-        q=q.exclude(current_status = properties['issue_closed_id'])
+        status_closed = properties['issue_closed_id']
+        if not hasattr(status_closed,'__iter__'):
+            status_closed=[status_closed]
+        q=q.exclude(current_status__in = status_closed)
 
     q = q.distinct().order_by('-creation_date')
     # This will fetch the items into a list that we can use map on...
