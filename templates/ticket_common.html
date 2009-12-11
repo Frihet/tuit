@@ -13,7 +13,7 @@
 
 <tr>
 <td>
-  <label for='requester'>{%trans "Requester" %}:</label>
+  <label for='requester'>{%trans "Requester" %}:</label>*
 </td>
 <td>
   <input id='requester' name='requester_string' value="{{ issue.requester_string }}" class='user'/><input type='checkbox' name='requester_email' value='yes' id='requester_email' class='checkbox email_checkbox' {{ requester_email }}/><label for='requester_email'>{%trans "Send email" %}</label>
@@ -24,13 +24,21 @@
 
 {% if issue.has_location %}
 
+{%if false %}
 <tbody id='contact_head' class='ticket_edit no_print'>
 <tr>
 <th colspan='2'>
+<script>
+$(document).ready(function(){
+        $(".contact input").attr("disabled","disabled");
+        $(".contact input").addClass("disabled");
+});
+</script>
 <button type='button' class='contact' onclick='$(".contact input").removeAttr("disabled");$(".contact input").removeClass("disabled");$("#contact_head button").hide();'>{%trans "Edit contact information" %}</button>&nbsp;
 </th>
 </tr>
 </tbody>
+{% endif %}
 <tbody class='contact ticket_edit'>
 
 <tr>
@@ -94,7 +102,7 @@
 
 <tr>
 <td>
-{%trans "Impact" %}
+{%trans "Impact" %}*
 </td>
 <td>
 
@@ -106,7 +114,7 @@
 
 <tr>
 <td>
-{%trans "Urgency" %}
+{%trans "Urgency" %}*
 </td>
 <td>
 {% for i in urgencies %}
@@ -171,7 +179,7 @@
 {% if ticket_new %}
 <tr>
 <td>
- <label for='subject'>{%trans "Subject" %}:</label>
+ <label for='subject'>{%trans "Subject" %}:</label>*
 </td>
 <td>
 <input id='subject' name='subject' value='{{ issue.subject|escape }}'/>
@@ -180,7 +188,7 @@
 
 <tr>
 <td>
- <label for='description'>{%trans "Description of problem" %}:</label>
+ <label for='description'>{%trans "Description of problem" %}:</label>*
 </td>
 <td>
 <textarea id='description' name='description' class='rich_edit' style='height:20em; width:80%;'>{{ issue.description }}</textarea>
@@ -192,7 +200,7 @@
 {% for it in issue.extra_fields %}
 <tr>
   <td>
-    <label for='{{ it.field.name|escape }}'>{{ it.field.short_description|escape }}:</label>
+    <label for='{{ it.field.name|escape }}'>{{ it.field.short_description|escape }}:</label>{% if it.field.blank %}{% else %}*{% endif %}
   </td>
   <td>
     {{ it.render_input }}

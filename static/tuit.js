@@ -186,7 +186,6 @@ var tuit = {
 	
         $('#quick').bind("change", null, quickChange);
 	
-        $(".contact input").attr("disabled","disabled");
         $(".contact input").addClass("disabled");
 	$('.date_picker').datePicker({"startDate":"01.01.2000"});
 
