@@ -61,7 +61,10 @@ def get_user(name):
     """
     try:
         uname = name.split(' ')[0]
-        return User.objects.get(username=uname)
+        if properties['username_case_insensitive'] == True:
+            return User.objects.get(username__iexact=uname)
+        else:
+            return User.objects.get(username__exact=uname)
     except User.DoesNotExist:
         return None
 
@@ -342,6 +345,10 @@ class Issue(models.Model):
 
     # Dummy variable needed to get some searches working - never use it for anything!!!
     priority_placeholder=None
+
+#    @property
+#    def location_empty(self):
+#        return self.location == "" and self.building == "" and self.office == ""
 
     @property
     def html_default_columns(self):
