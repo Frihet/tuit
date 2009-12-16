@@ -22,9 +22,23 @@ work flow for service management. Tuit currently consists of the
 following components:
 
 <ul>
-<li><a href=''>An issue handling system</a>, based on <a href='http://roundup.sourceforge.net/'>Roundup</a></li>
-<li><a href='/FreeCMDB/help'>A CMDB</a> based on FreeCMDB</li>
-<li><a href=''>A knowledge base</a>, based on <a href='http://foswiki.org/'>Foswiki</a>.</li>
+  <li><a href=''>An issue handling system</a>, based on <a href='http://roundup.sourceforge.net/'>Roundup</a></li>
+
+  
+  <li>
+    <a href='#concepts_cmdb'>A CMDB</a> based
+    on <a href='/FreeCMDB/help'>FreeCMDB</a>. For more information about
+    the CMDB concept,
+    see <a href='http://en.wikipedia.org/wiki/CMDB'>this Wikipedia
+      article on CMDBs</a>.
+  </li>
+  <li>
+    <a href='#concepts_kb'>A knowledge base</a>, based
+    on <a href='http://foswiki.org/'>Foswiki</a>. For more information
+    about the CMDB concept,
+    see <a href='http://en.wikipedia.org/wiki/Knowledge_base'>this Wikipedia
+      article on knowledge bases</a>.
+  </li>
 </ul>
 </p>
 
@@ -46,7 +60,7 @@ following components:
 </p>
 <p>
   The top menu also allows you to quickly search the system. Just
-  enter a few keywords into the search box and press the «enter» key.For
+  enter a few keywords into the search box and press the «enter» key. For
   more information on searching, see <a href='#search'>the search
   section</a>.
 </p>
@@ -74,13 +88,13 @@ following components:
   limited. It contains the following items:
   <ul>
     <li>
-      A list of all Incidents assigned to the logged in user, sorted by priority.
+      A list of all <a href='#concepts_incident'>Incidents</a> assigned to the logged in user, sorted by priority.
     </li>
     <li>
-      A list of all Problems assigned to the logged in user, sorted by priority.
+      A list of all <a href='#concepts_problem'>Problems</a> assigned to the logged in user, sorted by priority.
     </li>
     <li>
-      A list of all RfCs assigned to the logged in user, sorted by priority.
+      A list of all <a href='#concepts_rfc'>RfCs</a> assigned to the logged in user, sorted by priority.
     </li>
   </ul>
 </p>
@@ -102,18 +116,18 @@ following components:
 
   <ul>
     <li>
-      <em>Issues</em>. This shows both Incidents, Problems and
+      <em><a href='#concepts_issue'>Issues</a></em>. This shows both Incidents, Problems and
       RfCs. Freetext searches the subject, the description, all
       updates as well as the name of the user who requested the
       issue. All advanced search options work.
     </li>
     <li>
-      <em>CIs</em>. This shows all matching items from the
+      <em><a href='#concepts_cmdb'>CIs</a></em>. This shows all matching items from the
       CMDB. Freetext searches the CI name. No advanced search options
       work.
     </li>
     <li>
-      <em>Knowledge base articles</em>. This shows all matching items
+      <em><a href='#concepts_kb'>Knowledge base articles</a></em>. This shows all matching items
       from the Knowledge base. Freetext searches title, the KB form
       and the KB text proper. No advanced search options work.
     </li>
@@ -221,7 +235,7 @@ There are several variations on how user fields work:
   for specifying a CI, the CMDB drill down feature. This is a tree of
   all known CIs, that can be selectively expanded to drill down
   through dependencies until the wanted one is
-  found. See <a href='#cmdb_navigation'>for more information</a>.
+  found. See <a href='#cmdb_navigation'>the section on CMDB navigation</a> for more information.
 </p>
 <h3><a name='issues_creating_quickfills'>Using quick fills to automatically fill out common fields</a></h3>
 <p>
@@ -235,24 +249,8 @@ There are several variations on how user fields work:
   you. Exactly what fields are set to what values on every Quick fill
   can be changed in the <a href='#concepts_admin'>administration back end</a>.
 </p>
-
-<h4>Changing the available quick fills</h4>
 <p>
-  This action can only be performed by users with access rights to the
-  admin back end. 
-
-  {% if user.is_staff %}
-  You currently have this right, and can perform the steps below if you wish. Keep in mind that your changes will apply for all users, not just yourself.
-  {% else %}
-  You currently do not have this right and can not perform the steps described below.
-  {% endif %}
-
-Quick fills are created using these steps:
-
-  <ol>
-    <li>First, enter the administration back end, by clicking the link at the top of the screen.</li>
-    <li>First create a <em>Quick fill</em>. These only contain the description of what will be filled out.</li>
-    <li>Once that has been done, create multiple <em>Quick fill items</em>. Each such item contains the quick fill this item applies to, the field which is filled out and the value to set the field to.</li>    </ol>
+  See the section <a href='#admin_quickfill'>Changing the available quick fills</a> for information on customizing the list of available quickfills.
 </p>
 
 <h3><a name='issues_creating_copy'>Creating a new issue based on another issue</a></h3>
@@ -302,7 +300,7 @@ Quick fills are created using these steps:
 </p>
 <h3><a name='issue_update_email'>Updating an issue through email</a></h3>
 <p>
-  In order to create an update through email, simple reply to an email
+  In order to create an update through email, simply reply to an email
   sent from Tuit. The content of the email, including any attached
   files, will be added as an update to the issue. If the issue was
   closed, it will be reopened, but otherwise, no field values are
@@ -382,201 +380,6 @@ knowledge base article</a></h3>
   button in order to insert the article contents into the update.
 </p>
 
-
-<h2><a name='issue_email_templates'>Changing the content of emails sent by Tuit</a></h2>
-<p>
-  Tuit is designed to be usable either through the web interface or
-  through email. When an issue is updated through email, an update is
-  sent to the people assigned to that ticket. In the web interface,
-  the user can specifically choose which parties should recive that
-  particular update. But for Tuit to be able to send these emails, one
-  must first specify template emails. This is done through
-  the <a href='#concepts_admin'>administration interface</a>.
-</p>
-<p>
-  Take the following steps:
-</p>
-<ol>
-  <li>Access <a href='/tuit/admin/'>the administration interface</a>.</li>
-  <li>Click on the «change» link next to the item labeled <a href='/tuit/admin/ticket/emailtemplate/'>Email templates</a>.</li>
-  <li>Select which template you wish to change</li>
-  <li>Edit the template. The subject is in plaintext, the body is HTML formated. A future version of Tuit will include a graphical html editor.</li>
-  <li>Click the save button</a>
-</ol>
-<p>
-  In order to insert specific data about a ticket or an update, there are special tags, beginning with a percent symbol that will be replaced with the suitable text when sending the email. These are described in the table below.
-</p>
-<table class='striped'>
-  <tr>
-    <th>
-      Tag
-    </th>
-    <th>
-      Description
-    </th>
-  </tr>
-  <tr>
-    <td>
-      %%
-    </td>
-    <td>
-      A single percent symbol.
-    </td>
-  </tr>
-  <tr>
-    <td>
-      %(recipient.first_name)s
-    </td>
-    <td>
-      The email recipients first name.
-    </td>
-  </tr>
-  <tr>
-    <td>
-      %(recipient.last_name)s
-    </td>
-    <td>
-      The email recipients last name.
-    </td>
-  </tr>
-  <tr>
-    <td>
-      %(recipient.name)s
-    </td>
-    <td>
-      The email recipients full name, first and last.
-    </td>
-  </tr>
-  <tr>
-    <td>
-      %(recipient.username)s
-    </td>
-    <td>
-      The email recipients username.
-    </td>
-  </tr>
-  <tr>
-    <td>
-      %(issue.id)d
-    </td>
-    <td>
-      The issue number for this issue.
-    </td>
-  </tr>
-  <tr>
-    <td>
-      %(issue.url)s
-    </td>
-    <td>
-      The URL containing the full information on this issue.
-    </td>
-  </tr>
-  <tr>
-    <td>
-      %(issue.subject)s
-    </td>
-    <td>
-      The subject for this issue.
-    </td>
-  </tr>
-  <tr>
-    <td>
-      %(issue.description)s
-    </td>
-    <td>
-      The main description for this issue.
-    </td>
-  </tr>
-  <tr>
-    <td>
-      %(update.comment)s
-    </td>
-    <td>
-      The comment for the latest update to this issue. This will be empty if
-      the issue has never been updated, e.g. if the issue is only just
-      being created.
-    </td>
-  </tr>
-</table>
-
-<p>
-  There are many users connected to an issue, including the original
-  requester, the person who created the issue, the person who created
-  an issue update, etc. These are all available, and all have the same
-  fields available to them as the recipient does in the table
-  above. For example, «%(issue.assigned_to.email)s» is the email address of
-  the person assigned to fixing this issue. The list of available
-  users are desbribed in the table below.
-</p>
-
-<table class='striped'>
-  <tr>
-    <th>
-      User
-    </th>
-    <th>
-      Description
-    </th>
-  </tr>
-  <tr>
-    <td>
-      %(recipient)s
-    </td>
-    <td>
-      The person who will recieve the email.
-    </td>
-  </tr>
-  <tr>
-    <td>
-      %(issue.requester)s
-    </td>
-    <td>
-      The person who requested that the issue should be created.
-    </td>
-  </tr>
-  <tr>
-    <td>
-      %(issue.creator)s
-    </td>
-    <td>
-      The person who created the original issue.
-    </td>
-  </tr>
-  <tr>
-    <td>
-      %(issue.assigned_to)s
-    </td>
-    <td>
-      The person who is assigned to solving this issue.
-    </td>
-  </tr>
-  <tr>
-    <td>
-      %(update.creator)s
-    </td>
-    <td>
-      The person who made the latest update to the issue.
-    </td>
-  </tr>
-</table>
-
-
-<h2><a name='issue_contact_admin'>Purging the contact list</a></h2>
-<p>
-  Whenever a person who is not a Tuit user is assigned as CC for an
-  issue, or whenever a person sends an email to Tuit in relation to an
-  issue, a contact entry for that person is created. This contact
-  entry is used for e.g. autocompletion. Sometimes, it is desirable to
-  purge old contact entries, in order to make the suggestions given by
-  Tuit more relevant. To do this, take the following steps:
-</p>
-
-<ol>
-  <li>Access <a href='/tuit/admin/'>the administration interface</a>.</li>
-  <li>Click on the «change» link next to the item labeled <a href='/tuit/admin/ticket/contact/'>External contacts</a>.</li>
-  <li>Click on the contact you wish to remove</li>
-  <li>Click the remove button</a>
-</ol>
 
 <h1><a name='cmdb'>Tuit CMDB</a></h1>
 
@@ -717,22 +520,273 @@ Knowledge base:
 </ul>
 
 
+<h1><a name='admin'>Tuit administration</a></h1>
+
+Tuit is a highly customizabe tool. This section details some of the ways in which Tuit can be customized to suit your working environment. 
+{% if user.is_staff %} 
+You have administrative rights, so feel free to explore the <a href='/tuit/admin/doc/'>admin interface</a>. 
+{% else %} 
+Because you do not have administrative rights on this system, you can not actually customize this Tuit instance.
+{% endif %}
+
+
+<h2><a name='admin_status_category'>Changing the list of available statuses and categories</a></h2>
+<p>
+  Issue statuses and categories are editable through
+  the <a href='/tuit/admin'>administration backend</a>. The index page
+  of the backen has links to pages for editing the list of available
+  statuses and categories. These links take you to standard web
+  interfaces that allow you to add, edit and remove items from these
+  lists.
+</p>
+
+<h2><a name='admin_properties'>The Tuit properties table</a></h2>
+<p>
+Tuit stores as much of its system configuration as possible in the
+database, in order to make it easier to configure the system using
+only the web interface. Many important system settings are stored in
+the Properties table. Data in this table is stored in the JSON data
+serialisation format. Do not edit any settings in the properties table
+unless you know what you are doing, or you may stop the system from
+working. A future Tuit version will contain a user friendly front end
+for this system.
+</p>
+
+<h2><a name='admin_email_templates'>Changing the content of emails sent by Tuit</a></h2>
+<p>
+  Tuit is designed to be usable either through the web interface or
+  through email. When an issue is updated through email, an update is
+  sent to the people assigned to that ticket. In the web interface,
+  the user can specifically choose which parties should recive that
+  particular update. But for Tuit to be able to send these emails, one
+  must first specify template emails. This is done through
+  the <a href='#concepts_admin'>administration interface</a>.
+</p>
+<p>
+  Take the following steps:
+</p>
+<ol>
+  <li>Access <a href='/tuit/admin/'>the administration interface</a>.</li>
+  <li>Click on the «change» link next to the item labeled <a href='/tuit/admin/ticket/emailtemplate/'>Email templates</a>.</li>
+  <li>Select which template you wish to change</li>
+  <li>Edit the template. The subject is in plaintext, the body is HTML formated. A future version of Tuit will include a graphical html editor.</li>
+  <li>Click the save button</a>
+</ol>
+<p>
+  In order to insert specific data about a ticket or an update, there are special tags, beginning with a percent symbol that will be replaced with the suitable text when sending the email. These are described in the table below.
+</p>
+<table class='striped'>
+  <tr>
+    <th>
+      Tag
+    </th>
+    <th>
+      Description
+    </th>
+  </tr>
+  <tr>
+    <td>
+      %%
+    </td>
+    <td>
+      A single percent symbol.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      %(recipient.first_name)s
+    </td>
+    <td>
+      The email recipients first name.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      %(recipient.last_name)s
+    </td>
+    <td>
+      The email recipients last name.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      %(recipient.name)s
+    </td>
+    <td>
+      The email recipients full name, first and last.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      %(recipient.username)s
+    </td>
+    <td>
+      The email recipients username.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      %(recipient.email)s
+    </td>
+    <td>
+      The email recipients email address.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      %(issue.id)d
+    </td>
+    <td>
+      The issue number for this issue.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      %(issue.url)s
+    </td>
+    <td>
+      The URL containing the full information on this issue.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      %(issue.subject)s
+    </td>
+    <td>
+      The subject for this issue.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      %(issue.description)s
+    </td>
+    <td>
+      The main description for this issue.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      %(update.comment)s
+    </td>
+    <td>
+      The comment for the latest update to this issue. This will be empty if
+      the issue has never been updated, e.g. if the issue is only just
+      being created.
+    </td>
+  </tr>
+</table>
+
+<p>
+  There are many users connected to an issue, including the original
+  requester, the person who created the issue, the person who created
+  an issue update, etc. These are all available, and all have the same
+  fields available to them as the recipient does in the table
+  above. For example, «%(issue.assigned_to.email)s» is the email address of
+  the person assigned to fixing this issue. The list of available
+  users are desbribed in the table below.
+</p>
+
+<table class='striped'>
+  <tr>
+    <th>
+      User
+    </th>
+    <th>
+      Description
+    </th>
+  </tr>
+  <tr>
+    <td>
+      %(recipient)s
+    </td>
+    <td>
+      The person who will recieve the email.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      %(issue.requester)s
+    </td>
+    <td>
+      The person who requested that the issue should be created.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      %(issue.creator)s
+    </td>
+    <td>
+      The person who created the original issue.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      %(issue.assigned_to)s
+    </td>
+    <td>
+      The person who is assigned to solving this issue.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      %(update.creator)s
+    </td>
+    <td>
+      The person who made the latest update to the issue.
+    </td>
+  </tr>
+</table>
+<p>
+Some of the above fields may not always be available. For example, at
+issue creation time, there is no update, so all fields relating to the
+latest update will simply be empty.
+</p>
+
+<h2><a name='admin_contact'>Purging the contact list</a></h2>
+<p>
+  Whenever a person who is not a Tuit user is assigned as CC for an
+  issue, or whenever a person sends an email to Tuit in relation to an
+  issue, a contact entry for that person is created. This contact
+  entry is used for e.g. autocompletion. Sometimes, it is desirable to
+  purge old contact entries, in order to make the suggestions given by
+  Tuit more relevant. To do this, take the following steps:
+</p>
+
+<ol>
+  <li>Access <a href='/tuit/admin/'>the administration interface</a>.</li>
+  <li>Click on the «change» link next to the item labeled <a href='/tuit/admin/ticket/contact/'>External contacts</a>.</li>
+  <li>Click on the contact you wish to remove</li>
+  <li>Click the remove button</a>
+</ol>
+
+
+
+<h2><a name='admin_quickfill'>Changing the available quick fills</a></h2>
+
+<p>
+  This action can only be performed by users with access rights to the
+  admin back end. 
+
+  {% if user.is_staff %}
+  You currently have this right, and can perform the steps below if you wish. Keep in mind that your changes will apply for all users, not just yourself.
+  {% else %}
+  You currently do not have this right and can not perform the steps described below.
+  {% endif %}
+</p>
+<p>
+Quick fills are created using these steps:
+</p>
+  <ol>
+    <li>First, enter the administration back end, by clicking the link at the top of the screen.</li>
+    <li>First create a <em>Quick fill</em>. These only contain the description of what will be filled out.</li>
+    <li>Once that has been done, create a <em>Quick fill item</em>. A quick fill item contains three fields; the quick fill this item applies to (Pick the one you just created), the field which is filled out and the value to set the field to..</li>
+    <li>Repeat step 3 as many times as is suitable.</li>
+  </ol>
+
+
 
 
 <h1><a name='concepts'>Tuit concepts</a></h1>
-
-<h2><a name='concepts_autocompletion'>Autocompletion</a></h2>
-<p>
-  Autocompletion or automatic completion, is technique used in many
-  places in Tuit. It is useful when picking between a very large
-  selection of items, e.g. in situations where a drop down box is
-  unsuitable, because the number of items in the list would be
-  prohibitive. Autocompletion uses a simple text input field, where
-  the user can enter text, and the entire list of items will be
-  searched, and any matching items will be shown. The user can then
-  use the up and down arrows to move around in the list and press the
-  enter key to select the highlighted item.
-</p>
 
 <h2><a name='concepts_admin'>The administration back end</a></h2>
 <p>
@@ -747,13 +801,92 @@ Knowledge base:
 </p>
 {% if user.is_staff %}
 <p>
-  A short introduction to all the items that can be configured using
+  For a short introduction to all the items that can be configured using
   the administration interface,
   click <a href='/tuit/admin/doc/'>here</a>.
 </p>
 {% endif %}
 
 </div>
+
+<h2><a name='concepts_autocompletion'>Autocompletion</a></h2>
+<p>
+  Autocompletion or automatic completion, is technique used in many
+  places in Tuit. It is useful when picking between a very large
+  selection of items, e.g. in situations where a drop down box is
+  unsuitable, because the number of items in the list would be
+  prohibitive. Autocompletion uses a simple text input field, where
+  the user can enter text, and the entire list of items will be
+  searched, and any matching items will be shown. The user can then
+  use the up and down arrows to move around in the list and press the
+  enter key to select the highlighted item.
+</p>
+
+<h2><a name='concepts_cmdb'>CMDB</a></h2>
+<p>
+CMDB: Configuration Managment DataBase, a tool for tracking
+important assets in an IT environment and the relationships between
+them. The basic elements of a CMDB are called Configuration Items (CI).
+A CI can be a physical server, a software service, or even a person. Any
+item that you want to track using the CMDB is a CI.
+</p>
+
+<h2><a name='concepts_incident'>Incident</a></h2>
+<p>
+An Incident is an unplanned interruption or a reduction in the quality
+of an IT Service. A failure that does not impact the Service, such as
+failure of one disk from a mirror set, is also an Incident and should
+be reported as such. 
+</p>
+
+<h2><a name='concepts_itil'>ITIL</a></h2>
+<p>
+  Information Technology Infrastructure Library or ITIL is a framework
+  for organising IT Service Provider organizations. It is based on
+  best-practices in the IT industry and provides a set of concepts and
+  policies for managing IT infrastructure, development and organisation.
+</p>
+<p>
+  Because Tuit is meant to be used to support an ITIL-based workflow,
+  a few of the core concepts of ITIL are described in this
+  document. But this document is about the Tuit software, and not
+  about ITIL in general. For a complete overview of ITIL, including information about how to apply ITIL to your organization, please see <a href='http://www.itframeworks.org/wiki/Information_Technology_Infrastructure_Library'>the IT Frameworks Wiki</a>.
+  
+</p>
+
+<h2><a name='concepts_kb'>Knowledge base</a></h2>
+<p>
+Knowledge base: A collection of product and/or site specific
+information, based on experiences by the community members or site
+personell supplementing official documentation. For more information
+on ITIL concepts,
+see <a href='http://www.itframeworks.org/wiki/Information_Technology_Infrastructure_Library'>the
+IT Frameworks Wiki</a>.
+</p>
+<h2><a name='concepts_problem'>Problem</a></h2>
+<p>
+A Problem is the underlying cause of one or more Incidents. Problems
+are to be handled by Problem Management, but if the solutions involve
+Changes they must be approved by Change Management before being
+implemented. For more information on ITIL concepts,
+see <a href='http://www.itframeworks.org/wiki/Information_Technology_Infrastructure_Library'>the
+IT Frameworks Wiki</a>.
+</p>
+<h2><a name='concepts_rfc'>RfC</a></h2>
+<p>
+A Request for Change or RfC is an official request for a Change to be
+made. The proposal includes details of the Change, including a
+detailed roll-back plan, and is sent to Change Management. For more
+information on ITIL concepts,
+see <a href='http://www.itframeworks.org/wiki/Information_Technology_Infrastructure_Library'>the
+IT Frameworks Wiki</a>.
+</p>
+
+<!--
+<h2><a name='concepts_'></a></h2>
+<p>
+</p>
+-->
 
 
 {% endblock %}
