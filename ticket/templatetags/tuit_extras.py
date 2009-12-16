@@ -51,6 +51,8 @@ def user_format(value):
 
 
 user_format.is_safe = False
+toggle_idx = 0
+
 
 @register.filter
 def description_format(value):
@@ -58,6 +60,7 @@ def description_format(value):
     Print out a table of description items
     """
 
+    global toggle_idx
     if value is None:
         return ""
 
@@ -74,8 +77,23 @@ def description_format(value):
             return "%(field)s: %(comment)s" % ev
         else:
             return str(ev)
+    toggle_idx +=1
 
-    return "<a onclick='$(event.target).next().toggle();'>"+_("Toggle details")+"</a><ul style='display:none'>" + ("".join(map(lambda x:"<li>"+format_event(x)+"</li>", value['events']))) + "</ul>"
+    return """
+<a onclick='$("#toggle_%(idx)d").toggle();'>
+    %(text)s
+</a>
+<ul style='display:none' id='toggle_%(idx)d'> 
+  %(list)s
+</ul>
+""" % { 'idx':toggle_idx,
+        'text':_("Toggle details"),
+        'list':("".join(map(lambda x:"<li>"+format_event(x)+"</li>", value['events']))),
+        }
+
+
+
+#    return ("<a id='toggle_%(idx)d' onclick='$('#toggle_%(idx)d').next().toggle();'>"% {'idx':toggle_idx})+_("Toggle details")+"</a><ul style='display:none'>" + ("".join(map(lambda x:"<li>"+format_event(x)+"</li>", value['events']))) + "</ul>"
 
 user_format.is_safe = False
 
