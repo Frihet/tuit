@@ -15,6 +15,7 @@
 	
 $.fn.extend({
 	autocomplete: function(urlOrData, options) {
+
 		var isUrl = typeof urlOrData == "string";
 		options = $.extend({}, $.Autocompleter.defaults, {
 			param:'q',
@@ -56,6 +57,9 @@ $.fn.extend({
 	},
 	search: function(handler) {
 		return this.trigger("search", [handler]);
+	},
+	searchPartial: function(handler) {
+		return this.trigger("searchPartial", [handler]);
 	},
 	flushCache: function() {
 		return this.trigger("flushCache");
@@ -150,7 +154,7 @@ $.Autocompleter = function(input, options) {
 			
 			// matches also semicolon
 			case options.multiple && $.trim(options.multipleSeparator) == "," && KEY.COMMA:
-			case KEY.TAB:
+			    //case KEY.TAB:
 			case KEY.RETURN:
 				if( selectCurrent() ) {
 					// stop default to prevent a form submit, Opera needs special handling
@@ -184,23 +188,56 @@ $.Autocompleter = function(input, options) {
 			onChange(0, true);
 		}
 	}).bind("search", function() {
+
 		// TODO why not just specifying both arguments?
 		var fn = (arguments.length > 1) ? arguments[1] : null;
 		//tuit.debug(trimWords($input.val()));
 		function findValueCallback(q, data) {
-		    //tuit.debug('Callback called with param "' + q + '" and "' + data + '"');
+		    //		    tuit.debug('Callback called with param "' + q + '" and data length"' + data.length + '"');
 			var result;
 			if( data && data.length ) {
-				for (var i=0; i < data.length; i++) {
-					if( data[i].result.toLowerCase() == q.toLowerCase() ) {
-						result = data[i];
-						break;
-					}
+			    
+			    for (var i=0; i < data.length; i++) {
+				if( data[i].result.toLowerCase() == q.toLowerCase() ) {
+				    result = data[i];
+				    break;
 				}
+			    }
 			}
 			if( typeof fn == "function" ) fn(result);
 			else $input.trigger("result", result && [result.data, result.value]);
 		}
+		$.each(trimWords($input.val()), function(i, value) {
+			request(value, findValueCallback, findValueCallback);
+		});
+	}).bind("searchPartial", function() {
+		// TODO why not just specifying both arguments?
+		var fn = (arguments.length > 1) ? arguments[1] : null;
+		//tuit.debug(trimWords($input.val()));
+		function findValueCallback(q, data) {
+		    //tuit.debug('Callback called with param "' + q + '" and data length ' + data.length);
+		    var result;
+		    if( data && data.length ) {
+			
+			if(data.length == 1 && q.toLowerCase() == data[0].result.toLowerCase().substring(0, q.length)) {
+			    result = data[0];
+			} else {
+			    for (var i=0; i < data.length; i++) {
+				if( data[i].result.toLowerCase() == q.toLowerCase() ) {
+				    result = data[i];
+				    break;
+				}
+				if( data[i].result.split(' ')[0].toLowerCase() == q.toLowerCase() ) {
+				    result = data[i];
+				    break;
+				}
+			    }
+			}
+		    }
+		    if( typeof fn == "function" ) fn(result);
+		    else $input.trigger("result", result && [result.data, result.value]);
+		}
+		
 		$.each(trimWords($input.val()), function(i, value) {
 			request(value, findValueCallback, findValueCallback);
 		});
@@ -305,29 +342,41 @@ $.Autocompleter = function(input, options) {
 	};
 
 	function hideResultsNow() {
-		var wasVisible = select.visible();
-		select.hide();
-		clearTimeout(timeout);
-		stopLoading();
-		if (options.mustMatch) {
-			// call search and run callback
-			$input.search(
-				function (result){
-					// if no value found, clear the input box
-					if( !result ) {
-						if (options.multiple) {
-							var words = trimWords($input.val()).slice(0, -1);
-							$input.val( words.join(options.multipleSeparator) + (words.length ? options.multipleSeparator : "") );
-						}
-						else
-							$input.val( "" );
-					}
-				}
-			);
-		}
-		if (wasVisible)
-			// position cursor at end of input field
-			$.Autocompleter.Selection(input, input.value.length, input.value.length);
+	    var wasVisible = select.visible();
+	    select.hide();
+	    clearTimeout(timeout);
+	    stopLoading();
+	    if (options.mustMatch) {
+		//		tuit.debug('checking the match');
+		// call search and run callback
+		var outValue = "";
+		$input.searchPartial( function (result){
+			//tuit.debug('Got match thing ' + result.result);
+			// if no value found, clear the input box
+			if( !result ) {
+			    /*			    if (options.multiple) {
+				var words = trimWords($input.val()).slice(0, -1);
+				$input.val( words.join(options.multipleSeparator) + (words.length ? options.multipleSeparator : "") );
+			    }
+			    else
+			    $input.val( "" );*/
+			} else {
+			    outValue += result.result;
+			    if (options.multiple) {
+				outValue += options.multipleSeparator;
+			    }
+			    //tuit.debug('bbb');
+			    //tuit.debug('Total output so far is ', outValue);
+			    // If value is found, it may be a match from a partial search, we need to replace it to be sure
+			    
+			}
+			$input.val(outValue);
+		    }
+		    );
+	    }
+	    if (wasVisible)
+		// position cursor at end of input field
+		$.Autocompleter.Selection(input, input.value.length, input.value.length);
 	};
 
 	function receiveData(q, data) {
