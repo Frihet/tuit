@@ -38,30 +38,24 @@ class QLeftOuterJoins(Q):
 def make_Q(query, fld):
     q=None
     for i in query.split(' '):
-        print 'TRALALA', i
-
         if i == '-':
             continue
         nq = None
-        for f in fld:
-            kw={f+'__icontains': i,}
-            nq2 = Q(**kw)
-            if nq:
-                nq = nq | nq2
-                print 'OR'
-            else:
-                nq=nq2
-
-
         try:
             num = int(i)
-            kw={'id': num,}
-            nq = nq | Q(**kw)            
+            kw={'id__exact': num,}
+            nq = Q(**kw)            
         except:
-            pass
+            for f in fld:
+                kw={f+'__icontains': i,}
+                nq2 = Q(**kw)
+                if nq:
+                    nq = nq | nq2
+                else:
+                    nq=nq2
+
         if q:
             q = q & nq
-            print 'AND'
         else:
             q=nq
     return QLeftOuterJoins(q)
@@ -72,7 +66,6 @@ def user_complete(request):
     query = request.GET['query']
     q = make_Q(query, ('username','first_name','last_name','email',))
     q = User.objects.filter(q).order_by('username')
-
 
     if 'search' in request.GET:
         u = {'ResultSet':{'totalResultsAvailable':len(q),
@@ -98,10 +91,14 @@ def user_location(request):
     """
     Returns the location data for the specified username as a json dict.
     """
-    username = request.GET['username']
-    p = User.objects.get(username=username).get_profile()
-    res = {'location':p.location,'building':p.building, 'office':p.office}
-    return HttpResponse(to_json(res))
+    try:
+        username = request.GET['username']
+        p = User.objects.get(username=username).get_profile()
+        res = {'location':p.location,'building':p.building, 'office':p.office}
+        return HttpResponse(to_json(res))
+    except:
+        raise
+#        return HttpResponse("{}")
 
 @login_required
 def issue_complete(request):

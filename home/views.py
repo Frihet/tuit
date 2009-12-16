@@ -18,7 +18,7 @@ def home(request):
     """
     Basic home view - show a few status widgets and nothing else. Widget.py does the heavy lifting...
     """
-    status_closed = Status.objects.get(id=properties["issue_closed_id"])
+    status_closed = properties["issue_closed_id"]
     if not hasattr(status_closed,'__iter__'):
         status_closed=[status_closed]
     keys={}

@@ -55,7 +55,7 @@ def show(request, id=None, name=None):
     else:
         return None
     keys={}
-    status_closed = Status.objects.get(id=properties["issue_closed_id"])
+    status_closed=properties["issue_closed_id"]
     if not hasattr(status_closed,'__iter__'):
         status_closed=[status_closed]
 
@@ -65,14 +65,14 @@ def show(request, id=None, name=None):
         last_updates = last_updates.filter(internal = False)
 
     keys['widgets'] = [
+        Widget(_('All issues requested by this user'),
+               Issue.objects.filter(requester=user).order_by('creation_date'),
+               request,
+               'requested'),
         Widget(_('Open issues assigned to this user'),
                Issue.objects.exclude(current_status__in = status_closed).filter(assigned_to=user).order_by('creation_date'),
                request,
                'owned'),
-        Widget(_('Open issues requested by this user'),
-               Issue.objects.exclude(current_status__in = status_closed).filter(requester=user).order_by('creation_date'),
-               request,
-               'requested'),
         Widget(_('This users last updates'),
                last_updates, request, 'updates',class_names='full_width'),
         ]

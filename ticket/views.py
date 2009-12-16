@@ -277,6 +277,7 @@ def i18n(request):
            'Date.dayNames': [_('Sunday'),_('Monday'),_('Tuesday'),_('Wednesday'),_('Thursday'),_('Friday'),_('Saturday'),],
            'Date.monthNames': [_('January'), _('February'), _('March'), _('April'), _('May'), _('June'), _('July'), _('August'), _('September'), _('October'), _('November'), _('December')]
            }
+#    Cache-Control: private, max-age=3600, must-revalidate
     return tuit_render('i18n.js', {'strings':trans}, request)
     
 @login_required
