@@ -40,7 +40,8 @@ class Widget:
     @property
     def pager(self):
         """
-        Returns html for a complete pager thingee. A bit hackish.
+        Returns html for a complete pager thingee. Code is currently a
+        bit hackish.
         """
         def page_url(page):
             d={}#self.request.GET.copy()#dict(self.request.GET.iteritems())
@@ -72,7 +73,7 @@ class Widget:
     @property
     def html(self):
         """
-        Render the widget to html
+        Render the widget to html, with pagers, header and everything.
         """
         start_time = datetime.now()
 
