@@ -477,10 +477,10 @@ Knowledge base:
 </p>
 
 <ul>
-<li><a href='/cgi-bin/foswiki/view/System/TwentyMinuteTutorial'>A twenty minute tutorial on Foswiki</a></li>
-<li><a href='/cgi-bin/foswiki/view/System/UsersGuide'>User's guide</a></li>
-<li><a href='/cgi-bin/foswiki/view/System/FrequentlyAskedQuestions'>FAQ</a> - this is also useful to get tips and tricks on how to set up a knowledge base.</li>
-<li><a href='/cgi-bin/foswiki/view/System/ReferenceManual'>Reference Manual</a> - mainly useful for administrators.</li>
+  <li><a href='/cgi-bin/foswiki/view/System/TwentyMinuteTutorial'>A twenty minute tutorial on Foswiki</a></li>
+  <li><a href='/cgi-bin/foswiki/view/System/UsersGuide'>User's guide</a></li>
+  <li><a href='/cgi-bin/foswiki/view/System/FrequentlyAskedQuestions'>FAQ</a> - this is also useful to get tips and tricks on how to set up a knowledge base.</li>
+  <li><a href='/cgi-bin/foswiki/view/System/ReferenceManual'>Reference Manual</a> - mainly useful for administrators.</li>
 </ul>
 
 
@@ -507,28 +507,24 @@ Knowledge base:
 </p>
 {% endif %}
 
-
-<p>
-  To view the log, simply go to 
-</p>
-
-<ul>
-<li><a href='/cgi-bin/foswiki/view/System/TwentyMinuteTutorial'>A twenty minute tutorial on Foswiki</a></li>
-<li><a href='/cgi-bin/foswiki/view/System/UsersGuide'>User's guide</a></li>
-<li><a href='/cgi-bin/foswiki/view/System/FrequentlyAskedQuestions'>FAQ</a> - this is also useful to get tips and tricks on how to set up a knowledge base.</li>
-<li><a href='/cgi-bin/foswiki/view/System/ReferenceManual'>Reference Manual</a> - mainly useful for administrators.</li>
-</ul>
-
-
 <h1><a name='admin'>Tuit administration</a></h1>
+<p>
+  Tuit is a highly customizabe tool. This section details some of the
+  ways in which Tuit can be customized to suit your working
+  environment.
 
-Tuit is a highly customizabe tool. This section details some of the ways in which Tuit can be customized to suit your working environment. 
-{% if user.is_staff %} 
-You have administrative rights, so feel free to explore the <a href='/tuit/admin/doc/'>admin interface</a>. 
-{% else %} 
-Because you do not have administrative rights on this system, you can not actually customize this Tuit instance.
-{% endif %}
+  {% if user.is_staff %} 
 
+  You have administrative rights, so feel free to explore
+  the <a href='/tuit/admin/doc/'>admin interface</a>.
+
+  {% else %} 
+
+  Because you do not have administrative rights on this system, you
+  can not actually customize this Tuit instance.
+
+  {% endif %}
+</p>
 
 <h2><a name='admin_status_category'>Changing the list of available statuses and categories</a></h2>
 <p>
@@ -542,14 +538,14 @@ Because you do not have administrative rights on this system, you can not actual
 
 <h2><a name='admin_properties'>The Tuit properties table</a></h2>
 <p>
-Tuit stores as much of its system configuration as possible in the
-database, in order to make it easier to configure the system using
-only the web interface. Many important system settings are stored in
-the Properties table. Data in this table is stored in the JSON data
-serialisation format. Do not edit any settings in the properties table
-unless you know what you are doing, or you may stop the system from
-working. A future Tuit version will contain a user friendly front end
-for this system.
+  Tuit stores as much of its system configuration as possible in the
+  database, in order to make it easier to configure the system using
+  only the web interface. Many important system settings are stored in
+  the Properties table. Data in this table is stored in the JSON data
+  serialisation format. Do not edit any settings in the properties
+  table unless you know what you are doing, or you may stop the system
+  from working. A future Tuit version will contain a user friendly
+  front end for this system.
 </p>
 
 <h2><a name='admin_email_templates'>Changing the content of emails sent by Tuit</a></h2>
@@ -566,14 +562,32 @@ for this system.
   Take the following steps:
 </p>
 <ol>
-  <li>Access <a href='/tuit/admin/'>the administration interface</a>.</li>
-  <li>Click on the «change» link next to the item labeled <a href='/tuit/admin/ticket/emailtemplate/'>Email templates</a>.</li>
-  <li>Select which template you wish to change</li>
-  <li>Edit the template. The subject is in plaintext, the body is HTML formated. A future version of Tuit will include a graphical html editor.</li>
-  <li>Click the save button</a>
+  <li>
+    Access <a href='/tuit/admin/'>the administration
+    interface</a>.
+  </li>
+  <li>
+    Click on the «change» link next to the item
+    labeled <a href='/tuit/admin/ticket/emailtemplate/'>Email
+    templates</a>.
+  </li>
+  <li>
+    Select which template you wish to change.
+  </li>
+  <li>
+    Edit the template. The subject is in plaintext, the body is HTML
+    formated. A future version of Tuit will include a graphical html
+    editor.
+  </li>
+  <li>
+    Click the save button.
+  </li>
 </ol>
 <p>
-  In order to insert specific data about a ticket or an update, there are special tags, beginning with a percent symbol that will be replaced with the suitable text when sending the email. These are described in the table below.
+  In order to insert specific data about a ticket or an update, there
+  are special tags, beginning with a percent symbol that will be
+  replaced with the suitable text when sending the email. These are
+  described in the table below.
 </p>
 <table class='striped'>
   <tr>
@@ -737,9 +751,9 @@ for this system.
   </tr>
 </table>
 <p>
-Some of the above fields may not always be available. For example, at
-issue creation time, there is no update, so all fields relating to the
-latest update will simply be empty.
+  Some of the above fields may not always be available. For example,
+  at issue creation time, there is no update, so all fields relating
+  to the latest update will simply be empty.
 </p>
 
 <h2><a name='admin_contact'>Purging the contact list</a></h2>
@@ -776,12 +790,12 @@ latest update will simply be empty.
 <p>
 Quick fills are created using these steps:
 </p>
-  <ol>
-    <li>First, enter the administration back end, by clicking the link at the top of the screen.</li>
-    <li>First create a <em>Quick fill</em>. These only contain the description of what will be filled out.</li>
-    <li>Once that has been done, create a <em>Quick fill item</em>. A quick fill item contains three fields; the quick fill this item applies to (Pick the one you just created), the field which is filled out and the value to set the field to..</li>
-    <li>Repeat step 3 as many times as is suitable.</li>
-  </ol>
+<ol>
+  <li>First, enter the administration back end, by clicking the link at the top of the screen.</li>
+  <li>First create a <em>Quick fill</em>. These only contain the description of what will be filled out.</li>
+  <li>Once that has been done, create a <em>Quick fill item</em>. A quick fill item contains three fields; the quick fill this item applies to (Pick the one you just created), the field which is filled out and the value to set the field to..</li>
+  <li>Repeat step 3 as many times as is suitable.</li>
+</ol>
 
 
 
@@ -824,19 +838,28 @@ Quick fills are created using these steps:
 
 <h2><a name='concepts_cmdb'>CMDB</a></h2>
 <p>
-CMDB: Configuration Managment DataBase, a tool for tracking
-important assets in an IT environment and the relationships between
-them. The basic elements of a CMDB are called Configuration Items (CI).
-A CI can be a physical server, a software service, or even a person. Any
-item that you want to track using the CMDB is a CI.
+  CMDB: Configuration Managment DataBase, a tool for tracking
+  important assets in an IT environment and the relationships between
+  them. The basic elements of a CMDB are called Configuration Items
+  (CI).  A CI can be a physical server, a software service, or even a
+  person. Any item that you want to track using the CMDB is a CI.
 </p>
 
 <h2><a name='concepts_incident'>Incident</a></h2>
 <p>
-An Incident is an unplanned interruption or a reduction in the quality
-of an IT Service. A failure that does not impact the Service, such as
-failure of one disk from a mirror set, is also an Incident and should
-be reported as such. 
+  An Incident is an unplanned interruption or a reduction in the
+  quality of an IT Service. A failure that does not impact the
+  Service, such as failure of one disk from a mirror set, is also an
+  Incident and should be reported as such.
+</p>
+
+<h2><a name='concepts_issue'>Issue</a></h2>
+<p>
+  An Issue in Tuit represents either an Incident, a Problem or an
+  RfC. Though different types of issues may have different fields and
+  other minor differences, they behave mostly the same. For more
+  specific information about how to create, update and close issues,
+  see the section <a href='#issues'>Tuit Issue Management</a>.
 </p>
 
 <h2><a name='concepts_itil'>ITIL</a></h2>
@@ -850,8 +873,10 @@ be reported as such.
   Because Tuit is meant to be used to support an ITIL-based workflow,
   a few of the core concepts of ITIL are described in this
   document. But this document is about the Tuit software, and not
-  about ITIL in general. For a complete overview of ITIL, including information about how to apply ITIL to your organization, please see <a href='http://www.itframeworks.org/wiki/Information_Technology_Infrastructure_Library'>the IT Frameworks Wiki</a>.
-  
+  about ITIL in general. For a complete overview of ITIL, including
+  information about how to apply ITIL to your organization, please
+  see <a href='http://www.itframeworks.org/wiki/Information_Technology_Infrastructure_Library'>the
+  IT Frameworks Wiki</a>.
 </p>
 
 <h2><a name='concepts_kb'>Knowledge base</a></h2>
@@ -863,6 +888,7 @@ on ITIL concepts,
 see <a href='http://www.itframeworks.org/wiki/Information_Technology_Infrastructure_Library'>the
 IT Frameworks Wiki</a>.
 </p>
+
 <h2><a name='concepts_problem'>Problem</a></h2>
 <p>
 A Problem is the underlying cause of one or more Incidents. Problems
@@ -872,6 +898,7 @@ implemented. For more information on ITIL concepts,
 see <a href='http://www.itframeworks.org/wiki/Information_Technology_Infrastructure_Library'>the
 IT Frameworks Wiki</a>.
 </p>
+
 <h2><a name='concepts_rfc'>RfC</a></h2>
 <p>
 A Request for Change or RfC is an official request for a Change to be
