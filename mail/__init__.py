@@ -866,6 +866,65 @@ class MailGW:
 
         return 0
 
+    def create_issue(self, message):
+        subject = message.subject
+        (content, attachments) = message.extract_content()
+        text = ("<pre>" + cgi.escape(content) + "</pre>")
+        impact = properties['issue_default_impact']
+        urgency = properties['issue_default_urgency']
+
+        u = User.objects.filter(email=message.from_address)
+        if len(u) == 0:
+            self.logger.error('Unknown user: %s'% message.from_address)
+            return 'unmatched_user'
+
+        user=u[0]
+        print 'User is', user
+        
+        i = Issue()
+        i.creator = user
+        
+        type = IssueType.objects.get(id=properties['issue_default_type'])
+        category = properties['issue_default_category']
+        status = properties['issue_default_status']
+
+
+        data = dict(current_status_string=str(status),
+                    assigned_to_string=None,
+                    requester_string=user.username,
+                    subject = subject,
+                    description = text,
+                    impact_string = str(impact),
+                    urgency_string = str(urgency),
+                    category_string=str(category),
+                    ci_string="",
+                    )
+
+        i.creator=user
+        i.type = type
+
+        events = i.apply_post(data)
+
+        i.create_description='[]'
+        err = i.validate()
+        if len(err):
+            self.logger.error('Validation error while saving new issue: %s' % err)
+            return 'save_error'
+        try:
+            i.save()
+            events.extend(i.apply_post(data))
+            i.description_data={'type':'web','events':events}
+            i.save()
+        except:
+            import traceback as tb
+            msg = tb.format_exc()
+            self.logger.error('Unknown error while saving new issue: %s' % msg)
+            return 'save_error'
+
+        self.logger.info('Created issue with id %d' % i.id)
+        return 'new_issue'
+
+
     def process_message(self, message):
         (content, attachments) = message.extract_content()
         
@@ -873,14 +932,13 @@ class MailGW:
 
         id = extract_message_id(message.subject)
         if id is None:
-            self.logger.error("Message %s could not be matched to any issue" % message.subject)
-            return 'unmatched_issue'
+            return self.create_issue(message)
 
         try:
             i = Issue.objects.get(id=id)
         except:
-            self.logger.error("Recived email with subject %s, extracted issue id %d, but no such issue could be found")
-            return 'unmatched_issue'
+            self.logger.error("Recived email with subject %s, extracted issue id %d, but no such issue could be found. Treating the message as a new issue.")
+            return self.create_issue(message)
         user = None
         contact = None
         try:
