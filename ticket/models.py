@@ -333,6 +333,9 @@ class Issue(models.Model):
     location = models.CharField(maxlength=256, blank=True)
     building = models.CharField(maxlength=256, blank=True)
     office = models.CharField(maxlength=256, blank=True)
+    telephone = models.TextField(maxlength=512, blank=True)
+    mobile = models.TextField(maxlength=512, blank=True)
+    pc = models.TextField(maxlength=512, blank=True)
 
     # Any errors encoundered during apply_post go here.
     __errors={}
@@ -443,12 +446,7 @@ class Issue(models.Model):
         """
         Used for widget rendering
         """
-        res = ""
-
-        for col in columns:
-            res += self.html_cell(col)
-            
-        return "<tr>%s</tr>" % res
+        return map(self.html_cell, columns)
 
     def html_cell(self, col):
         """
@@ -460,20 +458,22 @@ class Issue(models.Model):
                     return ''
                 return user.tuit_description
 
-            return "<td>" + {
+            return {
                 'name':lambda: "<a href='%s'>%d - %s</a>" % (self.url_internal,self.id, self.subject),
                 'priority':lambda: "%s" % self.priority,
                 'owner':lambda: user_desc(self.assigned_to),
                 'requester':lambda: user_desc(self.requester),
-                }[col]() + "</td>"
+                }[col]() 
         except:
             logging.getLogger('ticket').error('Issue.html_cell failed while fetching column %s for issue %d' %
                                               (col,self.id))
             raise
         
-
     @property
     def priority(self):
+        if 'priority_matrix' in properties:
+            print 'LALALA', self.impact, self.urgency
+            return properties['priority_matrix'][self.impact-1][self.urgency-1]
         return self.impact+self.urgency
 
     def set_description_data(self, data):
@@ -499,7 +499,7 @@ class Issue(models.Model):
         #print 'requester is', self.requester
         old = {}
 
-        attrs = ['assigned_to_string','impact_string','urgency_string','requester_string','current_status_string','subject','description','category_string','location','building','office']
+        attrs = ['assigned_to_string','impact_string','urgency_string','requester_string','current_status_string','subject','description','category_string','location','building','office','telephone','mobile','pc']
 
         if self.id:
             attrs.extend(['ci_string','co_responsible_string','cc_string','requester_string','dependencies_string'])
@@ -747,7 +747,7 @@ class Issue(models.Model):
             if name == '':
                 continue
             id = get_ci_id(name)
-            desc = name.split(' ')[2]
+            desc = name.split(' ',2)[2]
             self.cidependency_set.create(ci_id=id, description = desc, view_order = i)
             i = i+1
 
@@ -1021,29 +1021,29 @@ class IssueUpdate(models.Model):
         """
         Used for widget rendering.
         """
-
-        res = ""
-
-        for col in columns:
+        
+        def html_cell(col):
             try:
+                
                 if col == 'update':
                     def truncate(str, l):
                         if len(str) > l:
                             return str[0:l] + "..."
                         return str
-                    res += "<td>"+truncate(remove_html_tags(self.comment),64)+ "</td>"
+                    text = truncate(remove_html_tags(self.comment),24)
+                    return "<a href='%s'>%s</a>" % (self.issue.url_internal, text)
 
                 elif col == 'creation_date':
-                    res += "<td>"+datetime_format(self.creation_date)+ "</td>"
+                    return datetime_format(self.creation_date)
                 else:
-                    res += self.issue.html_cell(col)
+                    return self.issue.html_cell(col)
             except:
                 import traceback as tb
                 tb.print_exc()
                 raise
-            
-        return "<tr>%s</tr>" % res
 
+        return map(html_cell, columns)
+            
     
     
 class IssueUpdateAttachment(models.Model):
@@ -1237,22 +1237,20 @@ class DbLogRecord(models.Model):
         Used for widget rendering
         """
         
-        res = ""
-
-        for col in columns:
+        def html_cell(col):
             try:
-                res += "<td>" + {
+                return{
                     'category_name':lambda: self.record_type.name,
                     'lvl':lambda: "%s" % self.lvl,
-                    'msg':lambda: self.msg,
+                    'msg':lambda: "<pre>%s</pre>" % self.msg,
                     'log_date':lambda: datetime_format(self.log_date),
-                    }[col]() + "</td>"
+                    }[col]() 
             except:
                 import traceback as tb
                 tb.print_exc()
                 raise
-            
-        return "<tr>%s</tr>" % res
+
+        return map(html_cell, columns)
 
     def __init__(self, *arg, **kw):
 
@@ -1323,3 +1321,7 @@ class UserProfile(models.Model):
     location = models.TextField(maxlength=512, blank=True)
     building = models.TextField(maxlength=512, blank=True)
     office = models.TextField(maxlength=512, blank=True)
+    telephone = models.TextField(maxlength=512, blank=True)
+    mobile = models.TextField(maxlength=512, blank=True)
+    pc = models.TextField(maxlength=512, blank=True)
+    

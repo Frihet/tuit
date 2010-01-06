@@ -108,6 +108,7 @@ def new(request, type_name=None):
                 i.save()
                 
                 # If everything went ok with form submission, this is where we return
+                logging.getLogger('ticket').info('Created issue with id %d' % i.id)
                 return HttpResponseRedirect('/tuit/ticket/view/%d' % i.id) # Redirect after successfull POST
 
         # This code is only reached oif we get an error while processing the form

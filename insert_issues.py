@@ -60,7 +60,7 @@ def create_user_data():
         u.is_superuser = True
         u.save()
 #        print u.id
-        p = UserProfile(user=u, location="fhi", building="Stora huset", office="5")
+        p = UserProfile(user=u, location="fhi", building="Stora huset", office="5",telephone='12345',mobile='23456',pc='69')
         p.save()
         sd_users.append(u)
     print 'SD created'
@@ -79,7 +79,7 @@ def create_user_data():
         u.save()
         u.groups.add(random_element(other_group))
         u.save()
-        p = UserProfile(user=u, location=random_location(), building=random_building(), office=str(random.randint(1,200)))
+        p = UserProfile(user=u, location=random_location(), building=random_building(), office=str(random.randint(1,200)),telephone='12345',mobile='23456',pc='69')
         p.save()
         other_users.append(u)
     print 'Users created'
@@ -312,6 +312,7 @@ drop table ticket_issue cascade;
 drop table ticket_contact cascade;
 drop table ticket_dblogrecord cascade;
 drop table ticket_dblogrecordtype cascade;
+drop table ticket_userprofile cascade;
 drop table auth_user cascade;
 drop table auth_group cascade;
 drop table auth_message cascade;

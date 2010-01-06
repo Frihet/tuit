@@ -72,6 +72,34 @@
       </td>
     </tr>
 
+<tr>
+  <td>
+    <label for='telephone'>{%trans "Telephone" %}</label>
+  </td>
+  <td>
+    {{ issue.telephone }}
+  </td>
+</tr>
+
+<tr>
+  <td>
+    <label for='mobile'>{%trans "Mobile phone" %}</label>
+  </td>
+  <td>
+    {{ issue.mobile }}
+  </td>
+</tr>
+
+<tr>
+  <td>
+    <label for='pc'>{%trans "PC number" %}</label>
+  </td>
+  <td>
+    {{ issue.pc }}
+  </td>
+</tr>
+
+
     <tr>
       <td class='label'>
 	{%trans "Status" %}
@@ -103,10 +131,10 @@
 
     <tr>
       <td class='label'>
-	{%trans "Priority (Impact + Urgency)" %}
+	{%trans "Priority (Impact / Urgency)" %}
       </td>
       <td>
-	{{ issue.priority }} ({{ issue.impact }} + {{ issue.urgency }}) 
+	{{ issue.priority }} ({{ issue.impact }} / {{ issue.urgency }}) 
       </td>
     </tr>
 
