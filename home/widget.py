@@ -11,7 +11,9 @@ class Widget:
     the results.
     """
 
-    def __init__(self, name, items, request, slug='issues', columns=None, item_count=10,class_names=""):
+    def __init__(self, name, items, request, 
+                 slug='issues', columns=None, item_count=10,
+                 class_names="",style='table'):
         """
         Construct the widget. The items need to be a django orm search
         result. No limit or other silliness should be pallied, the
@@ -24,6 +26,7 @@ class Widget:
         self.item_count = item_count
         self.request = request
         self.class_names = class_names
+        self.style = style
 
     @property
     def current_page(self):
@@ -69,7 +72,7 @@ class Widget:
         else:
             return "&nbsp;".join(map(render_item, range(1,self.current_page+5))) + "..." + render_item(pages) 
 
-        
+
     @property
     def html(self):
         """
@@ -88,27 +91,53 @@ class Widget:
 #            print "Show items", start, "to", stop
             items_shown = self.items[start:stop]
 
-            if len(self.items) == 0:
-                table = _("No matching items found")
-                message=""
-            else:
+            if len(self.items) > 0:
                 if self.columns is None:
                     self.columns = self.items[0].html_default_columns
 
-                message = _("Showing items %(first)d to %(last)d of %(total)d") % {'first':start,'last':stop,'total':count}
+            if self.style == 'table':
 
-                col_name = map(lambda x:x[1], self.columns)
-                col_desc = "<tr>" + "\n".join(map(lambda x:"<th>%s</th>"%x[0], self.columns)) + "</tr>"
-                rows = "\n".join(map(lambda x: x.html_row(col_name), items_shown))
-                pager_row ="<tr><td colspan='%d'>%s: %s</td></tr>" % (len(self.columns),_('Page'),self.pager)
-                rows = pager_row + rows + pager_row
-                table ="<table class='striped'>\n%s\n%s\n</table>" % (col_desc,rows)
-                stop_time = datetime.now()
-                time = stop_time-start_time
-                time = 0.0+time.seconds + 0.000001*time.microseconds
-                if time > 0.75:
-                    logging.getLogger('performance').warning('DB access for widget «%s», user %s took %.2f seconds' % (self.slug, self.request.user.username, time))                    
-            return "<div class='widget %s'><h2>%s</h2>%s%s</div>"%(self.class_names, self.name,message,table)
+                if len(self.items) == 0:
+                    table = _("No matching items found")
+                    message=""
+                else:
+
+
+                    message = _("Showing items %(first)d to %(last)d of %(total)d") % {'first':start,'last':stop,'total':count}
+                    col_name = map(lambda x:x[1], self.columns)
+                    col_desc = "<tr>" + "\n".join(map(lambda x:"<th>%s</th>"%x[0], self.columns)) + "</tr>"
+                    cells = map(lambda x: x.html_row(col_name), items_shown)
+                    rows = "".join(map(lambda row: "<tr>" + "".join(map(lambda cell:"<td>%s</td>" % cell, row))+ "</tr>", cells))
+                    
+                    pager_row ="<tr><td colspan='%d'>%s: %s</td></tr>" % (len(self.columns),_('Page'),self.pager)
+                    
+                    rows = pager_row + rows + pager_row
+                    table ="<table class='striped'>\n%s\n%s\n</table>" % (col_desc,rows)
+                    stop_time = datetime.now()
+                    time = stop_time-start_time
+                    time = 0.0+time.seconds + 0.000001*time.microseconds
+                    if time > 0.75:
+                        logging.getLogger('performance').warning('DB access for widget «%s», user %s took %.2f seconds' % (self.slug, self.request.user.username, time))                    
+                return "<div class='widget %s'><h2>%s</h2>%s%s</div>"%(self.class_names, self.name,message,table)
+            elif self.style == 'list':
+                hdr = "<h2>%s</h2>" % self.name
+                if len(self.items) == 0:
+                    return "%s<li>%s</li>" % (hdr, _("No matching items found"))
+                else:
+#                    self.columns = [ self.columns[0] ]
+                    col_name = map(lambda x:x[1], self.columns)
+                    print 'AAA',self.columns
+                    cells = map(lambda x: x.html_row(col_name), items_shown)
+                    rows = "".join(map(lambda row: "<li>" + "".join(map(lambda cell:"%s" % cell, row))+ "</li>", cells))
+                    stop_time = datetime.now()
+                    time = stop_time-start_time
+                    time = 0.0+time.seconds + 0.000001*time.microseconds
+                    if time > 0.75:
+                        logging.getLogger('performance').warning('DB access for widget «%s», user %s took %.2f seconds' % (self.slug, self.request.user.username, time))                    
+                return hdr + rows
+
+            else:
+                return "Unknown widget style"
         except:
             import traceback
             traceback.print_exc()
