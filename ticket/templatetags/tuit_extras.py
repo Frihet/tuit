@@ -80,7 +80,7 @@ def description_format(value):
     toggle_idx +=1
 
     return """
-<a onclick='$("#toggle_%(idx)d").toggle();'>
+<a class='no_print' onclick='$("#toggle_%(idx)d").toggle();'>
     %(text)s
 </a>
 <ul style='display:none' id='toggle_%(idx)d'> 
