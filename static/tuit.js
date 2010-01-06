@@ -196,7 +196,9 @@ var tuit = {
 		$.getJSON('/tuit/query/user_location/',{'username':uname[0]},
 			  function(value) {
 			      $.each(value,function(name, value) {
-				      $('#' + name)[0].value = value;
+				      var el = $('#' + name);
+				      if(el.length > 0)
+					  $('#' + name)[0].value = value;
 				  });
 			  });
 
