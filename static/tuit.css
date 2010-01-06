@@ -106,3 +106,13 @@ h4 {
     font-style: italic;
 }
 
+.action_menu input
+{
+    width: 60%;
+}
+
+.action_menu button
+{
+    max-width: 30%;
+}
+

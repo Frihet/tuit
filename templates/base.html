@@ -53,9 +53,15 @@ Date.format = '{{ js_date_format }}';
   <ul>
     <li>{%trans "User" %}: {{ user.tuit_description }}</li>
     <li><a href='/tuit/account/logout'>{%trans "Log out" %}</a></li>
+    <li><h2>{% trans "Show User" %}</h2></li>
+    <li>
+      <form accept-charset='utf-8' method='get' action='/tuit/account/show/' >
+	<input name='username' class='user'/> <button type='submit'>{% trans "Search" %}</button>
+      </form> 
+    </li>
+    {{ recent_updates.html }} 
     {%block sidebar %}
     {%endblock %}
-    
   </ul>
 </div>
 
