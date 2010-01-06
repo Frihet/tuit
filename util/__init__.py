@@ -11,12 +11,17 @@ import django.contrib.auth.models
 import cgi
 import time
 
+
 import logging
 
 def tuit_render(name, keys, request):
     """
     Add common rendering keys like various js and css links and call render_to_response
     """
+
+    from tuit.home.widget import Widget
+    from tuit.ticket.models import IssueUpdate
+
     keys['css_links']=[{'url':'/static/common/common.css'},
                        {'url':'/static/jquery-autocomplete/jquery.autocomplete.css'},
                        {'url':"/static/tuit.css"},
@@ -34,6 +39,13 @@ def tuit_render(name, keys, request):
                         ]
     keys['user']=request.user
     keys['counter'] = "%.4f" % time.time()
+
+    last_updates = IssueUpdate.objects.order_by('-creation_date').filter(user=request.user).distinct('issue_id')
+    keys['recent_updates'] = Widget(_('Latest updates'),
+                                    last_updates, request, 'my_updates',class_names='full_width',
+                                    style='list',
+                                    columns = (('update','update'),))
+
 
     def js_date_format(python_format):
         for (old,new) in (('%Y','yyyy'),('%m','mm'),('%d','dd')):
@@ -130,6 +142,10 @@ class PropertyHandler:
 
 
             self.data=dict(map(lambda x: (x.name, str_deep(from_json(x.value))), Property.objects.all()))
+
+    def __contains__(self, name):
+        self.__load()
+        return name in self.data
 
     def __getitem__(self, name):
         self.__load()
