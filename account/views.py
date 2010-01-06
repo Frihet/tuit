@@ -42,19 +42,26 @@ def logout(request):
     return HttpResponseRedirect('/tuit/account/login') 
 
 @login_required
-def show(request, id=None, name=None):
+def show(request, id=None, uname=None):
     """
     Show information about the specified user. Kind of like the home
     page (lots of code reuse going on between the two), but for any
     user.
     """
-    if id:
+
+
+    keys={}
+
+    if not id is None:
         user = User.objects.get(id=id)
-    elif name:
+    elif not uname is None:
         user = User.objects.get(username=name)
     else:
-        return None
-    keys={}
+        try:
+            user = User.objects.get(username=request.GET['username'].split(' ')[0])
+        except:
+            return tuit_render('account_show.html', keys, request)
+            
     status_closed=properties["issue_closed_id"]
     if not hasattr(status_closed,'__iter__'):
         status_closed=[status_closed]
