@@ -94,7 +94,7 @@ def user_location(request):
     try:
         username = request.GET['username']
         p = User.objects.get(username=username).get_profile()
-        res = {'location':p.location,'building':p.building, 'office':p.office}
+        res=p.__dict__
         return HttpResponse(to_json(res))
     except:
         raise
