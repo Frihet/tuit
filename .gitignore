@@ -6,3 +6,4 @@ attachments
 ad_csv
 *.mo
 .goutput*
+settings.py
