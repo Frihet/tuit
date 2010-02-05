@@ -4,19 +4,19 @@
 <tbody class='ticket_edit no_print'>
 <tr>
 <td class='label'>
-  <label for='assigned_to'>{%trans "Assigned to" %}:</label>
+  <label for='assigned_to_string'>{%trans "Assigned to" %}:</label>
 </td>
 <td>
-  <input id='assigned_to' name='assigned_to_string' value="{{ issue.assigned_to_string }}" class='user'/><input type='checkbox' name='assigned_to_email' value='yes' id='assigned_to_email' class='checkbox email_checkbox' {{ assigned_to_email }}/><label for='assigned_to_email'>{%trans "Send email" %}</label>
+  <input id='assigned_to_string' name='assigned_to_string' value="{{ issue.assigned_to_string }}" class='user'/><input type='checkbox' name='assigned_to_email' value='yes' id='assigned_to_email' class='checkbox email_checkbox' {{ assigned_to_email }}/><label for='assigned_to_email'>{%trans "Send email" %}</label>
 </td>
 </tr>
 
 <tr>
 <td>
-  <label for='requester'>{%trans "Requester" %}:</label>*
+  <label for='requester_string'>{%trans "Requester" %}:</label>*
 </td>
 <td>
-  <input id='requester' name='requester_string' value="{{ issue.requester_string }}" class='user'/><input type='checkbox' name='requester_email' value='yes' id='requester_email' class='checkbox email_checkbox' {{ requester_email }}/><label for='requester_email'>{%trans "Send email" %}</label>
+  <input id='requester_string' name='requester_string' value="{{ issue.requester_string }}" class='user'/><input type='checkbox' name='requester_email' value='yes' id='requester_email' class='checkbox email_checkbox' {{ requester_email }}/><label for='requester_email'>{%trans "Send email" %}</label>
 </td>
 </tr>
 
@@ -109,20 +109,20 @@ $(document).ready(function(){
   
 <tr>
   <td>
-    <label for='co_responsible'>{%trans "Co-responsible" %}:</label>
+    <label for='co_responsible_string'>{%trans "Co-responsible" %}:</label>
   </td>
   <td>
-    <textarea id='co_responsible' name='co_responsible_string' class='user'/>{{ issue.co_responsible_string }}</textarea>
+    <textarea id='co_responsible_string' name='co_responsible_string' class='user'/>{{ issue.co_responsible_string }}</textarea>
 <input type='checkbox' name='co_responsible_email' value='yes' id='co_responsible_email' class='checkbox email_checkbox' {{ co_responsible_email }}/><label for='co_responsible_email'>{%trans "Send email" %}</label>
 </td>
 </tr>
 
 <tr>
   <td>
-    <label for='cc'>{%trans "CC" %}:</label>
+    <label for='cc_string'>{%trans "CC" %}:</label>
   </td>
   <td>
-    <textarea id='cc' name='cc_string' class='user free contact'/>{{ issue.cc_string }}</textarea>
+    <textarea id='cc_string' name='cc_string' class='user free contact'/>{{ issue.cc_string }}</textarea>
     <input type='checkbox' name='cc_email' value='yes' id='cc_email' class='checkbox email_checkbox' {{ cc_email }} /><label for='cc_email'>{%trans "Send email" %}</label>
 </td>
 </tr>
@@ -134,7 +134,7 @@ $(document).ready(function(){
 <td>
 
 {% for i in impacts %}
-  <input class='radio' type='radio' id='impact{{ i }}' name='impact_string' value="{{ i }}" {% ifequal i issue.impact_string %}checked='yes'{% endifequal %} /><label for='impact{{ i }}'>{{ i }}</label>
+  <input class='radio' type='radio' id='impact_string_{{ i }}' name='impact_string' value="{{ i }}" {% ifequal i issue.impact_string %}checked='yes'{% endifequal %} /><label for='impact{{ i }}'>{{ i }}</label>
 {% endfor %}
 </td>
 </tr>
@@ -145,7 +145,7 @@ $(document).ready(function(){
 </td>
 <td>
 {% for i in urgencies %}
-  <input class='radio' type='radio' id='urgency{{ i }}' name='urgency_string' value="{{ i }}" {% ifequal i issue.urgency_string %}checked='yes'{% endifequal %} /><label for='urgency{{ i }}'>{{ i }}</label>
+  <input class='radio' type='radio' id='urgency_string_{{ i }}' name='urgency_string' value="{{ i }}" {% ifequal i issue.urgency_string %}checked='yes'{% endifequal %} /><label for='urgency{{ i }}'>{{ i }}</label>
 {% endfor %}
 
 </td>
@@ -154,10 +154,10 @@ $(document).ready(function(){
 
 <tr>
 <td>
-  <label for='status'>{%trans "Status" %}:</label>
+  <label for='current_status_string'>{%trans "Status" %}:</label>
 </td>
 <td>
-  <select name='current_status_string' id='status'>
+  <select name='current_status_string' id='current_status_string'>
 {% for s in status %}    
     <option value='{{s.id}}' {% ifequal s.id issue.current_status.id %}selected{% endifequal %}>{{s.name|escape}}</option>
 {% endfor %}
@@ -168,10 +168,10 @@ $(document).ready(function(){
 
 <tr>
 <td>
-  <label for='category'>{%trans "Category" %}:</label>
+  <label for='category_string'>{%trans "Category" %}:</label>
 </td>
 <td>
-  <select name='category_string' id='category'>
+  <select name='category_string' id='category_string'>
 {% for s in category %}    
     <option value='{{s.id}}' {% ifequal s.id issue.category.id %}selected{% endifequal %}>{{s.name|escape}}</option>
 {% endfor %}
@@ -180,13 +180,12 @@ $(document).ready(function(){
 </tr>
 
 
-
 <tr>
   <td>
-    <label for='ci'>{%trans "Depends on CIs" %}:</label>
+    <label for='ci_string'>{%trans "Depends on CIs" %}:</label>
   </td>
   <td>
-    <textarea class='ci' name='ci_string' id='ci'>{{ issue.ci_string }}</textarea>
+    <textarea class='ci' name='ci_string' id='ci_string'>{{ issue.ci_string }}</textarea>
     <div id='ci_picker_code'></div>
     <script>
       $('#ci_picker_code').load('/FreeCMDB/plugins/drilldown/drilldown?update_target=ci&embed_point=ci_picker_root&time={{counter}}');
@@ -196,10 +195,10 @@ $(document).ready(function(){
 
 <tr>
   <td>
-    <label for='dependencies'>{%trans "Depends on issues" %}:</label>
+    <label for='dependencies_string'>{%trans "Depends on issues" %}:</label>
   </td>
   <td>
-    <textarea class='depend' name='dependencies_string' id='dependencies'>{{ issue.dependencies_string }}</textarea>
+    <textarea class='depend' name='dependencies_string' id='dependencies_string'>{{ issue.dependencies_string }}</textarea>
   </td>
 </tr>
 
@@ -222,8 +221,15 @@ $(document).ready(function(){
 </td>
 </tr>
 {% endif %}
-
-
+</tbody>
+<tbody id='file' class='ticket_edit'>
+  <tr>
+    <th colspan='2'>
+      <button type='button' onclick='javascript:tuit.addFileWidget();'>{%trans "Add file" %}</button>
+    </th>
+  </tr>
+</tbody>
+<tbody>
 {% for it in issue.extra_fields %}
 <tr>
   <td>

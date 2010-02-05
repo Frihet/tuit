@@ -1,7 +1,14 @@
 {% extends "base.html" %}
+{% load i18n %}
 {% load tuit_extras %}
 
 {%block content %} 
+{% if tip %}
+<h2>{%trans "Tip of the week:" %} {{ tip.title|escape }}</h2>
+{{ tip.body }}
+
+{% endif %}
+
 {% for widget in widgets %}
 {{ widget.html }}
 {% endfor %}

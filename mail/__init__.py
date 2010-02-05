@@ -87,7 +87,13 @@ from email.Header import decode_header
 from tuit.ticket.models import *
 from tuit.util import email_valid, properties
 
-import email as rfc2822
+import email.mime.image
+import email.mime.audio
+import email.mime.text
+import email.mime.message
+import email.mime.base
+
+import BeautifulSoup
 
 def unaliasCharset(charset):
     if charset:
@@ -133,6 +139,76 @@ class IgnoreBulk(IgnoreMessage):
 class IgnoreLoop(IgnoreMessage):
         """ We've seen this message before... """
         pass
+
+def scrub_html_email(text, cid_mapping={}):
+
+    from BeautifulSoup import BeautifulSoup
+
+    soup = BeautifulSoup(text)
+
+    for tag in soup.findAll(True):
+        attrs = dict(tag.attrs)
+        if 'src' in attrs:
+            src = attrs['src']
+            if src[:4]=='cid:':
+                tag['src'] = cid_mapping[src[4:]]
+
+    mapped = soup.renderContents()
+
+    from scrubber import Scrubber
+    scrubber = Scrubber(autolink=False)
+
+    # The scrubber removes complete html documents out of the box? Weird...
+    scrubber.disallowed_tags_save_content.add('html')
+    scrubber.disallowed_tags_save_content.add('body')
+    scrubber.disallowed_tags_save_content.add('xml')
+    scrubber.disallowed_tags_save_content.add('doctype')
+    scrubber.allowed_attributes.add('color')
+    scrubbed = scrubber.scrub(mapped)
+    
+    return scrubbed
+
+def get_source_list(text):
+
+    from BeautifulSoup import BeautifulSoup
+
+    soup = BeautifulSoup(text)
+    sources=[]
+
+    for tag in soup.findAll(True):
+        attrs = dict(tag.attrs)
+        if 'src' in attrs:
+            sources.append(attrs['src'])
+
+    return sources
+
+def remap_sources(text, remap):
+#    print 'REMAP'
+#    print text
+#    print remap
+
+    from BeautifulSoup import BeautifulSoup
+
+    soup = BeautifulSoup(text)
+
+    for tag in soup.findAll(True):
+        attrs = dict(tag.attrs)
+        if 'src' in attrs:
+            src = attrs['src']
+            if src in remap:
+                tag['src'] = remap[src]
+
+        if 'alt' in attrs:
+            del(tag['alt'])
+
+
+
+    res = soup.renderContents()
+    
+
+#    print res
+    return res.replace('/>','>')
+
 
 def extract_message_id(subject):
     import re
@@ -245,6 +321,8 @@ class Mailer:
 
     @staticmethod
     def send_email(subject, recipient, body_text, body_html, attachments=[]):
+      try:
+
         config = SmtpConfiguration.objects.all()
         if len(config) != 1:
             raise "Could not find exactly one SMTP configuration object"
@@ -263,20 +341,78 @@ class Mailer:
         use_tls=config.use_tls
 
         # Create the message
-        msg = email.mime.multipart.MIMEMultipart("alternative")
+        msg = email.mime.multipart.MIMEMultipart('related')
         msg['Subject'] = subject
         msg['From'] = "%s <%s>" % (properties['site_description'],sender)
         msg['To'] = recipient.email
+    
 
+        remap = {}
+
+        # Try to make sure that inline images in the message are
+        # preserved. To do this, we replace URLs that lead to an
+        # attachment with cid:s for that attachment.
+        #
+        # For some reason, this code doesn't work with Evolution, but
+        # after banging my head against whe wall for half a day, I
+        # gave up. It is confirmed to work in Thunderbird, Gmail and
+        # Outlook web mail.
+
+        attachments_html = []
+
+        # Obtain a list of all links present in the document
+        sources = set(get_source_list(body_html))
+
+        for att in attachments:
+            mime = att.mime.split('/',1)
+            if mime[0] == 'image':
+                part = email.mime.image.MIMEImage(att.data, mime[1])
+            elif mime[0] == 'audio':                
+                part = email.mime.audio.MIMEAudio(att.data, mime[1])
+            elif mime[0] == 'text':                
+                part = email.mime.text.MIMEText(att.data, mime[1], _charset='UTF-8')
+            elif mime[0] == 'message':                
+                part = email.mime.message.MIMEMessage(att.data, mime[1])
+            else:
+                part = email.mime.base.MIMEBase(mime[0], mime[1])
+                part.set_payload(att.data)
+                encoders.encode_base64(part)
+
+            # Do we have any links to this attachment? If so, make it
+            # an inline attachment, give it a content id, etc.
+            if not att.url_internal in sources:
+                part.add_header('Content-Disposition', 'attachment', filename=att.name)
+            else:
+                import time
+                #Cids should be globally unique. concatenate
+                #attachment id, host name and current time. Should be
+                #unique.
+                cid = "%d:%f:%s" % (att.id, time.time(), properties['site_url'] )
+                part.add_header('Content-Disposition', 'inline', filename=att.name)
+                part.add_header('Content-ID', '<%s>' % cid)
+                remap[att.url_internal] = 'cid:%s' % cid
+
+            # We attach these _after_ attaching the actual text, seems
+            # for some reason to display nicer in some crappy email
+            # clients that way...
+            attachments_html.append(part)
+
+        # Do the actual url to cid rewriting
+        body_html = remap_sources(body_html, remap)
+
+        submsg = email.mime.multipart.MIMEMultipart("alternative")
         if not type(body_html) is str:
             body_html=body_html.encode('utf-8')
         if not type(body_text) is str:
             body_text=body_text.encode('utf-8')
-        
         part1 = email.mime.text.MIMEText(body_text, 'plain', _charset='UTF-8')
         part2 = email.mime.text.MIMEText(body_html, 'html', _charset='UTF-8')
-        msg.attach(part1)
-        msg.attach(part2)
+        submsg.attach(part1)
+        submsg.attach(part2)
+        msg.attach(submsg)
+
+        for i in attachments_html:
+            msg.attach(i)
 
         # Send it
         if use_ssl:
@@ -292,10 +428,13 @@ class Mailer:
         if username:
             s.login(username, password)
         
-        s.sendmail(sender, recipient.email, msg.as_string())
+        s.sendmail(sender, recipient.email
+                   , msg.as_string())
         s.quit()
-        
-        
+        logging.getLogger('mail').info('Sent email with subject %s to %s' % (subject, recipient))
+      except:
+          traceback.print_exc()
+          raise
         
 
     @staticmethod
@@ -304,11 +443,11 @@ class Mailer:
 
     
 class Attachment:
-    def __init__(self, name, mime_type, body):
+    def __init__(self, name, mime_type, body, id):
         self.name=name
         self.body=body
         self.mime_type=mime_type
-
+        self.id=id
 
 class Message(mimetools.Message):
     ''' subclass mimetools.Message so we can retrieve the parts of the
@@ -372,7 +511,7 @@ class Message(mimetools.Message):
         if m:
             return m.groups()[1]
 
-    @property
+    @property 
     def from_name(self):
         f = self.getheader('from') or None
         if email_valid(f):
@@ -400,6 +539,10 @@ class Message(mimetools.Message):
     @property
     def bcc(self):
         return self.getheader('bcc') or None
+
+    @property
+    def content_id(self):
+        return self.getheader('Content-ID').strip(' \n\r\t').lstrip('<').rstrip('>')
 
     @property
     def is_text(self):
@@ -440,8 +583,6 @@ class Message(mimetools.Message):
     @property 
     def body(self):
         return self.getbody()
-
-
 
     def getheader(self, name, default=None):
         hdr = mimetools.Message.getheader(self, name, default)
@@ -564,21 +705,27 @@ class Message(mimetools.Message):
         """
         content_type = self.gettype()
         content = None
+        content_out_type = None
         attachments = []
 
         if content_type == 'text/plain':
             content = self.getbody()
+            content_out_type = content_type
+        elif content_type == 'text/html':
+            content = self.getbody()
+            content_out_type = content_type
         elif content_type[:10] == 'multipart/':
             content_found = bool (content)
             ig = ignore_alternatives and not content_found
             for part in self.getparts():
-                new_content, new_attach = part.extract_content(content_type,
+                new_content, new_attach, new_content_out_type = part.extract_content(content_type,
                     not content and ig)
 
                 # If we haven't found a text/plain part yet, take this one,
                 # otherwise make it an attachment.
                 if not content:
                     content = new_content
+                    content_out_type = new_content_out_type
                     cpart   = part
                 elif new_content:
                     if content_found or content_type != 'multipart/alternative':
@@ -591,8 +738,15 @@ class Message(mimetools.Message):
                         # 5.1.4. specifies that later parts are better
                         # (thanks to Philipp Gortan for pointing this
                         # out)
-                        attachments.append(cpart.text_as_attachment())
+
+                        # If we've previously found a text version and
+                        # now we've found an alternative html version
+                        # of the same document, drop the plain version
+                        # like a bad habit.
+                        if not (new_content_out_type == 'text/html' and content_out_type == 'text/plain' and content_type == 'multipart/alternative'):
+                            attachments.append(cpart.text_as_attachment())
                         content = new_content
+                        content_out_type = new_content_out_type
                         cpart   = part
 
                 attachments.extend(new_attach)
@@ -604,7 +758,7 @@ class Message(mimetools.Message):
             pass
         else:
             attachments.append(self.as_attachment())
-        return content, attachments
+        return content, attachments, content_out_type
 
     def text_as_attachment(self):
         """Return first text/plain part as Message"""
@@ -622,7 +776,7 @@ class Message(mimetools.Message):
 
     def as_attachment(self):
         """Return this message as an attachment."""
-        return Attachment(self.getname(), self.gettype(), self.getbody_raw())
+        return Attachment(self.getname(), self.gettype(), self.getbody_raw(), self.content_id)
 
     def pgp_signed(self):
         ''' RFC 3156 requires OpenPGP MIME mail to have the protocol parameter
@@ -850,7 +1004,8 @@ class MailGW:
 
                 (copy_type, copy_data) = server.copy(str(i), 'Inbox.' + box_name)
                 if copy_type == 'OK':
-                    server.store(str(i), '+FLAGS', r'(\Deleted)')
+#                    server.store(str(i), '+FLAGS', r'(\Deleted)')
+                    pass
                 else:
                     self.logger.error('failed to copy message to %s-folder' % box_name)
 
@@ -868,8 +1023,7 @@ class MailGW:
 
     def create_issue(self, message):
         subject = message.subject
-        (content, attachments) = message.extract_content()
-        text = ("<pre>" + cgi.escape(content) + "</pre>")
+        (content, attachments, content_type) = message.extract_content()
         impact = properties['issue_default_impact']
         urgency = properties['issue_default_urgency']
 
@@ -879,7 +1033,6 @@ class MailGW:
             return 'unmatched_user'
 
         user=u[0]
-        print 'User is', user
         
         i = Issue()
         i.creator = user
@@ -893,7 +1046,7 @@ class MailGW:
                     assigned_to_string=None,
                     requester_string=user.username,
                     subject = subject,
-                    description = text,
+                    description='...',
                     impact_string = str(impact),
                     urgency_string = str(urgency),
                     category_string=str(category),
@@ -913,8 +1066,33 @@ class MailGW:
         try:
             i.save()
             events.extend(i.apply_post(data))
-            i.description_data={'type':'web','events':events}
+
+            attachment_mapping = {}
+            for (idx,attachment) in enumerate(attachments):
+                if not attachment.name:
+                    attachment.name = "unnamed"
+
+                try:
+                    ia = IssueAttachment.create(i, None, attachment.body, attachment.name, attachment.mime_type, idx)
+                    attachment_mapping[attachment.id] = ia.url_internal
+                except:
+                    logging.getLogger('mail').error('Could not save attachment %s of issue %d' % (attachment.name, i.id))
+            
+            if content_type == 'text/html':
+                i.description = scrub_html_email(content, attachment_mapping)
+            else:
+                i.description = ("<pre>" + cgi.escape(content) + "</pre>")
+                
+            e=EmailTemplate.objects.filter(name='mail_create')
+            if len(e) > 0:
+                e=e[0]
+                events.extend(e.send(properties['mail_create_mail'], issue=i, update=None))
+
+            i.description_data={'update_type':'email','events':events}
+            Event.fire(['mail_create'], i)
+
             i.save()
+#            print 'created issue ', i.id
         except:
             import traceback as tb
             msg = tb.format_exc()
@@ -926,9 +1104,9 @@ class MailGW:
 
 
     def process_message(self, message):
-        (content, attachments) = message.extract_content()
+        (content, attachments, content_type) = message.extract_content()
         
-        print 'Processing message', message.subject
+#        print 'Processing message', message.subject
 
         id = extract_message_id(message.subject)
         if id is None:
@@ -954,70 +1132,50 @@ class MailGW:
         except:
             self.logger.error("Recived email from %s, but user is unknown" % message.from_address)
             return 'unmatched_user'
-        #        properties['default_charset']
-#        print properties.data
-    
 
-        comment = ("<pre>" + cgi.escape(content) + "</pre>")
-        print 'content type',type(content)
-        print 'comment type', type(comment)
-        print unaliasCharset(message.getparam("charset"))
-        
         iu = IssueUpdate(issue=i,
                          internal=False,
-                         comment = comment,
+                         comment = '...',
                          user = user,
                          contact = contact)
 
         iu.description_data={}
         iu.save();
 
+        attachment_mapping = {}
+
         for (idx,attachment) in enumerate(attachments):
+            print 'FOUND ATTACHMENT!!!'
             if not attachment.name:
                 attachment.name = "unnamed"
-            save_dir = properties['attachment_directory']
-
-            # We make 1000 subdirectories of the attachment
-            # directory. This is to avoid bad performance on silly
-            # operating systems that are slow at handling many files
-            # in the same directory. We also create a separate
-            # directory per update. This is to make all related files
-            # live in the same directory, in order to make stuff a bit
-            # more logical.
-            full_dir = save_dir + '/%d/issue_%d' % (i.id%1000, i.id)
-            fullname = full_dir + '/update_%d_attachment_%d' % (iu.id,idx) 
             try:
-                os.makedirs(full_dir)
+                ia = IssueAttachment.create(i, iu, attachment.body, attachment.name, attachment.mime_type, idx)
+                attachment_mapping[attachment.id] = ia.url_internal
+                print 'lalala'
             except:
-                # On error, do nothing. If this fails, the directory
-                # probably already existed. If something more heinous
-                # is going on, the open call will catch it...
-                pass
-
-            try:
-                f = open(fullname, 'w')
-                f.write(attachment.body)
-                iua = IssueUpdateAttachment(update=iu, filename=fullname, mime=attachment.mime_type, name=attachment.name)
-                iua.save()
-            except:
-                logging.getLogger('mail').error('Could not save attachment %s of issue update %d' % (attachment.name, iu.id))
-            finally:
-                f.close()
+                print 'halp'
+                logging.getLogger('mail').error('Could not save attachment %s of issue update %d.\n%s' % (attachment.name, iu.id, traceback.format_exc()))
+                print 'halp2'
 
 #name
             #body 
             #mime_type
 
+        print attachment_mapping
+        if content_type == 'text/html':
+            comment = scrub_html_email(content, attachment_mapping)
+        else:
+            comment = ("<pre>" + cgi.escape(content) + "</pre>")
+
+        iu.comment = comment
 
         events=[]
         e=EmailTemplate.objects.filter(name='mail_update')
         if len(e) > 0:
             e=e[0]
-            for contact in properties['mail_default_mail']:
-                events.extend(e.send(getattr(i, contact), issue=i, update=iu))
+            events.extend(e.send(properties['mail_update_mail'], issue=i, update=iu))
 
-
-        iu.description_data={'update_type':'email','events':events}
+        iu.description_data={'type':'email','events':events}
         Event.fire(['mail_update','update'], i, iu)
 
         i.save()

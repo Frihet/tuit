@@ -11,7 +11,6 @@ def date_format(value):
     """
     Format a datetime object with the format defined by the date_format property.
     """
-#    print 'DOBEDIDO', type(value)
     return value.strftime(str(properties['date_format']))
 
 date_format.is_safe = True
@@ -30,7 +29,6 @@ def datetime_format(value):
     """
     Format a datetime object with the format defined by the date_format property.
     """
-#    print 'DOBEDIDO', type(value)
     return value.strftime(str(properties['datetime_format']))
 
 date_format.is_safe = True

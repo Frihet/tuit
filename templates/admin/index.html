@@ -13,10 +13,13 @@
         <table class='striped'>
         <caption>Tools</caption>
             <tr>
-                <td scope="row"><a href="/FreeCMDB/admin">CMDB Adminstration</a></td>
+                <td scope="row"><a href="/FreeCMDB/admin">{% trans "CMDB Adminstration" %}</a></td>
             </tr>
             <tr>
-                <td scope="row"><a href="/tuit/log">TUIT log viewer</a></td>
+                <td scope="row"><a href="/tuit/log">{% trans "TUIT log viewer" %}</a></td>
+            </tr>
+            <tr>
+                <td scope="row"><a href="/tuit/admin/ticket/userprofile/{{user.get_profile.id}}">{% trans "Edit your signature" %}</a></td>
             </tr>
         </table>
         </div>

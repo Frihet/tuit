@@ -13,9 +13,7 @@
 <span class='no_print'>
   <button type='button' class='kb_button' onclick='$(".internal").toggle()'>{%trans "Toggle internal update visibility" %}</button>
   <button type='button' class='kb_button' onclick='$("#copy_popup").show(50);'>{%trans "Create new ticket based on this ticket" %}</button>
-<!--
   <button type='button' class='kb_button' onclick='$("#forward_popup").show(50);'>{%trans "Send this ticket by email" %}</button>
--->
 </span>
 
 <table class='striped wide'>
@@ -99,6 +97,32 @@
   </td>
 </tr>
 
+
+    <tr>
+      <td class='label'>
+	{%trans "Co-responsible" %}
+      </td>
+      <td>
+	<ul>
+	{% for person in issue.co_responsible_list %}
+	  <li>{{ person.tuit_description }}</a></li>
+	  {% endfor %}
+	</ul>
+      </td>
+    </tr>
+
+    <tr>
+      <td class='label'>
+	{%trans "CC" %}
+      </td>
+      <td>
+	<ul>
+	{% for person in issue.cc %}
+	  <li>{{ person.tuit_description }}</a></li>
+	  {% endfor %}
+	</ul>
+      </td>
+    </tr>
 
     <tr>
       <td class='label'>
@@ -224,6 +248,26 @@
       </td>
     </tr>
 
+    {% if issue.attachment.count %}
+    <tr>
+      <td>
+	{%trans "Attachments" %}
+      </td>
+      <td>
+
+	<ul>
+
+	  {% for attachment in issue.attachment %}
+	  <li><a href='{{ attachment.url|escape }}'>{{ attachment.name|escape }}</a></li>
+	  {% endfor %}
+	</ul>
+      </td>
+    </tr>
+    {% endif %}
+
+
+
+
     {% for update in issue.updates %}
     {% if show_internal or not update.internal %}
   <tbody class='{% if update.internal %}internal{% else %}external{% endif %}'>
@@ -251,7 +295,7 @@
     </tr>
 
 
-    {% if update.issueupdateattachment_set.all.count %}
+    {% if update.issueattachment_set.all.count %}
     <tr>
       <td>
 	{%trans "Attachments" %}
@@ -260,7 +304,7 @@
 
 	<ul>
 
-	  {% for attachment in update.issueupdateattachment_set.all %}
+	  {% for attachment in update.issueattachment_set.all %}
 	  <li><a href='{{ attachment.url|escape }}'>{{ attachment.name|escape }}</a></li>
 	  {% endfor %}
 	</ul>
@@ -363,8 +407,30 @@ var external_default_mail = {{ external_default_mail_json }};
     <a href="javascript:popupHide('forward_popup')">x</a>
   </div>
   <div class='popup_content'>
-    <form method='get' action='/tuit/ticket/email/{{ issue.id }}/' id='copy_form' accept-charset='utf-8'>
+    <form method='post' action='/tuit/ticket/email/{{ issue.id }}/' id='copy_form' accept-charset='utf-8'>
       <table class='striped'>
+
+	<tr>
+	  <td>
+	    <label for='email'>{% trans "Email" %}</label>
+	  </td>
+	  <td>
+	    <input id='email' name='email' class='user free contact'/>
+	  </td>
+	</tr>
+
+
+	{% for attachment in issue.attachment %}
+	<tr>
+	  <td>
+	    {% trans "Attachment" %}: {{ attachment.name|escape }} 
+	  </td>
+	  <td>
+	    <input id='attachment_{{ attachment.id }}' name='attachment_{{ attachment.id }}' class='checkbox' type='checkbox' checked />
+	    <label for='attachment_{{ attachment.id }}'>{% trans "Include" %}</label>
+	  </td>
+	</tr>
+	{% endfor %}
 
 	{% for update in issue.updates %}
 	<tr>
@@ -378,7 +444,7 @@ var external_default_mail = {{ external_default_mail_json }};
 	  </td>
 	</tr>
 	
-	{% for attachment in update.issueupdateattachment_set.all %}
+	{% for attachment in update.issueattachment_set.all %}
 	<tr>
 	  <td>
 	    {% trans "Attachment" %}: {{ attachment.name|escape }} 

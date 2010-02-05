@@ -8,6 +8,7 @@ from django.db.models.query import Q, QOr, QAnd
 from tuit.ticket.models import *
 import datetime
 import re
+from tuit.query.models import *
 
 class QLeftOuterJoins(Q):
     """
@@ -37,23 +38,26 @@ class QLeftOuterJoins(Q):
 # Go over all the words in the search, filter on all of them
 def make_Q(query, fld):
     q=None
-    for i in query.split(' '):
-        if i == '-':
-            continue
-        nq = None
-        try:
-            num = int(i)
-            kw={'id__exact': num,}
-            nq = Q(**kw)            
-        except:
-            for f in fld:
-                kw={f+'__icontains': i,}
-                nq2 = Q(**kw)
-                if nq:
-                    nq = nq | nq2
-                else:
-                    nq=nq2
+    
+    sub_q = query.split(' ')
 
+    if (len(sub_q)==1) or sub_q[1] == '-':
+        try:
+            num = int(sub_q[0])
+            kw={'id__exact': num,}
+            return QLeftOuterJoins(Q(**kw))
+        except:
+            pass
+
+    for i in sub_q:
+        nq = None
+        for f in fld:
+            kw={f+'__icontains': i,}
+            nq2 = Q(**kw)
+            if nq:
+                nq = nq | nq2
+            else:
+                nq=nq2
         if q:
             q = q & nq
         else:
@@ -87,14 +91,24 @@ def user_complete(request):
     return HttpResponse(to_json(u))
 
 @login_required
-def user_location(request):
+def autofill(request):
     """
     Returns the location data for the specified username as a json dict.
     """
     try:
-        username = request.GET['username']
-        p = User.objects.get(username=username).get_profile()
-        res=p.__dict__
+        field = request.GET['field']
+        if field == 'requester':
+            username = request.GET['value']
+            p = User.objects.get(username=username).get_profile()
+            res=p.__dict__
+        else:
+            value = request.GET['value']
+            val_arr = value.split(' ')
+            if len(val_arr) > 2 and val_arr[1] == '-':
+                value= val_arr[0]
+            print 'f,d', field, value
+            data = GenericFillItem.objects.filter(condition_name__name = field, condition_value = value)
+            res = list(data)
         return HttpResponse(to_json(res))
     except:
         raise

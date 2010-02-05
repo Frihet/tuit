@@ -10,7 +10,7 @@ from tuit.util import *
 import re
 from django.utils.translation import gettext as _
 import logging
-
+from tuit.query.models import GenericFillItem
 def studly(str):
     """
     Converts a sentence into a StudlyCaps word.
@@ -40,6 +40,23 @@ def insert_view_data(keys, request, default_checked_list):
             keys[box]='checked'
 
 
+def handle_files( issue, update, files ):
+    res=[]
+    print 'TRY HANDLING FILES!!!'
+#    print files
+    idx = 0
+    for filename in files:
+        file = files[filename]
+#        print file
+        print 'handle file...'
+#        IssueAttachment.create(issue, update, file.read(), file.name, file.content_type)
+        IssueAttachment.create(issue, update, file['content'], file['filename'], file['content-type'], idx)
+        idx += 1
+        print 'ok'
+    print 'DONE AND DONE!!!'
+    return res
+
+
 def format_errors(errors):
     """
     Turns a django-stykle list of validation errors into a html status
@@ -61,9 +78,11 @@ def new(request, type_name=None):
     # with their pseudo-list interface.
     keys = request.POST.copy()
 
-    
     keys['quick_fill'] = QuickFill.objects.all()
     keys['quick_fill_json'] = to_json(QuickFill.objects.all())
+
+    keys['field_fill_json'] = to_json(set(map(lambda x: x.condition_name.name, GenericFillItem.objects.filter())))
+
     keys['status'] = Status.objects.all()
     keys['errors'] = {}
     keys['messages'] = ""
@@ -101,6 +120,8 @@ def new(request, type_name=None):
         
             if not errors:
                 events.extend(send_email('web_create', request.POST, i, None))
+                events.extend(handle_files(i, None, request.FILES))
+
                 i.description_data={'type':'web','events':events, 'by':request.user.username}
                 
                 # Fire of event handler
@@ -109,7 +130,12 @@ def new(request, type_name=None):
                 
                 # If everything went ok with form submission, this is where we return
                 logging.getLogger('ticket').info('Created issue with id %d' % i.id)
-                return HttpResponseRedirect('/tuit/ticket/view/%d' % i.id) # Redirect after successfull POST
+
+                url = '/tuit/ticket/view/%d' % i.id 
+                if 'continue' in request.POST:
+                    url = '/tuit/ticket/new/?type=' + cgi.escape(i.type.name)
+    
+                return HttpResponseRedirect(url)
 
         # This code is only reached oif we get an error while processing the form
         logging.getLogger('ticket').error('Tried to create issue, but got the following errors: %s' % str(errors));
@@ -148,6 +174,8 @@ def update_dependants(issue, update, send_to, ignore):
             continue
         ignore.add(i)
         i.current_status = issue.current_status
+        i.ci_string = issue.ci_string
+        
         iu = IssueUpdate(issue=i,
                          internal = update.internal,
                          comment = update.comment,
@@ -185,6 +213,7 @@ def view(request,id=None):
                          comment=request.POST['comment'],
                          user=request.user,
                          description_data={})
+
         errors = i.validate()
         
         for name, value_list in iu.validate().iteritems():
@@ -196,12 +225,16 @@ def view(request,id=None):
         if not errors:
 
             events.extend(send_email('web_update', request.POST, i, iu))
+            events.extend(handle_files(i, iu, request.FILES))
                                
             iu.description_data={'type':'web','events':events,'by':request.user.username}
 
             Event.fire(['web_update','update'], i, iu)
+
             i.save()
             iu.save()
+
+
             if 'update_dependants' in request.POST:
                 update_dependants(i, iu, request.POST, set())
 
@@ -223,7 +256,7 @@ def view(request,id=None):
     return tuit_render('ticket_view.html', keys, request)
     
 
-def send_email(template_name, post, issue, update=None):
+def send_email(template_name, post, issue, update=None, **kw):
     """
     Send an email defined by template emplate_name to user groups
     defined by post about the specified issue.
@@ -233,11 +266,8 @@ def send_email(template_name, post, issue, update=None):
 #    print('We have %d templates of specified type' % len(e)) 
     if len(e) > 0:
         e=e[0]
-        for contact in ['assigned_to','requester','co_responsible','cc']:
-            var = contact + '_email'
-            if var in post:
-                events.extend(e.send(getattr(issue, contact), issue=issue, update=update))
-                
+        recipients = filter(lambda x: (x + '_email') in post, ['assigned_to','requester','co_responsible','cc'])
+        events.extend(e.send(recipients, issue=issue, update=update, **kw))
     else:
         logging.getLogger('ticket').error('No email template of type %s could be found' % template_name)
     return events
@@ -247,13 +277,9 @@ def attachment(request, id):
     """
     Download an update attachment.
     """
-    a = IssueUpdateAttachment.objects.get(id=id)
-    res = HttpResponse(mimetype=a.mime)
-    f = open(a.filename,'r')
-    try:
-        res.write(f.read())
-    finally:
-        f.close()
+    att = IssueAttachment.objects.get(id=id)
+    res = HttpResponse(mimetype=att.mime)
+    res.write(att.data)
     return res
 
 
@@ -276,17 +302,50 @@ def i18n(request):
            '$.dpText.TEXT_NEXT_YEAR': _('Next year'),
            '$.dpText.TEXT_CLOSE': _('Close'),
            'Date.dayNames': [_('Sunday'),_('Monday'),_('Tuesday'),_('Wednesday'),_('Thursday'),_('Friday'),_('Saturday'),],
-           'Date.monthNames': [_('January'), _('February'), _('March'), _('April'), _('May'), _('June'), _('July'), _('August'), _('September'), _('October'), _('November'), _('December')]
+           'Date.monthNames': [_('January'), _('February'), _('March'), _('April'), _('May'), _('June'), _('July'), _('August'), _('September'), _('October'), _('November'), _('December')],
+           'tuit.comment.HEADER':_('Comments:'),
+           'tuit.comment.SEND':_('Send'),
+
            }
 #    Cache-Control: private, max-age=3600, must-revalidate
     return tuit_render('i18n.js', {'strings':trans}, request)
-    
+
 @login_required
 def email(request, id):
     """
-    Download an update attachment.
+    Send an email
     """
     i = Issue.objects.get(id=id)
-    send_email('web_email', request.POST, i, None)
+    att = filter(lambda a: ('attachment_%d'%a.id) in request.POST, 
+                 IssueAttachment.objects.filter(issue=i))
 
+    upd = filter(lambda u: ('update_%d'%u.id) in request.POST, 
+                 i.updates)
+
+
+    template_name ='web_resend'
+    e=EmailTemplate.objects.filter(name=template_name)
+#    print('We have %d templates of specified type' % len(e)) 
+
+    name = request.POST['email']
+    user = get_user(name)
+    if user is None:
+        user = make_contact(name)
+
+    ok = True
+    error = ''
+
+    if user is None:
+        ok = False
+        error = _("Invalid email address: %s") % name 
+
+    if len(e) > 0:
+        e=e[0]
+        print request.POST
+        e.send(user, issue=i, update=None, attachments=att, filtered_updates = upd)
+    else:
+        ok = False
+        logging.getLogger('ticket').error('No email template of type %s could be found' % template_name)
+        error = _("No email template named %s could be found") % template_name
+    return tuit_render('ticket_email.html', {'ok':ok,'email':name,'issue':i, 'error':error}, request)
 

@@ -11,6 +11,10 @@
 
 <script type="text/javascript" src="/static/common/jquery.js"></script>
 <script type="text/javascript" src="/static/common/common.js"></script>
+<script type="text/javascript" src="/tuit/ticket/i18n.js"></script>
+<script type="text/javascript" src="/static/tuit.js"></script>
+<script type="text/javascript" src="/static/admin.js"></script>
+
 
 {% block extrastyle %}{% endblock %}
 {% block extrahead %}{% endblock %}
@@ -26,18 +30,15 @@
   </div>
 
   <div class='action_menu'>
-
-
-<ul class="actionlist">
+    <ul class="actionlist">
   {% if user.is_authenticated and user.is_staff %}
   <li>{% trans 'User' %}: <a href='/tuit/account/{{ user.username|escape}}'>{{ user.username|escape }} - {{ user.first_name|escape }} {{ user.last_name|escape }}</a></li> 
   <li><a href="/tuit/account/logout/">{% trans 'Log out' %}</a></li>
   <li><a href="/tuit/admin/doc/">{% trans 'Documentation' %}</a></li>
   {% endif %}
-{% block sidebar %}
-{% endblock %}
-</ul>
-
+  {% block sidebar %}
+  {% endblock %}
+    </ul>
   </div>
 
     <div class='content'>

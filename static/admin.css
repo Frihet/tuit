@@ -201,3 +201,9 @@ div.form-row.errors
     border: 1px solid #990000;
 }
 
+#changelist-filter
+{
+    float:right;
+    border: 1px solid #aaaaaa;
+    padding: 1em;
+}

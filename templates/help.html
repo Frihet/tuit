@@ -15,6 +15,7 @@ tuit.makeTOC('.action_menu ul');
 {%block content %} 
 <div class='help'>
 
+
 <p>
 This is the main help page for Tuit. Tuit is The Ultimate ITIL
 Toolbox, a set of software components designed to support ITIL based
@@ -484,7 +485,22 @@ Knowledge base:
 </ul>
 
 
-
+<h1><a name='comments'>The Tuit comment system</a></h1>
+<p>
+  Tuit has a built in comment system that lets you make comments on
+  any page in Tuit. The comments are displayed in the sidebar on the
+  left side. All users who have the permissions required to see
+  comments will see any comment you make by simple visiting the same
+  page, and you will see any comment made by other users.
+</p>
+<h2><a name='comments_editing'>Changing or removing comments</a></h2>
+<p>
+  Old comments can be edited through
+  the <a href='#concepts_admin'>administration back end</a>. Visit the
+  comments section, locate the correct comment and either edit or
+  remove it. Note that any user has the option to change comments made
+  by another user through the administration backend. Use with care!
+</p>
 
 
 <h1><a name='log'>View event log</a></h1>
@@ -585,8 +601,13 @@ Knowledge base:
 </ol>
 <p>
   In order to insert specific data about a ticket or an update, there
-  are special tags, beginning with a percent symbol that will be
-  replaced with the suitable text when sending the email. These are
+  are special tags that will be replaced with the suitable text when
+  sending the email. The templating language also allows you to create
+  complex layouts including conditional blocks, loops and content
+  filters, such as stripping out html tags. For a full description of
+  the template syntax,
+  see <a href='http://www.djangoproject.com/documentation/0.96/templates/'>the
+  Django template documentation</a>. The specific values available are
   described in the table below.
 </p>
 <table class='striped'>
@@ -600,15 +621,7 @@ Knowledge base:
   </tr>
   <tr>
     <td>
-      %%
-    </td>
-    <td>
-      A single percent symbol.
-    </td>
-  </tr>
-  <tr>
-    <td>
-      %(recipient.first_name)s
+      &#123;&#123;&nbsp;recipient.first_name&nbsp;&#125;&#125;
     </td>
     <td>
       The email recipients first name.
@@ -616,7 +629,7 @@ Knowledge base:
   </tr>
   <tr>
     <td>
-      %(recipient.last_name)s
+      &#123;&#123;&nbsp;recipient.last_name&nbsp;&#125;&#125;
     </td>
     <td>
       The email recipients last name.
@@ -624,7 +637,7 @@ Knowledge base:
   </tr>
   <tr>
     <td>
-      %(recipient.name)s
+      &#123;&#123;&nbsp;recipient.name&nbsp;&#125;&#125;
     </td>
     <td>
       The email recipients full name, first and last.
@@ -632,7 +645,7 @@ Knowledge base:
   </tr>
   <tr>
     <td>
-      %(recipient.username)s
+      &#123;&#123;&nbsp;recipient.username&nbsp;&#125;&#125;
     </td>
     <td>
       The email recipients username.
@@ -640,7 +653,7 @@ Knowledge base:
   </tr>
   <tr>
     <td>
-      %(recipient.email)s
+      &#123;&#123;&nbsp;recipient.email&nbsp;&#125;&#125;
     </td>
     <td>
       The email recipients email address.
@@ -648,7 +661,7 @@ Knowledge base:
   </tr>
   <tr>
     <td>
-      %(issue.id)d
+      &#123;&#123;&nbsp;issue.id&nbsp;&#125;&#125;
     </td>
     <td>
       The issue number for this issue.
@@ -656,7 +669,7 @@ Knowledge base:
   </tr>
   <tr>
     <td>
-      %(issue.url)s
+      &#123;&#123;&nbsp;issue.url&nbsp;&#125;&#125;
     </td>
     <td>
       The URL containing the full information on this issue.
@@ -664,7 +677,7 @@ Knowledge base:
   </tr>
   <tr>
     <td>
-      %(issue.subject)s
+      &#123;&#123;&nbsp;issue.subject&nbsp;&#125;&#125;
     </td>
     <td>
       The subject for this issue.
@@ -672,7 +685,7 @@ Knowledge base:
   </tr>
   <tr>
     <td>
-      %(issue.description)s
+      &#123;&#123;&nbsp;issue.description&nbsp;&#125;&#125;
     </td>
     <td>
       The main description for this issue.
@@ -680,12 +693,34 @@ Knowledge base:
   </tr>
   <tr>
     <td>
-      %(update.comment)s
+      &#123;&#123;&nbsp;update.comment&nbsp;&#125;&#125;
     </td>
     <td>
       The comment for the latest update to this issue. This will be empty if
       the issue has never been updated, e.g. if the issue is only just
       being created.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      &#123;&#123;&nbsp;filtered_updates&nbsp;&#125;&#125;
+    </td>
+    <td>
+      <p>
+	Only available when performing a resend of an issue.
+      </p>
+      <p>
+	An array of all updates that are included in the resend. Use a
+	for loop to show all updates, something like this:
+      </p>
+      <pre>
+&#123;% for update in filtered_updates %&#125;
+&lt;p&gt;
+&#123;&#123; update.comment &#125;&#125;
+&lt;/p&gt;
+&lt;hr/&gt;
+&#123;% endfor %&#125;
+      </pre>
     </td>
   </tr>
 </table>
@@ -695,7 +730,7 @@ Knowledge base:
   requester, the person who created the issue, the person who created
   an issue update, etc. These are all available, and all have the same
   fields available to them as the recipient does in the table
-  above. For example, «%(issue.assigned_to.email)s» is the email address of
+  above. For example, «&#123;&#123;&nbsp;issue.assigned_to.email&nbsp;&#125;&#125;» is the email address of
   the person assigned to fixing this issue. The list of available
   users are desbribed in the table below.
 </p>
@@ -711,7 +746,7 @@ Knowledge base:
   </tr>
   <tr>
     <td>
-      %(recipient)s
+      &#123;&#123;&nbsp;recipient&nbsp;&#125;&#125;
     </td>
     <td>
       The person who will recieve the email.
@@ -719,7 +754,7 @@ Knowledge base:
   </tr>
   <tr>
     <td>
-      %(issue.requester)s
+      &#123;&#123;&nbsp;issue.requester&nbsp;&#125;&#125;
     </td>
     <td>
       The person who requested that the issue should be created.
@@ -727,7 +762,7 @@ Knowledge base:
   </tr>
   <tr>
     <td>
-      %(issue.creator)s
+      &#123;&#123;&nbsp;issue.creator&nbsp;&#125;&#125;
     </td>
     <td>
       The person who created the original issue.
@@ -735,7 +770,7 @@ Knowledge base:
   </tr>
   <tr>
     <td>
-      %(issue.assigned_to)s
+      &#123;&#123;&nbsp;issue.assigned_to&nbsp;&#125;&#125;
     </td>
     <td>
       The person who is assigned to solving this issue.
@@ -743,7 +778,7 @@ Knowledge base:
   </tr>
   <tr>
     <td>
-      %(update.creator)s
+      &#123;&#123;&nbsp;update.creator&nbsp;&#125;&#125;
     </td>
     <td>
       The person who made the latest update to the issue.

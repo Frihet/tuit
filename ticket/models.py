@@ -18,6 +18,8 @@ import re
 import cgi
 import logging
 
+import django.template
+
 # Fixme:
 #
 # Move the util functions to their own namespace/file, perhaps called
@@ -196,29 +198,29 @@ class QuickFill(models.Model):
         verbose_name = _('quick fill')
 
 
-class QuickFillField(models.Model):
-    name = models.CharField(maxlength=512)
-    description = models.CharField(maxlength=512)
+#class QuickFillField(models.Model):
+#    name = models.CharField(maxlength=512)
+#    description = models.CharField(maxlength=512)
 
-    def __str__(self):
-        return self.description
+#    def __str__(self):
+#        return self.description
     
-    class Admin: 
-        pass
+#    class Admin: 
+#        list_display=('name','description')
 
-    class Meta:
-        ordering = ['name']
-        verbose_name_plural = _('Field for quick fills')
-        verbose_name = _('Field for quick fill')
+#    class Meta:
+#        ordering = ['name']
+#        verbose_name_plural = _('Field for quick fills')
+#        verbose_name = _('Field for quick fill')
         
     
 class QuickFillItem(models.Model):
     fill = models.ForeignKey(QuickFill)
-    field = models.ForeignKey(QuickFillField)
+    field = models.ForeignKey("IssueField")
     value = models.CharField(maxlength=32000)
     
     def __str__(self):
-        return str(self.fill) + ": " + str(self.field)
+        return str(self.field) + ": " + str(self.value)
     
     def __to_json__(self):
         return {
@@ -227,7 +229,7 @@ class QuickFillItem(models.Model):
             'value':self.value}
 
     class Admin: 
-        pass
+        list_filter = ('fill','field')
 
 class Contact(models.Model):
     """
@@ -263,7 +265,8 @@ class Contact(models.Model):
         return self.format
 
     class Admin:
-        pass
+        list_display=('name','email')
+        search_fields=('name','email')
 
     class Meta:
         ordering = ['name']
@@ -354,6 +357,11 @@ class Issue(models.Model):
 #        return self.location == "" and self.building == "" and self.office == ""
 
     @property
+    def attachment(self):
+        return IssueAttachment.objects.filter(issue=self, update__isnull=True)
+
+
+    @property
     def html_default_columns(self):
         """
         The default columns to show when displaying an issue in a Widget
@@ -418,7 +426,7 @@ class Issue(models.Model):
 
 
             return FieldData(f, value)
-        self.__extra_fields = map(process_field, self.type.extra_fields.all().order_by('view_order'))
+        self.__extra_fields = map(process_field, self.type.extra_fields.order_by('view_order'))
 #        print self.__extra_fields
 
 
@@ -469,10 +477,20 @@ class Issue(models.Model):
                                               (col,self.id))
             raise
         
+    @property 
+    def last_updater(self):
+        u = self.last_update
+        if u is None:
+            return self.requester
+        return u.creator
+   
+
     @property
     def priority(self):
         if 'priority_matrix' in properties:
-            print 'LALALA', self.impact, self.urgency
+#            print 'LALALA', self.impact, self.urgency
+#            print properties['priority_matrix']
+#            print properties['priority_matrix'][self.impact-1]
             return properties['priority_matrix'][self.impact-1][self.urgency-1]
         return self.impact+self.urgency
 
@@ -484,6 +502,47 @@ class Issue(models.Model):
 
     description_data = property(get_description_data, set_description_data)
     
+    @staticmethod
+    def get_internal_fields():
+        fields = dict(map(lambda issue_field: (issue_field.name,issue_field), IssueField.objects.filter(internal=True)))
+
+        data = [{'name':'assigned_to_string','short_description':_('Assigned to')},
+                {'name':'impact_string','short_description':_('Impact')},
+                {'name':'urgency_string','short_description':_('Urgency')},
+                {'name':'requester_string','short_description':_('Requester')},
+                {'name':'current_status_string','short_description':_('Status')},
+                {'name':'subject','short_description':_('Subject')},
+                {'name':'description','short_description':_('Description of problem')},
+                {'name':'category_string','short_description':_('Category')},
+                {'name':'location','short_description':_('Location')},
+                {'name':'building','short_description':_('Building')},
+                {'name':'office','short_description':_('Office')},
+                {'name':'telephone','short_description':_('Telephone')},
+                {'name':'mobile','short_description':_('Mobile phone')},
+                {'name':'pc','short_description':_('PC number')},
+                {'name':'ci_string','short_description':_('Depends on CIs')},
+                {'name':'co_responsible_string','short_description':_('Co-responsible')},
+                {'name':'cc_string','short_description':_('CC')},
+                {'name':'requester_string','short_description':_('Requester')},
+                {'name':'dependencies_string','short_description':_('Depends on issues')},
+                ]
+
+        for (idx, item) in enumerate(data):
+            if item['name'] not in fields:
+                
+                issue_field = IssueField(name=item['name'], 
+                                         short_description=item['short_description'], 
+                                         long_description = item.get('long_description',item['short_description']),                                         
+                                         field_type = item.get('field_type', 'custom'),
+                                         blank = item.get('blank', True),
+                                         view_order = idx,
+                                         internal= True)
+                print item
+                issue_field.save()
+
+        return IssueField.objects.filter(internal = True)
+        
+
     def apply_post(self, values):
         """
         This is the main work engine of incident and update
@@ -499,10 +558,11 @@ class Issue(models.Model):
         #print 'requester is', self.requester
         old = {}
 
-        attrs = ['assigned_to_string','impact_string','urgency_string','requester_string','current_status_string','subject','description','category_string','location','building','office','telephone','mobile','pc']
+        attrs = map(lambda field: field.name, self.get_internal_fields())
 
-        if self.id:
-            attrs.extend(['ci_string','co_responsible_string','cc_string','requester_string','dependencies_string'])
+        if not self.id:
+            for i in ['ci_string','co_responsible_string','cc_string','requester_string','dependencies_string']:
+                attrs.remove(i)
 
         for el in attrs:
             old[el] = getattr(self,el)
@@ -851,6 +911,7 @@ class IssueField(models.Model):
         ('dropdown',_('Dropdown box')),
         ('textarea',_('Multiline text area')),
         ('date',_('Date')),
+        ('custom',_('Custom')),
         )
 
     # This is a short 'slug' name, should only countain letters,
@@ -863,6 +924,14 @@ class IssueField(models.Model):
     field_type = models.CharField(maxlength=16, choices=FIELD_TYPE_CHOICES)
     blank = models.BooleanField()
     view_order = models.IntegerField()
+    internal = models.BooleanField(default=False, editable=False)
+
+    @staticmethod 
+    def all():
+        Issue.get_internal_fields()
+        res = dict(map(lambda issue_field: (issue_field.name,issue_field), IssueField.objects.all()))
+        
+
 
     def __str__(self):
         return self.short_description
@@ -925,8 +994,8 @@ class IssueField(models.Model):
 
     class Meta:
         ordering = ['short_description']
-        verbose_name_plural = _('Extra fields for issues')
-        verbose_name = _('Extra field for issues')
+        verbose_name_plural = _('Issue fields')
+        verbose_name = _('Fields of issues')
        
 
 class IssueFieldDropdownItem(models.Model):
@@ -941,7 +1010,8 @@ class IssueFieldDropdownItem(models.Model):
         return "%s (%s)" % (self.name, self.field.short_description)
 
     class Admin: 
-        pass
+        list_display = ('name','field')
+        list_filter = ('field',)
 
     class Meta:
         ordering = ['name']
@@ -1046,15 +1116,17 @@ class IssueUpdate(models.Model):
             
     
     
-class IssueUpdateAttachment(models.Model):
+class IssueAttachment(models.Model):
     """
     This table contains information about attachments. No fiels are
     stored in the DB, we only have the filename of the attachment
     proper.
     """
 
+    # This is the issue that included the attachment.
+    issue = models.ForeignKey(Issue)
     # This is the issue update that included the attachment.
-    update = models.ForeignKey(IssueUpdate)
+    update = models.ForeignKey(IssueUpdate, null=True, blank=True)
 
     # This is the original filename for the attachment, e.g. what the file was called in the email or under what name it was uploaded.
     name = models.CharField(maxlength=8192)
@@ -1065,8 +1137,60 @@ class IssueUpdateAttachment(models.Model):
 
     @property
     def url(self):
-        return properties['site_url'] + properties['site_location'] + '/ticket/attachment/%d/%s' % (self.id, self.name)
+        return properties['site_url'] + self.url_internal
 
+    @property 
+    def url_internal(self):
+        return properties['site_location'] + '/ticket/attachment/%d/%s' % (self.id, cgi.escape(self.name).replace(' ','+'))
+
+
+    @property
+    def data(self):
+        f = open(self.filename,'rb')
+        try:
+            return f.read()
+        finally:
+            f.close()
+
+    @staticmethod
+    def create(issue, update, data, original_name, mime, idx):
+        save_dir = properties['attachment_directory']
+
+        # We make 1000 subdirectories of the attachment
+        # directory. This is to avoid bad performance on silly
+        # operating systems that are slow at handling many files
+        # in the same directory. We also create a separate
+        # directory per issue. This is to make all related files
+        # live in the same directory, in order to make stuff a bit
+        # more logical.
+        if update is None:
+            full_dir = save_dir + '/%d/issue_%d' % (issue.id%1000, issue.id)
+            fullname = full_dir + '/attachment_%d' % (idx) 
+        else:
+            full_dir = save_dir + '/%d/issue_%d' % (issue.id%1000, issue.id)
+            fullname = full_dir + '/update_%d_attachment_%d' % (update.id, idx) 
+
+        try:
+            import os
+            os.makedirs(full_dir)
+        except:
+            # On error, do nothing. If this fails, the directory
+            # probably already existed. If something more heinous
+            # is going on, the open call will catch it...
+            pass
+
+        try:
+            f = open(fullname, 'w')
+            f.write(data)
+            iua = IssueAttachment(issue=issue, 
+                                  update=update,
+                                  filename=fullname,
+                                  mime=mime,
+                                  name=original_name)
+            iua.save()
+            return iua
+        finally:
+            f.close()
 
 class IssueFieldValue(models.Model):
     # The issue that is updated
@@ -1091,7 +1215,7 @@ class Property(models.Model):
         return self.name
 
     class Admin: 
-        pass
+        list_display = ('name','value')
 
     class Meta:
         ordering = ['name']
@@ -1161,6 +1285,8 @@ class EmailTemplate(models.Model):
         events = []
         kw['issue']=issue
 
+        logging.getLogger('ticket').warning('Send email to %s' % repr(recipients))
+
         if recipients is None:
             return events
 
@@ -1170,37 +1296,93 @@ class EmailTemplate(models.Model):
         if not hasattr(recipients, '__iter__'):
             recipients = [recipients]
 
-        for recipient in recipients:
-            kw['recipient']=recipient
-            d = ModelDict(kw)
-            subject = ("[%s #%d] "% (properties['site_url'],issue.id)).encode('utf-8')
-            subject2 = self.subject % d
-            subject += subject2
+        done = {}
 
-            html = self.body
-            # print html
-            html = html % d
-            if type(html) is str:
-                html = html
+        if 'attachments' in kw:
+            attachments = kw['attachments']
+        else:
+            if 'update' in kw and not kw['update'] is None:
+                attachments = kw['update'].issueattachment_set.all()            
             else:
-                html=html.encode('utf-8')
+                attachments = issue.attachment
+            kw['attachments'] = attachments
 
-            plain = html2text(html)
-            plain = plain.decode('utf-8')
-            #print plain
-           
-            try:
-                Mailer.send_email(subject, recipient, plain, html)
-                events.append({'field':recipient.email, 
-                               'comment':_('Nofified by email')})
-            except:
-                import traceback as tb
-                msg = tb.format_exc()
-                logging.getLogger('ticket').error('Failed to send email to %s. Error: %s' % 
-                                                  (recipient.email, msg))
+#        print 'We have attachments', list(attachments)
+
+#        logging.getLogger('ticket').warning('Send email to %s' % repr(recipients))
+
+        for recipient_outer in recipients:
+            logging.getLogger('ticket').warning('We\'re doing %s now' % str(recipient_outer))
+
+            if not hasattr(recipient_outer, '__iter__') and not hasattr(recipient_outer,'email'):
+                try:
+                    recipient_outer = getattr(issue, recipient_outer)
+                    logging.getLogger('ticket').warning('Attribute acces ok, we now have %s' % str(recipient_outer))
+                except:
+                    logging.getLogger('ticket').warning('Failed to send email to %s: No such issue attribute' % recipient_outer)
+                    continue
+
+            if hasattr(recipient_outer,'all'):
+                recipient_outer = list(recipient_outer.all())
+
+            if not hasattr(recipient_outer, '__iter__'):
+                logging.getLogger('ticket').warning('Not an array... That\'s ok, I hope.')
+                recipient_outer = [recipient_outer]
+
+            for recipient in recipient_outer:  
+                r2 = recipient
+                if not hasattr(recipient,'email'):
+                    try:
+                        recipient = getattr(issue, recipient)
+                    except:
+                        logging.getLogger('ticket').warning('Recipient %s is not a user object, and not an issue attribute.' % recipient)
+                        continue
+
+                if recipient is None:
+                    logging.getLogger('ticket').warning('No relation of type %s specified - could not send email ticket.' % 
+                                                      (r2))
+                    continue
+
+                if recipient.email in done:
+                    continue
+                done[recipient.email] = recipient
+
+                kw['recipient']=recipient
+                #d = ModelDict(kw)
+                context = django.template.Context(kw)
+
+                subject_template = django.template.Template(self.subject)
+                subject = ("[%s #%d] "% (properties['site_url'],issue.id)).encode('utf-8')
+                subject += subject_template.render(context)
+
+                body_template = django.template.Template(self.body)
+                html = self.body
+
+                html = body_template.render(context)
+
+                # Make sure we have a str and not a unicode, or html2text will mess up
+                if type(html) is str:
+                    pass
+                else:
+                    html=html.encode('utf-8')
+
+                plain = html2text(html)
                 
-                events.append({'field':recipient.email, 
-                               'comment':(_('Email notification failed!'))})
+                # Make sure we have a unicode and not a str
+                plain = plain.decode('utf-8')
+
+                try:                    
+                    Mailer.send_email(subject, recipient, plain, html, attachments)
+                    events.append({'field':recipient.email, 
+                                   'comment':_('Nofified by email')})
+                except:
+                    import traceback as tb
+                    msg = tb.format_exc()
+                    logging.getLogger('ticket').error('Failed to send email to %s. Error: %s' % 
+                                                      (recipient.email, msg))
+
+                    events.append({'field':recipient.email, 
+                                   'comment':(_('Email notification failed!'))})
 
         return events
 
@@ -1300,8 +1482,11 @@ class Event(models.Model):
         if not hasattr(name, '__iter__'):
             name=[name]
         for ev in Event.objects.filter(event__in=name):
-            ev.run(issue, update, **kw)
-
+            try:
+                # Ignore exceptions in user supplied code. Users can't code worth crap. :-)
+                ev.run(issue, update, **kw)
+            except:
+                pass
 
     class Admin:
         pass
@@ -1317,11 +1502,30 @@ class UserProfile(models.Model):
     Extra data to store about each user. Django has a bit of automagic
     to tie this up with the main user object.
     """
-    user = models.ForeignKey(User, unique=True)
-    location = models.TextField(maxlength=512, blank=True)
-    building = models.TextField(maxlength=512, blank=True)
-    office = models.TextField(maxlength=512, blank=True)
-    telephone = models.TextField(maxlength=512, blank=True)
-    mobile = models.TextField(maxlength=512, blank=True)
-    pc = models.TextField(maxlength=512, blank=True)
-    
+    user = models.ForeignKey(User, unique=True, editable=False)
+    location = models.TextField(maxlength=512, blank=True, editable=False)
+    building = models.TextField(maxlength=512, blank=True, editable=False)
+    office = models.TextField(maxlength=512, blank=True, editable=False)
+    telephone = models.TextField(maxlength=512, blank=True, editable=False)
+    mobile = models.TextField(maxlength=512, blank=True, editable=False)
+    pc = models.TextField(maxlength=512, blank=True, editable=False)
+    signature = models.TextField(maxlength=2048, blank=True)
+
+    class Admin:
+        pass
+#        list_display
+#        fieldsets = (
+#            (None, {'fields':('profile',)})
+#            )
+
+
+
+#    class Meta:
+
+#        ordering = ['user.username']
+
+
+    def __str__(self):
+        return self.user.username
+
+

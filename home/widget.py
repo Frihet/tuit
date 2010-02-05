@@ -126,7 +126,7 @@ class Widget:
                 else:
 #                    self.columns = [ self.columns[0] ]
                     col_name = map(lambda x:x[1], self.columns)
-                    print 'AAA',self.columns
+                    #print 'AAA',self.columns
                     cells = map(lambda x: x.html_row(col_name), items_shown)
                     rows = "".join(map(lambda row: "<li>" + "".join(map(lambda cell:"%s" % cell, row))+ "</li>", cells))
                     stop_time = datetime.now()

@@ -6,6 +6,7 @@
 <script>
 var quick_fill = {{ quick_fill_json }};
 var default_mail = {{ create_default_mail_json }};
+var field_fill = {{ field_fill_json }};
 
 $(document).ready(function(){
 tuit.checkEmailCheckboxes(default_mail);
@@ -13,8 +14,8 @@ tuit.checkEmailCheckboxes(default_mail);
 
 </script>
 
-<form method='post' action='' accept-charset='utf-8'>
-
+<form  enctype="multipart/form-data"  method='post' action='' accept-charset='utf-8'>
+<input type='hidden' name='MAX_FILE_SIZE' value='1000000'/>
 <input type='hidden' name='type' value='{{ type.id|escape }}'/>
 
 <table class='striped wide'>
@@ -96,6 +97,7 @@ tuit.checkEmailCheckboxes(default_mail);
 </table>
 
 <button type='submit'>{%trans "Create issue" %}</button>
+<input class='button' type='submit' name='continue' value='{%trans "Create and continue" %}' />
 
 </form>
 

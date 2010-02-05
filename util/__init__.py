@@ -103,11 +103,11 @@ class ModelDict:
             return obj.encode('utf-8')
         try:
 #            print "ModelDict return", key
-            print type(obj)
+#            print type(obj)
             return str(obj)
         except:
             print "ModelDict error on", key
-            print type(obj)
+#            print type(obj)
             return obj
 
 #    def __setitem__(self, key, value):

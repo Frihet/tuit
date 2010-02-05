@@ -19,7 +19,7 @@ from django.template import RequestContext
 
 import logging
 
-def format_requst_info(request):
+def format_request_info(request):
     """
     Create a html text message describing w bit about what we know
     about a specific http request. Used for logging.
@@ -36,8 +36,9 @@ def format_requst_info(request):
 
     
 
+@login_required
 def logout(request):
-    logging.getLogger('account').info('User %s logged out %s' % (request.user.username, format_requst_info(request)))
+    logging.getLogger('account').info('User %s logged out %s' % (request.user.username, format_request_info(request)))
     django.contrib.auth.logout(request)
     return HttpResponseRedirect('/tuit/account/login') 
 
@@ -55,7 +56,7 @@ def show(request, id=None, uname=None):
     if not id is None:
         user = User.objects.get(id=id)
     elif not uname is None:
-        user = User.objects.get(username=name)
+        user = User.objects.get(username=uname)
     else:
         try:
             user = User.objects.get(username=request.GET['username'].split(' ')[0])
@@ -97,7 +98,7 @@ def login(request, template_name='registration/login.html'):
     if request.POST:
         errors = manipulator.get_validation_errors(request.POST)
         if not errors:
-            logging.getLogger('account').info('User %s logged in %s' % (request.POST['username'], format_requst_info(request)))
+            logging.getLogger('account').info('User %s logged in %s' % (request.POST['username'], format_request_info(request)))
 
             # Light security check -- make sure redirect_to isn't garbage.
             if not redirect_to or '://' in redirect_to or ' ' in redirect_to:

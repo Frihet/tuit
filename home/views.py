@@ -11,7 +11,7 @@ from tuit.util import *
 from django.utils.translation import gettext as _
 import logging
 from tuit.home.widget import Widget
-
+from tuit.home.models import Tip
 
 @login_required
 def home(request):
@@ -21,8 +21,8 @@ def home(request):
     status_closed = properties["issue_closed_id"]
     if not hasattr(status_closed,'__iter__'):
         status_closed=[status_closed]
-    keys={}
-
+    keys={'tip':Tip.current()}
+    
     keys['widgets'] = map(lambda x: Widget(_('My highest priority open tickets of type %s') % x.name,
                                            Issue.objects.exclude(current_status__in = status_closed).filter(assigned_to=request.user).filter(type=x).extra(select={'priority_placeholder':'impact+urgency'}).order_by('-priority_placeholder'),
                                            request, 'my_priority'),

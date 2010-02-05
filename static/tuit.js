@@ -2,6 +2,12 @@
 
 var tuit = {
 
+    comment: {
+	/*
+	  Filled out by i18n script
+	 */
+    },
+
     /*
       Perform all searches specified by data.
 
@@ -31,7 +37,7 @@ var tuit = {
 		    r.appendChild(c);
 		};
 
-		$.getJSON(value.url,
+		$.getJSON(value.url, {'time':tuit.time()},
 			  function (result, status) {
 			      //alert(results.length);
 			      //$('#results_' + value.id)[0].innerHTML = results;
@@ -69,56 +75,103 @@ var tuit = {
 	    });
     },
 
+    setItemValue: function( field, value) {
+	if(tinyMCE.editors[field]){
+	    tinyMCE.editors[field].setContent(value); 
+	}
+	else {
+	    var fld = $('#'+field);
+	    if(fld && fld.length == 1) {
+		fld[0].value = value;
+	    } else {
+		fld = $('#'+field+'_'+value);
+		if(fld && fld.length > 0) {
+		    fld[0].checked=true;
+		}
+		else {
+		    /*
+		      Give up, we can't find the field
+		    */
+		}
+	    }
+	}
+
+    },
+
+    quickChange: function(obj)
+    {
+	var idx = $('#quick')[0].value;
+	if(idx === "") {
+	    return;
+	}
+	
+	$.each(quick_fill, function(key2, value2) {
+		if( value2.id == idx ) {
+		    $.each(value2.item, function(key, value) {
+			    tuit.setItemValue(value.field, value.value);
+			});
+		};
+	    });
+    },
+
+
     init: function()
     {
-	var usr_url = "/tuit/query/user_complete/";
-	var usr_url2 = "/tuit/query/user_complete/?contacts=1";
-	var dep_url = "/tuit/query/issue_complete/";
-	var kb_url = "/cgi-bin/foswiki/search/KB/?skin=autocomplete&type=literal&web=KB+IKB";	
-	var ci_url = "/FreeCMDB/?controller=ciList&output=autocomplete";
-
-	var uoptions_single = {
-	    matchContains: true,
-	    mustMatch: true,
-	    param: "query",
-	    multipleSeparator:"\n",
-	    format: "json"
-	};
-	var uoptions_multiple = {
-	  matchContains: true,
-	  multiple: true,
-	  multipleSeparator:"\n",
-	  mustMatch: true,
-	  multipleSeparator:"\n",
-	  param: "query",
-	  format: "json"
-	};
-
-        var uoptions_multiple_free = {
-	  matchContains: true,
-	  multiple: true,
-	  multipleSeparator:"\n",
-	  mustMatch: false,
-	  multipleSeparator:"\n",
-	  param: "query",
-	  format: "json"
-	};
-
-	var u = $('.user');
-
-	u.filter('input').not('.contact').autocomplete(usr_url, uoptions_single);
-	u.filter('input').filter('.contact').autocomplete(usr_url2, uoptions_single);
-	u.filter('textarea').not('.contact').not('.free').autocomplete(usr_url, uoptions_multiple);
-	u.filter('textarea').not('.contact').filter('.free').autocomplete(usr_url, uoptions_multiple_free);
-	u.filter('textarea').filter('.contact').not('.free').autocomplete(usr_url2, uoptions_multiple);
-	u.filter('textarea').filter('.contact').filter('.free').autocomplete(usr_url2, uoptions_multiple_free);
-	
-	
-
-	
-	$('.depend').autocomplete(dep_url,
-        {
-	    matchContains: true,
+	if($('body').autocomplete) {
+	    var usr_url = "/tuit/query/user_complete/";
+	    var usr_url2 = "/tuit/query/user_complete/?contacts=1";
+	    var dep_url = "/tuit/query/issue_complete/";
+	    var kb_url = "/cgi-bin/foswiki/search/KB/?skin=autocomplete&type=literal&web=KB+IKB";	
+	    var ci_url = "/FreeCMDB/?controller=ciList&output=autocomplete";
+	    
+	    var uoptions_single = {
+		matchContains: true,
+		mustMatch: true,
+		param: "query",
+		format: "json"
+	    };
+	    var uoptions_multiple = {
+		matchContains: true,
+		multiple: true,
+		multipleSeparator:"\n",
+		mustMatch: true,
+		multipleSeparator:"\n",
+		param: "query",
+		format: "json"
+	    };
+	    
+	    var uoptions_multiple_free = {
+		matchContains: true,
+		multiple: true,
+		multipleSeparator:"\n",
+		mustMatch: false,
+		multipleSeparator:"\n",
+		param: "query",
+		format: "json"
+	    };
+	    
+	    var uoptions_single_free = {
+		matchContains: true,
+		mustMatch: false,
+		param: "query",
+		format: "json"
+	    };
+	    
+	    var u = $('.user');
+	    
+	    u.filter('input').not('.contact').not('.free').autocomplete(usr_url, uoptions_single);
+	    u.filter('input').filter('.contact').not('.free').autocomplete(usr_url2, uoptions_single);
+	    
+	    u.filter('input').not('.contact').filter('.free').autocomplete(usr_url, uoptions_single_free);
+	    u.filter('input').filter('.contact').filter('.free').autocomplete(usr_url2, uoptions_single_free);
+	    u.filter('textarea').not('.contact').not('.free').autocomplete(usr_url, uoptions_multiple);
+	    u.filter('textarea').not('.contact').filter('.free').autocomplete(usr_url, uoptions_multiple_free);
+	    u.filter('textarea').filter('.contact').not('.free').autocomplete(usr_url2, uoptions_multiple);
+	    u.filter('textarea').filter('.contact').filter('.free').autocomplete(usr_url2, uoptions_multiple_free);
+		
+	    $('.depend').autocomplete(dep_url,
+            {
+		matchContains: true,
 		multiple: true,
 		multipleSeparator:"\n",
 		mustMatch: true,
@@ -126,24 +179,25 @@ var tuit = {
 		format: "json"
 		});
 	
-	$('.ci').autocomplete(ci_url,
-        {
-	    matchContains: true,
+	    $('.ci').autocomplete(ci_url,
+            {
+		matchContains: true,
 		multiple: true,
 		multipleSeparator:"\n",
 		mustMatch: true
 		});
 
-        $('.kb').autocomplete(kb_url,
-        {
-	    matchContains: true,
+	    $('.kb').autocomplete(kb_url,
+            {
+ 	        matchContains: true,
 		multiple: true,
 		multipleSeparator:"\n",
 		mustMatch: false,
 		param: "search"
 		});
 	
-	
+	}
+
 	var tjolahopp = null;
 		
 	$('.advanced_head').click(function() {
@@ -152,65 +206,147 @@ var tuit = {
 	    });
 	$('.advanced').hide();
 	
-	var quickChange = function(obj)
-	{
-	    var idx = $('#quick')[0].value;
-	    if(idx === "") {
-		return;
-	    }
+        $('#quick').bind("change", null, tuit.quickChange);
 
-	    $.each(quick_fill,function(key2, value2)
-	{
-	    if( value2.id == idx ) {
-		$.each(value2.item,function(key, value)
-		       {
-			   if(tinyMCE.editors[value.field]){
-			       tinyMCE.editors[value.field].setContent(value.value); 
-			   }
-			   else {
-			       var fld = $('#'+value.field);
-			       if(fld && fld.length == 1) {
-				   fld[0].value = value.value;
-			       } else {
-				   fld = $('#'+value.field+value.value);
-				   if(fld) {
-				       fld[0].checked=true;
-				   }
-			       }
-			   }
-		       });
-	    };
-	    return;
-	});
-	};
-	
-        $('#quick').bind("change", null, quickChange);
-	
-	$('.date_picker').datePicker({"startDate":"01.01.2000"});
+	if($('body').datePicker) {
+	    $('.date_picker').datePicker({"startDate":"01.01.2000"});
+	}
 
 	$('#requester').bind('change',function(event){
 		var uname = $('#requester')[0].value.split(' ');
 		if (uname.length < 1)
 		    return
 		    
-		$.getJSON('/tuit/query/user_location/',{'username':uname[0]},
+		$.getJSON('/tuit/query/autofill/',
+			  {
+			      'field':   'requester',
+			      'username': uname[0],
+			      'time':     tuit.time()},
 			  function(value) {
 			      $.each(value,function(name, value) {
-				      var el = $('#' + name);
-				      if(el.length > 0)
-					  $('#' + name)[0].value = value;
+				      tuit.setItemValue( name, value);
 				  });
 			  });
 
 	    });
-	    
+
+	$('#assigned_to').bind('change',function(event){
+		var uname = $('#assigned_to')[0].value.split(' ');
+		if (uname.length < 1)
+		    return
+		    
+		$.getJSON('/tuit/query/autofill/',
+			  {
+			      'field':   'assigned_to',
+			      'value': uname[0],
+			      'time':     tuit.time()},
+			  function(value) {
+			      $.each(value,function(name, value) {
+				      tuit.setItemValue( name, value);
+				  });
+			  });
+
+	    });
+
+	$.each(field_fill, function(key, value) {
+		$('#' + value).bind('change', function(event) {
+//			alert();
+			var nam = event.target.name;
+			var val = event.target.value;
+			
+			$.getJSON('/tuit/query/autofill/',
+				  {
+				      'field':   nam,
+					  'value': val,
+					  'time':     tuit.time()},
+				  function(value) {
+				      $.each(value,function(name, value) {
+					      tuit.setItemValue( value.field, value.value);
+					  });
+				  });
+		    });
+		
+
+	    });
 	
+	       
+
+	tuit.getComments();
+    },
+	
+    getComments: function() {
+	var comment_target = $('.action_menu ul');
+	if(comment_target.length) {
+	    comment_target=comment_target[0];
+
+	    function createItem(wrap){
+		var res = document.createElement('li');
+		res.className = 'tuit_comment';
+		comment_target.appendChild(res);
+		if (wrap != null) {
+		    var res2 = document.createElement(wrap);
+		    res.appendChild(res2);
+		    return res2;
+		}
+		return res;
+	    }
+
+
+	    $.getJSON('/tuit/comment/get/',{'url':window.location.pathname},
+		      function (data, status) {
+			  if (data === false) {
+			      return;
+			  }
+			  $('.tuit_comment').remove();
+			  var title = createItem('h2');
+			  $(title).text(tuit.comment.HEADER);
+			  if(data.length > 0) {
+			      $.each(data, function(key, value) {
+				      var header = createItem('em');
+				      var body = createItem();
+				      $(header).text(value['username'] + "("+value['creation_time']+"):");
+				      $(body).text(value['text']);
+				  });
+			  }
+			  else {
+			      var header = createItem();
+			      $(header).text('(No comments posted yet)');
+			  }
+			  var form = createItem();
+			  $(form).html('<input name="tuit_comment" id="tuit_comment_input" size="16"/> <button id="tuit_comment_button" type="button" onclick="javascript:tuit.addComment();">' + tuit.comment.SEND + '</button>');
+			  $('#tuit_comment_input').bind('keypress', function (event) {
+				  if((event.keyCode || event.which) == 13) {
+				      tuit.addComment();
+				      return false;
+				  }
+				  return true;
+			      });
+			  
+		      });
+	}
+    },
+
+    addComment: function() {
+	var comment = $('#tuit_comment_input')[0];
+	if (comment.value == '' ) {
+	    return;
+	}
+	$.getJSON('/tuit/comment/set/',{'url':window.location.pathname,
+					'comment':comment.value},
+		      function (data, status) {
+			  if (data) {
+			      /*
+				Reload comments. Yay!
+			      */
+			      tuit.getComments();
+			  }
+		      });
     },
 
     insertKbArticle: function(){
 	var articleName = tuit.strip($('#kb_insert')[0].value);
-	var url = '/cgi-bin/foswiki/view/'+escape(articleName)+'?skin=text';
-	$.get(url,
+	var url = '/cgi-bin/foswiki/view/'+escape(articleName)
+	$.get(url, {'skin':'text','time':tuit.time()},
 	      function (result, status) {
 		  tinyMCE.editors['comment'].setContent(result); 
 		  $('#kb_preview').hide(200);
@@ -220,9 +356,9 @@ var tuit = {
     previewKbArticle: function(){
 	var articleName = tuit.strip($('#kb_insert')[0].value);
 	
-	var url = '/cgi-bin/foswiki/view/'+escape(articleName)+'?skin=text';
+	var url = '/cgi-bin/foswiki/view/'+escape(articleName);
 	
-	$.get(url,
+	$.get(url, {'skin':'text','time':tuit.time()},
 	      function (result, status) {
 		  $('#kb_preview_content')[0].innerHTML=result;
 		  $('#kb_preview').show(200);
@@ -294,8 +430,50 @@ var tuit = {
 		    }
 		}
 	    });
+    },
+
+    time: function()
+    {
+	return "" + (new Date()).getTime();
+	
+    },
+
+    fileCount: 0,
+
+    addFileWidget: function() {
+	var tbody = $('#file')[0];
+	var tr = document.createElement('tr');
+	var td = document.createElement('td');
+	var input = document.createElement('input');
+
+	td.colSpan='2';
+	
+	input.type='file';
+	input.name='file_' + tuit.fileCount++;
+	input.className = "file";
+
+	td.appendChild(input);
+	tr.appendChild(td);
+	tbody.appendChild(tr);
+	stripe();
+
+	function createItem(wrap){
+	    res.className = 'tuit_comment';
+	    comment_target.appendChild(res);
+	    if (wrap != null) {
+		var res2 = document.createElement(wrap);
+		res.appendChild(res2);
+		return res2;
+	    }
+	    return res;
+	}
+	
+	
     }
-}
+    
+
+
+};
 
 $(document).ready(function(){
 	tuit.init();

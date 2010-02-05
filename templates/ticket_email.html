@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load tuit_extras %}
+{% load i18n %}
+
+{%block sidebar %} 
+{% endblock %}
+
+{%block content %} 
+<p>
+{% if ok %}
+
+{% blocktrans with email as email %}Email has been sent to {{ email }}.{% endblocktrans %}
+
+{% else %}
+{% blocktrans with email as email %}Error while trying to send email to to {{ email }}:{% endblocktrans %}<br/>
+{{ error }}
+{% endif %}
+</p>
+<p>
+
+{% blocktrans with issue.url_internal as url and issue.id as id and issue.subject as subject %}Return to <a href='{{ url }}'>{{ id }} - {{ subject }}</a>.{% endblocktrans %}
+</p>
+
+
+{% endblock %}
