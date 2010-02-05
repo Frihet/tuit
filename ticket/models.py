@@ -308,7 +308,7 @@ class Issue(models.Model):
     and perform the assignment.
 
     These properties are in turn typically used by the apply_post
-    function. Any errors encounders are stored in the __errors member.
+    function. Any errors encounders are stored in the _errors member.
     """
 
     current_status = models.ForeignKey(Status)
@@ -341,7 +341,7 @@ class Issue(models.Model):
     pc = models.TextField(maxlength=512, blank=True)
 
     # Any errors encoundered during apply_post go here.
-    __errors={}
+    _errors={}
 
     # Cached list of extra fields.
     __extra_fields = None
@@ -552,6 +552,7 @@ class Issue(models.Model):
         etc. as needed.
         """
 
+        self._errors = {}
         events = []
         #print 'Applying values', values
         #print 'Applying post to issue %d'%self.id
@@ -608,9 +609,10 @@ class Issue(models.Model):
         """
         Add new error to form application/validation pass
         """
-        if name not in self.__errors:
-            self.__errors[name]=[]
-        self.__errors[name].append(msg)
+        print 'AAAAA adding error', name, msg
+        if name not in self._errors:
+            self._errors[name]=[]
+        self._errors[name].append(msg)
 
     def set_current_status_string(self, value):
         try:
@@ -724,8 +726,10 @@ class Issue(models.Model):
         """
         Perform regular validation but also return any errrors from apply_post()-call.
         """
-        res = self.__errors.copy()
+        res = self._errors.copy()
+        print 'ABC internal errors', res 
         for name, value_list in models.Model.validate(self).iteritems():
+            print 'Model error!', name, value_list
             if name in res:
                 res[name].extend(value_list)
             else:

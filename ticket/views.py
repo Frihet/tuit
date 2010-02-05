@@ -106,7 +106,14 @@ def new(request, type_name=None):
         events = i.apply_post(keys)
 
         i.create_description = '[]'
+
+        print 'FOO', request.POST
+        print 'Issue of type', i.type
+
         errors = i.validate()
+
+        print 'BAR', errors
+
         if not errors:
             i.save()
 
@@ -118,6 +125,7 @@ def new(request, type_name=None):
 
             errors = i.validate()
         
+            print 'BAZ', errors
             if not errors:
                 events.extend(send_email('web_create', request.POST, i, None))
                 events.extend(handle_files(i, None, request.FILES))

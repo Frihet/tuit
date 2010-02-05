@@ -50,9 +50,12 @@ def make_Q(query, fld):
             pass
 
     for i in sub_q:
+        if i=='-':
+            continue
         nq = None
         for f in fld:
             kw={f+'__icontains': i,}
+            print 'tjoho', kw
             nq2 = Q(**kw)
             if nq:
                 nq = nq | nq2
@@ -63,7 +66,6 @@ def make_Q(query, fld):
         else:
             q=nq
     return QLeftOuterJoins(q)
-
 
 @login_required
 def user_complete(request):
