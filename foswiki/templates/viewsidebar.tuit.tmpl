@@ -1,6 +1,11 @@
 %{ to include a side bar on a page, just include this template in the page template }%
 %TMPL:DEF{"sidebar"}% <div id="patternSideBar"><div id="patternClearHeaderLeft"></div>
-<div id="patternSideBarContents">%TMPL:P{"websidebar"}%
+<div id="patternSideBarContents">
+%TMPL:P{"websidebar"}%
+<div class='action_menu'>
+<ul>
+</ul>
+</div>
 </div><!-- /patternSideBarContents--></div><!-- /patternSideBar-->%TMPL:END%
 
 
