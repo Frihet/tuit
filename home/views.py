@@ -25,7 +25,7 @@ def home(request):
     
     keys['widgets'] = map(lambda x: Widget(_('My highest priority open tickets of type %s') % x.name,
                                            Issue.objects.exclude(current_status__in = status_closed).filter(assigned_to=request.user).filter(type=x).extra(select={'priority_placeholder':'impact+urgency'}).order_by('-priority_placeholder'),
-                                           request, 'my_priority'),
+                                           request, 'my_priority_' + x.name),
                           IssueType.objects.all().order_by('name'))
 
 #         [

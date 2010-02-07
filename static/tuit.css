@@ -116,3 +116,12 @@ h4 {
     max-width: 30%;
 }
 
+tr.emergency td.odd
+{
+    background: #ffeeee;
+}
+
+tr.emergency td
+{
+    background: #eedddd;
+}

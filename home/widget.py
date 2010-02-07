@@ -13,7 +13,7 @@ class Widget:
 
     def __init__(self, name, items, request, 
                  slug='issues', columns=None, item_count=10,
-                 class_names="",style='table'):
+                 class_names="",style='table', row_class=''):
         """
         Construct the widget. The items need to be a django orm search
         result. No limit or other silliness should be pallied, the
@@ -27,6 +27,7 @@ class Widget:
         self.request = request
         self.class_names = class_names
         self.style = style
+
 
     @property
     def current_page(self):
@@ -106,8 +107,17 @@ class Widget:
                     message = _("Showing items %(first)d to %(last)d of %(total)d") % {'first':start,'last':stop,'total':count}
                     col_name = map(lambda x:x[1], self.columns)
                     col_desc = "<tr>" + "\n".join(map(lambda x:"<th>%s</th>"%x[0], self.columns)) + "</tr>"
-                    cells = map(lambda x: x.html_row(col_name), items_shown)
-                    rows = "".join(map(lambda row: "<tr>" + "".join(map(lambda cell:"<td>%s</td>" % cell, row))+ "</tr>", cells))
+
+                    def row_class_string(row):
+                        if hasattr(row, 'row_class'):
+                            return 'class="%s"' % row.row_class
+                        return ''
+
+
+                    cells = map(lambda x: {'cells': x.html_row(col_name), 'class':row_class_string(x) }, items_shown)
+
+                    rendered_cells = map(lambda row: ("<tr %s>" % row['class']) + "".join(map(lambda cell:"<td>%s</td>" % cell, row['cells']))+ "</tr>", cells)
+                    rows = "".join(rendered_cells)
                     
                     pager_row ="<tr><td colspan='%d'>%s: %s</td></tr>" % (len(self.columns),_('Page'),self.pager)
                     
