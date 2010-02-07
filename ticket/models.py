@@ -369,6 +369,21 @@ class Issue(models.Model):
         return ((_('Issue name'),'name'),(_('Priority'),'priority'),(_('Requester'),'requester'))
 
     @property
+    def row_class(self):
+        try:
+            print 'AAA'
+            print properties['priority_class']
+            print self.priority
+            res = properties['priority_class'][self.priority]
+            print 'res is', res
+            return res
+        except:
+            print 'TJOHO'
+            traceback.print_exc()
+            return ''
+
+
+    @property
     def extra_fields(self):
         """
         Return extra fields of this issue type
@@ -393,9 +408,12 @@ class Issue(models.Model):
 
     def load_extra_fields(self):
         values = dict(map(lambda x:(x.field.name,x),self.issuefieldvalue_set.all()))
+        group_values = dict(map(lambda x:(x.field.name,x),self.issuefieldgroupvalue_set.all()))
         dropdown_values = dict(map(lambda x:(x.field.name,x),self.issuefielddropdownvalue_set.all()))
         value_items = dict(map(lambda x:(x.field.name,x),self.issuefielddropdownvalue_set.all()))
+        print group_values
         def process_field(f):
+
             class FieldData(object):
                 def __init__(self, field, value):
                     self.field = field
@@ -412,17 +430,26 @@ class Issue(models.Model):
 
                 def __repr__(self):
                     return self.__str__()
+
             if f.field_type == 'dropdown':
-                value = IssueFieldDropdownValue(issue=self,
-                                                field=f)
                 if f.name in dropdown_values:
                     value = dropdown_values[f.name]
+                else:
+                    value = IssueFieldDropdownValue(issue=self,
+                                                    field=f)
+            elif f.field_type == 'group':
+                if f.name in group_values:
+                    value = group_values[f.name]
+                else:
+                    value = IssueFieldGroupValue(issue=self,
+                                                 field=f)
             else:
-                value = IssueFieldValue(issue=self,
-                                        field=f,
-                                        value='')
                 if f.name in values:
                     value = values[f.name]
+                else:
+                    value = IssueFieldValue(issue=self,
+                                            field=f,
+                                            value='')
 
 
             return FieldData(f, value)
@@ -488,9 +515,6 @@ class Issue(models.Model):
     @property
     def priority(self):
         if 'priority_matrix' in properties:
-#            print 'LALALA', self.impact, self.urgency
-#            print properties['priority_matrix']
-#            print properties['priority_matrix'][self.impact-1]
             return properties['priority_matrix'][self.impact-1][self.urgency-1]
         return self.impact+self.urgency
 
@@ -590,6 +614,21 @@ class Issue(models.Model):
                         continue
                     if old != new:
                         el.value.item = IssueFieldDropdownItem.objects.get(id=new)
+                        events.append({'field':el.field.name, 'old':old, 'new':new})
+
+                if el.field.field_type == 'group':
+                    old = None
+                    try:
+                        old = el.value.item.id
+                    except:
+                        pass
+                    try:
+                        new = int(values[el.field.name])
+                    except:
+                        self.error(el.field.name, _('Invalid value: %s.') % values[el.field.name])
+                        continue
+                    if old != new:
+                        el.value.item = Group.objects.get(id=new)
                         events.append({'field':el.field.name, 'old':old, 'new':new})
 
                 else:
@@ -915,6 +954,7 @@ class IssueField(models.Model):
         ('dropdown',_('Dropdown box')),
         ('textarea',_('Multiline text area')),
         ('date',_('Date')),
+        ('group',_('Group')),
         ('custom',_('Custom')),
         )
 
@@ -943,7 +983,7 @@ class IssueField(models.Model):
     def render_input(self, data):
         """
         FIXME: This function needs a bit of cleanup.
-
+        
         Render an extra field in the correct manner depending on field type.
         """
         try:
@@ -966,7 +1006,37 @@ class IssueField(models.Model):
                     if id == item.id:
                         sel = 'selected'
                     return "<option value='%d' %s>%s</option>"%(item.id, sel, escape_recursive(item.name))  
-                opt = "\n".join(map(format_option, self.issuefielddropdownitem_set.order_by('name')))
+                opt=""
+                if self.blank:
+                    opt += "<option>---</option>";
+                opt += "\n".join(map(format_option, self.issuefielddropdownitem_set.order_by('name')))
+                return sel + opt + "</select>"
+            elif self.field_type == 'group':
+                sel = "<select name='%s' id='%s'>" % escape_recursive(self.name, self.name)
+                id = None
+                try:
+#                    print 'AAA'
+#                    print data
+                    id = data.item.id
+                except:
+#                    print 'bbb'
+#                    import traceback
+#                    traceback.print_exc()
+                    pass
+
+#                print 'LALALA1', id
+
+                def format_option(item):
+#                    print 'LALALA2', item.id
+                    sel = ""
+                    if id == item.id:
+#                        print 'LALALA', id
+                        sel = 'selected'
+                    return "<option value='%d' %s>%s</option>"%(item.id, sel, escape_recursive(item.name))  
+                opt=""
+                if self.blank:
+                    opt += "<option>---</option>";
+                opt += "\n".join(map(format_option, Group.objects.all()))
                 return sel + opt + "</select>"
             elif self.field_type == 'grading':
                 def format_grade(num):
@@ -976,7 +1046,8 @@ class IssueField(models.Model):
                     return "<input class='radio' type='radio' id='%(name)s_%(num)d' name='%(name)s' value='%(num)d' %(checked)s /><label for='%(name)s_%(num)d'>%(num)d</label>" % {'name':self.name, 'num': num, 'checked':checked}
 
                 return "\n".join(map(format_grade, range(1,6)))
-
+            else:
+                raise "Unknown field type: " % self.field_type
 
         except:
             import traceback
@@ -987,6 +1058,8 @@ class IssueField(models.Model):
 
     def render_value(self, data):
         if self.field_type == 'dropdown':
+            return escape_recursive(data.item.name)
+        if self.field_type == 'group':
             return escape_recursive(data.item.name)
         if self.field_type == 'textarea':
             return data.value
@@ -1030,6 +1103,19 @@ class IssueFieldDropdownValue(models.Model):
     issue = models.ForeignKey(Issue)                          
     field = models.ForeignKey(IssueField)                     
     item = models.ForeignKey(IssueFieldDropdownItem)                     
+
+class IssueFieldGroupValue(models.Model):      
+    """
+    A row in this table represents a selected value for a group widget. 
+    """
+    issue = models.ForeignKey(Issue)                          
+    field = models.ForeignKey(IssueField)                     
+    item = models.ForeignKey(Group)                     
+
+    def __str__(self):
+        print 'AAAAAAAAAAAAAAAAAAAA',self.id
+        return "IssueFieldGroup:" + str(self.item_id) 
+#        return "IssueFieldGroup:" + str(self.issue_id) + " -> " + str(self.item_id)
 
 class IssueFieldValue(models.Model):                          
     """

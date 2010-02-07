@@ -141,7 +141,7 @@ class PropertyHandler:
                 return item
 
 
-            self.data=dict(map(lambda x: (x.name, str_deep(from_json(x.value))), Property.objects.all()))
+            self.data=dict(map(lambda x: (x.name, encode_recursive(from_json(x.value))), Property.objects.all()))
 
     def __contains__(self, name):
         self.__load()
@@ -277,7 +277,7 @@ def encode_recursive_internal(obj):
     if hasattr(obj,'__iter__'):
         return map(encode_recursive_internal, obj)
         
-    return None
+    return obj
     
 
 
