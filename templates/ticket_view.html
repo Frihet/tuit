@@ -10,6 +10,8 @@
 
 {%block content %} 
 
+{% if issue %}
+
 <span class='no_print'>
   <button type='button' class='kb_button' onclick='$(".internal").toggle()'>{%trans "Toggle internal update visibility" %}</button>
   <button type='button' class='kb_button' onclick='$("#copy_popup").show(50);'>{%trans "Create new ticket based on this ticket" %}</button>
@@ -474,5 +476,10 @@ var external_default_mail = {{ external_default_mail_json }};
   </div>
 </div>
 
+{% else %}
+
+Issue not found
+
+{% endif %}
 
 {% endblock %}

@@ -204,7 +204,12 @@ def view(request,id=None):
     """
     if id is None:
         id = request.GET['id']
-    i=Issue.objects.get(id=id)
+    try:
+        i=Issue.objects.get(id=id)
+    except:
+        return tuit_render('ticket_view.html', {}, request)
+
+
     keys = request.POST.copy()
     keys['messages'] = ""
     keys['update']=None
