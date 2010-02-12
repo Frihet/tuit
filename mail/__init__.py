@@ -1004,8 +1004,7 @@ class MailGW:
 
                 (copy_type, copy_data) = server.copy(str(i), 'Inbox.' + box_name)
                 if copy_type == 'OK':
-#                    server.store(str(i), '+FLAGS', r'(\Deleted)')
-                    pass
+                    server.store(str(i), '+FLAGS', r'(\Deleted)')
                 else:
                     self.logger.error('failed to copy message to %s-folder' % box_name)
 

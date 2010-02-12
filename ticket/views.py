@@ -11,6 +11,7 @@ import re
 from django.utils.translation import gettext as _
 import logging
 from tuit.query.models import GenericFillItem
+
 def studly(str):
     """
     Converts a sentence into a StudlyCaps word.
@@ -303,6 +304,8 @@ def i18n(request):
     Send gettext-translated data in javascript format for various UI components.
     """
 
+    regular = [gettext_noop('Comments'),gettext_noop('Send'),gettext_noop('No comments posted yet')]
+
     trans={'$.dpText.TEXT_CHOOSE_DATE': _('Choose date'),
            '$.dpText.TEXT_PREV_MONTH': _('Previous month'),
            '$.dpText.TEXT_PREV_YEAR': _('Previous year'),
@@ -311,10 +314,10 @@ def i18n(request):
            '$.dpText.TEXT_CLOSE': _('Close'),
            'Date.dayNames': [_('Sunday'),_('Monday'),_('Tuesday'),_('Wednesday'),_('Thursday'),_('Friday'),_('Saturday'),],
            'Date.monthNames': [_('January'), _('February'), _('March'), _('April'), _('May'), _('June'), _('July'), _('August'), _('September'), _('October'), _('November'), _('December')],
-           'tuit.comment.HEADER':_('Comments:'),
-           'tuit.comment.SEND':_('Send'),
-
            }
+
+    for i in regular:
+        trans["tuit.translations[" + to_json(i)+"]"] = _(i)
 #    Cache-Control: private, max-age=3600, must-revalidate
     return tuit_render('i18n.js', {'strings':trans}, request)
 

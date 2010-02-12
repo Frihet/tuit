@@ -2,6 +2,7 @@
 from django import template
 from django.core.mail import send_mail
 from tuit.util import properties
+from django.utils.translation import gettext as _
 import tuit.json
 
 register = template.Library()

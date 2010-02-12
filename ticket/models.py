@@ -119,7 +119,7 @@ class Status(models.Model):
     Status of a ticket, e.g. 'Closed', 'Open', etc.
     """
 
-    name = models.CharField(maxlength=64, unique=True)
+    name = models.CharField(_('name'),maxlength=64, unique=True)
 
     def __str__(self):
         return self.name
@@ -137,9 +137,9 @@ class IssueType(models.Model):
     """
     Type of issue, e.g. incident, problem or RfC.
     """
-    name = models.CharField(maxlength=64, unique=True)
-    has_location = models.BooleanField()
-    extra_fields = models.ManyToManyField("IssueField", blank=True)
+    name = models.CharField(_('name'), maxlength=64, unique=True)
+    has_location = models.BooleanField(_('Use location fields'))
+    extra_fields = models.ManyToManyField("IssueField", verbose_name=_('Additional fields'), blank=True)
 
     def __str__(self):
         return self.name
@@ -162,7 +162,7 @@ class Category(models.Model):
     category system used previously. The remaining levels are replaced
     by the CMDB. 
     """
-    name = models.CharField(maxlength=64, unique=True)
+    name = models.CharField(_('name'), maxlength=64, unique=True)
 
     def __str__(self):
         return self.name
@@ -177,7 +177,7 @@ class Category(models.Model):
 
 
 class QuickFill(models.Model):
-    name = models.CharField(maxlength=512, unique=True)
+    name = models.CharField(_('name'), maxlength=512, unique=True)
 
     def __str__(self):
         return self.name
@@ -215,9 +215,9 @@ class QuickFill(models.Model):
         
     
 class QuickFillItem(models.Model):
-    fill = models.ForeignKey(QuickFill)
-    field = models.ForeignKey("IssueField")
-    value = models.CharField(maxlength=32000)
+    fill = models.ForeignKey(QuickFill, verbose_name=_('quick fill'),help_text=_('Quick fill that this item belongs to.'))
+    field = models.ForeignKey("IssueField", verbose_name=_('Issue field'))
+    value = models.CharField(_('value'), maxlength=32000, help_text=_('Note that for dropdown fields, you must enter the value id, not the string itself.'))
     
     def __str__(self):
         return str(self.field) + ": " + str(self.value)
@@ -411,7 +411,7 @@ class Issue(models.Model):
         group_values = dict(map(lambda x:(x.field.name,x),self.issuefieldgroupvalue_set.all()))
         dropdown_values = dict(map(lambda x:(x.field.name,x),self.issuefielddropdownvalue_set.all()))
         value_items = dict(map(lambda x:(x.field.name,x),self.issuefielddropdownvalue_set.all()))
-        print group_values
+        print 'gv', group_values
         def process_field(f):
 
             class FieldData(object):
@@ -430,6 +430,13 @@ class Issue(models.Model):
 
                 def __repr__(self):
                     return self.__str__()
+
+                @property
+                def is_empty(self):
+                    if self.field.field_type in set(('dropdown','group')):
+                        return self.value.item_id is None
+                    else:
+                        return self.value.value is None
 
             if f.field_type == 'dropdown':
                 if f.name in dropdown_values:
@@ -454,7 +461,7 @@ class Issue(models.Model):
 
             return FieldData(f, value)
         self.__extra_fields = map(process_field, self.type.extra_fields.order_by('view_order'))
-#        print self.__extra_fields
+        print self.__extra_fields
 
 
     def save(self):
@@ -463,8 +470,13 @@ class Issue(models.Model):
         """
         models.Model.save(self)
         for i in self.extra_fields:
-            i.value.issue=self
-            i.value.save()
+            if i.field.blank and i.is_empty:
+                if not i.value.id is None:
+                    i.value.delete()
+            else:
+                i.value.issue=self
+                i.value.save()
+
 
     @property
     def has_location(self):
@@ -561,7 +573,7 @@ class Issue(models.Model):
                                          blank = item.get('blank', True),
                                          view_order = idx,
                                          internal= True)
-                print item
+#                print item
                 issue_field.save()
 
         return IssueField.objects.filter(internal = True)
@@ -602,6 +614,10 @@ class Issue(models.Model):
         for el in self.extra_fields:
             if el.field.name in values:
                 if el.field.field_type == 'dropdown':
+                    if el.field.blank and values[el.field.name] == '':
+                        el.value.item = None
+                        continue
+
                     old = None
                     try:
                         old = el.value.item.id
@@ -616,7 +632,11 @@ class Issue(models.Model):
                         el.value.item = IssueFieldDropdownItem.objects.get(id=new)
                         events.append({'field':el.field.name, 'old':old, 'new':new})
 
-                if el.field.field_type == 'group':
+                elif el.field.field_type == 'group':
+                    if el.field.blank and values[el.field.name] == '':
+                        el.value.item = None
+                        continue
+
                     old = None
                     try:
                         old = el.value.item.id
@@ -962,13 +982,13 @@ class IssueField(models.Model):
     # numbers and underscores. Will not be shown to the user.
     name = models.CharField(maxlength=64)
     
-    # The human-eradable name 
-    short_description = models.CharField(maxlength=64)
-    long_description = models.CharField(maxlength=256)
-    field_type = models.CharField(maxlength=16, choices=FIELD_TYPE_CHOICES)
-    blank = models.BooleanField()
-    view_order = models.IntegerField()
-    internal = models.BooleanField(default=False, editable=False)
+    # The human-editable name 
+    short_description = models.CharField(_('short description'),maxlength=64)
+    long_description = models.CharField(_('long description'),maxlength=256,help_text=_('Used for tooltips'))
+    field_type = models.CharField(_('field type'),maxlength=16, choices=FIELD_TYPE_CHOICES)
+    blank = models.BooleanField(_('blank'), help_text=_('Check this box if it is ok for this field to not be filled in'))
+    view_order = models.IntegerField(_('view order'))
+    internal = models.BooleanField(_('internal'),default=False, editable=False)
 
     @staticmethod 
     def all():
@@ -1008,34 +1028,25 @@ class IssueField(models.Model):
                     return "<option value='%d' %s>%s</option>"%(item.id, sel, escape_recursive(item.name))  
                 opt=""
                 if self.blank:
-                    opt += "<option>---</option>";
+                    opt += "<option value=''>---</option>";
                 opt += "\n".join(map(format_option, self.issuefielddropdownitem_set.order_by('name')))
                 return sel + opt + "</select>"
             elif self.field_type == 'group':
                 sel = "<select name='%s' id='%s'>" % escape_recursive(self.name, self.name)
                 id = None
                 try:
-#                    print 'AAA'
-#                    print data
                     id = data.item.id
                 except:
-#                    print 'bbb'
-#                    import traceback
-#                    traceback.print_exc()
                     pass
 
-#                print 'LALALA1', id
-
                 def format_option(item):
-#                    print 'LALALA2', item.id
                     sel = ""
                     if id == item.id:
-#                        print 'LALALA', id
                         sel = 'selected'
                     return "<option value='%d' %s>%s</option>"%(item.id, sel, escape_recursive(item.name))  
                 opt=""
                 if self.blank:
-                    opt += "<option>---</option>";
+                    opt += "<option value=''>---</option>";
                 opt += "\n".join(map(format_option, Group.objects.all()))
                 return sel + opt + "</select>"
             elif self.field_type == 'grading':
@@ -1080,8 +1091,8 @@ class IssueFieldDropdownItem(models.Model):
     A row in this table represents a dropdown item in for a dropdown
     (select) widget.
     """
-    field = models.ForeignKey(IssueField)                     
-    name = models.CharField(maxlength=64)
+    field = models.ForeignKey(IssueField, verbose_name=_('field'))
+    name = models.CharField(maxlength=64, verbose_name=_('name'), help_text=_('Name to display to user'))
 
     def __str__(self):
         return "%s (%s)" % (self.name, self.field.short_description)
@@ -1113,7 +1124,6 @@ class IssueFieldGroupValue(models.Model):
     item = models.ForeignKey(Group)                     
 
     def __str__(self):
-        print 'AAAAAAAAAAAAAAAAAAAA',self.id
         return "IssueFieldGroup:" + str(self.item_id) 
 #        return "IssueFieldGroup:" + str(self.issue_id) + " -> " + str(self.item_id)
 
@@ -1269,8 +1279,8 @@ class IssueAttachment(models.Model):
             # is going on, the open call will catch it...
             pass
 
+        f = open(fullname, 'w')
         try:
-            f = open(fullname, 'w')
             f.write(data)
             iua = IssueAttachment(issue=issue, 
                                   update=update,

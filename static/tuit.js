@@ -2,7 +2,7 @@
 
 var tuit = {
 
-    comment: {
+    translations: {
 	/*
 	  Filled out by i18n script
 	 */
@@ -245,30 +245,30 @@ var tuit = {
 				      tuit.setItemValue( name, value);
 				  });
 			  });
-
-	    });
-
-	$.each(field_fill, function(key, value) {
-		$('#' + value).bind('change', function(event) {
-//			alert();
-			var nam = event.target.name;
-			var val = event.target.value;
-			
-			$.getJSON('/tuit/query/autofill/',
-				  {
-				      'field':   nam,
-					  'value': val,
-					  'time':     tuit.time()},
-				  function(value) {
-				      $.each(value,function(name, value) {
-					      tuit.setItemValue( value.field, value.value);
-					  });
-				  });
-		    });
-		
-
 	    });
 	
+	if( window.field_fill != undefined) {
+	    $.each(field_fill, function(key, value) {
+		    $('#' + value).bind('change', function(event) {
+			    //			alert();
+			    var nam = event.target.name;
+			    var val = event.target.value;
+			    
+			    $.getJSON('/tuit/query/autofill/',
+				      {
+					  'field':   nam,
+					      'value': val,
+					      'time':     tuit.time()},
+				      function(value) {
+					  $.each(value,function(name, value) {
+						  tuit.setItemValue( value.field, value.value);
+					      });
+				      });
+			});
+		    
+		    
+		});
+	}
 	       
 
 	tuit.getComments();
@@ -299,7 +299,7 @@ var tuit = {
 			  }
 			  $('.tuit_comment').remove();
 			  var title = createItem('h2');
-			  $(title).text(tuit.comment.HEADER);
+			  $(title).text(_('Comments') + ':');
 			  if(data.length > 0) {
 			      $.each(data, function(key, value) {
 				      var header = createItem('em');
@@ -310,10 +310,10 @@ var tuit = {
 			  }
 			  else {
 			      var header = createItem();
-			      $(header).text('(No comments posted yet)');
+			      $(header).text('('+ _('No comments posted yet')+')');
 			  }
 			  var form = createItem();
-			  $(form).html('<input name="tuit_comment" id="tuit_comment_input" size="16"/> <button id="tuit_comment_button" type="button" onclick="javascript:tuit.addComment();">' + tuit.comment.SEND + '</button>');
+			  $(form).html('<input name="tuit_comment" id="tuit_comment_input" size="16"/> <button id="tuit_comment_button" type="button" onclick="javascript:tuit.addComment();">' +_('Send')+'</button>');
 			  $('#tuit_comment_input').bind('keypress', function (event) {
 				  if((event.keyCode || event.which) == 13) {
 				      tuit.addComment();
@@ -479,3 +479,6 @@ $(document).ready(function(){
 	tuit.init();
 });
 
+function _ (input) {
+    return (input in tuit.translations)?tuit.translations[input]:input;
+}

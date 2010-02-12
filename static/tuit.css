@@ -56,7 +56,7 @@ td input.kb
     display: inline-block;
     width: 45%;
     min-width: 30em;
-    margin: 1%;
+    margin: 1em;
     vertical-align: top;
     /*
       These two declarations fake inline-block under IE7
@@ -125,3 +125,25 @@ tr.emergency td
 {
     background: #eedddd;
 }
+
+div.tip
+{
+    float:right;
+    clear:both;
+    margin: 1em;
+    width: 30%;
+}
+
+div.status
+{
+    float:right;
+    clear:both;
+    margin: 1em;
+    width: 30%;
+}
+
+div.status body
+{
+margin: 0;
+}
+

@@ -104,7 +104,7 @@ class Widget:
                 else:
 
 
-                    message = _("Showing items %(first)d to %(last)d of %(total)d") % {'first':start,'last':stop,'total':count}
+                    message = _("Showing items %(first)d to %(last)d of %(total)d") % {'first':start+1,'last':stop,'total':count}
                     col_name = map(lambda x:x[1], self.columns)
                     col_desc = "<tr>" + "\n".join(map(lambda x:"<th>%s</th>"%x[0], self.columns)) + "</tr>"
 

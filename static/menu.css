@@ -34,13 +34,13 @@ height: 78px;
 background-repeat: no-repeat;
 background-position: top right;
 background-image: url('common/bg2.jpg');
-
 }
 
 .main_menu_inner ul
 {
     margin: 0%;
     padding: 1em;
+    padding-right: 280px;
 }
 
 .main_menu .logo
@@ -48,7 +48,6 @@ background-image: url('common/bg2.jpg');
     padding-top: 4em;
     padding-bottom: 4em;
     font-weight: bold;
-	
 }
 
 .main_menu li
