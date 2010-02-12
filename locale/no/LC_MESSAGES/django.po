@@ -2,12 +2,12 @@
 # Copyright (C) 2009
 # This file is distributed under the same license as the Tuit package.
 # Anja Winther-Ruud <anja.winther-ruud@freecode.no>
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-27 11:56+0000\n"
+"POT-Creation-Date: 2010-02-11 13:31+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Anja Winther-Ruud <anja.winther-ruud@freecode.no>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,9 +15,14 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: search/views.py:15 templates/search.html:94 templates/menu.html:20
+#: search/views.py:23 templates/search.html:94 templates/base.html:59
+#: templates/menu.html:20
 msgid "Search"
 msgstr "Søk"
+
+#: templates/account_show.html:52 home/widget.py:102 home/widget.py:135
+msgid "No matching items found"
+msgstr "Ingen treff"
 
 #: templates/search.html:9
 msgid "Freetext search"
@@ -25,15 +30,15 @@ msgstr "Fritekstsøk"
 
 #: templates/search.html:19
 msgid "Advanced issue search options"
-msgstr "Avanserte søkerinnstillinger"
+msgstr "Avansert søk"
 
 #: templates/search.html:51
 msgid "Issue status"
-msgstr "Sakens status"
+msgstr "Filtrér på status"
 
 #: templates/search.html:55
 msgid "All not closed"
-msgstr "Alle som ikke er stengt"
+msgstr "Alle åpne"
 
 #: templates/search.html:56 log/views.py:19
 msgid "All"
@@ -41,302 +46,405 @@ msgstr "Alle"
 
 #: templates/search.html:66
 msgid "Updated after"
-msgstr "Oppdatert etter"
+msgstr "Oppdatert etter dato"
 
-#: templates/search.html:76 ticket/models.py:242 ticket/models.py:819
+#: templates/search.html:76 ticket/models.py:369 ticket/models.py:1188
 msgid "Priority"
 msgstr "Prioritet"
 
 #: templates/search.html:79
 msgid "4..7 means priority between 4 and 7."
-msgstr "4..7 betyr alle prioriteter mellom 4 og 7"
+msgstr "Eksempel: 4..7 for prioritet mellom 4 og 7"
 
 #: templates/search.html:100
 #, python-format
 msgid "Searching for \"%(text)s\"..."
-msgstr "Søker etter \"%(text)s\"..."
+msgstr "Søk etter \"%(text)s\"..."
 
 #: templates/search.html:109
 #, python-format
 msgid "Search results from %(name)s"
-msgstr "Søkeresultater fra %(name)s"
+msgstr "Søkeresultater for %(name)s"
 
 #: templates/search.html:121
 msgid "Show more"
-msgstr "Vis mer"
+msgstr "Vis flere resultater"
 
 #: templates/search.html:138
 #, python-format
 msgid "Found a total of %s message(s)"
-msgstr "Fant totalt %s melding(er)"
+msgstr "%s søketreff"
 
 #: templates/log.html:11
 msgid "Minimum event severity level"
-msgstr "Minimum alvorlighetsgrad på hendelse"
+msgstr "Laveste alvorlighetsgrad for hendelse"
 
 #: templates/log.html:21
 msgid "Event category"
-msgstr "Hendelse kategori"
+msgstr "Hendelseskategori"
 
 #: templates/log.html:31
 msgid "Filter"
 msgstr "Filter"
 
-#: templates/base.html:49 templates/admin/base.html:33
+#: templates/base.html:54 templates/admin/base.html:35
 msgid "User"
 msgstr "Bruker"
 
-#: templates/base.html:50 templates/admin/base.html:34
+#: templates/base.html:55 templates/admin/base.html:36
 msgid "Log out"
 msgstr "Logg ut"
+
+#: templates/base.html:56
+msgid "Show User"
+msgstr "Vis bruker"
 
 #: templates/help.html:6
 msgid "Table of contents"
 msgstr "Innholdsfortegnelse"
 
-#: templates/ticket_comment.html:6 templates/ticket_comment.html.py:15
-#: templates/ticket_comment.html:58
+#: templates/ticket_comment.html:6 templates/ticket_comment.html.py:17
+#: templates/ticket_comment.html:60
 msgid "Add new update"
-msgstr "Legg til ny oppdatering"
+msgstr "Legg til oppdatering"
 
-#: templates/ticket_comment.html:24
+#: templates/ticket_comment.html:26
 msgid "Also update dependant issues"
-msgstr "Oppdater også berørende saker"
+msgstr "Oppdater også berørte saker"
 
-#: templates/ticket_comment.html:33 templates/ticket_view.html:290
+#: templates/ticket_comment.html:35 templates/ticket_view.html:374
 msgid "Internal"
 msgstr "Intern"
 
-#: templates/ticket_comment.html:42
+#: templates/ticket_comment.html:44
 msgid "Problem update"
-msgstr "Problemoppdatering"
+msgstr "Oppdatering"
 
-#: templates/ticket_comment.html:47
+#: templates/ticket_comment.html:49
 msgid "Insert KB article"
-msgstr "Sett inn KB artikkel"
+msgstr "Sett inn artikkel fra KB"
 
-#: templates/ticket_comment.html:47
+#: templates/ticket_comment.html:49
 msgid "Insert"
 msgstr "Sett inn"
 
-#: templates/ticket_comment.html:47
-msgid "Preview"
-msgstr "Forhåndsvisning"
-
 #: templates/ticket_comment.html:49
+msgid "Preview"
+msgstr "Forhåndsvis"
+
+#: templates/ticket_comment.html:51
 msgid "Hide"
 msgstr "Skjul"
 
-#: templates/ticket_comment.html:58 templates/ticket_view.html:295
-#: templates/ticket_view.html.py:324
+#: templates/ticket_comment.html:60 templates/ticket_view.html:379
+#: templates/ticket_view.html.py:408 templates/ticket_view.html:472
 msgid "Cancel"
 msgstr "Avbryt"
 
-#: templates/ticket_common.html:7 templates/ticket_view.html:92
+#: templates/home.html:10
+msgid "Tip of the week:"
+msgstr "Ukens tips:"
+
+#: templates/ticket_email.html:12
+#, python-format
+msgid "Email has been sent to %(email)s."
+msgstr "E-post er sendt til %(email)s."
+
+#: templates/ticket_email.html:15
+#, python-format
+msgid "Error while trying to send email to to %(email)s:"
+msgstr "Feil under forsøk på å sende e-post til %(email)s:"
+
+#: templates/ticket_email.html:21
+#, python-format
+msgid "Return to <a href='%(url)s'>%(id)s - %(subject)s</a>."
+msgstr "Tilbake til <a href='%(url)s'>%(id)s - %(subject)s</a>."
+
+#: templates/ticket_common.html:7 templates/ticket_view.html:30
+#: templates/ticket_view.html.py:156 ticket/models.py:545
 msgid "Assigned to"
 msgstr "Tildelt"
 
 #: templates/ticket_common.html:10 templates/ticket_common.html.py:19
-#: templates/ticket_common.html:81 templates/ticket_common.html.py:91
+#: templates/ticket_common.html:116 templates/ticket_common.html.py:126
 msgid "Send email"
-msgstr "Send epost"
+msgstr "Send e-post"
 
-#: templates/ticket_common.html:16 templates/ticket_view.html:38
-#: ticket/models.py:242 ticket/models.py:819
+#: templates/ticket_common.html:16 templates/ticket_view.html:48
+#: ticket/models.py:369 ticket/models.py:548 ticket/models.py:562
+#: ticket/models.py:1188
 msgid "Requester"
-msgstr "Den som spør"
+msgstr "Bruker"
 
-#: templates/ticket_common.html:30
+#: templates/ticket_common.html:37
 msgid "Edit contact information"
 msgstr "Rediger kontaktinformasjon"
 
-#: templates/ticket_common.html:38 templates/ticket_view.html:47
+#: templates/ticket_common.html:46 templates/ticket_view.html:57
+#: ticket/models.py:553
 msgid "Location"
-msgstr "Sted"
+msgstr "Lokasjon"
 
-#: templates/ticket_common.html:47 templates/ticket_view.html:56
+#: templates/ticket_common.html:55 templates/ticket_view.html:66
+#: ticket/models.py:554
 msgid "Building"
 msgstr "Bygning"
 
-#: templates/ticket_common.html:56 templates/ticket_view.html:65
+#: templates/ticket_common.html:64 templates/ticket_view.html:75
+#: ticket/models.py:555
 msgid "Office"
 msgstr "Kontor"
 
-#: templates/ticket_common.html:77
+#: templates/ticket_common.html:73 templates/ticket_view.html:84
+#: ticket/models.py:556
+msgid "Telephone"
+msgstr "Telefon"
+
+#: templates/ticket_common.html:82 templates/ticket_view.html:93
+#: ticket/models.py:557
+msgid "Mobile phone"
+msgstr "Mobiltelefon"
+
+#: templates/ticket_common.html:91 templates/ticket_view.html:102
+#: ticket/models.py:558
+msgid "PC number"
+msgstr "PC-nummer"
+
+#: templates/ticket_common.html:112 templates/ticket_view.html:112
+#: ticket/models.py:560
 msgid "Co-responsible"
 msgstr "Medansvarlig"
 
-#: templates/ticket_common.html:87
+#: templates/ticket_common.html:122 templates/ticket_view.html:125
+#: ticket/models.py:561
 msgid "CC"
-msgstr "CC"
+msgstr "Kopi"
 
-#: templates/ticket_common.html:97
+#: templates/ticket_common.html:132 ticket/models.py:546
 msgid "Impact"
-msgstr "Viktighet av sakens utfall"
+msgstr "Omfang"
 
-#: templates/ticket_common.html:109
+#: templates/ticket_common.html:144 ticket/models.py:547
 msgid "Urgency"
-msgstr "Hvor mye saken haster"
+msgstr "Hastegrad"
 
-#: templates/ticket_common.html:122 templates/ticket_view.html:74
+#: templates/ticket_common.html:157 templates/ticket_view.html:138
+#: ticket/models.py:549
 msgid "Status"
 msgstr "Status"
 
-#: templates/ticket_common.html:136 templates/ticket_view.html:83
+#: templates/ticket_common.html:171 templates/ticket_view.html:147
+#: ticket/models.py:552
 msgid "Category"
 msgstr "Kategori"
 
-#: templates/ticket_common.html:151 templates/ticket_view.html:157
+#: templates/ticket_common.html:185 templates/ticket_view.html:221
+#: ticket/models.py:559
 msgid "Depends on CIs"
-msgstr "Avhenger av CIs"
+msgstr "Avhenger av CI"
 
-#: templates/ticket_common.html:164
+#: templates/ticket_common.html:198 ticket/models.py:563
 msgid "Depends on issues"
-msgstr "Avhengig av saker"
+msgstr "Avhenger av saker"
 
-#: templates/ticket_common.html:174
+#: templates/ticket_common.html:208 ticket/models.py:550
 msgid "Subject"
 msgstr "Tittel"
 
-#: templates/ticket_common.html:183 templates/ticket_view.html:170
+#: templates/ticket_common.html:217 templates/ticket_view.html:234
+#: ticket/models.py:551
 msgid "Description of problem"
-msgstr "Beskrivelse av problem"
+msgstr "Beskrivelse"
+
+#: templates/ticket_common.html:228
+msgid "Add file"
+msgstr "Legg til fil"
 
 #: templates/ticket_view.html:7
 msgid "Recent tickets"
-msgstr "Siste åpnede saker"
+msgstr "Nylig åpnede saker"
 
 #: templates/ticket_view.html:14
 msgid "Toggle internal update visibility"
-msgstr "Forandre synlighet av interne saker"
+msgstr "Slå av/på visning av interne oppdateringer"
 
 #: templates/ticket_view.html:15
 msgid "Create new ticket based on this ticket"
-msgstr "Lag ny sak basert på denne saken"
+msgstr "Lag ny sak basert på denne"
 
-#: templates/ticket_view.html:23
+#: templates/ticket_view.html:16 templates/ticket_view.html.py:415
+msgid "Send this ticket by email"
+msgstr "Send denne saken via e-post"
+
+#: templates/ticket_view.html:24
 msgid "Overview"
 msgstr "Oversikt"
 
-#: templates/ticket_view.html:29
+#: templates/ticket_view.html:39
 msgid "Creator"
-msgstr "Skaper"
+msgstr "Opprettet av"
 
-#: templates/ticket_view.html:103
-msgid "Priority (Impact + Urgency)"
-msgstr "Prioritet (utfall + hastefaktor)"
+#: templates/ticket_view.html:167
+msgid "Priority (Impact / Urgency)"
+msgstr "Prioritet (Omfang / hastegrad)"
 
-#: templates/ticket_view.html:112
+#: templates/ticket_view.html:176
 msgid "Creation date"
-msgstr "Skapelsesdato"
+msgstr "Opprettet dato"
 
-#: templates/ticket_view.html:121
+#: templates/ticket_view.html:185
 msgid "Last update date"
-msgstr "Siste oppdateringsdato"
+msgstr "Sist oppdatert dato"
 
-#: templates/ticket_view.html:130
+#: templates/ticket_view.html:194
 msgid "Depends on these issues"
 msgstr "Avhenger av følgende saker"
 
-#: templates/ticket_view.html:144
+#: templates/ticket_view.html:208
 msgid "Depended on by these issues"
-msgstr "Disse sakene avhenger av denne saker"
+msgstr "Disse sakene avhenger av denne"
 
-#: templates/ticket_view.html:201
+#: templates/ticket_view.html:263 templates/ticket_view.html.py:310
+msgid "Attachments"
+msgstr "Vedlegg"
+
+#: templates/ticket_view.html:285
 msgid "Create KB article from update"
-msgstr "Skap KB artikkel fra oppdatering"
+msgstr "Lag KB-artikkel utifra oppdatering"
 
-#: templates/ticket_view.html:206
+#: templates/ticket_view.html:290
 #, python-format
 msgid "Internal update on %(date)s by %(updater)s"
-msgstr "Intern oppdatering på %(date)s av %(updater)s"
+msgstr "Intern oppdatering %(date)s av %(updater)s"
 
-#: templates/ticket_view.html:208
+#: templates/ticket_view.html:292
 #, python-format
 msgid "Update on %(date)s by %(updater)s"
-msgstr "Oppdater på %(date)s av %(updater)s"
+msgstr "Oppdatert %(date)s av %(updater)s"
 
-#: templates/ticket_view.html:226
-msgid "Attachments"
-msgstr "Vedlagte filer"
-
-#: templates/ticket_view.html:266
+#: templates/ticket_view.html:350
 msgid "Create Knowledgebase article"
-msgstr "Lag kunnskapsbase artikkel"
+msgstr "Lag KB-artikkel"
 
-#: templates/ticket_view.html:279
+#: templates/ticket_view.html:363
 msgid "Article name"
 msgstr "Artikkelnavn"
 
-#: templates/ticket_view.html:294
+#: templates/ticket_view.html:378
 msgid "Submit"
-msgstr "Send inn"
+msgstr "Send"
 
-#: templates/ticket_view.html:302
+#: templates/ticket_view.html:386
 msgid "Copy ticket"
 msgstr "Kopier sak"
 
-#: templates/ticket_view.html:312
+#: templates/ticket_view.html:396
 msgid "Issue type"
 msgstr "Sakstype"
 
-#: templates/ticket_view.html:323
+#: templates/ticket_view.html:407
 msgid "Create"
-msgstr "Lag"
+msgstr "Lagre"
 
-#: templates/ticket_new.html:26
+#: templates/ticket_view.html:424
+msgid "Email"
+msgstr "E-post"
+
+#: templates/ticket_view.html:435 templates/ticket_view.html.py:459
+msgid "Attachment"
+msgstr "Vedlegg"
+
+#: templates/ticket_view.html:439 templates/ticket_view.html.py:451
+#: templates/ticket_view.html:463
+msgid "Include"
+msgstr "Ta med"
+
+#: templates/ticket_view.html:447 templates/status_edit.html:16
+#: ticket/models.py:1188
+msgid "Update"
+msgstr "Oppdater"
+
+#: templates/ticket_view.html:471 ticket/views.py:307
+msgid "Send"
+msgstr "Send"
+
+#: templates/status_edit.html:9
+msgid "New status text"
+msgstr "Ny statustekst"
+
+#: templates/ticket_new.html:27
 msgid "Quickfill"
-msgstr "Hurtigfylling"
+msgstr "Hurtigutfylling"
 
-#: templates/ticket_new.html:30
+#: templates/ticket_new.html:31
 msgid "None"
 msgstr "Ingen"
 
-#: templates/ticket_new.html:98
+#: templates/ticket_new.html:99
 msgid "Create issue"
 msgstr "Lag sak"
 
-#: templates/admin/base.html:35
+#: templates/ticket_new.html:100
+msgid "Create and continue"
+msgstr "Opprett og fortsett"
+
+#: templates/admin/base.html:37
 msgid "Documentation"
 msgstr "Dokumentasjon"
 
-#: templates/admin/base.html:54 home/views.py:62
+#: templates/admin/base.html:55 home/views.py:69
 msgid "Home"
 msgstr "Hjem"
 
-#: templates/admin/index.html:32
+#: templates/admin/index.html:16
+msgid "CMDB Adminstration"
+msgstr "CMDB-administrasjon"
+
+#: templates/admin/index.html:19
+msgid "TUIT log viewer"
+msgstr "TUIT-loggviser"
+
+#: templates/admin/index.html:22
+msgid "Edit your signature"
+msgstr "Rediger signatur"
+
+#: templates/admin/index.html:25
+msgid "Edit current status"
+msgstr "Rediger gjeldende status"
+
+#: templates/admin/index.html:36
 #, python-format
 msgid "Models available in the %(name)s application."
-msgstr "Modeller tilgjengelige i %(name)s applikasjonen"
+msgstr "Modeller tilgjengelige i applikasjonen %(name)s."
 
-#: templates/admin/index.html:33
+#: templates/admin/index.html:37
 #, python-format
 msgid "%(name)s"
 msgstr "%(name)s"
 
-#: templates/admin/index.html:43
+#: templates/admin/index.html:47
 msgid "Add"
 msgstr "Legg til"
 
-#: templates/admin/index.html:49
+#: templates/admin/index.html:53
 msgid "Change"
-msgstr "Forandre"
+msgstr "Endre"
 
-#: templates/admin/index.html:59
+#: templates/admin/index.html:63
 msgid "You don't have permission to edit anything."
-msgstr "Du har ikke tillatelse til å forandre noe"
+msgstr "Du har ikke tillatelse til å gjøre endringer"
 
-#: templates/admin/index.html:67
+#: templates/admin/index.html:71
 msgid "Recent Actions"
-msgstr "Seneste handlinger"
+msgstr "Nylige handlinger"
 
-#: templates/admin/index.html:69
+#: templates/admin/index.html:73
 msgid "None available"
 msgstr "Ingen tilgjengelige"
 
 #: templates/admin/base_site.html:4
 msgid "Django site admin"
-msgstr ""
+msgstr "Lokal Django-admin"
 
 #: templates/registration/login.html:17
 msgid "Username:"
@@ -350,35 +458,69 @@ msgstr "Passord:"
 msgid "Log in"
 msgstr "Logg inn"
 
-#: home/widget.py:70
-msgid "No matching items found"
-msgstr "Ingen matchende elementer funnet"
+#: home/models.py:27
+msgid "Tips"
+msgstr "Tips"
 
-#: home/widget.py:76
+#: home/models.py:28
+msgid "Tip of the week"
+msgstr "Ukens tips"
+
+#: home/widget.py:107
 #, python-format
 msgid "Showing items %(first)d to %(last)d of %(total)d"
 msgstr "Viser elementer %(first)d til %(last)d av %(total)d"
 
-#: home/widget.py:81
+#: home/widget.py:122
 msgid "Page"
 msgstr "Side"
 
-#: home/views.py:23
+#: home/views.py:26
 #, python-format
 msgid "My highest priority open tickets of type %s"
-msgstr "Mine høyst prioriterte åpne saker av type %s"
+msgstr "Mine høyest prioriterte åpne saker av type %s"
 
-#: account/views.py:56
+#
+#: home/views.py:30
+msgid "Latest open tickets"
+msgstr "Mine siste åpne saker"
+
+#: home/views.py:34
+msgid "Oldest unassigned, open tickets"
+msgstr "Eldste ikke tildelte saker"
+
+#: account/views.py:76
+msgid "All issues requested by this user"
+msgstr "Alle saker denne brukeren har bedt om"
+
+#: account/views.py:80
 msgid "Open issues assigned to this user"
-msgstr "Uavgjorte saker tildelt denne brukeren"
+msgstr "Saksbehandlers tildelte saker"
 
-#: account/views.py:60
-msgid "Open issues requested by this user"
-msgstr "Uavgjorte saker etterspurt av denne brukeren"
-
-#: account/views.py:64
+#: account/views.py:84
 msgid "This users last updates"
-msgstr "Denne brukerens siste oppdateringer"
+msgstr "Brukers siste oppdateringer"
+
+#: status/models.py:17
+#, python-format
+msgid "Status message by %(source)s made on %(date)s"
+msgstr ""
+
+#: status/models.py:23
+msgid "Status messages"
+msgstr "Statusmeldinger"
+
+#: status/models.py:24
+msgid "Status message"
+msgstr "Statusmelding"
+
+#: status/views.py:38
+msgid "Status updated"
+msgstr "Status oppdatert"
+
+#: status/views.py:41
+msgid "Unknown error while updating status."
+msgstr "Ukjent feil under oppdatering av status."
 
 #: log/views.py:45
 msgid "Event log"
@@ -388,372 +530,408 @@ msgstr "Hendelseslogg"
 msgid "Filtered log"
 msgstr "Filtrert logg"
 
-#: ticket/models.py:83
+#: ticket/models.py:132
 msgid "statuses"
 msgstr "Statuser"
 
-#: ticket/models.py:84
+#: ticket/models.py:133
 msgid "status"
 msgstr "Status"
 
-#: ticket/models.py:100
+#: ticket/models.py:152
 msgid "types of issues"
-msgstr "Typer av saker"
+msgstr "Type saker"
 
-#: ticket/models.py:101
+#: ticket/models.py:153
 msgid "type of issue"
-msgstr "Type av saker"
+msgstr "Type saker"
 
-#: ticket/models.py:114
+#: ticket/models.py:175
 msgid "issue categories"
 msgstr "sakskategorier"
 
-#: ticket/models.py:115
+#: ticket/models.py:176
 msgid "issue category"
 msgstr "sakskategori"
 
-#: ticket/models.py:136
+#: ticket/models.py:197
 msgid "quick fills"
-msgstr "Hurtigfyllinger"
+msgstr "Hurtigutfyllinger"
 
-#: ticket/models.py:137
+#: ticket/models.py:198
 msgid "quick fill"
-msgstr "hurtigfylling"
+msgstr "hurtigutfylling"
 
-#: ticket/models.py:152
-msgid "Field for quick fills"
-msgstr "Felt for hurtigfyllinger"
-
-#: ticket/models.py:153
-msgid "Field for quick fill"
-msgstr "Felt for hurtidfylling"
-
-#: ticket/models.py:199
+#: ticket/models.py:273
 msgid "external contacts"
 msgstr "eksterne kontakter"
 
-#: ticket/models.py:200
+#: ticket/models.py:274
 msgid "external contact"
 msgstr "ekstern kontakt"
 
-#: ticket/models.py:242 ticket/models.py:819
+#: ticket/models.py:369 ticket/models.py:1188
 msgid "Issue name"
 msgstr "Saksnavn"
 
-#: ticket/models.py:384
+#: ticket/models.py:629 ticket/models.py:648
 #, python-format
 msgid "Invalid value: %s."
 msgstr "Ugyldig verdi: s%."
 
-#: ticket/models.py:398 ticket/models.py:402
+#: ticket/models.py:661 ticket/models.py:663
 msgid "This field is required."
-msgstr "Dette feltet er obligatorisk."
+msgstr "Dette feltet må fylles ut."
 
-#: ticket/models.py:416
+#: ticket/models.py:680
 msgid "Invalid status"
 msgstr "Ugyldig status"
 
-#: ticket/models.py:430
+#: ticket/models.py:694
 #, python-format
 msgid "Invalid category %d"
 msgstr "Ugyldig kategori %d"
 
-#: ticket/models.py:452
+#: ticket/models.py:716
 #, python-format
 msgid "Unknown user: %(value)s, %(type)s"
 msgstr "Ukjent bruker: %(value)s, %(type)s"
 
-#: ticket/models.py:470
+#: ticket/models.py:734
 #, python-format
 msgid "Unknown user: %s"
 msgstr "Ukjent bruker: %s"
 
-#: ticket/models.py:495
+#: ticket/models.py:757
 #, python-format
 msgid "Invalid user or contact: %s"
 msgstr "Ugyldig bruker eller kontakt: %s"
 
-#: ticket/models.py:515
+#: ticket/models.py:777
 #, python-format
 msgid "Invalid user: %s"
 msgstr "Ugyldig bruker: s%"
 
-#: ticket/models.py:538 ticket/models.py:553
+#: ticket/models.py:805 ticket/models.py:820
 #, python-format
 msgid "Value out of range: %d"
-msgstr "Ikke tillatt verrdi: %d"
+msgstr "Ikke tillatt verdi: %d"
 
-#: ticket/models.py:542 ticket/models.py:557
+#: ticket/models.py:809 ticket/models.py:824
 #, python-format
 msgid "Not an integer number: %s"
 msgstr "Ikke et helt tall: %s"
 
-#: ticket/models.py:574
+#: ticket/models.py:841
 #, python-format
 msgid "Invalid issue: %s"
 msgstr "Ugyldig sak: %s"
 
-#: ticket/models.py:697
+#: ticket/models.py:958
+msgid "Can view internal updates"
+msgstr "Kan vise interne oppdateringer"
+
+#: ticket/models.py:959
+msgid "Is Service Desk staff"
+msgstr "Er servicedesk-ansatt"
+
+#: ticket/models.py:972
 msgid "Text field"
 msgstr "Tekstfelt"
 
-#: ticket/models.py:698
+#: ticket/models.py:973
 msgid "Grade from 1 to 5"
 msgstr "Gradering fra 1 til 5"
 
-#: ticket/models.py:699
+#: ticket/models.py:974
 msgid "Dropdown box"
-msgstr "Rulleboks"
+msgstr "Rullegardinmeny"
 
-#: ticket/models.py:700
+#: ticket/models.py:975
 msgid "Multiline text area"
 msgstr "Flerlinjet tekstområde"
 
-#: ticket/models.py:701 ticket/models.py:1005
+#: ticket/models.py:976 ticket/models.py:1515
 msgid "Date"
 msgstr "Dato"
 
-#: ticket/models.py:764
-msgid "Extra fields for issues"
-msgstr "Ekstra felter for saker"
+#: ticket/models.py:977
+msgid "Group"
+msgstr "Gruppe"
 
-#: ticket/models.py:765
-msgid "Extra field for issues"
-msgstr "Ekstra felt for saker"
+#: ticket/models.py:978
+msgid "Custom"
+msgstr "Tilpasset"
 
-#: ticket/models.py:780
+#: ticket/models.py:1085
+msgid "Issue fields"
+msgstr "Felt for sak"
+
+#: ticket/models.py:1086
+msgid "Fields of issues"
+msgstr "Felt for saker"
+
+#: ticket/models.py:1106
 msgid "items for extra fields of dropdown type"
-msgstr "elementer for ekstra felter av rullebokstype"
+msgstr "elementer for ekstra felter av rullegardintype"
 
-#: ticket/models.py:781
+#: ticket/models.py:1107
 msgid "item for extra field of dropdown type"
-msgstr "element for ekstra felt av rullebokstype"
+msgstr "element for ekstra felt av rullegardintype"
 
-#: ticket/models.py:819
-msgid "Update"
-msgstr "Oppdater"
-
-#: ticket/models.py:819
+#: ticket/models.py:1188
 msgid "Update date"
 msgstr "Oppdater dato"
 
-#: ticket/models.py:896
+#: ticket/models.py:1322
 msgid "properties"
-msgstr "rettigheter"
+msgstr "egenskaper"
 
-#: ticket/models.py:897
+#: ticket/models.py:1323
 msgid "property"
 msgstr "rettighet"
 
-#: ticket/models.py:913
+#: ticket/models.py:1342
 msgid "SMTP configurations"
-msgstr "SMTP konfigurasjoner"
+msgstr "SMTP-konfigurasjoner"
 
-#: ticket/models.py:914
+#: ticket/models.py:1343
 msgid "SMTP configuration"
-msgstr "SMTP konfigurasjon"
+msgstr "SMTP-konfigurasjon"
 
-#: ticket/models.py:932
+#: ticket/models.py:1364
 msgid "IMAP configurations"
-msgstr "IMAP konfigurasjoner"
+msgstr "IMAP-konfigurasjoner"
 
-#: ticket/models.py:933
+#: ticket/models.py:1365
 msgid "IMAP configuration"
-msgstr "IMAP konfigurasjon"
+msgstr "IMAP-konfigurasjon"
 
-#: ticket/models.py:981
+#: ticket/models.py:1477
 msgid "Nofified by email"
-msgstr "Beskjed via epost"
+msgstr "Beskjed via e-post"
 
-#: ticket/models.py:990
+#: ticket/models.py:1485
+msgid "Email notification failed!"
+msgstr "Feil under varsling på e-post!"
+
+#: ticket/models.py:1494
 msgid "email templates"
-msgstr "epost maler"
+msgstr "e-post-maler"
 
-#: ticket/models.py:991
+#: ticket/models.py:1495
 msgid "email template"
-msgstr "epost mal"
+msgstr "e-post-mal"
 
-#: ticket/models.py:1005
+#: ticket/models.py:1515
 msgid "Event catecory"
-msgstr "Hendele kategori"
+msgstr "Hendelseskategori"
 
-#: ticket/models.py:1005
+#: ticket/models.py:1515
 msgid "Event severity"
-msgstr "Alvorlighetsgrad av hendelse"
+msgstr "Hendelsesomfang"
 
-#: ticket/models.py:1005
+#: ticket/models.py:1515
 msgid "Message"
 msgstr "Melding"
 
-#: ticket/models.py:1079
+#: ticket/models.py:1597
 msgid "scripted events"
-msgstr "nedskrevede hendelser"
+msgstr "scriptede hendelser"
 
-#: ticket/models.py:1080
+#: ticket/models.py:1598
 msgid "scripted event"
-msgstr "nedskrevet endelse"
+msgstr "scriptet endelse"
 
-#: ticket/views.py:60
+#: ticket/views.py:97
 #, python-format
 msgid "New %s"
-msgstr "Ny %s"
+msgstr "Ny sak av type %s"
 
-#: ticket/views.py:179
+#: ticket/views.py:261
 #, python-format
-msgid "Viewing %(issue_type)s \"%(subject)s\""
-msgstr "Vis %(issue_type)s \"%(subject)s\""
+msgid "Viewing %(issue_type)s \"%(id)d - %(subject)s\""
+msgstr "Viser %(issue_type)s \"%(id)d - \"%(subject)s\""
 
-#: ticket/views.py:221
+#: ticket/views.py:307 comment/models.py:35
+msgid "Comments"
+msgstr "Kommentarer"
+
+#: ticket/views.py:307
+msgid "No comments posted yet"
+msgstr "Ingen kommentarer lagt inn"
+
+#: ticket/views.py:309
 msgid "Choose date"
 msgstr "Velg dato"
 
-#: ticket/views.py:222
+#: ticket/views.py:310
 msgid "Previous month"
 msgstr "Forrige måned"
 
-#: ticket/views.py:223
+#: ticket/views.py:311
 msgid "Previous year"
 msgstr "Forrige år"
 
-#: ticket/views.py:224
+#: ticket/views.py:312
 msgid "Next month"
 msgstr "Neste måned"
 
-#: ticket/views.py:225
+#: ticket/views.py:313
 msgid "Next year"
 msgstr "Neste år"
 
-#: ticket/views.py:226
+#: ticket/views.py:314
 msgid "Close"
 msgstr "Lukk"
 
-#: ticket/views.py:227
+#: ticket/views.py:315
 msgid "Sunday"
 msgstr "Søndag"
 
-#: ticket/views.py:227
+#: ticket/views.py:315
 msgid "Monday"
 msgstr "Mandag"
 
-#: ticket/views.py:227
+#: ticket/views.py:315
 msgid "Tuesday"
 msgstr "Tirsdag"
 
-#: ticket/views.py:227
+#: ticket/views.py:315
 msgid "Wednesday"
 msgstr "Onsdag"
 
-#: ticket/views.py:227
+#: ticket/views.py:315
 msgid "Thursday"
 msgstr "Torsdag"
 
-#: ticket/views.py:227
+#: ticket/views.py:315
 msgid "Friday"
 msgstr "Fredag"
 
-#: ticket/views.py:227
+#: ticket/views.py:315
 msgid "Saturday"
 msgstr "Lørdag"
 
-#: ticket/views.py:228
+#: ticket/views.py:316
 msgid "January"
 msgstr "Januar"
 
-#: ticket/views.py:228
+#: ticket/views.py:316
 msgid "February"
 msgstr "Februar"
 
-#: ticket/views.py:228
+#: ticket/views.py:316
 msgid "March"
 msgstr "Mars"
 
-#: ticket/views.py:228
+#: ticket/views.py:316
 msgid "April"
 msgstr "April"
 
-#: ticket/views.py:228
+#: ticket/views.py:316
 msgid "May"
 msgstr "Mai"
 
-#: ticket/views.py:228
+#: ticket/views.py:316
 msgid "June"
 msgstr "Juni"
 
-#: ticket/views.py:228
+#: ticket/views.py:316
 msgid "July"
 msgstr "Juli"
 
-#: ticket/views.py:228
+#: ticket/views.py:316
 msgid "August"
 msgstr "August"
 
-#: ticket/views.py:228
+#: ticket/views.py:316
 msgid "September"
 msgstr "September"
 
-#: ticket/views.py:228
+#: ticket/views.py:316
 msgid "October"
 msgstr "Oktober"
 
-#: ticket/views.py:228
+#: ticket/views.py:316
 msgid "November"
 msgstr "November"
 
-#: ticket/views.py:228
+#: ticket/views.py:316
 msgid "December"
 msgstr "Desember"
 
-#: ticket/templatetags/tuit_extras.py:72
+#: ticket/views.py:351
+#, python-format
+msgid "Invalid email address: %s"
+msgstr "Ugyldig e-postadresse: %s"
+
+#: ticket/views.py:360
+#, python-format
+msgid "No email template named %s could be found"
+msgstr "Fant ikke e-postmal med navn %s"
+
+#: ticket/templatetags/tuit_extras.py:74
 #, python-format
 msgid "%(field)s changed to %(new)s"
 msgstr "%(field)s forandret til %(new)s"
 
-#: ticket/templatetags/tuit_extras.py:78
+#: ticket/templatetags/tuit_extras.py:89
 msgid "Toggle details"
-msgstr "Vippedetaljer"
+msgstr "Vis/skjul detaljer"
 
 #: help/views.py:10
 msgid "Tuit Help"
-msgstr "Tuit hjelp"
+msgstr "TUIT hjelp"
 
-#: mail/__init__.py:228 mail/__init__.py:240
+#: comment/models.py:36
+msgid "Comment"
+msgstr "Kommentar"
+
+#: util/__init__.py:44
+msgid "Latest updates"
+msgstr "Siste oppdateringer"
+
+#: mail/__init__.py:304 mail/__init__.py:316
 #, python-format
 msgid "Message signed with unknown key: %s"
 msgstr "Melding signert med ukjent nøkkel: %s"
 
-#: mail/__init__.py:231
+#: mail/__init__.py:307
 #, python-format
 msgid "Message signed with an expired key: %s"
 msgstr "Melding signert med en utgått nøkkel: %s"
 
-#: mail/__init__.py:234
+#: mail/__init__.py:310
 #, python-format
 msgid "Message signed with a revoked key: %s"
-msgstr "Melding signert med en indratt nøkkel: %s"
+msgstr "Melding signert med en inndratt nøkkel: %s"
 
-#: mail/__init__.py:237
+#: mail/__init__.py:313
 msgid "Invalid PGP signature detected."
-msgstr "Ugyldig PGP sinatur funnet."
+msgstr "Ugyldig PGP-signatur funnet."
 
-#: mail/__init__.py:648
+#: mail/__init__.py:804
 msgid "Unknown multipart/encrypted version."
-msgstr "Ukjent kryptert verson."
+msgstr "Ukjent multipart/kryptert versjon."
 
-#: mail/__init__.py:657
+#: mail/__init__.py:813
 msgid "Unable to decrypt your message."
 msgstr "Ute av stand til å dekryptere meldingen din."
 
-#: mail/__init__.py:686
+#: mail/__init__.py:842
 msgid "No PGP signature found in message."
-msgstr "Ingen PGP signatur funnet i meldingen."
+msgstr "Ingen PGP-signatur funnet i meldingen."
 
-#: mail/__init__.py:1137
+#: mail/__init__.py:1355
 msgid ""
 "\n"
 "Emails to Roundup trackers must include a Subject: line!\n"
 msgstr ""
+"\n"
+"E-post til tracker må inneholde en tittel-linje (Subject:)!\n"
 
-#: mail/__init__.py:1261
+#: mail/__init__.py:1479
 #, python-format
 msgid ""
 "\n"
@@ -770,8 +948,9 @@ msgid ""
 "Subject was: '%(subject)s'\n"
 msgstr ""
 "\n"
-"Meldingen du sendte til ??? inneholdt ikke en riktig formulert tittel\n"
-"linje. Tittelen må inneholde et klassenavn eller ???? for å indikere\n"
+"Meldingen du sendte til systemet inneholdt ikke en riktig formulert tittel-\n"
+"linje. Tittelen må inneholde et klassenavn eller klassifisering for å "
+"indikere\n"
 "'temaet' i meldingen. For eksempel:\n"
 "    Tittel: [sak] Dette er en ny sak\n"
 "      - Dette vil skape en ny sak i trackeren med tittelelen 'dette er\n"
@@ -783,7 +962,7 @@ msgstr ""
 "\n"
 "Tittelen var: '%(tittel)s'\n"
 
-#: mail/__init__.py:1299
+#: mail/__init__.py:1517
 #, python-format
 msgid ""
 "\n"
@@ -794,13 +973,13 @@ msgid ""
 "Subject was: \"%(subject)s\"\n"
 msgstr ""
 "\n"
-"Klassenavnet du identifiserte i tittellinjen (\"%(classname)s\")eksisterer "
-"ikke i databasen.\n"
+"Klassenavnet du angav i tittellinjen (\"%(classname)s\")eksisterer ikke i "
+"databasen.\n"
 "\n"
 "Gyldige klassenavn er: %(validname)s\n"
 "Tittelen var: \"%(subject)s\"\n"
 
-#: mail/__init__.py:1307
+#: mail/__init__.py:1525
 #, python-format
 msgid ""
 "\n"
@@ -816,8 +995,20 @@ msgid ""
 "\n"
 "Subject was: '%(subject)s'\n"
 msgstr ""
+"\n"
+"Du angav ikke klassenavn i tittellinjen og det er ikke angitt standard-\n"
+"verdi for denne trackeren. Tittelen må inneholde et klassenavn eller\n"
+"entydig identifisering for å angi 'emne' for meldingen. For eksempel:\n"
+"    Emne: [issue] Dette er en ny sak\n"
+"      - dette oppretter en ny sak i trackeren med tittelen 'Dette er\n"
+"        en ny sak'.\n"
+"    Emne: [issue1234] Dette er en oppfølging til sak 1234\n"
+"      - fører til at meldingsinnholdet blir lagt til eksisterende sak 1234\n"
+"        i trackeren.\n"
+"\n"
+"Subject was: '%(subject)s'\n"
 
-#: mail/__init__.py:1348
+#: mail/__init__.py:1566
 #, python-format
 msgid ""
 "\n"
@@ -827,8 +1018,14 @@ msgid ""
 "\n"
 "Subject was: \"%(subject)s\"\n"
 msgstr ""
+"\n"
+"Meldingen du sendte svarer ikke til noen node i databasen - enten må du\n"
+"angi en full betegnelse (med nummer, f eks \"[issue123]\") eller la \n"
+"tidligere tittellinje være intakt så jeg kan finne på grunnlag av den.\n"
+"\n"
+"Tittellinjen var: \"%(subject)s\"\n"
 
-#: mail/__init__.py:1381
+#: mail/__init__.py:1599
 #, python-format
 msgid ""
 "\n"
@@ -837,8 +1034,13 @@ msgid ""
 "\n"
 "Subject was: \"%(subject)s\"\n"
 msgstr ""
+"\n"
+"Noden som er angitt i tittelfeltet for meldingen\n"
+"(\"%(nodeid)s\") finnes ikke.\n"
+"\n"
+"Tittelfeltet var: \"%(subject)s\"\n"
 
-#: mail/__init__.py:1409
+#: mail/__init__.py:1627
 #, python-format
 msgid ""
 "\n"
@@ -846,8 +1048,12 @@ msgid ""
 "%(mailadmin)s and have them fix the incorrect class specified as:\n"
 "  %(current_class)s\n"
 msgstr ""
+"\n"
+"Videresending av e-post er ikke korrekt satt opp. Kontakt\n"
+"%(mailadmin)s og be dem korrigere klassen som er angitt som:\n"
+"  %(current_class)s\n"
 
-#: mail/__init__.py:1432
+#: mail/__init__.py:1650
 #, python-format
 msgid ""
 "\n"
@@ -855,8 +1061,12 @@ msgid ""
 "%(mailadmin)s and have them fix the incorrect properties:\n"
 "  %(errors)s\n"
 msgstr ""
+"\n"
+"Videresending av e-post er ikke korrekt satt opp. Kontakt\n"
+"%(mailadmin)s og be dem om å korrigere disse feilene:\n"
+"  %(errors)s\n"
 
-#: mail/__init__.py:1472
+#: mail/__init__.py:1690
 #, python-format
 msgid ""
 "\n"
@@ -864,22 +1074,26 @@ msgid ""
 "\n"
 "Unknown address: %(from_address)s\n"
 msgstr ""
+"\n"
+"Du er ikke registrert bruker.%(registration_info)s\n"
+"\n"
+"Ukjent adresse: %(from_address)s\n"
 
-#: mail/__init__.py:1480
+#: mail/__init__.py:1698
 msgid "You are not permitted to access this tracker."
-msgstr ""
+msgstr "Du har ikke adgang til å bruke denne trackeren."
 
-#: mail/__init__.py:1487
+#: mail/__init__.py:1705
 #, python-format
 msgid "You are not permitted to edit %(classname)s."
-msgstr ""
+msgstr "Du har ikke lov til å redigere %(classname)s."
 
-#: mail/__init__.py:1491
+#: mail/__init__.py:1709
 #, python-format
 msgid "You are not permitted to create %(classname)s."
-msgstr ""
+msgstr "Du har ikke lov til å opprette %(classname)s."
 
-#: mail/__init__.py:1538
+#: mail/__init__.py:1756
 #, python-format
 msgid ""
 "\n"
@@ -888,81 +1102,106 @@ msgid ""
 "\n"
 "Subject was: \"%(subject)s\"\n"
 msgstr ""
+"\n"
+"Det var problemer med å håndtere argumentlisten i tittellinjen:\n"
+"- %(errors)s\n"
+"\n"
+"Subject was: \"%(subject)s\"\n"
 
-#: mail/__init__.py:1591
+#: mail/__init__.py:1809
 msgid ""
 "\n"
 "This tracker has been configured to require all email be PGP signed or\n"
 "encrypted."
 msgstr ""
+"\n"
+"Denne trackeren er konfigurert til å kreve at all e-post er PGP-signert\n"
+"eller kryptert."
 
-#: mail/__init__.py:1598
+#: mail/__init__.py:1816
 msgid ""
 "\n"
 "Roundup requires the submission to be plain text. The message parser could\n"
 "not find a text/plain part to use.\n"
 msgstr ""
+"\n"
+"Det er nødvendig at det innsendte er ren tekst. Meldingstolkeren klarte "
+"ikke\n"
+"å finne en del av type text/plain den kunne bruke.\n"
 
-#: mail/__init__.py:1615
+#: mail/__init__.py:1833
 msgid "You are not permitted to create files."
-msgstr ""
+msgstr "Du har ikke lov til å opprette filer."
 
-#: mail/__init__.py:1629
+#: mail/__init__.py:1847
 #, python-format
 msgid "You are not permitted to add files to %(classname)s."
-msgstr ""
+msgstr "Du har ikke lov til å legge filer til %(classname)s."
 
-#: mail/__init__.py:1647
+#: mail/__init__.py:1865
 msgid "You are not permitted to create messages."
-msgstr ""
+msgstr "Du har ikke lov til å opprette meldinger."
 
-#: mail/__init__.py:1655
+#: mail/__init__.py:1873
 #, python-format
 msgid ""
 "\n"
 "Mail message was rejected by a detector.\n"
 "%(error)s\n"
 msgstr ""
+"\n"
+"E-postmeldingen ble avvist av en detektor.\n"
+"%(error)s\n"
 
-#: mail/__init__.py:1663
+#: mail/__init__.py:1881
 #, python-format
 msgid "You are not permitted to add messages to %(classname)s."
-msgstr ""
+msgstr "Du har ikke lov til å legge til meldinger i %(classname)s."
 
-#: mail/__init__.py:1690
+#: mail/__init__.py:1908
 #, python-format
 msgid "You are not permitted to edit property %(prop)s of class %(classname)s."
 msgstr ""
+"Du har ikke lov til å redigere egenskapen %(prop)s for klasse %(classname)s."
 
-#: mail/__init__.py:1698
+#: mail/__init__.py:1916
 #, python-format
 msgid ""
 "\n"
 "There was a problem with the message you sent:\n"
 "   %(message)s\n"
 msgstr ""
+"\n"
+"Det var et problem med meldingen du sendte:\n"
+"   %(message)s\n"
 
-#: mail/__init__.py:1720
+#: mail/__init__.py:1938
 msgid "not of form [arg=value,value,...;arg=value,value,...]"
-msgstr ""
+msgstr "har ikke formen [arg=verdi,verdi,...;arg=verdi,verdi,...]"
+
+#~ msgid "Field for quick fills"
+#~ msgstr "Felt for hurtigutfyllinger"
+
+#~ msgid "Field for quick fill"
+#~ msgstr "Felt for hurtigutfylling"
+
+#~ msgid "Extra fields for issues"
+#~ msgstr "Ekstra felter for saker"
+
+#~ msgid "Extra field for issues"
+#~ msgstr "Ekstra felt for saker"
 
 #~ msgid "View all"
 #~ msgstr "Vis alle"
-
-#~ msgid "My latest open tickets"
-#~ msgstr "Mine siste åpne saker"
 
 #~ msgid "My oldest open tickets"
 #~ msgstr "Mine eldste åpne saker"
 
 #~ msgid "Latest unassigned, open tickets"
-#~ msgstr "Siste åpne saker uten eiere"
-
-#~ msgid "Oldest unassigned, open tickets"
-#~ msgstr "Eldste åpne saker uten eiere"
+#~ msgstr "Nyeste ikke tildelte saker"
 
 #~ msgid "Highest priority unassigned, open tickets"
-#~ msgstr "Høyest prioriterte åpne saker uten eiere"
+#~ msgstr "Høyest prioriterte ikke tildelte saker"
 
 #~ msgid "Oldest open tickets"
 #~ msgstr "Eldste åpne saker"
