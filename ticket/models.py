@@ -849,7 +849,7 @@ class Issue(models.Model):
             if self.id is None:
                 return ""
             return "\n".join(map(lambda x: "%d - %s" % (x.ci_id, x.description),
-                                 list(self.cidependency_set.order_by('view_order'))))
+                                 list(self.cidependency_set.order_by('view_order')))) + "\n"
         except:
             import traceback as tb
             tb.print_exc()
@@ -863,6 +863,8 @@ class Issue(models.Model):
             except:
                 return None
 
+        done = set()
+
         self.cidependency_set.all().delete()
         i=0
         for name in value.split('\n'):
@@ -870,6 +872,9 @@ class Issue(models.Model):
             if name == '':
                 continue
             id = get_ci_id(name)
+            if id is None or id in done:
+                continue
+            done.add(id)
             desc = name.split(' ',2)[2]
             self.cidependency_set.create(ci_id=id, description = desc, view_order = i)
             i = i+1
