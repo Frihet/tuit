@@ -1,0 +1,57 @@
+%TMPL:INCLUDE{"attach"}%
+
+%TMPL:DEF{"top:toolbarbuttons"}%%TMPL:P{"more_link"}%%TMPL:END%
+%TMPL:DEF{"topbar"}%
+        <div class='main_menu no_print'>
+        <iframe src='/tuit/menu/' width='100%' height='80px' frameborder='no'></iframe>
+        </div>
+%TMPL:END%
+
+%TMPL:DEF{"bottombar"}%
+<div class='copyright'>
+<a href='http://www.freecode.no' class='copyright_inner'>&copy; 2009 Freecode AS</a>
+</div>        
+%TMPL:END%
+
+
+
+%TMPL:DEF{"styles:default"}%
+<link rel="stylesheet" href="/static/foswiki.css" type="text/css" media="screen,projection" />
+<script type="text/javascript" src="/static/common/jquery.js"></script>
+<script type="text/javascript" src="/static/common/common.js"></script>
+<script type="text/javascript" src="/tuit/ticket/i18n.js"></script>
+<script type="text/javascript" src="/static/tuit.js"></script>
+%TMPL:END%
+
+
+
+%TMPL:DEF{"main"}%
+<div class="foswikiPage">
+  <div id="patternScreen">
+    <div id="patternPageShadow">
+      <div id="patternPage">
+%TMPL:P{"startsidebarwrapper"}%
+        <div id="patternOuter">
+%TMPL:P{"topbar"}%
+          <div id="patternFloatWrap">
+%TMPL:P{"sidebar"}%
+            <div id="patternMain" class='attach'>%TMPL:P{"topbarspacer"}%
+              <div id="patternMainContents">
+
+%TMPL:P{"logo"}%
+%TMPL:P{"patterntopiccontents"}%
+              </div><!-- /patternMainContents-->
+	      <div class='content_post'></div>
+            </div><!-- /patternMain-->
+          </div><!-- /patternFloatWrap-->
+        <div class="clear">&nbsp;</div>
+        </div><!-- /patternOuter-->
+%TMPL:P{"endsidebarwrapper"}%
+%TMPL:P{"bottombar"}%
+      </div><!-- /patternPage-->
+    </div><!-- /patternPageShadow-->
+  </div><!-- /patternScreen-->
+</div><!-- /foswikiPage-->%TMPL:END%
+
+%TMPL:DEF{"formtop"}%%TMPL:P{"form"}%%TMPL:END%
+%TMPL:DEF{"formbottom"}%%TMPL:END%

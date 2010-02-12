@@ -1,0 +1,29 @@
+%TMPL:INCLUDE{"attachtables"}%
+
+%{ These templates define the tables used to display attachments. }%
+
+%TMPL:DEF{"commonattachtableattributes"}%%TMPL:END%
+
+%{ Header definition for topic attachments and top table in attach screen }%
+%TMPL:DEF{ATTACH:files:header(basic)}%<div class="foswikiAttachments">
+%TMPL:P{context="TablePluginEnabled" then="ATTACH:files:tableformat"}%
+%TMPL:P{ATTACH:files:header(toprow)}%
+%TMPL:END%
+
+%TMPL:DEF{ATTACH:files:header(toprow)}%%TMPL:END%
+
+%TMPL:DEF{ATTACH:files:row(basic)}%| <a href="%ATTACHURLPATH%/%ENCODE{%A_FILE%}%"><noautolink>%A_FILE%</noautolink></a> | | %A_COMMENT%  |%TMPL:END%
+
+
+%{ Format definition for topic attachment table }%
+%TMPL:DEF{ATTACH:files:tableformat}%%TABLE{%TMPL:P{"commonattachtableattributes"}%id="foswikiAttachmentsTable" summary="%MAKETEXT{"Topic attachments"}%" "}%%TMPL:END%
+%{ Header for topic attachment table }%
+
+%TMPL:DEF{ATTACH:files:header}%
+<div class="foswikiAttachments">
+%TMPL:P{context="TablePluginEnabled" then="ATTACH:files:tableformat"}%
+%TMPL:P{ATTACH:files:header(toprow)}%
+%TMPL:END%
+
+%{ Footer for topic attachment table }%
+%TMPL:DEF{ATTACH:files:footer}%%TMPL:END%
