@@ -334,11 +334,12 @@
   {% endif %}
   {% endfor %}
 
-  {% include "ticket_comment.html" %}
-
-  </tbody>
 
 </table>
+
+{% include "ticket_comment.html" %}
+
+
 <script>
 {% if not errors %}
   $(".ticket_edit").hide();

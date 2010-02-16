@@ -3,6 +3,8 @@ import datetime
 
 # Create your models here.
 
+PLACEHOLDER = _('Search types')
+
 class SearchType(models.Model):
     name = models.CharField(maxlength=512)
     url = models.CharField(maxlength=512)
@@ -14,6 +16,12 @@ class SearchType(models.Model):
 
     class Admin: 
         pass
+
+    class Meta:
+        ordering = ['name']
+        verbose_name_plural = _('Search types')
+        verbose_name = _('Search type')
+
 
 class Search(models.Model):
     type = models.ForeignKey(SearchType)

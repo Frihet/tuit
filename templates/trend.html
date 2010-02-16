@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% load tuit_extras %}
+{% load i18n %}
+
+{%block content %}
+<h1>{% trans "Trends" %}</h1>
+<form method='get' action='' accept-charset='utf-8'>
+  <table class='striped'>
+    <tr>
+      <th>
+	<label for='date_start'>
+	  {% trans "Show issues updated after" %}:
+	</label>
+      </th>
+      <td>
+	<input class='date_picker' id='date_start' name='date_start' value='{{ date_start|date_format }}' />
+      </td>
+    </tr>
+    <tr>
+      <th>
+	<label for='date_stop'>
+	  {% trans "Show issues updated before" %}:
+	</label>
+      </th>
+      <td>
+	<input class='date_picker' id='date_stop' name='date_stop' value='{{ date_stop|date_format }}' />
+      </td>
+    </tr>
+  </table>
+  <button type='submit'>{% trans "Show" %}</button>
+</form>
+<table class='striped'>
+<tr>
+<th>
+{% trans "Relates to CIs" %}
+</th>
+<th>
+{% trans "Number of issues" %}
+</th>
+<th>
+{% trans "Issues" %}
+</th>
+</tr>
+
+{% for line in trend_data %}
+<tr>
+<td>
+{{ line.ci_desc|escape }}
+</td>
+<td>
+{{ line.order }}
+</td>
+<td>
+<ul>
+{% for issue in line.issue_list %}
+<li><a href='{{ issue.url_internal|escape }}'>{{ issue.id }} - {{ issue.subject }}</a></li>
+{% endfor %}
+</ul>
+</td>
+</tr>
+{% endfor %}
+</table>
+{% endblock %}

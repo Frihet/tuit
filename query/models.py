@@ -4,6 +4,7 @@ from tuit.ticket.models import IssueField
 
 # Create your models here.
 
+PLACEHOLDER=_('Query')
 
 class GenericFillItem(models.Model):
     field = models.ForeignKey(IssueField)
@@ -22,4 +23,9 @@ class GenericFillItem(models.Model):
 
     class Admin: 
         list_filter = ('condition_name',)
+
+    class Meta:
+        ordering = ['condition_name']
+        verbose_name_plural = _('Generic fill items')
+        verbose_name = _('Generic fill item')
 

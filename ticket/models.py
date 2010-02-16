@@ -17,6 +17,7 @@ import email.mime.multipart
 import re
 import cgi
 import logging
+import traceback
 
 import django.template
 
@@ -27,6 +28,7 @@ import django.template
 # app... These are issue specific utils. Either way, they're polluting
 # the model namespace where they are... :-/
 
+PLACEHOLDER = (_('Ticket'),_('Auth'))
 
 def remove_html_tags(data):
     import re
@@ -93,7 +95,6 @@ def make_contact(text):
         name= m.groups()[0]
         email= m.groups()[1]
     except:
-        import traceback
         traceback.print_exc()
         pass
 #    print 'name',name
@@ -137,7 +138,7 @@ class IssueType(models.Model):
     """
     Type of issue, e.g. incident, problem or RfC.
     """
-    name = models.CharField(_('name'), maxlength=64, unique=True)
+    name = models.CharField(_('name'), maxlength=64, unique=True, help_text=_('Do not translate or change this string'))
     has_location = models.BooleanField(_('Use location fields'))
     extra_fields = models.ManyToManyField("IssueField", verbose_name=_('Additional fields'), blank=True)
 
@@ -192,6 +193,7 @@ class QuickFill(models.Model):
     class Admin: 
         pass
 
+## peter added
     class Meta:
         ordering = ['name']
         verbose_name_plural = _('quick fills')
@@ -230,6 +232,12 @@ class QuickFillItem(models.Model):
 
     class Admin: 
         list_filter = ('fill','field')
+
+    class Meta:
+        ordering = ['value']
+        verbose_name_plural = _('quick fill items')
+        verbose_name = _('quick fill item')
+
 
 class Contact(models.Model):
     """
@@ -371,15 +379,8 @@ class Issue(models.Model):
     @property
     def row_class(self):
         try:
-            print 'AAA'
-            print properties['priority_class']
-            print self.priority
-            res = properties['priority_class'][self.priority]
-            print 'res is', res
-            return res
+            return properties['priority_class'][self.priority]
         except:
-            print 'TJOHO'
-            traceback.print_exc()
             return ''
 
 
@@ -392,8 +393,7 @@ class Issue(models.Model):
             try:
                 self.load_extra_fields()
             except:
-                import traceback as tb
-                tb.print_exc()
+                traceback.print_exc()
                 raise
         return self.__extra_fields
 
@@ -506,7 +506,7 @@ class Issue(models.Model):
                 return user.tuit_description
 
             return {
-                'name':lambda: "<a href='%s'>%d - %s</a>" % (self.url_internal,self.id, self.subject),
+                'name':lambda: "<a href='%s'>%d - %s</a>" % (self.url_internal,self.id, cgi.escape(self.subject)),
                 'priority':lambda: "%s" % self.priority,
                 'owner':lambda: user_desc(self.assigned_to),
                 'requester':lambda: user_desc(self.requester),
@@ -851,8 +851,7 @@ class Issue(models.Model):
             return "\n".join(map(lambda x: "%d - %s" % (x.ci_id, x.description),
                                  list(self.cidependency_set.order_by('view_order')))) + "\n"
         except:
-            import traceback as tb
-            tb.print_exc()
+            traceback.print_exc()
             raise
 
     def set_ci_string(self, value):
@@ -985,7 +984,7 @@ class IssueField(models.Model):
 
     # This is a short 'slug' name, should only countain letters,
     # numbers and underscores. Will not be shown to the user.
-    name = models.CharField(maxlength=64)
+    name = models.CharField(maxlength=64, help_text=_('Do not translate or change this string'))
     
     # The human-editable name 
     short_description = models.CharField(_('short description'),maxlength=64)
@@ -1066,7 +1065,6 @@ class IssueField(models.Model):
                 raise "Unknown field type: " % self.field_type
 
         except:
-            import traceback
             traceback.print_exc()
             raise
 
@@ -1213,8 +1211,7 @@ class IssueUpdate(models.Model):
                 else:
                     return self.issue.html_cell(col)
             except:
-                import traceback as tb
-                tb.print_exc()
+                traceback.print_exc()
                 raise
 
         return map(html_cell, columns)
@@ -1339,6 +1336,9 @@ class SmtpConfiguration(models.Model):
     use_ssl = models.BooleanField()
     use_tls = models.BooleanField()
 
+    def __str__(self):
+        return _("SMTP configuration: %s") % self.host
+
     class Admin: 
         pass
 
@@ -1361,6 +1361,9 @@ class ImapConfiguration(models.Model):
     email = models.EmailField(maxlength=320)
     name = models.CharField(maxlength=256)
 
+    def __str__(self):
+        return _("IMAP configuration: %s") % self.host
+
     class Admin: 
         pass
 
@@ -1376,7 +1379,7 @@ class EmailTemplate(models.Model):
     """
     subject = models.CharField(maxlength=1024)
     body = models.TextField(maxlength=8192)
-    name = models.CharField(maxlength=512)
+    name = models.CharField(maxlength=512, help_text=_('Do not translate or change this string'))
 
     def __str__(self):
         return self.name
@@ -1404,9 +1407,13 @@ class EmailTemplate(models.Model):
         done = {}
 
         if 'attachments' in kw:
+            print 'Hard-coded attachments'
             attachments = kw['attachments']
         else:
+            print 'Implicit attachments'
+            print kw
             if 'update' in kw and not kw['update'] is None:
+                print 'Update FOOOO', kw['update'].issueattachment_set.all()            
                 attachments = kw['update'].issueattachment_set.all()            
             else:
                 attachments = issue.attachment
@@ -1588,10 +1595,13 @@ class Event(models.Model):
             name=[name]
         for ev in Event.objects.filter(event__in=name):
             try:
+                print 123
                 # Ignore exceptions in user supplied code. Users can't code worth crap. :-)
                 ev.run(issue, update, **kw)
             except:
-                pass
+                msg = traceback.format_exc()
+                logging.getLogger('event').error('Problem during event handler %s. Error: %s' % 
+                                                 (ev.event, msg))
 
     class Admin:
         pass
@@ -1607,13 +1617,13 @@ class UserProfile(models.Model):
     Extra data to store about each user. Django has a bit of automagic
     to tie this up with the main user object.
     """
-    user = models.ForeignKey(User, unique=True, editable=False)
-    location = models.TextField(maxlength=512, blank=True, editable=False)
-    building = models.TextField(maxlength=512, blank=True, editable=False)
-    office = models.TextField(maxlength=512, blank=True, editable=False)
-    telephone = models.TextField(maxlength=512, blank=True, editable=False)
-    mobile = models.TextField(maxlength=512, blank=True, editable=False)
-    pc = models.TextField(maxlength=512, blank=True, editable=False)
+    user = models.ForeignKey(User, unique=True)
+    location = models.TextField(maxlength=512, blank=True)
+    building = models.TextField(maxlength=512, blank=True)
+    office = models.TextField(maxlength=512, blank=True)
+    telephone = models.TextField(maxlength=512, blank=True)
+    mobile = models.TextField(maxlength=512, blank=True)
+    pc = models.TextField(maxlength=512, blank=True)
     signature = models.TextField(maxlength=2048, blank=True)
 
     class Admin:
@@ -1623,6 +1633,11 @@ class UserProfile(models.Model):
 #            (None, {'fields':('profile',)})
 #            )
 
+    class Meta:
+## peter added
+#        ordering = ['name']
+        verbose_name_plural = _('user profiles')
+        verbose_name = _('user profile')
 
 
 #    class Meta:

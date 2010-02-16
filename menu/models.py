@@ -2,6 +2,8 @@ from django.db import models
 
 # Create your models here.
 
+PLACEHOLDER=_('Components')
+
 class Component(models.Model):
     alias = models.CharField(maxlength=64)
     name = models.CharField(maxlength=512)
@@ -14,4 +16,12 @@ class Component(models.Model):
 
     class Admin: 
         pass
+
+    class Meta:
+        ordering = ['name']
+        verbose_name_plural = _('Menu components')
+        verbose_name = _('Menu component')
+
+
+PLACEHOLDER=_('Menu')
 

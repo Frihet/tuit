@@ -5,13 +5,17 @@
 {% block coltype %}colMS{% endblock %}
 {% block bodyclass %}dashboard{% endblock %}
 {% block breadcrumbs %}{% endblock %}
+
+{% block content_title %}<h1>{% trans "Tuit administration backend" %}</h1>{% endblock %}
+
 {% block content %}
+
 <div id="content-main">
 
 
         <div class="module">
         <table class='striped'>
-        <caption>Tools</caption>
+        <caption>{% trans "Tools" %}</caption>
             <tr>
                 <td scope="row"><a href="/FreeCMDB/admin">{% trans "CMDB Adminstration" %}</a></td>
             </tr>
@@ -22,7 +26,11 @@
                 <td scope="row"><a href="/tuit/admin/ticket/userprofile/{{user.get_profile.id}}">{% trans "Edit your signature" %}</a></td>
             </tr>
             <tr>
-                <td scope="row"><a href="/tuit/status/edit">{% trans "Edit current status" %}</a></td>            </tr>
+              <td scope="row"><a href="/tuit/status/edit">{% trans "Edit current status" %}</a></td>
+	    </tr>
+            <tr>
+              <td scope="row"><a href="/tuit/trend/">{% trans "Current issue trends" %}</a></td>
+	    </tr>
         </table>
         </div>
 
@@ -34,7 +42,7 @@
     {% for app in app_list %}
         <div class="module">
         <table summary="{% blocktrans with app.name as name %}Models available in the {{ name }} application.{% endblocktrans %}" class='striped'>
-        <caption>{% blocktrans with app.name as name %}{{ name }}{% endblocktrans %}</caption>
+        <caption>{% trans app.name %}</caption>
         {% for model in app.models %}
             <tr>
             {% if model.perms.change %}
@@ -66,6 +74,7 @@
 {% endblock %}
 
 {% block sidebar %}
+<!--
             {% load log %}
             {% get_admin_log 10 as admin_log for_user user %}
                 <li><h3>{% trans 'Recent Actions' %}</h3></li>
@@ -76,5 +85,6 @@
                 <li class="{% if entry.is_addition %}addlink{% endif %}{% if entry.is_change %}changelink{% endif %}{% if entry.is_deletion %}deletelink{% endif %}">{% if not entry.is_deletion %}<a href="{{ entry.get_admin_url }}">{% endif %}{{ entry.object_repr|escape }}{% if not entry.is_deletion %}</a>{% endif %} <span class="mini quiet">({{ entry.content_type.name|capfirst|escape }})</span></li>
             {% endfor %}
             {% endif %}
+-->
 {% endblock %}
 

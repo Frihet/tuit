@@ -1,13 +1,14 @@
 {% load tuit_extras %}
 {% load i18n %}
+<form enctype="multipart/form-data" method='post' action='' accept-charset='utf-8'>
 
+<table class='striped wide'>
 <tr id='update_head' class='no_print'>
   <th colspan='2'>
     <button type='button' onclick='$("#update_head").hide();$(".ticket_edit").show();'>{%trans "Add new update" %}</button>
   </th>
 </tr>
 
-<form enctype="multipart/form-data" method='post' action='' accept-charset='utf-8'>
 <input type='hidden' name='MAX_FILE_SIZE' value='1000000'/>
 
   <tbody class='no_print ticket_edit'>
@@ -63,4 +64,5 @@
       </td>
     </tr>
   </tbody>
+</table>
 </form>
