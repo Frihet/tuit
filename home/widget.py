@@ -52,8 +52,6 @@ class Widget:
             for i in self.request.GET:
                 d[i] = self.request.GET[i]
             d[self.slug + '_page'] = str(page)
-            #print 'AAA', page
-            #print d
             return "?" + "&".join(map(lambda (x,y):"%s=%s"%(x,y), d.iteritems()))
 
         def render_item(idx):
@@ -63,6 +61,8 @@ class Widget:
         
         
         pages = ((self.items.count()-1)/self.item_count)+1
+        if pages == 1:
+            return ""
         if pages < 12:
             return "&nbsp;".join(map(render_item, range(1,pages+1)))
 
@@ -119,8 +119,12 @@ class Widget:
                     rendered_cells = map(lambda row: ("<tr %s>" % row['class']) + "".join(map(lambda cell:"<td>%s</td>" % cell, row['cells']))+ "</tr>", cells)
                     rows = "".join(rendered_cells)
                     
-                    pager_row ="<tr><td colspan='%d'>%s: %s</td></tr>" % (len(self.columns),_('Page'),self.pager)
-                    
+                    pager=self.pager
+                    if pager != "":
+                        pager_row ="<tr><td colspan='%d'>%s: %s</td></tr>" % (len(self.columns),_('Page'),self.pager)
+                    else:
+                        pager_row = ""
+
                     rows = pager_row + rows + pager_row
                     table ="<table class='striped'>\n%s\n%s\n</table>" % (col_desc,rows)
                     stop_time = datetime.now()
@@ -136,7 +140,6 @@ class Widget:
                 else:
 #                    self.columns = [ self.columns[0] ]
                     col_name = map(lambda x:x[1], self.columns)
-                    #print 'AAA',self.columns
                     cells = map(lambda x: x.html_row(col_name), items_shown)
                     rows = "".join(map(lambda row: "<li>" + "".join(map(lambda cell:"%s" % cell, row))+ "</li>", cells))
                     stop_time = datetime.now()

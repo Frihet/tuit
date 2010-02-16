@@ -68,12 +68,6 @@ box, to add the top/bottom margins, thus working around the problem.
     color:gray;
 }
 
-tr.row1 th,
-tr.row2 th
-{
-    background-color: white;
-}
-
 tr.row1 a,
 tr.row2 a
 {
@@ -206,4 +200,25 @@ div.form-row.errors
     float:right;
     border: 1px solid #aaaaaa;
     padding: 1em;
+}
+
+tr.row1 td,
+tr.row1 th
+{
+    background-color: #eee;
+}
+
+tr.row2 td,
+tr.row2 th
+{
+    background-color: white;
+}
+
+/* FIXME: Don't show the search icon, because Django 0.96 doesn't set
+  the mime type correctly, causing the image to error with an ugly
+  cross thing in IE. Remove this class once we update to a working
+  Django version.  */
+#changelist-search img
+{
+    display: None;
 }

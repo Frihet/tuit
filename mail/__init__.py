@@ -1160,7 +1160,6 @@ class MailGW:
             #body 
             #mime_type
 
-        print attachment_mapping
         if content_type == 'text/html':
             comment = scrub_html_email(content, attachment_mapping)
         else:
@@ -1173,9 +1172,14 @@ class MailGW:
         if len(e) > 0:
             e=e[0]
             events.extend(e.send(properties['mail_update_mail'], issue=i, update=iu))
+        print 'Emails sent'
 
         iu.description_data={'type':'email','events':events}
+        print 'Description updated'
+
         Event.fire(['mail_update','update'], i, iu)
+
+        print 'events fired'
 
         i.save()
         iu.save()

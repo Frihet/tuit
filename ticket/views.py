@@ -9,8 +9,10 @@ from django.contrib.auth.models import *
 from tuit.util import *
 import re
 from django.utils.translation import gettext as _
+from django.utils.translation import gettext_noop
 import logging
 from tuit.query.models import GenericFillItem
+import traceback
 
 def studly(str):
     """
@@ -47,9 +49,9 @@ def handle_files( issue, update, files ):
 #    print files
     idx = 0
     for filename in files:
+        print 'handle a file...'
         file = files[filename]
 #        print file
-        print 'handle file...'
 #        IssueAttachment.create(issue, update, file.read(), file.name, file.content_type)
         IssueAttachment.create(issue, update, file['content'], file['filename'], file['content-type'], idx)
         idx += 1
@@ -128,8 +130,8 @@ def new(request, type_name=None):
         
             print 'BAZ', errors
             if not errors:
-                events.extend(send_email('web_create', request.POST, i, None))
                 events.extend(handle_files(i, None, request.FILES))
+                events.extend(send_email('web_create', request.POST, i, None))
 
                 i.description_data={'type':'web','events':events, 'by':request.user.username}
                 
@@ -238,8 +240,10 @@ def view(request,id=None):
 
         if not errors:
 
-            events.extend(send_email('web_update', request.POST, i, iu))
+            iu.save()
+
             events.extend(handle_files(i, iu, request.FILES))
+            events.extend(send_email('web_update', request.POST, i, iu))
                                
             iu.description_data={'type':'web','events':events,'by':request.user.username}
 

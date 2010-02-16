@@ -117,16 +117,25 @@ var tuit = {
 
     init: function()
     {
+	
+	$.each($('input'), function(key, value) {
+		var type = value.getAttribute("type");
+		if ( type  == "submit" || type == "button" || type == "reset")	
+		    $(value).addClass("button");
+		else if (type == "radio" || type == "checkbox" || type == "text") 
+		    $(value).addClass(type);
+	    } );
+
 	if($('body').autocomplete) {
 	    var usr_url = "/tuit/query/user_complete/";
 	    var usr_url2 = "/tuit/query/user_complete/?contacts=1";
 	    var dep_url = "/tuit/query/issue_complete/";
-	    var kb_url = "/cgi-bin/foswiki/search/KB/?skin=autocomplete&type=literal&web=KB+IKB";	
+	    var kb_url = "/cgi-bin/foswiki/search/KB/?skin=autocomplete&type=literal&web=KB+IKB&scope=all";	
 	    var ci_url = "/FreeCMDB/?controller=ciList&output=autocomplete";
 	    
 	    var uoptions_single = {
 		matchContains: true,
-		mustMatch: true,
+		mustMatch: false,
 		param: "query",
 		format: "json"
 	    };
@@ -134,7 +143,7 @@ var tuit = {
 		matchContains: true,
 		multiple: true,
 		multipleSeparator:"\n",
-		mustMatch: true,
+		mustMatch: false,
 		multipleSeparator:"\n",
 		param: "query",
 		format: "json"
@@ -208,10 +217,6 @@ var tuit = {
 	
         $('#quick').bind("change", null, tuit.quickChange);
 
-	if($('body').datePicker) {
-	    $('.date_picker').datePicker({"startDate":"01.01.2000"});
-	}
-
 	$('#requester').bind('change',function(event){
 		var uname = $('#requester')[0].value.split(' ');
 		if (uname.length < 1)
@@ -272,6 +277,8 @@ var tuit = {
 	       
 
 	tuit.getComments();
+
+	
     },
 	
     getComments: function() {
@@ -346,22 +353,30 @@ var tuit = {
     insertKbArticle: function(){
 	var articleName = tuit.strip($('#kb_insert')[0].value);
 	var url = '/cgi-bin/foswiki/view/'+escape(articleName)
+	if (articleName == "" || articleName.split('/').length < 2) {
+	    return;
+	}
 	$.get(url, {'skin':'text','time':tuit.time()},
 	      function (result, status) {
-		  tinyMCE.editors['comment'].setContent(result); 
-		  $('#kb_preview').hide(200);
+		  if(tuit.strip(result)  != "") { 
+		      tinyMCE.editors['comment'].setContent(result); 
+		      $('#kb_preview').hide(200);
+		  }
 	      });
     },
 
     previewKbArticle: function(){
 	var articleName = tuit.strip($('#kb_insert')[0].value);
-	
 	var url = '/cgi-bin/foswiki/view/'+escape(articleName);
-	
+	if (articleName == "" || articleName.split('/').length< 2) {
+	    return;
+	}	
 	$.get(url, {'skin':'text','time':tuit.time()},
 	      function (result, status) {
-		  $('#kb_preview_content')[0].innerHTML=result;
-		  $('#kb_preview').show(200);
+		  if(tuit.strip(result)  != "") { 
+		      $('#kb_preview_content')[0].innerHTML=result;
+		      $('#kb_preview').show(200);
+		  }
 		  
 	      });
     },
@@ -478,6 +493,17 @@ var tuit = {
 $(document).ready(function(){
 	tuit.init();
 });
+
+$(window).load(function(){
+	/*
+	  This needs to wait until 18n.js has loaded, so we don't run
+	  it until window.load is triggered.
+	 */
+	if($('body').datePicker) {
+	    $('.date_picker').datePicker({"startDate":"01.01.2000"});
+	}
+    });
+
 
 function _ (input) {
     return (input in tuit.translations)?tuit.translations[input]:input;
