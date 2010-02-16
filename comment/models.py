@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from ticket.templatetags.tuit_extras import date_format, datetime_format
+from tuit.ticket.templatetags.tuit_extras import date_format, datetime_format
 
 # Create your models here.
 class Comment(models.Model):
