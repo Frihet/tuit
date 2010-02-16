@@ -26,7 +26,7 @@ def view(request):
         pass
     
 
-    items = Issue.objects.filter(creation_date__gte = date_start, creation_date__lte = date_stop)
+    items = Issue.objects.filter(creation_date__gte = date_start, creation_date__lt = (date_stop + datetime.timedelta(1)))
     def item_key(item):
         """" 
         Create a unique, hashable key for a ci dependency
