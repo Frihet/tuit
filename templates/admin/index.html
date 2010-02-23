@@ -12,27 +12,7 @@
 
 <div id="content-main">
 
-
-        <div class="module">
-        <table class='striped'>
-        <caption>{% trans "Tools" %}</caption>
-            <tr>
-                <td scope="row"><a href="/FreeCMDB/admin">{% trans "CMDB Adminstration" %}</a></td>
-            </tr>
-            <tr>
-                <td scope="row"><a href="/tuit/log">{% trans "TUIT log viewer" %}</a></td>
-            </tr>
-            <tr>
-                <td scope="row"><a href="/tuit/admin/ticket/userprofile/{{user.get_profile.id}}">{% trans "Edit your signature" %}</a></td>
-            </tr>
-            <tr>
-              <td scope="row"><a href="/tuit/status/edit">{% trans "Edit current status" %}</a></td>
-	    </tr>
-            <tr>
-              <td scope="row"><a href="/tuit/trend/">{% trans "Current issue trends" %}</a></td>
-	    </tr>
-        </table>
-        </div>
+<a href="/tuit/admin/tuitadmin/doc/">{% trans 'System information' %}</a>
 
 {% load adminapplist %}
 

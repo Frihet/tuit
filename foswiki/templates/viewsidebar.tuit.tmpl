@@ -1,13 +1,12 @@
 %{ to include a side bar on a page, just include this template in the page template }%
-%TMPL:DEF{"sidebar"}% <div id="patternSideBar"><div id="patternClearHeaderLeft"></div>
-<div id="patternSideBarContents">
-%TMPL:P{"websidebar"}%
-<div class='action_menu'>
-<ul>
-</ul>
-</div>
-</div><!-- /patternSideBarContents--></div><!-- /patternSideBar-->%TMPL:END%
+%TMPL:DEF{"sidebar"}%
 
+<div class='action_menu'>
+ %INCLUDE{"%SYSTEMWEB%.WebLeftBar"}%
+ <ul class="comment_target"></ul>
+</div>
+
+%TMPL:END%
 
 %TMPL:DEF{"sidebar:webindicator"}%<div class="patternWebIndicator">
    * <a href='%SCRIPTURL{"view"}%/%BASEWEB%/%HOMETOPIC%'><img src='%ICONURL{"web-bg"}%' style='background-color:%WEBBGCOLOR%' alt='%WEB%'/> <nop>%BASEWEB%</a>

@@ -282,7 +282,7 @@ var tuit = {
     },
 	
     getComments: function() {
-	var comment_target = $('.action_menu ul');
+	var comment_target = $('.comment_target');
 	if(comment_target.length) {
 	    comment_target=comment_target[0];
 

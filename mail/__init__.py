@@ -1031,7 +1031,7 @@ class MailGW:
         if len(u) == 0:
             self.logger.error('Unknown user: %s'% message.from_address)
             return 'unmatched_user'
-
+        
         user=u[0]
         
         i = Issue()

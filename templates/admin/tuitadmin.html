@@ -1,0 +1,42 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+
+{% block stylesheet %}{% load adminmedia %}{% admin_media_prefix %}css/dashboard.css{% endblock %}
+{% block coltype %}colMS{% endblock %}
+{% block bodyclass %}dashboard{% endblock %}
+{% block breadcrumbs %}{% endblock %}
+
+{% block content_title %}<h1>{% trans "Tuit administration backend" %}</h1>{% endblock %}
+
+{% block content %}
+
+<div id="content-main">
+
+
+        <div class="module">
+        <table class='striped'>
+        <caption>{% trans "Tools" %}</caption>
+            <tr>
+                <td scope="row"><a href="/tuit/admin/tuitadmin">{% trans "Issue Adminstration" %}</a></td>
+            </tr>
+            <tr>
+                <td scope="row"><a href="/FreeCMDB/admin">{% trans "CMDB Adminstration" %}</a></td>
+            </tr>
+            <tr>
+                <td scope="row"><a href="/tuit/log">{% trans "TUIT log viewer" %}</a></td>
+            </tr>
+            <tr>
+                <td scope="row"><a href="/tuit/admin/ticket/userprofile/{{user.get_profile.id}}">{% trans "Edit your signature" %}</a></td>
+            </tr>
+            <tr>
+              <td scope="row"><a href="/tuit/status/edit">{% trans "Edit current status" %}</a></td>
+	    </tr>
+            <tr>
+              <td scope="row"><a href="/tuit/trend/">{% trans "Current issue trends" %}</a></td>
+	    </tr>
+        </table>
+        </div>
+</div>
+
+{% endblock %}
+

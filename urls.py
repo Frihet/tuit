@@ -4,7 +4,8 @@ urlpatterns = patterns('',
     # Example:
 
     # Uncomment this for admin:
-     (r'^tuit/admin/', include('django.contrib.admin.urls')),
+     (r'^tuit/admin/tuitadmin/', include('django.contrib.admin.urls')),
+     (r'^tuit/admin/', 'tuit.tuitadmin.views.index'),
      (r'^tuit/search/', 'tuit.search.views.results'),
      (r'^tuit/ticket/new/(?P<id>\w+)', 'tuit.ticket.views.new'),
      (r'^tuit/ticket/new/', 'tuit.ticket.views.new'),

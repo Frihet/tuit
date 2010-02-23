@@ -156,6 +156,21 @@ apt-get install foswiki
 
 # FIXME: Anything else needed for foswiki? I didn't do these steps myself... :-/
 
+Edit WebLeftBar in the system web. Click on HTML editing. Remove all after the initial WYSIWYG comment and raplace with
+
+<ul>
+ <li><h2>%MAKETEXT{"Toolbox"}%</h2></li>
+ <li>[[%SCRIPTURLPATH{"view"}%/%BASEWEB%/WebCreateNewTopic?topicparent=%BASETOPIC%][ %ICON{"newtopic"}% %MAKETEXT{"Create New Topic"}%]]</li>
+ <li>[[WebTopicList][ %ICON{"index"}% %MAKETEXT{"Index"}%]]</li>
+ <li>[[%BASEWEB%.WebSearch][ %ICON{"searchtopic"}% %MAKETEXT{"Search"}%]]</li>
+ <li>[[WebChanges][ %ICON{"changes"}% %MAKETEXT{"Changes"}%]]</li>
+ <li>[[WebNotify][ %ICON{"notify"}% %MAKETEXT{"Notifications"}%]]</li>
+ <li>[[WebRss][ %ICON{"feed"}% %MAKETEXT{"RSS Feed"}%]]</li>
+ <li>[[WebStatistics][ %ICON{"statistics"}% %MAKETEXT{"Statistics"}%]]</li>
+ <li>[[WebPreferences][ %ICON{"wrench"}% %MAKETEXT{"Preferences"}%]]</li>
+</ul>
+
+
 # ***************
 # * DATE FORMAT *
 # ***************

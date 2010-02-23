@@ -611,26 +611,3 @@ input.foswikiInputField
 /*
   Styling of the variable menu on the side
   */
-.action_menu
-{
-    padding: 0%;
-    margin-left: 0%;
-}
-
-.action_menu ul
-{
-    margin: 0%;
-    padding: 0em;
-}
-
-#patternSideBar ul
-{
-    list-style-type: none;
-    padding-left: 0em;
-}
-
-.action_menu li
-{
-    padding: 0%;
-    margin: 0%;
-}

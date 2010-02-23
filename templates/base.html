@@ -35,8 +35,12 @@ Date.format = '{{ js_date_format }}';
   
   <body>
   <div class='main_menu no_print'>
-    <iframe src='/tuit/menu/' width='100%' height='80px' frameborder='0'></iframe>
-  </div>
+   <ul class='user_info'>
+    <li>{%trans "User" %}: {{ user.tuit_description }}</li>
+    <li><a href='/tuit/account/logout'>{%trans "Log out" %}</a></li>
+   </ul>
+   <iframe src='/tuit/menu/' width='100%' height='80px' frameborder='0'></iframe>
+   </div>
     
 {%if messages %}
 <div class='messages no_print'>
@@ -50,19 +54,22 @@ Date.format = '{{ js_date_format }}';
 </div>
 
 <div class='action_menu no_print'>
-  <ul class='comment_target'>
-    <li>{%trans "User" %}: {{ user.tuit_description }}</li>
-    <li><a href='/tuit/account/logout'>{%trans "Log out" %}</a></li>
+  <ul class='goto_user'>
     <li><h2>{% trans "Show User" %}</h2></li>
     <li>
       <form accept-charset='utf-8' method='get' action='/tuit/account/show/' >
 	<input name='username' class='user'/> <button type='submit'>{% trans "Search" %}</button>
       </form> 
     </li>
+  </ul>
+
+  <ul class='recent_updates'>
     {{ recent_updates.html }} 
     {%block sidebar %}
     {%endblock %}
   </ul>
+
+  <ul class='comment_target'></ul>
 </div>
 <div class='content'>
   <div class='content_inner'>
