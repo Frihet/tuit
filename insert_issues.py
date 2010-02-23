@@ -273,7 +273,7 @@ for it in range(3000):
 delete from ticket_issuefielddropdownvalue;
 delete from ticket_issuefieldvalue ;
 delete from ticket_cidependency;
-delete from ticket_issueupdateattachment;
+delete from ticket_issueattachment;
 delete from ticket_issueupdate;          
 delete from ticket_issue_co_responsible;
 delete from ticket_issue_cc_user;
