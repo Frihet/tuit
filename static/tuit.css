@@ -1,149 +1,594 @@
-table.wide
+
+/*
+  Make the default font a bit smaller
+  */
+body
 {
-    width: 100%;
+    background-image: url('common/bg.png');
+    background-repeat: repeat;
+    background-color: #1d1d1d;
+    padding: 0%;
+    margin: 0%;
+    font-size: 80%;
+    font-family: sans-serif;
 }
 
-.disabled{
-color:grey;
-}
+/*
+  Heading styles
+  */
 
-.ticket_hidden {
-    display: none;
-}
-
-textarea
+h1, h2, h3, h4 
 {
-    width: 80%;
-    height: 6em;
+    margin-left:0em;
+    color: #333;
 }
 
-td.label
+h1
 {
-    width: 30%;
+    font-size: 120%;
+}
+
+h2
+{
+    font-size: 100%;
+}
+
+/*
+  Form styling
+  */
+input.button,
+button,
+.content .edit,
+.content .remove,
+.content .revision,
+body .dp-choose-date,
+.content .revert
+{
+    background-color: #35373f;
+    border: 1px solid #111;
+	border-radius: 3px;
+    -moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	background-image: url('button_bg.png');
+	background-repeat: repeat-x;
+
+    padding: 2px 10px 2px 10px;
+    color: white;
+}
+
+/*
+  Styling for anchors that look like buttons.
+  */
+body .content .edit,
+body .content .remove,
+body .content .revision,
+body .dp-choose-date,
+body .content .revert
+{
+    text-decoration: none;
+    padding: 4px 12px 4px 12px;
+    /* 
+
+Kludge: This would ideally be the total size of the text box (which
+is defined in pt) plus the size of the borders, margins, etc.,
+which are defined in pixels, as well as a bit of extra margin,
+which is also defined in pixels. Sadly, that is impossible, so
+we have this semi-arbitrary number, which looks good most of the time.
+
+It's worth investigating if all links could be wrapped in a div in a
+box, to add the top/bottom margins, thus working around the problem.
+
+*/
+    line-height: 20pt;
+}
+
+
+
+
+body .content .edit:active,
+body .content .remove:active,
+body .content .revision:active,
+body .content .revert:active,
+body .dp-choose-date:active,
+body button:active,
+body input.button:active
+{
+	background-image: url('button_bg_active.png');
+	background-color: #25262c;
+    color: #aaa;
+}
+
+.content .edit:hover,
+.content .remove:hover,
+.content .revision:hover,
+.content .revert:hover,
+body .dp-choose-date:hover,
+button:hover,
+input.button:hover
+{
+	background-image: url('button_bg_hover.png');
+	background-color: #3b3d47;
+	cursor:pointer;cursor:hand
+}
+
+input, textarea
+{
+    background-color: white;
+    border: 1px solid #888;
 }
 
 td input
 {
-    width: 80%;
-    min-width: 30em;
+    margin-top: 2px;
+    margin-bottom: 2px;
 }
 
-td input.kb
+.rich_edit
 {
-    width: 50%;
+    width: 250px;
+    height: 75px;
 }
 
-.update_buttons
+.button_list
 {
-    float:right;
+    margin: 0.5em;
+    clear:left;
 }
 
-#kb_preview_hide
+.anchor
 {
-    margin: 2pt;
-    float: right;
     display: block;
+    position:relative;
 }
 
-#kb_preview_content
+
+/*
+  Styling of popups
+  */
+.popup
+{
+    display:none;
+    position: fixed;
+    left: 20%;
+    top: 10%;
+    background: white;
+    border: 1px solid black;
+    padding: 0px;
+    z-index: 3;
+}
+
+.popup_content
+{
+    padding: 5px 15px;
+}
+
+.popup_title
+{
+    background: #777;
+    color: #fff;
+    font-weight:bold;
+    padding: 3px;
+    
+}
+
+.popup_title a
+{
+    position:absolute;
+    right: 0px;
+    top: 0px;
+    color: #fff;
+    font-family: sans-serif;
+    padding: 3px 6px;
+    margin:0px;
+    
+}
+
+.popup_title a:link,
+.popup_title a:visited,
+.popup_title a:hover 
+{
+    text-decoration: none;
+}
+
+
+.popup_title a:hover 
+{
+    background: #555;
+}
+
+
+/*
+  Styling of mouseovers
+  */
+.onmouseover
+{
+    display:none;
+}
+
+.mouseoverowner
+{
+    position: relative;
+}
+
+:hover.mouseoverowner .onmouseover
+{
+    display:block;
+    position: absolute; 
+    top: 20px; left: 40; 
+    width: 250pt;
+    background: #ffa;
+    border: 1px solid black;
+    z-index: 1;
+    font-size: small;
+    padding: 5px 15px;
+    color: black;
+}
+
+/*
+  Styling of floating figures
+  */
+.figure 
+{
+    float:left;
+    margin: 1em 1em 0em 0em;
+    padding: 0.5em;
+    border: 1px solid #aaa;
+    background-color: white;
+    overflow: auto;
+    text-align: center;
+}
+
+.figure img,
+.figure object
+{
+    display:block;
+}
+
+.figure .caption
+{
+    font-style: italic;
+}
+
+/*
+  Styling of tables
+  */
+table
+{
+    border-collapse: collapse;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    border: 1px solid #aaa;
+}
+
+.ci_list_table,
+.ci_table,
+.history_table
+{
+    float: left;
+    max-width: 60em;
+}
+
+td, th
+{
+    border-bottom: 1px solid #aaa;
+    padding-left: 5pt;
+    padding-right: 5pt;
+}
+
+td.odd
+{
+    background-color: #eee;
+}
+
+th.odd
+{
+    background-color: #555;
+}
+
+th
+{
+    background-color: #777;
+    color: #fff;
+    border-right: 1px solid white;
+    text-align: left;
+}
+
+th:last-child
+{
+    border-right: none;
+}
+
+/*
+  Default link styling
+  */
+a
+{
+    color: black;
+}
+
+a:hover
+{
+    color: #999;
+}
+
+a:visited
+{
+    color: #888;
+}
+
+/*
+Stykling for installation screen
+*/
+
+.content_install
+{
+    margin: 1%;
+    padding: 0%;
+}
+
+.content_install_inner
 {
     background-color: white;
-    border: 1px solid #888;
+    padding: 1em;
+    margin: 0%;
+    border: 1px solid #000;
+
+	border-radius-top-left: 6px;
+    -moz-border-radius-topleft: 6px;
+	-webkit-border-radius-top-left: 6px;
+
+	border-radius-top-right: 10px;
+    -moz-border-radius-topright: 10px;
+	-webkit-border-radius-top-right: 10px;
 }
 
-.widget
+
+/*
+  Styling of the main menu at the top
+  */
+.main_menu
 {
-    display: inline-block;
-    width: 45%;
-    min-width: 30em;
-    margin: 1em;
-    vertical-align: top;
-    /*
-      These two declarations fake inline-block under IE7
-    */
-    zoom: 1;
-    *display: inline;
+    margin: 2% 2% 1% 2%;
+    padding: 0%;
 }
 
-.widget.full_width
-{
-    width: 95%;
-}
-
-#ci_picker_root
+.main_menu_inner
 {
     background-color: white;
-    border: 1px solid #888;
+    padding: 1em;
+    margin: 0%;
+    border: 1px solid #000;
+
+	border-radius-top-left: 6px;
+    -moz-border-radius-topleft: 6px;
+	-webkit-border-radius-top-left: 6px;
+
+	border-radius-top-right: 10px;
+    -moz-border-radius-topright: 10px;
+	-webkit-border-radius-top-right: 10px;
+}
+
+.main_menu_inner
+{
+	background-repeat: no-repeat;
+	background-position: top right;
+	background-image: url('bg2.jpg');
+}
+
+.main_menu .logo
+{
+    padding-top: 4em;
+    padding-bottom: 4em;
+    font-weight: bold;
+	
+}
+
+.main_menu ul
+{
+    margin: 0%;
+    padding: 0%;
+}
+
+.main_menu li
+{
+    display: inline;
+    list-style-type: none;
+    padding-right: 3em;
+    padding-left: 0%;
+    margin: 0%;
+}
+
+
+.main_menu .selected
+{
+    font-weight: bold;
+}
+
+.main_menu a
+{
+    color: black;
+    text-decoration: none;
+}
+
+/*
+  Styling of the message list
+  */
+.messages
+{
+    background-color: white;
+    margin-top: 1%;
+    margin-bottom: 1%;
+    margin-left: 2%;
+    margin-right: 2%;
+    padding: 0%;
+}
+
+.messages .messages_inner
+{
+    padding: 1em;
+    margin: 0%;
+    border: 1px solid #000;
+}
+
+.error
+{
+    color: #900;
+}
+
+/*
+  Styling of the variable menu on the side
+  */
+.action_menu
+{
+    background-color: white;
+    float: left;
+    width: 15%;
+    padding: 0%;
+    margin-left: 2%;
+}
+
+.action_menu ul
+{
+    margin: 0%;
+    padding: 1em;
+    border: 1px solid #000;
+}
+
+.action_menu li
+{
+    list-style-type: none;
+    padding: 0%;
+    margin: 0%;
+}
+
+.action_menu li h2,
+.action_menu li h3,
+.action_menu li h4
+{
+    margin-left: 0px;
+}
+
+.action_menu a
+{
+    color: black;
+    text-decoration: none;
+}
+
+/*
+  Styling of the main content pane
+  */
+.content
+{
+    float: left;
     width: 80%;
+    background-color: white;
+    margin: 0%;
+    margin-left: 1%;
+    padding: 0%;
+    margin-bottom: 1%;
 }
 
 
-.action_menu li.toc_h2
+/*
+  Styling of the main content pane
+  */
+.content.no_sidebar
 {
-    margin-left: 1em;
+    width: 96%;
+    margin-left: 2%;
 }
 
-.action_menu li.toc_h3
+
+.content_inner
 {
-    margin-left: 2em;
+    border: 1px solid #000;
+    padding: 1em;
 }
 
-div.help
+.content_post
 {
-    margin-right: 20%;
+    clear: both;
 }
 
-h3 {
-    font-size:100%;
-    font-weight: normal;
-    font-style: italic;
 
-}
 
-h4 {
-    font-size:100%;
-    font-weight: normal;
-    font-style: italic;
-}
+/*
 
-.action_menu input
+Misc minor styling
+*/
+
+.copyright
 {
-    width: 60%;
-}
-
-.action_menu button
-{
-    max-width: 30%;
-}
-
-tr.emergency td.odd
-{
-    background: #ffeeee;
-}
-
-tr.emergency td
-{
-    background: #eedddd;
-}
-
-div.tip
-{
-    float:right;
     clear:both;
-    margin: 1em;
-    width: 30%;
+    padding-bottom: 60pt;
+    margin-left: auto;
+    margin-right: auto;
+    width: 200pt;
 }
 
-div.status
+.copyright_inner
 {
-    float:right;
-    clear:both;
-    margin: 1em;
-    width: 30%;
+    text-align: center;
 }
 
-div.status body
+.copyright a
 {
-margin: 0;
+    color: #555;
 }
 
+.copyright a:hover
+{
+    color: #333;
+}
+
+.copyright a:visited
+{
+    color: #555;
+}
+
+.iframe_label
+{
+    clear: left;
+}
+
+.iframe_header
+{
+    font-weight: bold;
+    margin-right: 0.5em;
+}
+
+.numeric
+{
+    display: block;
+    text-align: right;
+    width:100%;
+}
+
+th a
+{
+    color:white;
+}
+
+th a:visited
+{
+    color:#ddd;
+}
+
+.user-tools
+{
+    float: right;
+}
+
+#content-main caption
+{
+    font-weight: bold;
+}
+
+input.checkbox,
+input.radio
+{
+    width: auto;
+    min-width: 1px;
+    border: none;
+    background-color: transparent;
+}
