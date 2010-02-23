@@ -22,10 +22,12 @@ class GenericFillItem(models.Model):
             'value':self.value}
 
     class Admin: 
-        list_filter = ('condition_name',)
+#        list_filter = ('condition_name',)
+        pass
 
     class Meta:
-        ordering = ['condition_name']
+#        ordering = ['condition_name']
         verbose_name_plural = _('Generic fill items')
         verbose_name = _('Generic fill item')
+
 
