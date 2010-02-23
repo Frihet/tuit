@@ -1013,7 +1013,8 @@ class MailGW:
             server.close()
         finally:
             try:
-                server.expunge()
+#                server.expunge()
+                pass
             except:
                 pass
             server.logout()
