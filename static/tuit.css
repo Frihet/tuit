@@ -160,3 +160,19 @@ div.status body
 margin: 0;
 }
 
+.login-content {
+    margin-top: 5%;
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-bottom: 5%;
+}
+
+.login-content form
+{
+    background-color: white;
+    border: 1px solid black;
+    padding-top: 5%;
+    padding-left: 5%;
+    padding-right: 5%;
+    padding-bottom: 5%;
+}

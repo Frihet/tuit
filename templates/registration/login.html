@@ -6,12 +6,14 @@
 {% block content_title %}{% endblock %}
 {% block breadcrumbs %}{% endblock %}
 
-{% block content %}
+{% block main_menu %}{% endblock %}
+{% block action_menu %}{% endblock %}
+{% block content_frame %}
 
 {% if error_message %}
 <p class="errornote">{{ error_message }}</p>
 {% endif %}
-<div id="content-main">
+<div class="login-content">
 <form action="{{ app_path }}" method="post" id="login-form">
   <div class="form-row">
     <label for="id_username">{% trans 'Username:' %}</label> <input type="text" name="username" id="id_username" />
