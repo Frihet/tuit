@@ -134,7 +134,7 @@ class Widget:
                         logging.getLogger('performance').warning('DB access for widget «%s», user %s took %.2f seconds' % (self.slug, self.request.user.username, time))                    
                 return "<div class='widget %s'><h2>%s</h2>%s%s</div>"%(self.class_names, self.name,message,table)
             elif self.style == 'list':
-                hdr = "<h2>%s</h2>" % self.name
+                hdr = "<li><h2>%s</h2></li>" % self.name
                 if len(self.items) == 0:
                     return "%s<li>%s</li>" % (hdr, _("No matching items found"))
                 else:

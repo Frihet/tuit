@@ -6,7 +6,7 @@
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
     
 {% for i in css_links %}    
-    <link rel="stylesheet" href="{{ i.url }}" type="text/css" media="{{ i.media|default:"screen,projection" }}" />
+    <link rel="stylesheet" href="{{ i.url }}" type="text/css" media="{{ i.media|default:"screen,projection" }}">
 {% endfor %}
 {% for i in js_links %}    
     <script type="text/javascript" src="{{ i }}"></script>
@@ -35,7 +35,7 @@ Date.format = '{{ js_date_format }}';
   
   <body>
   <div class='main_menu no_print'>
-    <iframe src='/tuit/menu/' width='100%' height='80px' frameborder='no'></iframe>
+    <iframe src='/tuit/menu/' width='100%' height='80px' frameborder='0'></iframe>
   </div>
     
 {%if messages %}
@@ -64,7 +64,6 @@ Date.format = '{{ js_date_format }}';
     {%endblock %}
   </ul>
 </div>
-
 <div class='content'>
   <div class='content_inner'>
     
@@ -82,7 +81,7 @@ Date.format = '{{ js_date_format }}';
 <div class='copyright'>
   <a href='http://www.freecode.no'>© 2009 Freecode AS</a>
 </div>
-<script>
+<script type='text/javascript'>
   stripe();
 </script>
   </body>
