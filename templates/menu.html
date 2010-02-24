@@ -3,26 +3,18 @@
 {% load i18n %}
 <html>
 <head>
-  <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-  <link rel="stylesheet" href="/static/menu.css" type="text/css" media="screen,projection" />
 </head>
-<body>
-<div class='main_menu'>
-<div class='main_menu_inner'>
-<ul>
+<body class='main_menu_content'>
+<ul class="main_menu">
     {% for application in applications %}
     <li>
       <a target='_parent' href='{{ application.url|escape }}'>{{ application.name }}</a>
     </li>
     {% endfor %}
-    <li>
-      <form target='_parent' accept-charset='utf-8' method='get' action='/tuit/search/' >
-	<input name='freetext'/>&nbsp;<button type='submit'>{% trans "Search" %}</button>
-      </form> 
-    </li>
 
 </ul>
-</div>
-</div>
+ <form target='_parent' accept-charset='utf-8' method='get' action='/tuit/search/' class="search">
+   <input name='freetext'/>&nbsp;<button type='submit'>{% trans "Search" %}</button>
+ </form> 
 </body>
 </html>

@@ -341,63 +341,6 @@ Stykling for installation screen
 /*
   Styling of the main menu at the top
   */
-.main_menu
-{
-    margin: 2% 2% 1% 2%;
-    padding: 0%;
-}
-
-.main_menu_inner
-{
-    background-color: white;
-    padding: 1em;
-    margin: 0%;
-    border: 1px solid #000;
-
-	border-radius-top-left: 6px;
-    -moz-border-radius-topleft: 6px;
-	-webkit-border-radius-top-left: 6px;
-
-	border-radius-top-right: 10px;
-    -moz-border-radius-topright: 10px;
-	-webkit-border-radius-top-right: 10px;
-}
-
-.main_menu_inner
-{
-	background-repeat: no-repeat;
-	background-position: top right;
-	background-image: url('common/bg2.jpg');
-}
-
-.main_menu .logo
-{
-    padding-top: 4em;
-    padding-bottom: 4em;
-    font-weight: bold;
-	
-}
-
-.main_menu ul
-{
-    margin: 0%;
-    padding: 0%;
-}
-
-.main_menu li
-{
-    display: inline;
-    list-style-type: none;
-    padding-right: 3em;
-    padding-left: 0%;
-    margin: 0%;
-}
-
-
-.main_menu .selected
-{
-    font-weight: bold;
-}
 
 .main_menu a
 {

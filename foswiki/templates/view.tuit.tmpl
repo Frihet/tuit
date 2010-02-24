@@ -2,11 +2,13 @@
 
 %TMPL:DEF{"top:toolbarbuttons"}%%TMPL:P{"more_link"}%%TMPL:END%
 %TMPL:DEF{"topbar"}%
-        <div class='main_menu no_print'>
-
-<ul class="user_info">%IF{"context authenticated" then='<li>%MAKETEXT{"User:"}% [[%WIKIUSERNAME%][%SPACEOUT{%WIKINAME%}%]]</li>'}%%IF{"$ LOGOUT != ''" then='<li class="patternLogOut">%LOGOUT%</li>'}%%IF{"$ LOGIN != '' and not context authenticated" then='<li class="patternLogIn">%LOGIN% %IF{"context registration_supported AND context registration_enabled" then="%MAKETEXT{"or"}% [[%SYSTEMWEB%.UserRegistration][%MAKETEXT{"Register"}%]]"}%</li>'}%</ul>
-        <iframe src='/tuit/menu/' width='100%' height='80px' frameborder='0'></iframe>
-        </div>
+	<div class='menu_box no_print'>
+	 <div class='menu_box_inner'>
+	  <ul class="user_info">%IF{"context authenticated" then='<li>%MAKETEXT{"User:"}% [[%WIKIUSERNAME%][%SPACEOUT{%WIKINAME%}%]]</li>'}%%IF{"$ LOGOUT != ''" then='<li class="patternLogOut">%LOGOUT%</li>'}%%IF{"$ LOGIN != '' and not context authenticated" then='<li class="patternLogIn">%LOGIN% %IF{"context registration_supported AND context registration_enabled" then="%MAKETEXT{"or"}% [[%SYSTEMWEB%.UserRegistration][%MAKETEXT{"Register"}%]]"}%</li>'}%</ul>
+	  <div class='main_menu_target'></div>
+	  <div class='breadcrumb'></div>
+	 </div>
+	</div>
 %TMPL:END%
 
 %TMPL:DEF{"bottombar"}%

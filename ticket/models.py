@@ -119,7 +119,7 @@ class Status(models.Model):
     """
     Status of a ticket, e.g. 'Closed', 'Open', etc.
     """
-
+    
     name = models.CharField(_('name'),maxlength=64, unique=True)
 
     def __str__(self):

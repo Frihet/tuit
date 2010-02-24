@@ -114,10 +114,17 @@ var tuit = {
 	    });
     },
 
+    getMainMenu: function ()
+    {
+       	var menu_target = $('.main_menu_target');
+	if(menu_target.length) {
+	    menu_target.replaceWith($.ajax({url: "/tuit/menu/", async: false}).responseText)
+        }
+   },
 
     init: function()
     {
-	
+        this.getMainMenu();
 	$.each($('input'), function(key, value) {
 		var type = value.getAttribute("type");
 		if ( type  == "submit" || type == "button" || type == "reset")	

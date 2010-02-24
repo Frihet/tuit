@@ -25,14 +25,17 @@
 <body class="{% if is_popup %}popup {% endif %}{% block bodyclass %}{% endblock %}">
 
   {% block main_menu %}
-  <div class='main_menu no_print'>
-   {% if user.is_authenticated and user.is_staff %}
-    <ul class="user_info">
-     <li>{% trans 'User' %}: <a href='/tuit/account/{{ user.username|escape}}'>{{ user.username|escape }} - {{ user.first_name|escape }} {{ user.last_name|escape }}</a></li> 
-     <li><a href="/tuit/account/logout/">{% trans 'Log out' %}</a></li>
-    </ul>
-   {% endif %}
-   <iframe src='/tuit/menu/' width='100%' height='80px' frameborder='no'></iframe>
+  <div class='menu_box no_print'>
+   <div class='menu_box_inner'>
+    {% if user.is_authenticated and user.is_staff %}
+     <ul class="user_info">
+      <li>{% trans 'User' %}: <a href='/tuit/account/{{ user.username|escape}}'>{{ user.username|escape }} - {{ user.first_name|escape }} {{ user.last_name|escape }}</a></li> 
+      <li><a href="/tuit/account/logout/">{% trans 'Log out' %}</a></li>
+     </ul>
+    {% endif %}
+    <div class='main_menu_target'></div>
+    <div class='breadcrumb'></div>
+   </div>
   </div>
   {% endblock %}
 
