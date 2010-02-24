@@ -1,14 +1,22 @@
-{% extends "admin/base_site.html" %}
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	  "http://www.w3.org/TR/html4/strict.dtd">
+<html>
 {% load i18n %}
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    <link rel="stylesheet" href="/static/common/common.css" type="text/css" media="screen,projection" />
+    <link rel="stylesheet" href="/static/tuit.css" type="text/css" media="screen,projection" />    
+    <link rel="stylesheet" href="/static/tuit-print.css" type="text/css" media="print" />
 
-{% block stylesheet %}{% load adminmedia %}{% admin_media_prefix %}css/login.css{% endblock %}
-{% block bodyclass %}login{% endblock %}
-{% block content_title %}{% endblock %}
-{% block breadcrumbs %}{% endblock %}
-
-{% block main_menu %}{% endblock %}
-{% block action_menu %}{% endblock %}
-{% block content_frame %}
+    <script type="text/javascript" src="/static/common/jquery.js"></script>
+    <script type="text/javascript" src="/static/common/common.js"></script>
+    <script type="text/javascript" src="/tuit/ticket/i18n.js"></script>
+    <script type="text/javascript" src="/static/tuit.js"></script>
+    <title>{% trans 'TUIT - Log in' %}</title>
+    </script>
+  </head>
+  
+  <body>
 
 {% if error_message %}
 <p class="errornote">{{ error_message }}</p>
@@ -32,4 +40,13 @@
 document.getElementById('id_username').focus()
 </script>
 </div>
-{% endblock %}
+
+
+<div class='copyright'>
+  <a href='http://www.freecode.no'>© 2009 Freecode AS</a>
+</div>
+<script type='text/javascript'>
+  stripe();
+</script>
+  </body>
+</html>

@@ -176,3 +176,18 @@ margin: 0;
     padding-right: 5%;
     padding-bottom: 5%;
 }
+
+.login-content form label,
+.login-content form input {
+    float: left;
+}
+
+.login-content form label {
+    width: 10em;
+}
+
+.login-content form .form-row,
+.login-content form .submit-row {
+    clear: both;
+    padding-top: 10pt;
+}
