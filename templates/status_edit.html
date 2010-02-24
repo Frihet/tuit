@@ -2,6 +2,7 @@
 {% load tuit_extras %}
 {% load i18n %}
 
+{%block breadcrumb %} &gt; <a href="/tuit/admin">{% trans "Administration" %}</a> &gt; <a href="/tuit/status/edit/">{% trans "Edit current status" %}</a>{%endblock %}
 {%block content %}
 <form method='post' action='' accept-charset='utf-8'>
   <div>

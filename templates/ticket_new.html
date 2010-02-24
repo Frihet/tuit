@@ -1,6 +1,7 @@
 {% extends "ticket.html" %}
 {% load i18n %}
 
+{%block breadcrumb %} &gt; <a href="{{issue.url_internal}}">{%trans "New issue of type " %}{{issue.type.name}}</a>{%endblock %}
 {%block content %} 
 
 <script>

@@ -34,7 +34,7 @@
      </ul>
     {% endif %}
     <div class='main_menu_target'></div>
-    <div class='breadcrumb'></div>
+    <div class='breadcrumb'><a href="/tuit">{% trans 'Home' %}</a> &gt; <a href="/tuit/admin">{% trans 'Administration' %}</a>{%block breadcrumb %}{% if title %} &gt; <a href="/tuit/admin/tuitadmin">{% trans "Issue Administration" %}</a> &gt; {{ title|escape }}{% endif %}{%endblock %}</div>
    </div>
   </div>
   {% endblock %}
@@ -57,8 +57,6 @@
         <div id="branding">
         {% block branding %}{% endblock %}
         </div>
-    {% block breadcrumbs %}<div class="breadcrumbs"><a href="/">{% trans 'Home' %}</a>{% if title %} &rsaquo; {{ title|escape }}{% endif %}</div>{% endblock %}
-
 
         {% block nav-global %}{% endblock %}
     </div>
