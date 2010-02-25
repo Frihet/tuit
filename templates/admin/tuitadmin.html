@@ -11,31 +11,31 @@
 {% block content %}
 
 <div id="content-main">
+ <div class="module">
+  <dl>
+   <dt><a href="/tuit/admin/settings">{% trans "System Settings" %}</a></dt>
+   <dd>{% trans "The System Settings module lets an administrator edit system settings such as menu contents and search types. This module also contains the user and group administration." %}</dd>
 
+   <dt><a href="/tuit/admin/ticket">{% trans "Issue Adminstration" %}</a></dt>
+   <dd>{% trans "The Issue Administration module lets the administrator edit or define issue related settings, such as issue types, issue classification settings, custom fields, quick fills and message templates." %}</dd>
 
-        <div class="module">
-        <table class='striped'>
-        <caption>{% trans "Tools" %}</caption>
-            <tr>
-                <td scope="row"><a href="/tuit/admin/tuitadmin">{% trans "Issue Adminstration" %}</a></td>
-            </tr>
-            <tr>
-                <td scope="row"><a href="/FreeCMDB/admin">{% trans "CMDB Adminstration" %}</a></td>
-            </tr>
-            <tr>
-                <td scope="row"><a href="/tuit/log">{% trans "TUIT log viewer" %}</a></td>
-            </tr>
-            <!-- tr>
-                <td scope="row"><a href="/tuit/admin/ticket/userprofile/{{user.get_profile.id}}">{% trans "Edit your signature" %}</a></td>
-            </tr -->
-            <tr>
-              <td scope="row"><a href="/tuit/status/edit">{% trans "Edit current status" %}</a></td>
-	    </tr>
-            <tr>
-              <td scope="row"><a href="/tuit/trend/">{% trans "Current issue trends" %}</a></td>
-	    </tr>
-        </table>
-        </div>
+   <dt><a href="/FreeCMDB/admin">{% trans "CMDB Adminstration" %}</a></dt>
+   <dd>{% trans "The CMDB Adminstration module lets an administrator edit global CMDB settings such as CI types, CI type attributes and dependency types. This module also contains the CMDB plugin adminitration interface." %}</dd>
+
+   <dt><a href="/tuit/log">{% trans "TUIT log viewer" %}</a></dt>
+   <dd>{% trans "The TUIT Log Viewer module displays the TUIT event log in a table format." %}</dd>
+
+   <!-- dt><a href="/tuit/admin/ticket/userprofile/{{user.get_profile.id}}">{% trans "Edit your signature" %}</a></dt>
+   <dd>{% trans "" %}</dd -->
+
+   <dt><a href="/tuit/status/edit">{% trans "Edit current status" %}</a></dt>
+   <dd>{% trans "The Edit Current Status module lets an administrator edit the global status message displayed on the TUIT home page." %}</dd>
+
+   <dt><a href="/tuit/trend/">{% trans "Current issue trends" %}</a></dt>
+   <dd>{% trans "The Current Issue Trends module displays issue updates for the time interval you specify. Update summaries are shown with any CI dependencies." %}</dd>
+
+  </dl>
+ </div>
 </div>
 
 {% endblock %}

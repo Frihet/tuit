@@ -1,7 +1,7 @@
 {% extends "admin/base_site.html" %}
 {% load i18n %}
 
-{%block breadcrumb %} &gt; <a href="/tuit/admin/tuitadmin">{% trans "Issue Administration" %}</a>{%endblock %}
+{% block breadcrumb %} &gt; <a href="/tuit/admin/tuitadmin">{% trans "Issue Administration" %}</a>{%endblock %}
 {% block stylesheet %}{% load adminmedia %}{% admin_media_prefix %}css/dashboard.css{% endblock %}
 {% block coltype %}colMS{% endblock %}
 {% block bodyclass %}dashboard{% endblock %}
@@ -9,49 +9,52 @@
 
 {% block content_title %}<h1>{% trans "Tuit administration backend" %}</h1>{% endblock %}
 
+
 {% block content %}
-
-<div id="content-main">
-
-<a href="/tuit/admin/tuitadmin/doc/">{% trans 'System information' %}</a>
-
-{% load adminapplist %}
-
-{% get_admin_app_list as app_list %}
-
-{% if app_list %}
+ <div id="content-main">
+  {% block applist %}
+   {% load adminapplist %} {% get_admin_app_list as app_list %}
+   {% if app_list %}
     {% for app in app_list %}
-        <div class="module">
-        <table summary="{% blocktrans with app.name as name %}Models available in the {{ name }} application.{% endblocktrans %}" class='striped'>
-        <caption>{% trans app.name %}</caption>
-        {% for model in app.models %}
-            <tr>
-            {% if model.perms.change %}
-                <th scope="row"><a href="{{ model.admin_url }}">{{ model.name|escape }}</a></th>
-            {% else %}
-                <th scope="row">{{ model.name|escape }}</th>
-            {% endif %}
+     {% block applist_app %}
+      <div class="module">
+       <table summary="{% blocktrans with app.name as name %}Models available in the {{ name }} application.{% endblocktrans %}" class='striped'>
+	<caption>{% trans app.name %}</caption>
 
-            {% if model.perms.add %}
-                <td><a href="{{ model.admin_url }}add/" class="addlink">{% trans 'Add' %}</a></td>
-            {% else %}
-                <td>&nbsp;</td>
-            {% endif %}
+        {% block applist_app_modellist %}
+	 {% for model in app.models %}
+	  {% block applist_app_modellist_model %}
+	   <tr>
+	    {% if model.perms.change %}
+	     <th scope="row"><a href="{{ model.admin_url }}">{{ model.name|escape }}</a></th>
+	    {% else %}
+	      <th scope="row">{{ model.name|escape }}</th>
+	    {% endif %}
 
-            {% if model.perms.change %}
-                <td><a href="{{ model.admin_url }}" class="changelink">{% trans 'Change' %}</a></td>
-            {% else %}
-                <td>&nbsp;</td>
-            {% endif %}
-            </tr>
-        {% endfor %}
-        </table>
-        </div>
+	    {% if model.perms.add %}
+	     <td><a href="{{ model.admin_url }}add/" class="addlink">{% trans 'Add' %}</a></td>
+	    {% else %}
+	     <td>&nbsp;</td>
+	    {% endif %}
+
+	    {% if model.perms.change %}
+	     <td><a href="{{ model.admin_url }}" class="changelink">{% trans 'Change' %}</a></td>
+	    {% else %}
+	     <td>&nbsp;</td>
+	    {% endif %}
+	   </tr>
+	  {% endblock %}
+	 {% endfor %}
+        {% endblock %}
+       </table>
+      </div>
+     {% endblock %}
     {% endfor %}
-{% else %}
+   {% else %}
     <p>{% trans "You don't have permission to edit anything." %}</p>
-{% endif %}
-</div>
+   {% endif %}
+ {% endblock %}
+ </div>
 {% endblock %}
 
 {% block sidebar %}

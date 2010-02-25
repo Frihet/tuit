@@ -1,0 +1,37 @@
+{% extends "admin/index.html" %}
+{% load i18n %}
+
+{% block applist_app %}
+ {% ifequal app.name "Ticket" %}
+  <div class="module">
+   <table summary="{% blocktrans with app.name as name %}Models available in the {{ name }} application.{% endblocktrans %}" class='striped'>
+    <tr><th scope="row"><a href="/tuit/admin/doc/">{% trans 'System information' %}</a></th><td></td><td></td></tr>
+    {% block applist_app_modellist %}
+     {% for model in app.models %}
+      {% block applist_app_modellist_model %}
+       <tr>
+	{% if model.perms.change %}
+	 <th scope="row"><a href="{{ model.admin_url }}">{{ model.name|escape }}</a></th>
+	{% else %}
+	  <th scope="row">{{ model.name|escape }}</th>
+	{% endif %}
+
+	{% if model.perms.add %}
+	 <td><a href="{{ model.admin_url }}add/" class="addlink">{% trans 'Add' %}</a></td>
+	{% else %}
+	 <td>&nbsp;</td>
+	{% endif %}
+
+	{% if model.perms.change %}
+	 <td><a href="{{ model.admin_url }}" class="changelink">{% trans 'Change' %}</a></td>
+	{% else %}
+	 <td>&nbsp;</td>
+	{% endif %}
+       </tr>
+      {% endblock %}
+     {% endfor %}
+    {% endblock %}
+   </table>
+  </div>
+ {% endifequal %}
+{% endblock %}
