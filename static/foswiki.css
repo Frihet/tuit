@@ -551,6 +551,10 @@ input.foswikiInputField
 }
 
 
+.patternTop {
+    float: right;
+}
+
 /*
   Styling of the variable menu on the side
   */
