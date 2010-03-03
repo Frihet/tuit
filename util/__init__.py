@@ -22,9 +22,8 @@ def tuit_render(name, keys, request):
     from tuit.home.widget import Widget
     from tuit.ticket.models import IssueUpdate
 
-    keys['css_links']=[{'url':'/static/common/common.css'},
+    keys['css_links']=[{'url':"/static/tuit.css"},
                        {'url':'/static/jquery-autocomplete/jquery.autocomplete.css'},
-                       {'url':"/static/tuit.css"},
                        {'url':"/static/common/datePicker.css"},
                        {'url':"/static/tuit-print.css", 'media':"print"}]
     

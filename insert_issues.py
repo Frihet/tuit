@@ -279,6 +279,7 @@ delete from ticket_issue_co_responsible;
 delete from ticket_issue_cc_user;
 delete from ticket_issue_dependencies;
 delete from ticket_issue_cc_contact;
+delete from ticket_issuefieldgroupvalue;
 delete from ticket_issue;
 delete from ticket_contact;
 delete from ticket_userprofile;

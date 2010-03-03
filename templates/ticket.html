@@ -3,5 +3,22 @@
 {%block sidebar %} 
 {% endblock %}
 
+{%block content_wrapper %}
+ <div class='content'>
+  <div class='content_inner'>
+   <div class="widget widget_2">
+    <div class="widget_header">
+     <h2><a name='top'>{{ title|escape }}</a></h2>
+    </div>
+    {%block content %}
+    {%endblock %}
+   </div>
+   <div class='content_post'></div>
+   <div class='copyright'>
+    <a href='http://www.freecode.no'>© 2009 Freecode AS</a>
+   </div>
+  </div>
+ </div>
+{%endblock %}
 
 

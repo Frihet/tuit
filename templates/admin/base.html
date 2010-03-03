@@ -3,7 +3,6 @@
 <head>
 <title>TUIT - {% block title %}{% endblock %}</title>
 
-<link rel="stylesheet" href="/static/common/common.css" type="text/css" media="screen,projection" />
 <link rel="stylesheet" href="/static/jquery-autocomplete/jquery.autocomplete.css" type="text/css" media="screen,projection" />
 <link rel="stylesheet" href="/static/tuit.css" type="text/css" media="screen,projection" />    
 <link rel="stylesheet" href="/static/admin.css" type="text/css" media="screen,projection" />    
@@ -25,16 +24,24 @@
 <body class="{% if is_popup %}popup {% endif %}{% block bodyclass %}{% endblock %}">
 
   {% block main_menu %}
-  <div class='menu_box no_print'>
-   <div class='menu_box_inner'>
+  <div class='menu_boxes no_print'>
+   <div class='menu_box menu_box1'>
+    <div class='logo'></div>
     {% if user.is_authenticated and user.is_staff %}
      <ul class="user_info">
-      <li>{% trans 'User' %}: <a href='/tuit/account/{{ user.username|escape}}'>{{ user.username|escape }} - {{ user.first_name|escape }} {{ user.last_name|escape }}</a></li> 
-      <li><a href="/tuit/account/logout/">{% trans 'Log out' %}</a></li>
+      <li class='username'><a href='/tuit/account/{{ user.username|escape}}'>{{ user.username|escape }} - {{ user.first_name|escape }} {{ user.last_name|escape }}</a></li> 
+      <li class='logout_button'><a href="/tuit/account/logout/">{% trans 'Log out' %}</a></li>
      </ul>
     {% endif %}
+    <div class='endbox'></div>
+   </div>
+   <div class='menu_box menu_box2'>
     <div class='main_menu_target'></div>
+    <div class='endbox'></div>
+   </div>
+   <div class='menu_box menu_box3'>
     <div class='breadcrumb'><a href="/tuit">{% trans 'Home' %}</a> &gt; <a href="/tuit/admin">{% trans 'Administration' %}</a>{%block breadcrumb %}{% if title %} &gt; <a href="/tuit/admin/tuitadmin">{% trans "Issue Administration" %}</a> &gt; {{ title|escape }}{% endif %}{%endblock %}</div>
+    <div class='endbox'></div>
    </div>
   </div>
   {% endblock %}
@@ -82,16 +89,14 @@
 
 	<div class='content_post'>
 	</div>
+
       </div>
+      <div class='copyright'>
+	<a href='http://www.freecode.no'>© 2009 Freecode AS</a>
+      </div>
+      <script type='text/javascript'>stripe();</script>
     </div>
   {% endblock %}
-
-    
-    <div class='copyright'>
-      <a href='http://www.freecode.no'>© 2009 Freecode AS</a>
-    </div>
-    <script type='text/javascript'>stripe();</script>
-
 
 </body>
 </html>

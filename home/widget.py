@@ -106,7 +106,7 @@ class Widget:
 
                     message = _("Showing items %(first)d to %(last)d of %(total)d") % {'first':start+1,'last':stop,'total':count}
                     col_name = map(lambda x:x[1], self.columns)
-                    col_desc = "<tr>" + "\n".join(map(lambda x:"<th>%s</th>"%x[0], self.columns)) + "</tr>"
+                    col_desc = "<thead><tr>" + "\n".join(map(lambda x:"<th>%s</th>"%x[0], self.columns)) + "</tr></thead>"
 
                     def row_class_string(row):
                         if hasattr(row, 'row_class'):
@@ -132,7 +132,7 @@ class Widget:
                     time = 0.0+time.seconds + 0.000001*time.microseconds
                     if time > 0.75:
                         logging.getLogger('performance').warning('DB access for widget «%s», user %s took %.2f seconds' % (self.slug, self.request.user.username, time))                    
-                return "<div class='widget %s'><h2>%s</h2>%s%s</div>"%(self.class_names, self.name,message,table)
+                return "<div class='widget widget_1 %s'><div class='widget_header'><h2>%s</h2>%s</div>%s</div>"%(self.class_names, self.name,message,table)
             elif self.style == 'list':
                 hdr = "<li><h2>%s</h2></li>" % self.name
                 if len(self.items) == 0:

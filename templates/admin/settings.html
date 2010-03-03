@@ -1,36 +1,45 @@
 {% extends "admin/index.html" %}
 {% load i18n %}
 
-{% block applist_app %}
- {% ifnotequal app.name "Ticket" %}
+{% block applist %}
+ {% load adminapplist %} {% get_admin_app_list as app_list %}
+ {% if app_list %}
   <div class="module">
-   <table summary="{% blocktrans with app.name as name %}Models available in the {{ name }} application.{% endblocktrans %}" class='striped'>
-    {% block applist_app_modellist %}
-     {% for model in app.models %}
-      {% block applist_app_modellist_model %}
-       <tr>
-	{% if model.perms.change %}
-	 <th scope="row"><a href="{{ model.admin_url }}">{{ model.name|escape }}</a></th>
-	{% else %}
-	  <th scope="row">{{ model.name|escape }}</th>
-	{% endif %}
+   <table summary="{% blocktrans %}Models available:{% endblocktrans %}" class='striped'>
+    {% for app in app_list %}
+     {% block applist_app %}
+      {% ifnotequal app.name "Ticket" %}
+       {% block applist_app_modellist %}
+	{% for model in app.models %}
+	 {% block applist_app_modellist_model %}
+	  <tr>
+	   {% if model.perms.change %}
+	    <th scope="row"><a href="{{ model.admin_url }}">{{ model.name|escape }}</a></th>
+	   {% else %}
+	     <th scope="row">{{ model.name|escape }}</th>
+	   {% endif %}
 
-	{% if model.perms.add %}
-	 <td><a href="{{ model.admin_url }}add/" class="addlink">{% trans 'Add' %}</a></td>
-	{% else %}
-	 <td>&nbsp;</td>
-	{% endif %}
+	   {% if model.perms.add %}
+	    <td><a href="{{ model.admin_url }}add/" class="addlink">{% trans 'Add' %}</a></td>
+	   {% else %}
+	    <td>&nbsp;</td>
+	   {% endif %}
 
-	{% if model.perms.change %}
-	 <td><a href="{{ model.admin_url }}" class="changelink">{% trans 'Change' %}</a></td>
-	{% else %}
-	 <td>&nbsp;</td>
-	{% endif %}
-       </tr>
-      {% endblock %}
-     {% endfor %}
-    {% endblock %}
+	   {% if model.perms.change %}
+	    <td><a href="{{ model.admin_url }}" class="changelink">{% trans 'Change' %}</a></td>
+	   {% else %}
+	    <td>&nbsp;</td>
+	   {% endif %}
+	  </tr>
+	 {% endblock %}
+	{% endfor %}
+       {% endblock %}
+      {% endifnotequal %}
+     {% endblock %}
+    {% endfor %}
    </table>
   </div>
- {% endifnotequal %}
+ {% else %}
+  <p>{% trans "You don't have permission to edit anything." %}</p>
+ {% endif %}
 {% endblock %}

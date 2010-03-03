@@ -156,7 +156,7 @@ apt-get install foswiki
 
 # FIXME: Anything else needed for foswiki? I didn't do these steps myself... :-/
 
-Edit WebLeftBar in the system web. Click on HTML editing. Remove all after the initial WYSIWYG comment and raplace with
+Edit WebLeftBar in the system web. Click on HTML editing. Remove all after the initial WYSIWYG comment and replace with
 
 <ul>
  <li><h2>%MAKETEXT{"Toolbox"}%</h2></li>

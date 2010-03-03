@@ -374,7 +374,7 @@ class Issue(models.Model):
         """
         The default columns to show when displaying an issue in a Widget
         """
-        return ((_('Issue name'),'name'),(_('Priority'),'priority'),(_('Requester'),'requester'))
+        return (('','id'),('','sep'),(_('Issue name'),'name'),(_('Priority'),'priority'),(_('Requester'),'requester'))
 
     @property
     def row_class(self):
@@ -506,7 +506,9 @@ class Issue(models.Model):
                 return user.tuit_description
 
             return {
-                'name':lambda: "<a href='%s'>%d - %s</a>" % (self.url_internal,self.id, cgi.escape(self.subject)),
+                'id':lambda: "<a href='%s'>%d</a>" % (self.url_internal,self.id),
+                'sep': lambda: '-',
+                'name':lambda: "<a href='%s'>%s</a>" % (self.url_internal,cgi.escape(self.subject)),
                 'priority':lambda: "%s" % self.priority,
                 'owner':lambda: user_desc(self.assigned_to),
                 'requester':lambda: user_desc(self.requester),

@@ -34,14 +34,22 @@ Date.format = '{{ js_date_format }}';
   </head>
   
   <body>
-  <div class='menu_box no_print'>
-   <div class='menu_box_inner'>
+  <div class='menu_boxes no_print'>
+   <div class='menu_box menu_box1'>
+    <div class='logo'></div>
     <ul class='user_info'>
-     <li>{%trans "User" %}: {{ user.tuit_description }}</li>
-     <li><a href='/tuit/account/logout'>{%trans "Log out" %}</a></li>
+     <li class='username'>{{ user.tuit_description }}</li>
+     <li class='logout_button'><a href='/tuit/account/logout'>{%trans "Log out" %}</a></li>
     </ul>
+    <div class='endbox'></div>
+   </div>
+   <div class='menu_box menu_box2'>
     <div class='main_menu_target'></div>
-    <div class='breadcrumb'><a href="/tuit">{%trans "Home" %}</a>{%block breadcrumb %}{%endblock %}</div>
+    <div class='endbox'></div>
+   </div>
+   <div class='menu_box menu_box3'>
+    <div class='breadcrumb'><a href='/tuit'>{%trans "Home" %}</a>{%block breadcrumb %}{%endblock %}</div>
+    <div class='endbox'></div>
    </div>
   </div>
     
@@ -74,23 +82,24 @@ Date.format = '{{ js_date_format }}';
 
   <ul class='comment_target'></ul>
 </div>
-<div class='content'>
-  <div class='content_inner'>
-    
-    <h1><a name='top'>{{ title|escape }}</a></h1>
-    
-    {%block content %}
-    {%endblock %}
-    
-    <div class='content_post'>
-    </div>
-  </div>
-</div>
+{%block content_wrapper %}
+ <div class='content'>
+   <div class='content_inner'>
 
+     <h1><a name='top'>{{ title|escape }}</a></h1>
 
-<div class='copyright'>
-  <a href='http://www.freecode.no'>© 2009 Freecode AS</a>
-</div>
+     {%block content %}
+     {%endblock %}
+
+     <div class='content_post'>
+     </div>
+   </div>
+   <div class='copyright'>
+     <a href='http://www.freecode.no'>© 2009 Freecode AS</a>
+   </div>
+ </div>
+{%endblock %}
+
 <script type='text/javascript'>
   stripe();
 </script>
