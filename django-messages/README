@@ -1,0 +1,22 @@
+README for django-translations-supersedes for TUIT
+
+This directory contains files that were used to supersede Norwegian
+translations in the django project found to be lacking in quality for
+TUIT.  The file django.new here is the result of msgmerge of newer,
+better quality translations into the older django plus some edits.
+
+In order to install the result in your django after any edit you need
+to do the following:
+
+a) edit django.new found in this directory.
+
+b) copy the edited file to /usr/share/python-support/python-django/django/conf/locale/no/LC_MESSAGES/django.po
+   and generate messages in the runtime format:
+
+   $ cp django.new /usr/share/python-support/python-django/django/conf/locale/no/LC_MESSAGES/django.po
+   $ cd /usr/share/python-support/python-django/django/conf/
+   $ python /var/lib/python-support/python2.5/django/bin/make-messages.py -l no
+
+c) check that your work appears in the product as expected
+
+
