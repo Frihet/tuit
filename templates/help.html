@@ -2,24 +2,25 @@
 {% load tuit_extras %}
 {% load i18n %}
 
-{%block sidebar %} 
-<li><h2>{% trans "Table of contents" %}</h2></li>
+{%block content %} 
+<h2>{% trans "Table of contents" %}</h2>
+<ul class='toc'>
+</ul>
 <script>
 $(document).ready(function () {
-tuit.makeTOC('.action_menu ul');
+tuit.makeTOC('.toc');
 });
 </script>
-{% endblock %}
 
-
-{%block content %} 
 <div class='help'>
 
-
+<h1><a name='help'>Help</a></h1>
 <p>
-This is the main help page for Tuit. Tuit is The Ultimate ITIL
+
+
+This is the main help page for {{ application|escape}}. {{ application|escape }} is The Ultimate ITIL
 Toolbox, a set of software components designed to support ITIL based
-work flow for service management. Tuit currently consists of the
+work flow for service management. {{ application|escape }} currently consists of the
 following components:
 
 <ul>
@@ -46,7 +47,7 @@ following components:
 <h1><a name='overview'>User interface overview</a></h1>
 <p>
   This section described the basic user interface concepts of
-  Tuit. These concepts are the same in all components, e.g. the
+  {{ application|escape }}. These concepts are the same in all components, e.g. the
   Knowledge base looks and works as much like the CMDB as is possible
   without compromising the functionality of either.
 </p>
@@ -55,7 +56,7 @@ following components:
 <p>
   The top menu allows you to navigate to the different parts of the
   site. This menu does not usually change depending on what part of
-  Tuit you are using, but because different users have access to
+  {{ application|escape }} you are using, but because different users have access to
   different parts of the site, it will vary depending on who is logged
   in.
 </p>
@@ -83,7 +84,7 @@ following components:
 
 <h1><a name='home'>The home screen</a></h1>
 <p>
-  This is the start page of Tuit. A future version of Tuit will
+  This is the start page of {{ application|escape }}. A future version of {{ application|escape }} will
   contain a user configurable dashboard showing various status
   information and messages, but the current home screen is very
   limited. It contains the following items:
@@ -100,11 +101,11 @@ following components:
   </ul>
 </p>
 
-<h1><a name='search'>Searching Tuit</a></h1>
+<h1><a name='search'>Searching {{ application|escape }}</a></h1>
 <p>
-  Tuit contains a global search function that will search every
-  component of Tuit. To quickly perform a search, enter a search word
-  in the search box in the top right corner of any Tuit page, and then
+  {{ application|escape }} contains a global search function that will search every
+  component of {{ application|escape }}. To quickly perform a search, enter a search word
+  in the search box in the top right corner of any {{ application|escape }} page, and then
   press the «enter» key.
 </p>
 <p>
@@ -113,7 +114,7 @@ following components:
 </p>
 <h2><a name='search_types'>Search types</a></h2>
 <p>
-  Tuit shows the following types of search results:
+  {{ application|escape }} shows the following types of search results:
 
   <ul>
     <li>
@@ -150,11 +151,11 @@ following components:
 </p>
 
 
-<h1><a name='issues'>Tuit Issue Management</a></h1>
+<h1><a name='issues'>{{ application|escape }} Issue Management</a></h1>
 
 <p>
 
-  The Tuit issue handling component is an issue tracker loosely based
+  The {{ application|escape }} issue handling component is an issue tracker loosely based
   on <a href='http://roundup.sourceforge.net/'>Roundup</a>. It is
   intended to be used to track Incidents, Problems and Requests for
   Change as they make their way through your IT organization.
@@ -162,7 +163,7 @@ following components:
 </p>
 <h2><a name='issues_types'>Types of issues</a></h2>
 <p>
-  Tuit is based around 3 types of issues:
+  {{ application|escape }} is based around 3 types of issues:
   <ul>
     <li>
       <em>Incidents</em> are issues that have caused or may in the
@@ -183,7 +184,7 @@ following components:
 <h2><a name='issues_creating'>Creating a new issue</a></h2>
 <p>
 For each <a href='#issues_types'>issue type</a> there is a
-corresponding link in the top menu of Tuit for filing an issue of that
+corresponding link in the top menu of {{ application|escape }} for filing an issue of that
 type. Use one of these links in order to file a new issue. You
 will be presented with a form with various fields to fill out.
 </p>
@@ -195,7 +196,7 @@ and you are done.
 <p>
   Issues have many users associated with them, including the raiser of
   the issue, the person assigned to a specific issue, etc.. Fields for
-  filling out users in Tuit all use autocompletion. The autocompletion
+  filling out users in {{ application|escape }} all use autocompletion. The autocompletion
   code will search the username, first name and last name of the user
   when performing the completion.
 </p>
@@ -210,7 +211,7 @@ There are several variations on how user fields work:
   <li>
     Some user fields only allow registered users to be entered, others
     also allow you to enter an email address. If you've added an email
-    address once, it will be added into Tuit as a contact. When
+    address once, it will be added into {{ application|escape }} as a contact. When
     receiving an email about an issue, a contact is also
     created. These contacts are also used for autocompletion where
     appropriate, and they can also
@@ -230,7 +231,7 @@ There are several variations on how user fields work:
 <h3><a name='issues_creating_ci'>Filling out dependencies to CIs</a></h3>
 <p>
   Issues can depend on configuration items (CIs), that is, the items
-  stored in the CMDB portion of Tuit.  The field for changing CI
+  stored in the CMDB portion of {{ application|escape }}.  The field for changing CI
   dependencies uses autocompletion. The autocompletion code will
   search the name of the CI. There is, however, also a second method
   for specifying a CI, the CMDB drill down feature. This is a tree of
@@ -244,7 +245,7 @@ There are several variations on how user fields work:
   tickets. This can be caused by a common underlying problem that
   needs to be fixed or simply because users tend to run into the same
   types of problems. In order to simplify the creation of such
-  repetitive issues, Tuit provides a feature called Quick fills. This
+  repetitive issues, {{ application|escape }} provides a feature called Quick fills. This
   is simply a drop down box with common issue «templates». Select one
   of them, and various fields will be automatically filled out for
   you. Exactly what fields are set to what values on every Quick fill
@@ -262,8 +263,8 @@ There are several variations on how user fields work:
     <li>
       First go the the web page of the original
       issue. A link to the relevant page should be included in every email
-      from the Tuit system, or you could find the update
-      by <a href='#search'>searching Tuit</a> or browsing
+      from the {{ application|escape }} system, or you could find the update
+      by <a href='#search'>searching {{ application|escape }}</a> or browsing
       your <a href='#home'>home page</a>.
     </li>
     <li>
@@ -302,7 +303,7 @@ There are several variations on how user fields work:
 <h3><a name='issue_update_email'>Updating an issue through email</a></h3>
 <p>
   In order to create an update through email, simply reply to an email
-  sent from Tuit. The content of the email, including any attached
+  sent from {{ application|escape }}. The content of the email, including any attached
   files, will be added as an update to the issue. If the issue was
   closed, it will be reopened, but otherwise, no field values are
   changed.
@@ -319,9 +320,9 @@ There are several variations on how user fields work:
 </p>
 <p>
   To update an issue, first go the the web page of that issue. A link
-  to the relevant page should be included in every email from the Tuit
+  to the relevant page should be included in every email from the {{ application|escape }}
   system, or you could find the update by <a href='#search'>searching
-  Tuit</a> or browsing your <a href='#home'>home page</a>. Once you
+  {{ application|escape }}</a> or browsing your <a href='#home'>home page</a>. Once you
   are on the correct page, click the «Add new update» button at the
   bottom of the screen.
 
@@ -338,7 +339,7 @@ knowledge base article</a></h3>
   When having solved an issue, it is sometimes desirable to make that
   solution available to others as a knowledge base article. This has
   the potential to greatly reduce the amount of time required to solve
-  similar issues in the future. For this reason, Tuit makes it as easy
+  similar issues in the future. For this reason, {{ application|escape }} makes it as easy
   as possible to perform this task. The following steps are all that
   is required:
 </p>
@@ -370,10 +371,10 @@ knowledge base article</a></h3>
   basis for an issue update</a></h3>
 
 <p> A knowledge base is only useful if it is used. For this reason,
-  Tuit makes it as easy as possible to use Knowledge base information
+  {{ application|escape }} makes it as easy as possible to use Knowledge base information
   when updating an issue. Below the text field for making an update
   comment, there is a text input field. When writing into this field,
-  Tuit will search the Knowledge base, and show you
+  {{ application|escape }} will search the Knowledge base, and show you
   an <a href='#concepts_autocompletion'>autocompletion</a> list of
   articles whose subject or content match that text. Once an article
   has been chosen, the user can either press the «Preview» button in
@@ -382,7 +383,7 @@ knowledge base article</a></h3>
 </p>
 
 
-<h1><a name='cmdb'>Tuit CMDB</a></h1>
+<h1><a name='cmdb'>{{ application|escape }} CMDB</a></h1>
 
 <h2><a name='cmdb_navigation'>Navigating the CMDB</a></h2>
 
@@ -469,9 +470,9 @@ knowledge base article</a></h3>
 </p>
 
 
-<h1><a name='kb'>Tuit Knowledge base</a></h1>
+<h1><a name='kb'>{{ application|escape }} Knowledge base</a></h1>
 <p>
-Tuit uses Foswiki as its Knowledge Base system. Foswiki ships with a
+{{ application|escape }} uses Foswiki as its Knowledge Base system. Foswiki ships with a
 huge amount of documentation included. The following links are some of
 the most relevant pages containing useful documentation on using the
 Knowledge base:
@@ -485,10 +486,10 @@ Knowledge base:
 </ul>
 
 
-<h1><a name='comments'>The Tuit comment system</a></h1>
+<h1><a name='comments'>The {{ application|escape }} comment system</a></h1>
 <p>
-  Tuit has a built in comment system that lets you make comments on
-  any page in Tuit. The comments are displayed in the sidebar on the
+  {{ application|escape }} has a built in comment system that lets you make comments on
+  any page in {{ application|escape }}. The comments are displayed in the sidebar on the
   left side. All users who have the permissions required to see
   comments will see any comment you make by simple visiting the same
   page, and you will see any comment made by other users.
@@ -505,9 +506,9 @@ Knowledge base:
 
 <h1><a name='log'>View event log</a></h1>
 <p>
-  Important events in the Tuit system are logged in the main Tuit
+  Important events in the {{ application|escape }} system are logged in the main {{ application|escape }}
   log. Currently, events in the knowledge base and CMDB are not logged
-  in the main log, but this will change in a future version of Tuit.
+  in the main log, but this will change in a future version of {{ application|escape }}.
 </p>
 {% if user.is_staff %}
 <p>
@@ -523,10 +524,10 @@ Knowledge base:
 </p>
 {% endif %}
 
-<h1><a name='admin'>Tuit administration</a></h1>
+<h1><a name='admin'>{{ application|escape }} administration</a></h1>
 <p>
-  Tuit is a highly customizabe tool. This section details some of the
-  ways in which Tuit can be customized to suit your working
+  {{ application|escape }} is a highly customizabe tool. This section details some of the
+  ways in which {{ application|escape }} can be customized to suit your working
   environment.
 
   {% if user.is_staff %} 
@@ -537,7 +538,7 @@ Knowledge base:
   {% else %} 
 
   Because you do not have administrative rights on this system, you
-  can not actually customize this Tuit instance.
+  can not actually customize this {{ application|escape }} instance.
 
   {% endif %}
 </p>
@@ -552,25 +553,25 @@ Knowledge base:
   lists.
 </p>
 
-<h2><a name='admin_properties'>The Tuit properties table</a></h2>
+<h2><a name='admin_properties'>The {{ application|escape }} properties table</a></h2>
 <p>
-  Tuit stores as much of its system configuration as possible in the
+  {{ application|escape }} stores as much of its system configuration as possible in the
   database, in order to make it easier to configure the system using
   only the web interface. Many important system settings are stored in
   the Properties table. Data in this table is stored in the JSON data
   serialisation format. Do not edit any settings in the properties
   table unless you know what you are doing, or you may stop the system
-  from working. A future Tuit version will contain a user friendly
+  from working. A future {{ application|escape }} version will contain a user friendly
   front end for this system.
 </p>
 
-<h2><a name='admin_email_templates'>Changing the content of emails sent by Tuit</a></h2>
+<h2><a name='admin_email_templates'>Changing the content of emails sent by {{ application|escape }}</a></h2>
 <p>
-  Tuit is designed to be usable either through the web interface or
+  {{ application|escape }} is designed to be usable either through the web interface or
   through email. When an issue is updated through email, an update is
   sent to the people assigned to that ticket. In the web interface,
   the user can specifically choose which parties should recive that
-  particular update. But for Tuit to be able to send these emails, one
+  particular update. But for {{ application|escape }} to be able to send these emails, one
   must first specify template emails. This is done through
   the <a href='#concepts_admin'>administration interface</a>.
 </p>
@@ -592,7 +593,7 @@ Knowledge base:
   </li>
   <li>
     Edit the template. The subject is in plaintext, the body is HTML
-    formated. A future version of Tuit will include a graphical html
+    formated. A future version of {{ application|escape }} will include a graphical html
     editor.
   </li>
   <li>
@@ -793,12 +794,12 @@ Knowledge base:
 
 <h2><a name='admin_contact'>Purging the contact list</a></h2>
 <p>
-  Whenever a person who is not a Tuit user is assigned as CC for an
-  issue, or whenever a person sends an email to Tuit in relation to an
+  Whenever a person who is not a {{ application|escape }} user is assigned as CC for an
+  issue, or whenever a person sends an email to {{ application|escape }} in relation to an
   issue, a contact entry for that person is created. This contact
   entry is used for e.g. autocompletion. Sometimes, it is desirable to
   purge old contact entries, in order to make the suggestions given by
-  Tuit more relevant. To do this, take the following steps:
+  {{ application|escape }} more relevant. To do this, take the following steps:
 </p>
 
 <ol>
@@ -835,13 +836,13 @@ Quick fills are created using these steps:
 
 
 
-<h1><a name='concepts'>Tuit concepts</a></h1>
+<h1><a name='concepts'>{{ application|escape }} concepts</a></h1>
 
 <h2><a name='concepts_admin'>The administration back end</a></h2>
 <p>
   The administration back end is the location where most of the
-  configuration of Tuit is performed. It can be
-  accessed <a href='/tuit/admin'>here</a>. Because Tuit consists of
+  configuration of {{ application|escape }} is performed. It can be
+  accessed <a href='/tuit/admin'>here</a>. Because {{ application|escape }} consists of
   multiple separate components that all need to also work on their
   own, it is unfortunately not possible to create a single place for
   all configuration needs. When logged in as a user with
@@ -861,7 +862,7 @@ Quick fills are created using these steps:
 <h2><a name='concepts_autocompletion'>Autocompletion</a></h2>
 <p>
   Autocompletion or automatic completion, is technique used in many
-  places in Tuit. It is useful when picking between a very large
+  places in {{ application|escape }}. It is useful when picking between a very large
   selection of items, e.g. in situations where a drop down box is
   unsuitable, because the number of items in the list would be
   prohibitive. Autocompletion uses a simple text input field, where
@@ -890,11 +891,11 @@ Quick fills are created using these steps:
 
 <h2><a name='concepts_issue'>Issue</a></h2>
 <p>
-  An Issue in Tuit represents either an Incident, a Problem or an
+  An Issue in {{ application|escape }} represents either an Incident, a Problem or an
   RfC. Though different types of issues may have different fields and
   other minor differences, they behave mostly the same. For more
   specific information about how to create, update and close issues,
-  see the section <a href='#issues'>Tuit Issue Management</a>.
+  see the section <a href='#issues'>{{ application|escape }} Issue Management</a>.
 </p>
 
 <h2><a name='concepts_itil'>ITIL</a></h2>
@@ -905,9 +906,9 @@ Quick fills are created using these steps:
   policies for managing IT infrastructure, development and organisation.
 </p>
 <p>
-  Because Tuit is meant to be used to support an ITIL-based workflow,
+  Because {{ application|escape }} is meant to be used to support an ITIL-based workflow,
   a few of the core concepts of ITIL are described in this
-  document. But this document is about the Tuit software, and not
+  document. But this document is about the {{ application|escape }} software, and not
   about ITIL in general. For a complete overview of ITIL, including
   information about how to apply ITIL to your organization, please
   see <a href='http://www.itframeworks.org/wiki/Information_Technology_Infrastructure_Library'>the

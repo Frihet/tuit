@@ -36,6 +36,7 @@ def tuit_render(name, keys, request):
                         "/static/common/tiny_mce/tiny_mce.js",
                         "/tuit/ticket/i18n.js",
                         ]
+    keys['application'] = 'FreeTIL'
     keys['user']=request.user
     keys['counter'] = "%.4f" % time.time()
 

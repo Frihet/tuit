@@ -1538,7 +1538,7 @@ class DbLogRecord(models.Model):
                 return{
                     'category_name':lambda: self.record_type.name,
                     'lvl':lambda: "%s" % self.lvl,
-                    'msg':lambda: "<pre>%s</pre>" % self.msg,
+                    'msg':lambda: "%s" % self.msg.replace("\n", "<br>"),
                     'log_date':lambda: datetime_format(self.log_date),
                     }[col]() 
             except:

@@ -2,8 +2,13 @@
 {% load tuit_extras %}
 {% load i18n %}
 
-{%block breadcrumb %} &gt; <a href="/tuit/admin">{% trans "Administration" %}</a> &gt; <a href="/tuit/log/">{% trans "TUIT log viewer" %}</a>{%endblock %}
+{%block breadcrumb %} &gt; <a href="/tuit/admin">{% trans "Administration" %}</a> &gt; <a href="/tuit/log/">{% trans "Log viewer" %}</a>{%endblock %}
 {%block content %}
+ <div class="widget widget_2">
+  <div class="widget_header">
+   <h2><a name='top'>{{title|escape}}</a></h2>
+  </div>
+
 <form method='get' action='' accept-charset='utf-8'>
   <table class='striped'>
     <tr>
@@ -32,4 +37,5 @@
   <button type='submit'>{% trans "Filter" %}</button>
 </form>
 {{ log_widget.html }}
+</div>
 {% endblock %}

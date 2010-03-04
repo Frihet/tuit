@@ -2,7 +2,10 @@
 {% load i18n %}
 
 {%block content %} 
-
+ <div class="widget widget_2">
+  <div class="widget_header">
+   <h2><a name='top'>{{title|escape}}</a></h2>
+  </div>
 <form action=''>
 
 <span class='no_print'>
@@ -141,4 +144,5 @@ tuit.search({{ results }});
 
 {% endif %}
 
+ </div>
 {% endblock %}

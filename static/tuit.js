@@ -430,7 +430,7 @@ var tuit = {
 
     /*
       Go over the content section of the document and make a TOC, insert it at the specified point
-     */
+    */
     makeTOC: function(location) {
 	var am = $(location)[0];
 	function addItem(text, anchor, tag){
@@ -442,7 +442,7 @@ var tuit = {
 	    li.appendChild(a);
 	    am.appendChild(li);
 	}
-	$('.content h1, .content h2, .content h3').each(function(idx , el){
+	$('.help h1, .help h2').each(function(idx , el){
 		if (el.innerHTML && el.innerHTML != "") { 
 		    if(el.childNodes.length == 1 && el.childNodes[0].name != null) {
 			addItem(el.childNodes[0].innerHTML,el.childNodes[0].name,el.tagName);

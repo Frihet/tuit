@@ -6,7 +6,7 @@
 {% block bodyclass %}dashboard{% endblock %}
 {% block breadcrumbs %}{% endblock %}
 
-{% block content_title %}<h1>{% trans "Tuit administration backend" %}</h1>{% endblock %}
+{% block content_title %}<h1>{% trans "Administration backend" %}</h1>{% endblock %}
 
 {% block content %}
 
@@ -22,14 +22,14 @@
    <dt><a href="/FreeCMDB/admin">{% trans "CMDB Adminstration" %}</a></dt>
    <dd>{% trans "The CMDB Adminstration module lets an administrator edit global CMDB settings such as CI types, CI type attributes and dependency types. This module also contains the CMDB plugin adminitration interface." %}</dd>
 
-   <dt><a href="/tuit/log">{% trans "TUIT log viewer" %}</a></dt>
-   <dd>{% trans "The TUIT Log Viewer module displays the TUIT event log in a table format." %}</dd>
+   <dt><a href="/tuit/log">{% trans "Log viewer" %}</a></dt>
+   <dd>{% trans "The Log Viewer module displays the event log in a table format." %}</dd>
 
    <!-- dt><a href="/tuit/admin/ticket/userprofile/{{user.get_profile.id}}">{% trans "Edit your signature" %}</a></dt>
    <dd>{% trans "" %}</dd -->
 
    <dt><a href="/tuit/status/edit">{% trans "Edit current status" %}</a></dt>
-   <dd>{% trans "The Edit Current Status module lets an administrator edit the global status message displayed on the TUIT home page." %}</dd>
+   <dd>{% trans "The Edit Current Status module lets an administrator edit the global status message displayed on the home page." %}</dd>
 
    <dt><a href="/tuit/trend/">{% trans "Current issue trends" %}</a></dt>
    <dd>{% trans "The Current Issue Trends module displays issue updates for the time interval you specify. Update summaries are shown with any CI dependencies." %}</dd>
