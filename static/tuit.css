@@ -252,22 +252,34 @@ body {
  float: left;
 }
 
-.menu_box1 .user_info,
 .menu_box2 .search {
- float: right;
- padding-left: 2pt;
- margin-right: 33pt;
+ position: absolute;
+ top: 8pt;
+ right: 0;
 }
 
 .menu_box1 .user_info {
+ float: right;
+ padding-left: 2pt;
  margin-top: 25pt;
- margin-bottom: 10pt;
+ margin-bottom: 8pt;
+}
+
+.menu_box1 .user_info,
+.menu_box2 .search {
+ padding-left: 2pt;
+ margin-right: 13%;
  padding-top: 0;
  padding-bottom: 0;
 }
 
+menu_box1 .user_info {
+ margin-top: 25pt;
+ margin-bottom: 10pt;
+}
+
 .menu_box1 .user_info .username,
-.menu_box1 .search input {
+.menu_box2 .search input {
  padding-right: 2pt;
 }
 
