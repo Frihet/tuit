@@ -13,7 +13,7 @@ class Widget:
 
     def __init__(self, name, items, request, 
                  slug='issues', columns=None, item_count=10,
-                 class_names="",style='table', row_class=''):
+                 class_names="widget_1",style='table', row_class=''):
         """
         Construct the widget. The items need to be a django orm search
         result. No limit or other silliness should be pallied, the
@@ -132,7 +132,7 @@ class Widget:
                     time = 0.0+time.seconds + 0.000001*time.microseconds
                     if time > 0.75:
                         logging.getLogger('performance').warning('DB access for widget «%s», user %s took %.2f seconds' % (self.slug, self.request.user.username, time))                    
-                return "<div class='widget widget_1 %s'><div class='widget_header'><h2>%s</h2>%s</div>%s</div>"%(self.class_names, self.name,message,table)
+                return "<div class='widget %s'><div class='widget_header'><h2>%s</h2>%s</div>%s</div>"%(self.class_names, self.name,message,table)
             elif self.style == 'list':
                 hdr = "<li><h2>%s</h2></li>" % self.name
                 if len(self.items) == 0:

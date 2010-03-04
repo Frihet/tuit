@@ -105,8 +105,8 @@ msgid "Administration"
 msgstr "Administrasjon"
 
 #: templates/log.html:5 templates/admin/tuitadmin.html:26
-msgid "TUIT log viewer"
-msgstr "TUIT-loggviser"
+msgid "Log viewer"
+msgstr "Loggviser"
 
 #: templates/log.html:12
 msgid "Minimum event severity level"
@@ -470,8 +470,8 @@ msgid "Issue Administration"
 msgstr "Saksadministrasjon"
 
 #: templates/admin/index.html:10 templates/admin/tuitadmin.html:9
-msgid "Tuit administration backend"
-msgstr "Tuit - administrasjon"
+msgid "Administration backend"
+msgstr "Administrasjon"
 
 #: templates/admin/index.html:16
 msgid "System information"
@@ -523,8 +523,8 @@ msgid "Edit your signature"
 msgstr "Rediger signatur"
 
 #: templates/registration/login.html:15
-msgid "TUIT - Log in"
-msgstr "TUIT - logg inn"
+msgid "Log in"
+msgstr "Logg inn"
 
 #: templates/registration/login.html:27
 msgid "Username:"
@@ -533,10 +533,6 @@ msgstr "Brukernavn:"
 #: templates/registration/login.html:30
 msgid "Password:"
 msgstr "Passord:"
-
-#: templates/registration/login.html:35
-msgid "Log in"
-msgstr "Logg inn"
 
 #: home/models.py:27
 msgid "Tips"
@@ -1083,8 +1079,8 @@ msgid "Toggle details"
 msgstr "Vis/skjul detaljer"
 
 #: help/views.py:10
-msgid "Tuit Help"
-msgstr "TUIT hjelp"
+msgid "Help"
+msgstr "Hjelp"
 
 #: comment/models.py:36
 msgid "Comment"

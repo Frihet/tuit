@@ -1,13 +1,8 @@
-{% extends "base.html" %}
+{% extends "ticket.html" %}
 {% load tuit_extras %}
 {% load i18n %}
 
 {%block breadcrumb %} &gt; <a href="{{issue.url_internal}}">{{issue.subject}}</a>{%endblock %}
-{%block sidebar %} 
-<!--
-<li><h3>{%trans "Recent tickets" %}:</h3></li>
--->
-{% endblock %}
 
 {%block content %} 
 

@@ -45,7 +45,7 @@ def view(request):
     keys={'title': _("Event log"),
           'log_widget': Widget(_('Filtered log'), items,
                                request, 'log',item_count=100,
-                               class_names="full_width"),
+                               class_names="widget_2"),
           'min_level':min_level,
           'record_type':record_type,
           'record_options':record_options}

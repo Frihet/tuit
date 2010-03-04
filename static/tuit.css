@@ -68,15 +68,15 @@ table * {
 }
 
 .messages .message {
- color: #000000;
- border-color: #48b844; /* h = 118 */
- background-color: #daffda;
+ border-color: #6c6c6c;
+}
+
+.messages .message {
+ color: #48b844;
 }
 
 .messages .error {
  color: #b84444;
- border-color: #b84444;
- background-color: #ffdada;
 }
 
 /**** Styling of popups ****/
@@ -230,6 +230,10 @@ body {
  display: inline;
 }
 
+.menu_box ul li:first-child {
+ padding-left: 0;
+}
+
 
 .menu_box1 {
  border-top-style: none;
@@ -258,6 +262,8 @@ body {
 .menu_box1 .user_info {
  margin-top: 25pt;
  margin-bottom: 10pt;
+ padding-top: 0;
+ padding-bottom: 0;
 }
 
 .menu_box1 .user_info .username,
@@ -267,9 +273,22 @@ body {
 
 .menu_box1 .user_info .logout_button,
 .menu_box2 .search button {
+ padding: 0;
  border-left-style: solid;
  border-left-width: 1pt;
- padding-left: 2pt;
+}
+
+.menu_box1 .user_info .logout_button a {
+ display: inline-block;
+ padding-left: 1pt;
+ padding-right: 1pt;
+ padding-top: 2pt;
+ padding-bottom: 2pt;
+ width: 34pt;
+}
+
+.menu_box2 .search button {
+ display: inline-block;
  width: 39pt;
 }
 
@@ -294,6 +313,14 @@ body {
  border: none;
  padding: 2pt;
  margin: 0;
+ -moz-border-radius-topleft: 0;
+ -moz-border-radius-topright: 0;
+ -moz-border-radius-bottomleft: 0;
+ -moz-border-radius-bottomright: 0;
+ -webkit-border-top-left-radius: 0;
+ -webkit-border-top-right-radius: 0;
+ -webkit-border-bottom-left-radius: 0;
+ -webkit-border-bottom-right-radius: 0;
 }
 
 .menu_box2 .search button {
@@ -512,16 +539,20 @@ button {
  min-width: 0;
 }
 
-.messages .message,
-.messages .error {
- padding: 15pt;
+.messages {
+ padding-top: 15pt;
+ padding-bottom: 15pt;
+ padding-left: 128pt;
+ padding-right: 15pt;
  margin-top: 15pt;
  margin-bottom: 15pt;
  margin-left: 13%;
  margin-right: 13%;
  border-width: 2pt;
  border-style: solid;
- text-align: center;
+}
+
+.messages * {
  font-size: 12pt;
 }
 
@@ -529,4 +560,17 @@ button {
 
 .endbox {
  clear: both;
+}
+
+/**************** TOC *********************/
+
+.toc_h2
+{
+ padding-left: 1em;   
+ list-style-type: none;
+}
+.toc_h1
+{
+ padding-left: 0em;   
+ list-style-type: none;
 }
