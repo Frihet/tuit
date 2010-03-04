@@ -114,13 +114,29 @@ var tuit = {
 	    });
     },
 
+    localUrlRegexp: new RegExp("^[^:/]*://[^/]*"),
+    dirRedirectRegexp: new RegExp("/(\\?|$)"),
+    cleanupUrl: function(url)
+    {
+     return url.replace(this.localUrlRegexp, "").replace(this.dirRedirectRegexp, "$1");
+    },
     getMainMenu: function ()
     {
        	var menu_target = $('.main_menu_target');
+
 	if(menu_target.length) {
 	    menu_target.replaceWith($.ajax({url: "/tuit/menu/", async: false}).responseText)
         }
-   },
+
+       	var main_menu = $('.main_menu');
+       	var breadcrumb_head = $('.breadcrumb a + a')[0];
+        if (breadcrumb_head === undefined) breadcrumb_head = $('.breadcrumb a')[0];	
+
+	main_menu.children().each(function(i, li) {
+ 	    if (tuit.cleanupUrl($(li).find("a")[0].href) == tuit.cleanupUrl(breadcrumb_head.href))
+	        $(li).addClass('active');
+	});
+    },
 
     init: function()
     {
@@ -137,7 +153,7 @@ var tuit = {
 	    var usr_url = "/tuit/query/user_complete/";
 	    var usr_url2 = "/tuit/query/user_complete/?contacts=1";
 	    var dep_url = "/tuit/query/issue_complete/";
-	    var kb_url = "/cgi-bin/foswiki/search/KB/?skin=autocomplete&type=literal&web=KB+IKB&scope=all";	
+	    var kb_url = "/cgi-bin/foswiki/search/KB/?cover=autocomplete&type=literal&web=KB+IKB&scope=all";	
 	    var ci_url = "/FreeCMDB/?controller=ciList&output=autocomplete";
 	    
 	    var uoptions_single = {
@@ -363,7 +379,7 @@ var tuit = {
 	if (articleName == "" || articleName.split('/').length < 2) {
 	    return;
 	}
-	$.get(url, {'skin':'text','time':tuit.time()},
+	$.get(url, {'cover':'text','time':tuit.time()},
 	      function (result, status) {
 		  if(tuit.strip(result)  != "") { 
 		      tinyMCE.editors['comment'].setContent(result); 
@@ -378,7 +394,7 @@ var tuit = {
 	if (articleName == "" || articleName.split('/').length< 2) {
 	    return;
 	}	
-	$.get(url, {'skin':'text','time':tuit.time()},
+	$.get(url, {'cover':'text','time':tuit.time()},
 	      function (result, status) {
 		  if(tuit.strip(result)  != "") { 
 		      $('#kb_preview_content')[0].innerHTML=result;
