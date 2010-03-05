@@ -481,17 +481,18 @@ var tuit = {
     addFileWidget: function() {
 	var tbody = $('#file')[0];
 	var tr = document.createElement('tr');
-	var td = document.createElement('td');
+	var td1 = document.createElement('td');
+	var td2 = document.createElement('td');
 	var input = document.createElement('input');
 
-	td.colSpan='2';
+	tr.appendChild(td1);
 	
 	input.type='file';
 	input.name='file_' + tuit.fileCount++;
 	input.className = "file";
 
-	td.appendChild(input);
-	tr.appendChild(td);
+	td2.appendChild(input);
+	tr.appendChild(td2);
 	tbody.appendChild(tr);
 	stripe();
 
