@@ -2,21 +2,24 @@
 {% load tuit_extras %}
 {% load i18n %}
 
-{%block sidebar %} 
-<li><h2>{% trans "Table of contents" %}</h2></li>
-<script>
-$(document).ready(function () {
-tuit.makeTOC('.action_menu ul');
-});
-</script>
-{% endblock %}
 
 
 {%block content %} 
+<h2>{% trans "Table of contents" %}</h2>
+<ul class='toc'>
+</ul>
+<script>
+$(document).ready(function () {
+tuit.makeTOC('.toc');
+});
+</script>
+
 <div class='help'>
 
-
+<h1><a name='help'>Help</a></h1>
 <p>
+
+
 Dette er hovedsiden for hjelp i Tuit. Tuit er "The Ultimate ITIL
 Toolbox", en samling programvarekomponenter som er konstruert for
 å støtte opp under ITIL-basert arbeidsflyt for tjensteadministrasjon. 
