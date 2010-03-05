@@ -9,7 +9,7 @@
 <td>
   <input id='assigned_to_string' name='assigned_to_string' value="{{ issue.assigned_to_string }}" class='user'/><input type='checkbox' name='assigned_to_email' value='yes' id='assigned_to_email' class='checkbox email_checkbox' {% ifequal issue.assigned_to_email "yes" %}checked="yes"{% endifequal %} /><label for='assigned_to_email'>{%trans "Send email" %}</label>
 </td>
-</tr>
+<td></td></tr>
 
 <tr>
 <td>
@@ -18,7 +18,7 @@
 <td>
   <input id='requester_string' name='requester_string' value="{{ issue.requester_string }}" class='user'/><input type='checkbox' name='requester_email' value='yes' id='requester_email' class='checkbox email_checkbox' {% ifequal issue.requester_email "yes" %}checked="yes"{% endifequal %} /><label for='requester_email'>{%trans "Send email" %}</label>
 </td>
-</tr>
+<td></td></tr>
 
 </tbody>
 
@@ -27,7 +27,7 @@
 {%if false %}
 <tbody id='contact_head' class='ticket_edit no_print'>
 <tr>
-<th colspan='2'>
+<th colspan='3'>
 <script>
 $(document).ready(function(){
         $(".contact input").attr("disabled","disabled");
@@ -48,7 +48,7 @@ $(document).ready(function(){
   <td>
     <input id='location' name='location' value='{{ issue.location|escape }}'/>
   </td>
-</tr>
+<td></td></tr>
 
 <tr>
   <td>
@@ -57,7 +57,7 @@ $(document).ready(function(){
   <td>
     <input id='building' name='building' value='{{ issue.building }}'/>
   </td>
-</tr>
+<td></td></tr>
 
 <tr>
   <td>
@@ -66,7 +66,7 @@ $(document).ready(function(){
   <td>
     <input id='office' name='office' value='{{ issue.office }}'/>
   </td>
-</tr>
+<td></td></tr>
 
 <tr>
   <td>
@@ -75,7 +75,7 @@ $(document).ready(function(){
   <td>
     <input id='telephone' name='telephone' value='{{ issue.telephone }}'/>
   </td>
-</tr>
+<td></td></tr>
 
 <tr>
   <td>
@@ -84,7 +84,7 @@ $(document).ready(function(){
   <td>
     <input id='mobile' name='mobile' value='{{ issue.mobile }}'/>
   </td>
-</tr>
+<td></td></tr>
 
 <tr>
   <td>
@@ -93,10 +93,10 @@ $(document).ready(function(){
   <td>
     <input id='pc' name='pc' value='{{ issue.pc }}'/>
   </td>
-</tr>
+<td></td></tr>
 
 <tr>
-<th colspan='2'>
+<th colspan='3'>
 &nbsp;
 </td>
 </tr>
@@ -115,7 +115,7 @@ $(document).ready(function(){
     <textarea id='co_responsible_string' name='co_responsible_string' class='user'/>{{ issue.co_responsible_string }}</textarea>
 <input type='checkbox' name='co_responsible_email' value='yes' id='co_responsible_email' class='checkbox email_checkbox' {% ifequal issue.co_responsible_email "yes" %}checked="yes"{% endifequal %} /><label for='co_responsible_email'>{%trans "Send email" %}</label>
 </td>
-</tr>
+<td></td></tr>
 
 <tr>
   <td>
@@ -125,7 +125,7 @@ $(document).ready(function(){
     <textarea id='cc_string' name='cc_string' class='user free contact'/>{{ issue.cc_string }}</textarea>
     <input type='checkbox' name='cc_email' value='yes' id='cc_email' class='checkbox email_checkbox' {% ifequal issue.cc_email "yes" %}checked="yes"{% endifequal %} /><label for='cc_email'>{%trans "Send email" %}</label>
 </td>
-</tr>
+<td></td></tr>
 
 <tr>
 <td>
@@ -137,7 +137,7 @@ $(document).ready(function(){
   <input class='radio' type='radio' id='impact_string_{{ i }}' name='impact_string' value="{{ i }}" {% ifequal i issue.impact_string %}checked='yes'{% endifequal %} /><label for='impact{{ i }}'>{{ i }}</label>
 {% endfor %}
 </td>
-</tr>
+<td></td></tr>
 
 <tr>
 <td>
@@ -149,7 +149,7 @@ $(document).ready(function(){
 {% endfor %}
 
 </td>
-</tr>
+<td></td></tr>
 
 
 <tr>
@@ -163,7 +163,7 @@ $(document).ready(function(){
 {% endfor %}
   </select>
 </td>
-</tr>
+<td></td></tr>
 
 
 <tr>
@@ -177,7 +177,7 @@ $(document).ready(function(){
 {% endfor %}
   </select>
 </td>
-</tr>
+<td></td></tr>
 
 
 <tr>
@@ -186,7 +186,21 @@ $(document).ready(function(){
   </td>
   <td>
     <textarea class='ci' name='ci_string' id='ci_string'>{{ issue.ci_string }}</textarea>
-    <div id='ci_picker_code'></div>
+   </td>
+   <td>
+    <a class="edit popupbutton" href="javascript:popupShow('popup_1');">Add new dependency...</a>
+
+    <div id="popup_1" class="popup">
+     <div class="popup_title">
+      Legg til
+      <a href='javascript:popupHide("popup_1")'>x</a>
+     </div>
+     <div class="popup_content">
+      <form action="/FreeCMDB/" method="post" accept-charset="utf-8">
+       <div id="ci_picker_code"></div>
+      </form>
+     </div>
+    </div>
     <script>
       $('#ci_picker_code').load('/FreeCMDB/plugins/drilldown/drilldown?update_target=ci_string&embed_point=ci_picker_root&time={{counter}}');
     </script>
@@ -200,7 +214,7 @@ $(document).ready(function(){
   <td>
     <textarea class='depend' name='dependencies_string' id='dependencies_string'>{{ issue.dependencies_string }}</textarea>
   </td>
-</tr>
+<td></td></tr>
 
 {% if ticket_new %}
 <tr>
@@ -210,7 +224,7 @@ $(document).ready(function(){
 <td>
 <input id='subject' name='subject' value='{{ issue.subject|escape }}'/>
 </td>
-</tr>
+<td></td></tr>
 
 <tr>
 <td>
@@ -219,23 +233,23 @@ $(document).ready(function(){
 <td>
 <textarea id='description' name='description' class='rich_edit' style='height:20em; width:80%;'>{{ issue.description }}</textarea>
 </td>
-</tr>
+<td></td></tr>
 {% endif %}
 </tbody>
 <tbody id='file' class='ticket_edit'>
   <tr>
-    <th colspan='2' class="odd">&nbsp;</th>
+    <th colspan='3' class="odd">&nbsp;</th>
   </tr>
   <tr>
     <td>{%trans "Attached files:" %}</td>
     <td>
       <button type='button' onclick='javascript:tuit.addFileWidget();'>{%trans "Add file" %}</button>
     </td>
-  </tr>
+  <td></td></tr>
 </tbody>
 <tbody class='no_print ticket_edit'>
   <tr>
-    <th colspan='2' class="odd">&nbsp;</th>
+    <th colspan='3' class="odd">&nbsp;</th>
   </tr>
   {% for it in issue.extra_fields %}
     <tr>
@@ -245,7 +259,7 @@ $(document).ready(function(){
       <td>
 	{{ it.render_input }}
       </td>
-    </tr>
+    <td></td></tr>
   {% endfor %}
 
 </tbody>
