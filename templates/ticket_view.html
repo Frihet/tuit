@@ -265,7 +265,7 @@
 	<ul>
 
 	  {% for attachment in issue.attachment %}
-	  <li><a href='{{ attachment.url|escape }}'>{{ attachment.name|escape }}</a></li>
+	  <li><a href='{{ attachment.url_internal|escape }}'>{{ attachment.name|escape }}</a></li>
 	  {% endfor %}
 	</ul>
       </td>
@@ -312,7 +312,7 @@
 	<ul>
 
 	  {% for attachment in update.issueattachment_set.all %}
-	  <li><a href='{{ attachment.url|escape }}'>{{ attachment.name|escape }}</a></li>
+	  <li><a href='{{ attachment.url_internal|escape }}'>{{ attachment.name|escape }}</a></li>
 	  {% endfor %}
 	</ul>
       </td>
