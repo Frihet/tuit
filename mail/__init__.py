@@ -92,7 +92,7 @@ import email.mime.audio
 import email.mime.text
 import email.mime.message
 import email.mime.base
-
+from email import Encoders
 import BeautifulSoup
 
 def unaliasCharset(charset):
@@ -376,7 +376,7 @@ class Mailer:
             else:
                 part = email.mime.base.MIMEBase(mime[0], mime[1])
                 part.set_payload(att.data)
-                encoders.encode_base64(part)
+                Encoders.encode_base64(part)
 
             # Do we have any links to this attachment? If so, make it
             # an inline attachment, give it a content id, etc.
