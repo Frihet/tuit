@@ -458,8 +458,10 @@ thead th {
 /**** Styling of popups ****/
 .popup {
  display: none;
- position: fixed;
- left: 20%;
+ position: absolute;
+ left: 13%;
+ margin-left: 130pt;
+ padding-top: 25pt;
  top: 10%;
  border-width: 1px;
  border-style: solid;
@@ -494,13 +496,15 @@ thead th {
 
 :hover.mouseoverowner .onmouseover {
  display: block;
+ *display: none; /* IE7 hack */
+ _display: none; /* IE6 hack */
  position: absolute; 
  top: 20px;
  left: 40; 
  width: 250pt;
  border-width: 1px;
  border-style: solid;
- z-index: 1;
+ z-index: 4;
  font-size: small;
  padding: 5px 15px;
 }
