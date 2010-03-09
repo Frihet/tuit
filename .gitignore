@@ -7,3 +7,4 @@ ad_csv
 *.mo
 .goutput*
 settings.py
+*.pot
