@@ -5,7 +5,6 @@
  {% ifequal app.name "Ticket" %}
   <div class="module">
    <table summary="{% blocktrans with app.name as name %}Models available in the {{ name }} application.{% endblocktrans %}" class='striped'>
-    <tr><th scope="row"><a href="/tuit/admin/doc/">{% trans 'System information' %}</a></th><td></td><td></td></tr>
     {% block applist_app_modellist %}
      {% for model in app.models %}
       {% block applist_app_modellist_model %}
