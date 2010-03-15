@@ -29,7 +29,6 @@ sub new {
 
   my $this = bless( $class->SUPER::new($session), $class );
   $session->{loginManager} = $this;
-
   Foswiki::registerTagHandler( 'LOGOUT',    \&_LOGOUT );
   Foswiki::registerTagHandler( 'LOGOUTURL', \&_LOGOUTURL );
 
@@ -67,10 +66,6 @@ sub loginUrl {
 sub getUser {
     my $this = shift;
 
-    if (!$this->{_cgisession}) {
-	return undef;
-    }
-
     my $session_id = $this->{session}->{request}->cookie('sessionid');
     my $server_host = $ENV{'SERVER_NAME'};
     my $browser_host = $ENV{'HTTP_HOST'};
@@ -101,29 +96,31 @@ sub getUser {
 	    my $response_data = jsonToObj($response_body);
 
 	    if (!$response_data->{'username'}) {
+		print "\n\nUnable to authenticate\n"; die(1);
 		$this->{session}->{response}
 		  ->redirect( -url => "/tuit/account/login/");
                 return;
 	    }
 
-	    $this->{_cgisession}->param('FREETIL_USER', $response_data->{username});
-	    $this->{_cgisession}->param('FREETIL_GROUPS', join(',', @{$response_data->{groups}}));
+	    $this->{_freetil_user} = $response_data->{username};
+	    @{$this->{_freetil_groups}} = @{$response_data->{groups}};
 
 	    return $response_data->{'username'};
     } else {
-	    die("Unable to fetch auth data");
-		    Foswiki::LoginManager::_trace( $this,
-			"Unable to fetch login data from FreeTIL: " .$curl->strerror($retcode)." ($retcode)\n");
-	    $this->{session}->{response}
-	      ->redirect( -url => "/tuit/account/login/");
+	print "\n\nUnable to fetch auth data\n"; die(1);
+	Foswiki::LoginManager::_trace(
+	    $this,
+	    "Unable to fetch login data from FreeTIL: " .$curl->strerror($retcode)." ($retcode)\n");
+	$this->{session}->{response}
+	    ->redirect( -url => "/tuit/account/login/");
 
     }
 }
 
 sub loadSession {
     my $this = shift;
-
     my $authUser = $this->SUPER::loadSession(@_);
+
     return $this->getUser();
 }
 

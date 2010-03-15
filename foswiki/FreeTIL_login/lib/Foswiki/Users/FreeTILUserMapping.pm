@@ -27,8 +27,8 @@ sub new {
 
   my $this = bless($class->SUPER::new($session), $class);
 
-  @{$this->{eachGroupMember}} = split(/,/, $session->{loginManager}->{_cgisession}->param('FREETIL_GROUPS'));
-  $this->{authUser} = $session->{loginManager}->{_cgisession}->param('FREETIL_USER');
+  $this->{authUser} = $session->{loginManager}->{_freetil_user}; #$session->{loginManager}->{_cgisession}->param('FREETIL_USER');
+  @{$this->{eachGroupMember}} = @{$session->{loginManager}->{_freetil_groups}}; #split(/,/, $session->{loginManager}->{_cgisession}->param('FREETIL_GROUPS'));
   return $this;
 }
 
