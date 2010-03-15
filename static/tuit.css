@@ -79,6 +79,26 @@ table * {
  color: #b84444;
 }
 
+.type_selector_label.selected
+{
+    background-color: white;
+    color:#6C6C6C;
+}
+
+.type_selector_label
+{
+    background-color: #C4C2C2;
+    color:white;
+}
+
+.type_list
+{
+    background-color: #C4C2C2;
+    border-top-color: white;
+    border-bottom-color: white;
+}
+
+
 /**** Styling of popups ****/
 .popup {
  background-color: #ffffff;
@@ -137,6 +157,38 @@ select {
  color: #6c6c6c;
 }
 
+
+/**********styling form type***********/
+.type_selector
+{
+    display:none;
+}
+
+.type_selector_label
+{
+    font-weight: bold;
+    margin: 0pt;
+    padding: 4pt;
+    float:left;
+}
+
+.type_list
+{
+    width: 100%;
+    padding-top: 0pt;
+    padding-bottom: 0pt;
+    padding-left: 0pt;
+    padding-right: 0pt;
+    border-top-width: 1pt;
+    border-top-style: solid;
+    border-bottom-width: 1pt;
+    border-bottom-style: solid;
+}
+
+.end_block
+{
+    clear:both;
+}
 
 /**************** images ****************/
 
@@ -591,3 +643,4 @@ button {
  padding-left: 0em;   
  list-style-type: none;
 }
+

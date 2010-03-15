@@ -32,8 +32,7 @@ var tuit = {
 		    var a = document.createElement('a');
 		    a.innerHTML = name;
 		    a.href=url;
-		    c.appendChild(a);
-		    
+		    c.appendChild(a);		    
 		    r.appendChild(c);
 		};
 
@@ -47,7 +46,7 @@ var tuit = {
 
 			      
 			      function showMore(event){
-				  show_max += 10;
+				  show_max += 20;
 
 				  for (; number_shown<(count<show_max?count:show_max); number_shown++) {
 				      var el = result.ResultSet.Result[number_shown];
@@ -148,6 +147,12 @@ var tuit = {
 		else if (type == "radio" || type == "checkbox" || type == "text") 
 		    $(value).addClass(type);
 	    } );
+	tuit.setupForm();
+	tuit.getComments();
+    },
+
+    setupForm: function()
+    {
 
 	if($('body').autocomplete) {
 	    var usr_url = "/tuit/query/user_complete/";
@@ -230,8 +235,6 @@ var tuit = {
 	
 	}
 
-	var tjolahopp = null;
-		
 	$('.advanced_head').click(function() {
 		$('.advanced').toggle();
 		return false;
@@ -243,7 +246,7 @@ var tuit = {
 	$('#requester').bind('change',function(event){
 		var uname = $('#requester')[0].value.split(' ');
 		if (uname.length < 1)
-		    return
+		    return;
 		    
 		$.getJSON('/tuit/query/autofill/',
 			  {
@@ -255,13 +258,12 @@ var tuit = {
 				      tuit.setItemValue( name, value);
 				  });
 			  });
-
 	    });
 
 	$('#assigned_to').bind('change',function(event){
 		var uname = $('#assigned_to')[0].value.split(' ');
 		if (uname.length < 1)
-		    return
+		    return;
 		    
 		$.getJSON('/tuit/query/autofill/',
 			  {
@@ -293,15 +295,9 @@ var tuit = {
 					      });
 				      });
 			});
-		    
-		    
+		    		    
 		});
 	}
-	       
-
-	tuit.getComments();
-
-	
     },
 	
     getComments: function() {
@@ -508,9 +504,40 @@ var tuit = {
 	}
 	
 	
+    },
+    
+    setTicketType: function(type_id, type_name){
+	$(".type_selector_label").removeClass("selected");
+	$("#type_"+type_id+"_selector_label").addClass("selected");
+	$.get('/tuit/ticket/new/', {'type_id':type_id,'partial':'1'},	
+	      function (result, status) {
+		  $('#ticket_form')[0].innerHTML = result;
+		  
+		  var d = $('#ticket_form')[0].getElementsByTagName("script");
+		  var t = d.length
+		  for (var x=0;x<t;x++){
+		      var newScript = document.createElement('script');
+		      newScript.type = "text/javascript";
+		      newScript.text = d[x].text;
+		      document.getElementById('ticket_form').appendChild (newScript);
+		  }
+		  tuit.setupForm();
+		  tinyMCE.init({
+			  mode : "specific_textareas",
+			      editor_selector : "rich_edit",
+			      theme : "advanced",
+			      theme_advanced_buttons1 : "bold,italic,underline,strikethrough,separator,justifyleft,justifycenter,justifyright,justifyfull,separator,bullist,numlist,separator,undo,redo,link,unlink",
+			      theme_advanced_buttons2 : "",
+			      theme_advanced_buttons3 : "",
+			      theme_advanced_toolbar_location : "top",
+			      theme_advanced_toolbar_align : "left"
+			      });
+	      }
+	      );
+	      //	$('.widget_header h2')[0].innerHTML = type_name
+
     }
     
-
 
 };
 

@@ -76,36 +76,44 @@ def new(request, type_name=None):
     """
     View for creating a new ticket
     """
-
+    
     # Do a copy to get a real dict, no a weird django-style query-dict
     # with their pseudo-list interface.
     keys = request.POST.copy()
-
+    
     keys['quick_fill'] = QuickFill.objects.all()
     keys['quick_fill_json'] = to_json(QuickFill.objects.all())
-
+    
     keys['field_fill_json'] = to_json(set(map(lambda x: x.condition_name.name, GenericFillItem.objects.filter())))
-
+    
     keys['status'] = Status.objects.all()
     keys['errors'] = {}
     keys['messages'] = ""
     
+    type = None
     if type_name is None and 'type' in request.GET:
         type_name=request.GET['type']
-    type = IssueType.objects.get(name=type_name)
-    keys['type'] = type
-    keys['ticket_new'] = True
+    if not type_name is None:
+        type = IssueType.objects.get(name=type_name)
+    elif 'type_id' in request.GET:
+        type = IssueType.objects.get(id=int(request.GET['type_id']))
 
-    keys['title'] = _('New %s') % type.name
+    if not type is None:
+        keys['title'] = _('New %s') % type.name    
+        keys['type'] = type
+
+    keys['ticket_new'] = True
+    
+    
     i = Issue()
     i.creator = request.user
-
+    
     if request.method == 'POST': 
         # If the form has been submitted...
         # We can't save more than half of the issue before getting an id for the line, so we do it in two phases
         
         # Phase 1
-        i.type = IssueType.objects.get(id=request.POST['type'])
+        i.type = IssueType.objects.get(id=request.POST['type_id'])
         events = i.apply_post(keys)
 
         i.create_description = '[]'
@@ -156,7 +164,8 @@ def new(request, type_name=None):
         i=ModelWrapper(i, request.POST)
     else:
         # This is not a form submission, show an empty form
-        i.type = IssueType.objects.get(name=request.GET['type'])
+        if not type is None:
+            i.type = type
         i.current_status = Status.objects.get(id=properties['issue_default_status'])
         # But wait! It should not be empty, it should be a copy of an already existing ticket
         if 'copy' in request.GET:
@@ -168,9 +177,14 @@ def new(request, type_name=None):
         else:
             for mail_checkbox in properties['web_create_default_mail']:
                 keys[mail_checkbox + "_email"] = "yes"
+
+    keys['types'] = IssueType.objects.all()
     keys['issue'] = i
     insert_view_data(keys, request, properties['web_create_default_mail'])
-    return tuit_render('ticket_new.html', keys, request)
+    template = 'ticket_new.html'
+    if 'partial' in request.GET:
+        template = 'ticket_new_form.html'
+    return tuit_render(template, keys, request)
 
 def update_dependants(issue, update, send_to, ignore):
     """

@@ -1,0 +1,25 @@
+{% load i18n %}
+
+<table class='striped wide'>
+
+<tbody>
+<tr>
+<td>
+ <label for='quick'>{%trans "Quickfill" %}:</label>
+</td>
+<td>
+<select id='quick'>
+    <option value=''>{%trans "None" %}</option>
+    {% for q in quick_fill %}
+    <option value='{{ q.id }}'>{{ q.name|escape }}</option>
+    {% endfor %}
+</select>
+</td>
+</tr>
+</tbody>
+{% include "ticket_common.html" %}
+
+</table>
+
+<button type='submit'>{%trans "Create issue" %}</button>
+<input class='button' type='submit' name='continue' value='{%trans "Create and continue" %}' />
