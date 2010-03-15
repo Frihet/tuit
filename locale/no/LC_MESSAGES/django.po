@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-09 09:58+0100\n"
+"POT-Creation-Date: 2010-03-09 16:37+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Anja Winther-Ruud <anja.winther-ruud@freecode.no>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -25,7 +25,7 @@ msgstr "Meny-komponenter"
 
 #: menu/models.py:23
 msgid "Menu component"
-msgstr "Meny-komponent"
+msgstr "meny-komponent"
 
 #: menu/models.py:26
 msgid "Menu"
@@ -37,7 +37,7 @@ msgstr "Typer søk"
 
 #: search/models.py:23
 msgid "Search type"
-msgstr "Type søk"
+msgstr "type søk"
 
 #: search/views.py:23 templates/search.html:97 templates/base.html:72
 #: templates/menu.html:17
@@ -208,7 +208,7 @@ msgstr "Avbryt"
 
 #: templates/home.html:11
 msgid "Tip of the week:"
-msgstr "Ukens tips:"
+msgstr "ukens tips:"
 
 #: templates/ticket_email.html:12
 #, python-format
@@ -246,17 +246,17 @@ msgid "Edit contact information"
 msgstr "Rediger kontaktinformasjon"
 
 #: templates/ticket_common.html:46 templates/ticket_view.html:55
-#: ticket/models.py:555
+#: ticket/models.py:555 ticket/models.py:1623
 msgid "Location"
 msgstr "Lokasjon"
 
 #: templates/ticket_common.html:55 templates/ticket_view.html:64
-#: ticket/models.py:556
+#: ticket/models.py:556 ticket/models.py:1624
 msgid "Building"
 msgstr "Bygning"
 
 #: templates/ticket_common.html:64 templates/ticket_view.html:73
-#: ticket/models.py:557
+#: ticket/models.py:557 ticket/models.py:1625
 msgid "Office"
 msgstr "Kontor"
 
@@ -308,6 +308,10 @@ msgstr "Kategori"
 msgid "Depends on CIs"
 msgstr "Avhenger av CI"
 
+#: templates/ticket_common.html:191
+msgid "Add new dependency..."
+msgstr "Legg til binding..."
+
 #: templates/ticket_common.html:212 ticket/models.py:565
 msgid "Depends on issues"
 msgstr "Avhenger av saker"
@@ -322,9 +326,8 @@ msgid "Description of problem"
 msgstr "Beskrivelse"
 
 #: templates/ticket_common.html:244
-#, fuzzy
 msgid "Attached files:"
-msgstr "Vedlegg"
+msgstr "Vedlegg:"
 
 #: templates/ticket_common.html:246
 msgid "Add file"
@@ -463,9 +466,8 @@ msgid "Create and continue"
 msgstr "Opprett og fortsett"
 
 #: templates/admin/settings.html:8
-#, fuzzy
 msgid "Models available:"
-msgstr "Ingen tilgjengelige"
+msgstr "Tilgjengelige modeller:"
 
 #: templates/admin/settings.html:23 templates/admin/index.html:35
 #: templates/admin/ticket.html:20
@@ -507,9 +509,8 @@ msgid "Django site admin"
 msgstr "Lokal Django-admin"
 
 #: templates/admin/tuitadmin.html:16
-#, fuzzy
 msgid "System Settings"
-msgstr "Systeminformasjon"
+msgstr "Systeminnstillinger"
 
 #: templates/admin/tuitadmin.html:17
 msgid ""
@@ -517,6 +518,9 @@ msgid ""
 "as menu contents and search types. This module also contains the user and "
 "group administration."
 msgstr ""
+"Modulen Systeminnstillinger gir en administrator adgang til å redigere "
+"systeminnstillinger som menyinnhold og typer søk.  Denne modulen inneholder "
+"også autentiseringsinnstillinger og administrasjon av brukertilgang."
 
 #: templates/admin/tuitadmin.html:19
 msgid "Issue Adminstration"
@@ -528,6 +532,10 @@ msgid ""
 "related settings, such as issue types, issue classification settings, custom "
 "fields, quick fills and message templates."
 msgstr ""
+"Modulen Saksadministrasjon gir administratoren mulighet til å redigere eller "
+"definere innstillinger for saker, som sakstyper, inntillinger for "
+"klassifisering av saker, spesialfelter, hurtigutfyllinger og maler for "
+"meldinger. "
 
 #: templates/admin/tuitadmin.html:22
 msgid "CMDB Adminstration"
@@ -539,10 +547,14 @@ msgid ""
 "settings such as CI types, CI type attributes and dependency types. This "
 "module also contains the CMDB plugin adminitration interface."
 msgstr ""
+"Modulen CMDB-administrasjon gir en administrator mulighet til å redigere "
+"globale innstillinger for CMDB, som CI-typer, egenskaper for CI-typer og "
+"typer avhengigheter.  Denne modulen inneholder også "
+"administrasjonsgrensesnittet for innstikksmoduler til CMDB-en."
 
 #: templates/admin/tuitadmin.html:26
 msgid "The Log Viewer module displays the event log in a table format."
-msgstr ""
+msgstr "Modulen loggviser viser hendelsesloggen i tabellformat."
 
 #: templates/admin/tuitadmin.html:28
 msgid "Edit your signature"
@@ -553,12 +565,16 @@ msgid ""
 "The Edit Current Status module lets an administrator edit the global status "
 "message displayed on the home page."
 msgstr ""
+"Modulen Rediger gjeldende status gir en administrator mulighet til å "
+"redigere den globale statusmeldingen som vises på hjemmesiden."
 
 #: templates/admin/tuitadmin.html:35
 msgid ""
 "The Current Issue Trends module displays issue updates for the time interval "
 "you specify. Update summaries are shown with any CI dependencies."
 msgstr ""
+"Modulen Trender i saker viser oppdateringer for saker i det tidsrommet du "
+"angir.  Oppsummering av oppdateringene vises med eventuelle CI-bindinger."
 
 #: templates/admin/ticket.html:8
 msgid "System information"
@@ -630,7 +646,7 @@ msgstr "Statusmeldinger"
 
 #: status/models.py:24
 msgid "Status message"
-msgstr "Statusmelding"
+msgstr "statusmelding"
 
 #: status/views.py:38
 msgid "Status updated"
@@ -975,6 +991,26 @@ msgstr "scriptede hendelser"
 msgid "scripted event"
 msgstr "scriptet endelse"
 
+#: ticket/models.py:1622
+msgid "User"
+msgstr "Bruker"
+
+#: ticket/models.py:1626
+msgid "Telephone number"
+msgstr "Telefonnummer"
+
+#: ticket/models.py:1627
+msgid "Mobile phone number"
+msgstr "Mobiltelefonnummer"
+
+#: ticket/models.py:1628
+msgid "PC serial number"
+msgstr "PC-serienummer"
+
+#: ticket/models.py:1629
+msgid "Email signature"
+msgstr "E-postsignatur"
+
 #: ticket/models.py:1641
 msgid "user profiles"
 msgstr "brukerprofiler"
@@ -1126,7 +1162,7 @@ msgstr "Hjelp"
 
 #: comment/models.py:36
 msgid "Comment"
-msgstr "Kommentar"
+msgstr "kommentar"
 
 #: util/__init__.py:44
 msgid "Latest updates"
@@ -1418,9 +1454,6 @@ msgstr ""
 #: mail/__init__.py:1943
 msgid "not of form [arg=value,value,...;arg=value,value,...]"
 msgstr "har ikke formen [arg=verdi,verdi,...;arg=verdi,verdi,...]"
-
-#~ msgid "User"
-#~ msgstr "Bruker"
 
 #~ msgid "Recent tickets"
 #~ msgstr "Nylig åpnede saker"

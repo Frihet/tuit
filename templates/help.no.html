@@ -20,10 +20,10 @@ tuit.makeTOC('.toc');
 <p>
 
 
-Dette er hovedsiden for hjelp i Tuit. Tuit er "The Ultimate ITIL
+Dette er hovedsiden for hjelp i {{ application|escape}}. {{ application|escape}} er "The Ultimate ITIL
 Toolbox", en samling programvarekomponenter som er konstruert for
-å støtte opp under ITIL-basert arbeidsflyt for tjensteadministrasjon. 
-Tuit består av følgende komponeneter:
+å støtte opp under ITIL-basert arbeidsflyt for tjenesteadministrasjon. 
+{{ application|escape}} består av følgende komponeneter:
 
 <ul>
   <li><a href=''>Et sakshåndteringssystem</a>, basert på <a href='http://roundup.sourceforge.net/'>Roundup</a></li>
@@ -46,7 +46,7 @@ Tuit består av følgende komponeneter:
 <h1><a name='overview'>Oversikt over brukergrensesnittet</a></h1>
 <p>
   Denne delen beskriver de grunnleggene elementene i brukergrensesnittet
-  for Tuit.  Disse elementene er de samme i alle komponenter, slik at for
+  for {{ application|escape}}.  Disse elementene er de samme i alle komponenter, slik at for
   eksempel kunnskapsbasen ser ut som og fungerer så likt CMDB-delen som
   det er mulig uten at det går ut over funksjonaliteten i komponentene.
 
@@ -56,7 +56,7 @@ Tuit består av følgende komponeneter:
 <p>
   Menyen øverst i skjermbildet brukes til å gå til de forskjellige 
   delene av nettstedet.  Denne menyen endres normalt ikke etter hvilken
-  del av Tuit du bruker, men siden forskjellige brukere har adgang til
+  del av {{ application|escape}} du bruker, men siden forskjellige brukere har adgang til
   forskjellige deler av nettstedet, vil innholdet variere etter hvem
   som er logget inn.
 </p>
@@ -85,7 +85,7 @@ Tuit består av følgende komponeneter:
 
 <h1><a name='home'>Hjem-skjermbildet</a></h1>
 <p>
-  Dette er startsiden for Tuit.  En fremtidig versjon av Tuit vil
+  Dette er startsiden for {{ application|escape}}.  En fremtidig versjon av {{ application|escape}} vil
   inneholde et "dashbord" som brukeren kan konfigurere til å vise 
   forskjellige typer statusinformasjon og meldinger, men i nåværende
   utgave er Hjem-skjerbildet mer begrenset.  Siden inneholder følgende elementer:
@@ -104,20 +104,20 @@ Tuit består av følgende komponeneter:
   </ul>
 </p>
 
-<h1><a name='search'>Søke i Tuit</a></h1>
+<h1><a name='search'>Søke i {{ application|escape}}</a></h1>
 <p>
-  Tuit har en funksjon for globalt søk, som søker i alle komponenter i systemet. 
+  {{ application|escape}} har en funksjon for globalt søk, som søker i alle komponenter i systemet. 
   Hvis du vil utføre et raskt søk, skriver du et søkeord i søkefeltet 
-  i øverste høyre hjørne av en Tuit-side oog trykker på «enter»-tasten.
+  i øverste høyre hjørne av en {{ application|escape}}-side og trykker på «enter»-tasten.
 </p>
 <p>
 
-  Hvis det søk gir mange resultater, blir bare de første ti resultatene 
+  Hvis et søk gir mange resultater, blir bare de første ti resultatene 
   vist, og brukeren kan trykke på en knapp for å få se flere resultater.
 </p>
 <h2><a name='search_types'>Typer av søk</a></h2>
 <p>
-  Tuit viser følgende typer søkeresultater:
+  {{ application|escape}} viser følgende typer søkeresultater:
 
   <ul>
     <li>
@@ -127,11 +127,11 @@ Tuit består av følgende komponeneter:
     </li>
     <li>
 
-      <em><a href='#concepts_cmdb'>CI</a></em>. Dette viser alle elementer fra som passer. 
+      <em><a href='#concepts_cmdb'>CI</a></em>. Dette viser alle elementer fra konfigurasjonsdatabasen som passer. 
 	Utfører fritekstsøk i CI-navn. Ingen avanserte søkealternativer fungerer.
     </li>
     <li>
-      <em><a href='#concepts_kb'>Kunnskapsbase</a></em>. Dette viser alle elementer i kunnkskapsbasen 
+      <em><a href='#concepts_kb'>Kunnskapsbase</a></em>. Dette viser alle elementer i kunnskapsbasen 
       som passer. Utfører fritekstsøk i tittel, kunnskapsbase-skjemaet og teksten i kunnskapsbasen. 
       Ingen avanserte søkealternativer fungerer.
     </li>
@@ -153,11 +153,11 @@ Tuit består av følgende komponeneter:
 </p>
 
 
-<h1><a name='issues'>Saksadministrasjon i Tuit</a></h1>
+<h1><a name='issues'>Saksadministrasjon i {{ application|escape}}</a></h1>
 
 <p>
 
-  Modulen for sakshåndtering i Tuit er en er løselig basert på 
+  Modulen for sakshåndtering i {{ application|escape}} er løselig basert på 
   <a href='http://roundup.sourceforge.net/'>Roundup</a>.  Modulen 
   håndterer administrasjon av saker av type Incident, Problem og Requests for
   Change gjennom saksbehandlingen i IT-organisasjonen.
@@ -166,7 +166,7 @@ Tuit består av følgende komponeneter:
 </p>
 <h2><a name='issues_types'>Sakstyper</a></h2>
 <p>
-  Tuit er basert på 3 typer saker:
+  {{ application|escape}} er basert på 3 typer saker:
   <ul>
     <li>
       <em>Incident</em> er saker som har ført til tjenesteavbrudd eller 
@@ -174,7 +174,7 @@ Tuit består av følgende komponeneter:
       brudd på en SLA.
     </li>
     <li>
-      <em>Problem</em> er saker med søtte for "root cause analysis" for en eller
+      <em>Problem</em> er saker med støtte for "root cause analysis" for en eller
       flere saker av type Incident.
     </li>
 
@@ -188,19 +188,19 @@ Tuit består av følgende komponeneter:
 <h2><a name='issues_creating'>Opprette en ny sak</a></h2>
 <p>
 For hver <a href='#issues_types'>sakstype</a> finnes det en tilsvarende
-kobling i menyen øverst i Tuit-skjermbildet for å legge inn en sak av
+kobling i menyen øverst i {{ application|escape}}-skjermbildet for å legge inn en sak av
 angitt type.  Bruk disse koblingene for å opprette nye saker.  
 Hvert av alternativene fører videre til et skjema der forskjellige 
 felter skal fylles ut.
 </p>
 <p>
-Når du er ferdig, klikker du på knappen «Lag sak» nederst på siden, og du er ferdig.
+Når du er ferdig med utfyllingen, klikker du på knappen «Lag sak» nederst på siden, og du har opprettet saken.
 </p>
 <h3><a name='issues_creating_user'>Fylle ut brukerfelter</a></h3> 
 <p>
   Saker kan ha mange brukere tilknyttet, inkludert den som opprettet
   saken, personen som er tildelt en spesiell sak, og så videre. Alle 
-  felt i Tuit for brukere har autofullføringsfunksjon.  Autofullføringen 
+  felt i {{ application|escape}} for brukere har autofullføringsfunksjon.  Autofullføringen 
   søker i brukernavn, fornavn og etternavn etter brukere når den 
   utfører fullføringen.
 </p>
@@ -217,8 +217,8 @@ Det finnes flere varianter av hvordan brukerfelter fungerer:
     Noen brukerfelter tillater bare at det angis registrerte brukere,
     mens andre i tillegg tillater at du skriver inn e-postadresser. 
     Hvis du har lagt inn en e-postadresse en gang, vil den bli lagt
-    til Tuit som en kontakt.  Når det blir mottatt e-post om en sak, 
-    blir det også opprettet en kontakt.  Disse kontaktnee kan også brukes
+    til {{ application|escape}} som en kontakt.  Når det blir mottatt e-post om en sak, 
+    blir det også opprettet en kontakt.  Disse kontaktene kan også brukes
     til autofullføring der det er relevant, og det er mulig å 
     <a href='/tuit/admin/ticket/contact/'>redigere</a> dem i 
     <a href='#concepts_admin'>administratorgrensesnittet</a>.
@@ -237,19 +237,19 @@ Det finnes flere varianter av hvordan brukerfelter fungerer:
 <h3><a name='issues_creating_ci'>Fylle ut koblinger til CI-er</a></h3>
 <p>
   Saker kan være knyttet til konfigurasjonselementer (configuration item - CIs), altså
-  objekter som er lagret i CMDB-delen av Tuit.  Feltet for å endre CI-tilknytninger
+  objekter som er lagret i CMDB-delen av {{ application|escape}}.  Feltet for å endre CI-tilknytninger
   bruker autofullføring.  Autofullføringen søker i CI-navn.  I tillegg finnes det 
-  en annen metode for å angi en CI, nedborringsfunksjonen i CMDB.  Dette er en
-  trestruktur med alle kjente CI-er som kan foldes ut selektivt for å borre ned
+  en annen metode for å angi en CI, nedboringsfunksjonen i CMDB.  Dette er en
+  trestruktur med alle kjente CI-er som kan foldes ut selektivt for å bore ned
   gjennom avhengighetene til ønsket objekt er funnet.  Se delen om <a href='#cmdb_navigation'>navigering i CMDB</a> for mer informasjon.
 </p>
 <h3><a name='issues_creating_quickfills'>Bruke hurtigutfylling til å fylle ut vanlige felt automatisk</a></h3>
 <p>
   Service desk opplever ofte at mange saker er svært like.  Dette kan
-  skyldes et felles, bakenforliggene problem som det er behov for å
+  skyldes et felles, bakenforliggende problem som det er behov for å
   løse, eller rett og slett fordi brukerne har tendens til å komme ut
-  for de samme typene av problemer. For å gjøre det enklere å opprette
-  slike gjentatte saker, har Tuit en funksjon kalles hurtigutfylling. 
+  for de samme typene av problemer.  For å gjøre det enklere å opprette
+  slike gjentatte saker, har {{ application|escape}} en funksjon kalles hurtigutfylling. 
   Dette er en enkel rullegardinmeny med «maler» for vanlige sakstyper. 
   Hvis du velger en mal, vil en del av feltene bli fylt ut automatisk for deg.
   Hvilke felter som blir fylt ut og de konkrete verdiene som brukes for
@@ -267,8 +267,8 @@ Det finnes flere varianter av hvordan brukerfelter fungerer:
   <ol>
     <li>
       Gå først til siden for den opprinnelige saken.  Alle e-postmeldinger fra
-      Tuit om saken inneholder en kobling til saken, eller du kan finne en 
-      oppdatering ved å <a href='#search'>søke i Tuit</a> eller lete på din egen <a href='#home'>hjemmeside</a>.
+      {{ application|escape}} om saken inneholder en kobling til saken, eller du kan finne en 
+      oppdatering ved å <a href='#search'>søke i {{ application|escape}}</a> eller lete på din egen <a href='#home'>hjemmeside</a>.
     </li>
     <li>
       Når du har kommet til riktig side, klikker du på knappen «Lag ny sak basert på denne» øverst i skjermbildet.
@@ -308,12 +308,12 @@ Det finnes flere varianter av hvordan brukerfelter fungerer:
 <h3><a name='issue_update_email'>Oppdatere en sak via e-post</a></h3>
 <p>
   Hvis du vil lage en oppdatering via e-post, svarer du på en e-post som
-  er sendt fra Tuit. Innholdet i e-postmeldingen, inkludert eventuelle
+  er sendt fra {{ application|escape}}. Innholdet i e-postmeldingen, inkludert eventuelle
   vedlagte filer, blir lagt til som en oppdatering av saken. Hvis saken var 
   lukket, blir den åpnet på nytt, men ellers blir ingen feltverdier endret.
 </p>
 
-<h3><a name='issue_update_web'>Updating an issue through the web</a></h3>
+<h3><a name='issue_update_web'>Oppdatere en sak via web-grensesnittet</a></h3>
 <p>
   Oppdatering av en sak via web-grensesnittet gir adgang til mer detaljert
   kontroll over en oppdatering. Det er mulig å endre verdiene for alle felt 
@@ -325,8 +325,8 @@ Det finnes flere varianter av hvordan brukerfelter fungerer:
 <p>
   Hvis du vil oppdatere en sak, går du først til websiden for saken. En
   kobling til den aktuelle siden skal være med i alle e-postmeldinger
-  om saken fra Tuit-systemet, eller du kan finne ippdateringen ved å 
-  <a href='#search'>søke i Tuit</a> eller å lete på <a href='#home'>hjemmesiden</a>. 
+  om saken fra {{ application|escape}}-systemet, eller du kan finne oppdateringen ved å 
+  <a href='#search'>søke i {{ application|escape}}</a> eller å lete på <a href='#home'>hjemmesiden</a>. 
   Når du har kommet frem til riktig side, klikker du på knappen «Legg til oppdatering» 
   nederst i skjermbildet.
 
@@ -341,7 +341,7 @@ Det finnes flere varianter av hvordan brukerfelter fungerer:
   Når en sak har blitt løst, kan det være ønskelig å gjøre løsningen tilgjengelig
   for andre som en artikkel i kunnskapsbasen.  Dette kan bidra til å redusere
   tiden det tar å løse tilsvarende saker betydelig ved senere anledninger.
-  Derfor gjør Tuit det så enkelt som mulig å gjøre akkurat dette.  De 
+  Derfor gjør {{ application|escape}} det så enkelt som mulig å gjøre akkurat dette.  De 
   nødvendige stegene er som følger:
 </p>
 
@@ -357,7 +357,7 @@ Det finnes flere varianter av hvordan brukerfelter fungerer:
 
   <li>
     Det kommer frem en liten dialogboks der du kan velge navn for
-    artikkelen (standardvedien er tittelen til saken) og velge hvilken
+    artikkelen (standardverdien er tittelen til saken) og velge hvilken
     del av kunnskapsbasen du skal bruke. Trykk på knappen «Send» 
     når du er ferdig.
   </li>
@@ -372,18 +372,18 @@ Det finnes flere varianter av hvordan brukerfelter fungerer:
 <h3><a name='issue_update_kb2'>Bruke en artikkel fra kunnskapsbasen som basis for oppdatering av sak</a></h3>
 
 <p> En kunnskapsbase er nyttig bare hvis den blir brukt. Av den grunn gjør
-  Tuit det så enkelt som mulig å bruke informasjon fra kunnskapsbasen 
+  {{ application|escape}} det så enkelt som mulig å bruke informasjon fra kunnskapsbasen 
   ved oppdatering av en sak.  Nedenfor tekstfeltet for kommentar i en 
   oppdatering ligger et tekstfelt til.  Når du skriver i dette feltet,
-  søker Tuit i kunnskapsbasen og viser deg en liste med <a href='#concepts_autocompletion'>automatisk fullføring</a> 
-  over artikler med tittel eller innhold som svarer til teksten. Når 
-  en artikkel er valgt, kan brukeren enten trykke på knappen «Forhpndsvis»
+  søker {{ application|escape}} i kunnskapsbasen og viser deg en liste med <a href='#concepts_autocompletion'>automatisk fullføring</a> 
+  over artikler med tittel eller innhold som svarer til teksten i feltet. Når 
+  en artikkel er valgt, kan brukeren enten trykke på knappen «Forhåndsvis»
   for å se en forhåndsvisning av artikkelinnholdet, eller trykke på 
   knappen «Sett inn» for å sette inn artikkelinnholdet i oppdateringen.
 </p>
 
 
-<h1><a name='cmdb'>Tuit CMDB</a></h1>
+<h1><a name='cmdb'>{{ application|escape}} CMDB</a></h1>
 
 <h2><a name='cmdb_navigation'>Navigere i CMDB</a></h2>
 
@@ -424,7 +424,7 @@ Det finnes flere varianter av hvordan brukerfelter fungerer:
   </ul>
 </p>
 
-<h2><a name='cmdb_history'>Using the history feature</a></h2>
+<h2><a name='cmdb_history'>Bruke historie-funksjonen</a></h2>
 <p>
   Alle endringer som noengang er utført på en CI blir lagret.  Hvis du vil
   se hvilke endringer som er gjort, kan du følge koblingen «Historie» 
@@ -469,9 +469,9 @@ Det finnes flere varianter av hvordan brukerfelter fungerer:
 </p>
 
 
-<h1><a name='kb'>Tuit Kunnskapsbase</a></h1>
+<h1><a name='kb'>{{ application|escape}} Kunnskapsbase</a></h1>
 <p>
-Tuit bruker Foswiki som sitt kunnskapsbasesystem. Foswiki leveres med en 
+{{ application|escape}} bruker Foswiki som sitt kunnskapsbasesystem. Foswiki leveres med en 
 stor mengde dokumentasjon.  Koblingene nedenfor er noen av de mest relevante
 sidene med nytting informasjon om bruk av kunnskapsbasen:
 </p>
@@ -484,10 +484,10 @@ sidene med nytting informasjon om bruk av kunnskapsbasen:
 </ul>
 
 
-<h1><a name='comments'>Tuits kommentarsystem</a></h1>
+<h1><a name='comments'>{{ application|escape}}s kommentarsystem</a></h1>
 <p>
-  Tuit har et innebygd kommentarsystem som gir deg mulighet til å legge inn
-  kommentarer på alle sider i Tuit. Kommentarene blir vist til venstre i skjermbildet.
+  {{ application|escape}} har et innebygd kommentarsystem som gir deg mulighet til å legge inn
+  kommentarer på alle sider i {{ application|escape}}. Kommentarene blir vist til venstre i skjermbildet.
   Alle brukere som har tilgangsprivilegier til å se kommentarer vil se alle kommentarer
   du legger inn ved å gå til samme side, og du vil se alle kommentarer andre brukere har lagt inn.
 </p>
@@ -502,27 +502,27 @@ sidene med nytting informasjon om bruk av kunnskapsbasen:
 
 <h1><a name='log'>Vise hendelseslogg</a></h1>
 <p>
-  Viktige hendelser i Tuit-systemet blir logget i Tuits egen hovedlogg. 
+  Viktige hendelser i {{ application|escape}}-systemet blir logget i {{ application|escape}}s egen hovedlogg. 
   Per i dag blir hendelser i kunnskapsbasen og CMDB ikke logget i hovedloggen,
-  men dette vil bli endret i en fremtidig versjon av Tuit.
+  men dette vil bli endret i en fremtidig versjon av {{ application|escape}}.
 </p>
 {% if user.is_staff %}
 <p>
-  LOggen er tilgjengelig <a href='/tuit/log/'>her</a>.  Det er finnes også en 
+  Loggen er tilgjengelig <a href='/tuit/log/'>her</a>.  Det er finnes også en 
   kobling på hovedsiden i administrasjonsgrensesnittet.
 </p>
 {% else %}
 <p>
   Du har ikke tilstrekkelige privilegier til å se på hendelsesloggen. 
   Hvis du hadde tilstrekkelig tilgang, ville loggen vært tilgjengelig <a href='/tuit/log/'>her</a>. 
-  Det ville også vært en kobling tilggengelig fra hovedsiden i administrasjonsgrensesnitttet.
+  Det ville også vært en kobling tilgjengelig fra hovedsiden i administrasjonsgrensesnitttet.
 </p>
 {% endif %}
 
-<h1><a name='admin'>Tuit-administrasjon</a></h1>
+<h1><a name='admin'>{{ application|escape}}-administrasjon</a></h1>
 <p>
-  Tuit er et verktøy med svært omfattende tilpasningsmuligheter. 
-  Denne delen handler om noen av måtene det er mulig å tilpasse Tuit 
+  {{ application|escape}} er et verktøy med svært omfattende tilpasningsmuligheter. 
+  Denne delen handler om noen av måtene det er mulig å tilpasse {{ application|escape}} 
   til ditt arbeidsmiljø.
 
   {% if user.is_staff %} 
@@ -532,7 +532,7 @@ sidene med nytting informasjon om bruk av kunnskapsbasen:
   {% else %} 
 
   Siden du ikke har administratorrettigheter på dette systemet, har du ikke
-  adgang til å tilpasse denne Tuit-installasjonen.
+  adgang til å tilpasse denne {{ application|escape}}-installasjonen.
 
   {% endif %}
 </p>
@@ -545,25 +545,25 @@ sidene med nytting informasjon om bruk av kunnskapsbasen:
   gir mulighet til å legge til, redigere og fjerne elementer i listene.
 </p>
 
-<h2><a name='admin_properties'>Tuits egenskapstabell</a></h2>
+<h2><a name='admin_properties'>{{ application|escape}}s egenskapstabell</a></h2>
 <p>
-  Tuit lagrer så mye som mulig av systemkonfigurasjonen sin i
+  {{ application|escape}} lagrer så mye som mulig av systemkonfigurasjonen sin i
   databasen for å gjøre det enklere å konfigurere systemet kun ved bruk
   av webgrensesnitt.  Mange viktige systeminnstillinger er lagret i
   tabellen Properties. Data i denne tabellen er lagret i 
   dataserialiseringsformatet JSON.  Ikke rediger innstillinger i tabellen
-  properties hvis du ikke er sikker på at du vet hva du gjør.  Konsekvensen
-  kan være at systemet slutter å virke.  En fremtidig versjon av Tuit
+  Properties hvis du ikke er sikker på at du vet hva du gjør.  Konsekvensen
+  kan være at systemet slutter å virke.  En fremtidig versjon av {{ application|escape}}
   vil ha et brukervennlig grensesnitt for denne delen av systemet.
 </p>
 
-<h2><a name='admin_email_templates'>Endre innholdet i e-postmeldingene Tuit sender</a></h2>
+<h2><a name='admin_email_templates'>Endre innholdet i e-postmeldingene {{ application|escape}} sender</a></h2>
 <p>
-  Tuit er konstruert for å kunne brukes via enten web-grensesnitt eller
+  {{ application|escape}} er konstruert for å kunne brukes via enten web-grensesnitt eller
   via e-post. Når en sak blir oppdatert via e-post, blir det sendt en
-  oppdatering til personene so er knyttet til saken. I web-grensesnittet
+  oppdatering til personene som er knyttet til saken. I web-grensesnittet
   kan brukeren spesifikt velge hvilke personer eller parter som skal 
-  motta en spesifikk oppdatering.  Men for at Tuit skal være i stand til
+  motta en spesifikk oppdatering.  Men for at {{ application|escape}} skal være i stand til
   å sende disse e-postmeldingene, må det først lages maler for e-postene. 
   Dette gjøres via <a href='#concepts_admin'>administrasjonsgrensesnittet</a>.
 </p>
@@ -575,14 +575,14 @@ sidene med nytting informasjon om bruk av kunnskapsbasen:
     Gå til <a href='/tuit/admin/'>administrasjonsgrensesnittet</a>.
   </li>
   <li>
-    Klikk på koblingen «Endre» lved siden av elementet <a href='/tuit/admin/ticket/emailtemplate/'>E-post-maler</a>.
+    Klikk på koblingen «Endre» ved siden av elementet <a href='/tuit/admin/ticket/emailtemplate/'>E-post-maler</a>.
   </li>
   <li>
     Velg hvilken mal du vil redigere.
   </li>
   <li>
-    Rediger malen.  Tittelen er i ren tekst, meldingskrooppen er i HTML-format. 
-    En fremtidig versjon av Tuit vil tilby grafisk html-redigering her.
+    Rediger malen.  Tittelen er i ren tekst, meldingskroppen er i HTML-format. 
+    En fremtidig versjon av {{ application|escape}} vil tilby grafisk html-redigering her.
   </li>
   <li>
     Klikk på Lagre-knappen.
@@ -685,7 +685,7 @@ sidene med nytting informasjon om bruk av kunnskapsbasen:
     </td>
     <td>
       Kommentaren for siste oppdatering av saken.  Dette feltet vil være 
-      tomt dersom saken ikke hra blitt oppdatert, for eksempel hvis saken
+      tomt dersom saken ikke har blitt oppdatert, for eksempel hvis saken
       nettopp er opprettet.
     </td>
   </tr>
@@ -716,7 +716,7 @@ sidene med nytting informasjon om bruk av kunnskapsbasen:
 <p>
   Det kan være mange brukere som er knyttet til en sak, inkludert 
   personen den opprinnelige henvendelsen kom fra, personen som opprettet saken,
-  persnene som la til en oppdatering av saken, og så videre. Alle disse er 
+  personene som la til en oppdatering av saken, og så videre. Alle disse er 
   tilgjengelige, og alle har de samme feltene tilgjengelige som mottaker i 
   tabellen over. For eksempel er «&#123;&#123;&nbsp;issue.assigned_to.email&nbsp;&#125;&#125;» 
   e-postadressen til personen som ble tildelt oppgaven å løse saken. Listen
@@ -781,12 +781,12 @@ sidene med nytting informasjon om bruk av kunnskapsbasen:
 
 <h2><a name='admin_contact'>Tømme kontaktlisten</a></h2>
 <p>
-  Når en person som ikke er en Tuit-bruker blir satt som mottaker av kopi
-  for en sak, eller når en person sender en e-postmelding til Tuit i
+  Når en person som ikke er en {{ application|escape}}-bruker blir satt som mottaker av kopi
+  for en sak, eller når en person sender en e-postmelding til {{ application|escape}} i
   forbindelse med en sak, blir det opprettet en kontaktoppføring for
   personen.  Denne kontaktoppføringen blir blant annet brukt til 
-  automatisk utfylling.  Noen ganger er det ønskeligi å fjerne gamle
-  kontaktoppføringer for å gjøre forslagene som Tuit presenterer 
+  automatisk utfylling.  Noen ganger er det ønskelig å fjerne gamle
+  kontaktoppføringer for å gjøre forslagene som {{ application|escape}} presenterer 
   mer relevante. Det gjør du slik:
 </p>
 
@@ -806,9 +806,9 @@ sidene med nytting informasjon om bruk av kunnskapsbasen:
   administratorgrensesnittet. 
 
   {% if user.is_staff %}
-  Du har denne tilstrekkelig tilgang, og kan utføre stegene nedenfor dersom du ønsker det.  Husk på at endringene du gjør, vil gjelde for alle brukere, ikke bare deg selv.
+  Du har tilstrekkelig tilgang, og kan utføre stegene nedenfor dersom du ønsker det.  Husk på at endringene du gjør, vil gjelde for alle brukere, ikke bare deg selv.
   {% else %}
-  Du har ikke tilstrekkelig tilgang, og kanikke utføre stegene som er beskrevet nedenfor.
+  Du har ikke tilstrekkelig tilgang, og kan ikke utføre stegene som er beskrevet nedenfor.
   {% endif %}
 </p>
 <p>
@@ -824,13 +824,13 @@ Hurtigutfyllinger lages slik:
 
 
 
-<h1><a name='concepts'>Tuit-begreper</a></h1>
+<h1><a name='concepts'>{{ application|escape}}-begreper</a></h1>
 
 <h2><a name='concepts_admin'>Administrasjonsgrensesnittet</a></h2>
 <p>
   Administrasjonsgrensesnittet er der det meste av konfigureringen
-  av Tuit blir utført.  Det er tilgjengelig <a href='/tuit/admin'>her</a>. 
-  Siden Tuit består av flere separate komponenter som alle må fungere på
+  av {{ application|escape}} blir utført.  Det er tilgjengelig <a href='/tuit/admin'>her</a>. 
+  Siden {{ application|escape}} består av flere separate komponenter som alle må fungere på
   egenhånd, er det dessverre ikke mulig å lage ett enkelt sted for alle
   konfigurasjonsbehov.  Når du er logget inn som en bruker med administratorprivilegier
   skal en kobling til administrasjonsgrensesnittet være tilgjengelig i
@@ -839,7 +839,7 @@ Hurtigutfyllinger lages slik:
 {% if user.is_staff %}
 <p>
   En kort innføring i alle elementer som kan konfigureres ved hjelp av 
-  administrasjonsgrensesnittet er tilgengelig <a href='/tuit/admin/doc/'>her</a>.
+  administrasjonsgrensesnittet er tilgjengelig <a href='/tuit/admin/doc/'>her</a>.
 </p>
 {% endif %}
 
@@ -847,15 +847,15 @@ Hurtigutfyllinger lages slik:
 
 <h2><a name='concepts_autocompletion'>Autofullføring</a></h2>
 <p>
-  Autofullføring eller automatisk fullføring er en teknik som er 
-  brukt flere steder i Tuit.  Teknikken er nyttig når du skal velge
+  Autofullføring eller automatisk fullføring er en teknikk som er 
+  brukt flere steder i {{ application|escape}}.  Teknikken er nyttig når du skal velge
   mellom en stor mengde mulige, for eksempel i situasjoner der en 
   rullegardinmeny ikke er egnet på grunn av at listen over mulige 
   elementer ville blitt for lang. Autofullføring bruker et enkelt
   tekstfelt der brukeren kan skrive tekst, hele listen over mulige 
   elementer blir gjennomsøkt og de som passer med det innskrevne 
   blir vist.  Brukeren kan så bruke piltaster opp og ned for å
-  flytte rund i listen og trykke enter-tasten for velge markert element.
+  flytte rundt i listen og trykke enter-tasten for velge markert element.
 </p>
 
 <h2><a name='concepts_cmdb'>CMDB</a></h2>
@@ -863,7 +863,7 @@ Hurtigutfyllinger lages slik:
   CMDB: Configuration Managment DataBase (konfigurasjonsdatabase), et verktøy for å holde 
   rede på viktige aktiva i IT-miljø og sammenhengene mellom dem. 
   De grunnlegggende elementene i en CMDB kalles konfigurasjonsenheter (Configuration Items -CI).  
-  En CI kan være en fysisk server, en progravaretjensete eller til og med en person.
+  En CI kan være en fysisk server, en programvaretjeneste eller til og med en person.
   Alle elementer du holder følge med via CMDB er en CI.
 </p>
 
@@ -877,23 +877,23 @@ Hurtigutfyllinger lages slik:
 
 <h2><a name='concepts_issue'>Sak (Issue)</a></h2>
 <p>
-  En Sak i Tuit kan være av type Incident, Problem eller RfC. Selv om
+  En sak i {{ application|escape}} kan være av type Incident, Problem eller RfC. Selv om
   forskjellige typer saker har forskjellige felter og et finnes andre mindre
-  forskjeller, oppfører de set stort sett likt.  Hvis du vil ha mer informasjon
-  om hvordan du oppretter, oppdaterer og lukker saker, kan du se under <a href='#issues'>Saksadministrasjon i Tuit</a>.
+  forskjeller, oppfører de seg stort sett likt.  Hvis du vil ha mer informasjon
+  om hvordan du oppretter, oppdaterer og lukker saker, kan du se under <a href='#issues'>Saksadministrasjon i {{ application|escape}}</a>.
 </p>
 
 <h2><a name='concepts_itil'>ITIL</a></h2>
 <p>
   Information Technology Infrastructure Library eller ITIL er et 
-  rammeverk for organisering IT-tjensteleveranser.  Det er basert på
+  rammeverk for organisering IT-tjenesteleveranser.  Det er basert på
   beste praksis-standard i IT-bransjen og tilbyr et sett med begreper og
-  policyer administrasjon av IT-infrastruktur, utvikling og organisering.
+  policyer for administrasjon av IT-infrastruktur, utvikling og organisering.
 </p>
 <p>
-  Siden Tuit er konstruert for å støtte opp under ITIL-basert arbeidsflyt
-  besrkives noen av kjernebegrepene i ITIL også i dette dokumentet.  Men
-  dette dokumentet handler om programvaren Tuit, og ikke om ITIL generelt. 
+  Siden {{ application|escape}} er konstruert for å støtte opp under ITIL-basert arbeidsflyt
+  beskrives noen av kjernebegrepene i ITIL også i dette dokumentet.  Men
+  dette dokumentet handler om programvaren {{ application|escape}}, og ikke om ITIL generelt. 
   Hvis du ønsker fullstendig oversikt over ITIL, inkludert informasjon om
   hvordan du kan ta i bruk ITIL som del av din organisasjon, kan du se <a href='http://www.itframeworks.org/wiki/Information_Technology_Infrastructure_Library'> IT Frameworks Wiki</a>.
 </p>
@@ -907,15 +907,15 @@ For mer informasjon om ITIL-begreper se <a href='http://www.itframeworks.org/wik
 
 <h2><a name='concepts_problem'>Problem</a></h2>
 <p>
-Et Problem er den underliggende årsaken til en eller flere hendelser (Incident). Problemer
-skal håndteres av problemhåndtering (Problem Management), men hvis løsningen innebører endringer (Change) må disse godkjennes av endringshåndtering (Change Management) før de blir implementert. For mer informasjon om ITIL-begreper se <a href='http://www.itframeworks.org/wiki/Information_Technology_Infrastructure_Library'>IT Frameworks Wiki</a>.
+Et problem er den underliggende årsaken til en eller flere hendelser (Incident). Problemer
+skal håndteres av problemhåndtering (Problem Management), men hvis løsningen innebærer endringer (Change) må disse godkjennes av endringshåndtering (Change Management) før de blir implementert. For mer informasjon om ITIL-begreper se <a href='http://www.itframeworks.org/wiki/Information_Technology_Infrastructure_Library'>IT Frameworks Wiki</a>.
 </p>
 
 <h2><a name='concepts_rfc'>RfC</a></h2>
 <p>
 En Request for Change (endringsanmodning) eller RfC er en offisiell anmodning 
 om at en endring (Change) skal bli utført.  Forslaget inneholder detaljert
-beskrivelse av endringen, inkludert detaljert tilbakerunllingsplan, og sendes til endringshåndtering (Change Management). For mer informasjon om ITIL-begreper se <a href='http://www.itframeworks.org/wiki/Information_Technology_Infrastructure_Library'>IT Frameworks Wiki</a>.
+beskrivelse av endringen, inkludert detaljert tilbakerullingsplan, og sendes til endringshåndtering (Change Management). For mer informasjon om ITIL-begreper se <a href='http://www.itframeworks.org/wiki/Information_Technology_Infrastructure_Library'>IT Frameworks Wiki</a>.
 </p>
 
 <!--

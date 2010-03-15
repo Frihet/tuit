@@ -1619,14 +1619,14 @@ class UserProfile(models.Model):
     Extra data to store about each user. Django has a bit of automagic
     to tie this up with the main user object.
     """
-    user = models.ForeignKey(User, unique=True)
-    location = models.TextField(maxlength=512, blank=True)
-    building = models.TextField(maxlength=512, blank=True)
-    office = models.TextField(maxlength=512, blank=True)
-    telephone = models.TextField(maxlength=512, blank=True)
-    mobile = models.TextField(maxlength=512, blank=True)
-    pc = models.TextField(maxlength=512, blank=True)
-    signature = models.TextField(maxlength=2048, blank=True)
+    user = models.ForeignKey(User, unique=True, verbose_name=_('User'))
+    location = models.TextField(maxlength=512, blank=True, verbose_name=_('Location'))
+    building = models.TextField(maxlength=512, blank=True, verbose_name=_('Building'))
+    office = models.TextField(maxlength=512, blank=True, verbose_name=_('Office'))
+    telephone = models.TextField(maxlength=512, blank=True, verbose_name=_('Telephone number'))
+    mobile = models.TextField(maxlength=512, blank=True, verbose_name=_('Mobile phone number'))
+    pc = models.TextField(maxlength=512, blank=True, verbose_name=_('PC serial number'))
+    signature = models.TextField(maxlength=2048, blank=True, verbose_name=_('Email signature'))
 
     class Admin:
         pass

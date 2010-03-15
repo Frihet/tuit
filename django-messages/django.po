@@ -927,7 +927,7 @@ msgid ""
 "<h3>By %s:</h3>\n"
 "<ul>\n"
 msgstr ""
-"<h3>Av %s:</h3>\n"
+"<h3>Etter %s:</h3>\n"
 "<ul>\n"
 
 #: contrib/admin/filterspecs.py:70 contrib/admin/filterspecs.py:88
@@ -1293,7 +1293,7 @@ msgstr "Logg inn"
 #: contrib/admin/templates/admin/filter.html:2
 #, python-format
 msgid " By %(filter_title)s "
-msgstr "Av %(filter_title)s "
+msgstr "Filtrer på felt \"%(filter_title)s\""
 
 #: contrib/admin/templates/admin/delete_confirmation.html:14
 #, python-format

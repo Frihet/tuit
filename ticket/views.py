@@ -89,8 +89,8 @@ def new(request, type_name=None):
     keys['status'] = Status.objects.all()
     keys['errors'] = {}
     keys['messages'] = ""
-
-    if type_name is None:
+    
+    if type_name is None and 'type' in request.GET:
         type_name=request.GET['type']
     type = IssueType.objects.get(name=type_name)
     keys['type'] = type
