@@ -513,9 +513,18 @@ var tuit = {
 	$.get('/tuit/ticket/new/', {'type_id':type_id,'partial':'1'},	
 	      function (result, status) {
 		  $('#ticket_form')[0].innerHTML = result;
+		  
+		  var d = $('#ticket_form')[0].getElementsByTagName("script");
+		  var t = d.length
+		  for (var x=0;x<t;x++){
+		      var newScript = document.createElement('script');
+		      newScript.type = "text/javascript";
+		      newScript.text = d[x].text;
+		      document.getElementById('ticket_form').appendChild (newScript);
+		  }
 	      }
 	      );
-	$('.widget_header h2')[0].innerHTML = type_name
+	      //	$('.widget_header h2')[0].innerHTML = type_name
 
     }
     
