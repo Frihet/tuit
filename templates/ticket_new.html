@@ -1,7 +1,7 @@
 {% extends "ticket.html" %}
 {% load i18n %}
 
-{%block breadcrumb %} &gt; <a href="{{issue.url_internal}}">{%trans "New issue of type " %}{{issue.type.name}}</a>{%endblock %}
+{%block breadcrumb %} &gt; <a href="{{issue.url_internal}}">{%trans "New issue" %}</a>{%endblock %}
 {%block content %} 
 
 <script>
@@ -12,11 +12,10 @@ var field_fill = {{ field_fill_json }};
 
 <form  enctype="multipart/form-data"  method='post' action='' accept-charset='utf-8'>
 <input type='hidden' name='MAX_FILE_SIZE' value='1000000'/>
-<input type='hidden' name='type' value='{{ type.id|escape }}'/>
-
 
 {% if type %}
 
+<input type='hidden' name='type_id' value='{{ type.id|escape }}'/>
 <table class='striped wide'>
 
 
@@ -43,17 +42,14 @@ var field_fill = {{ field_fill_json }};
 <input class='button' type='submit' name='continue' value='{%trans "Create and continue" %}' />
 
 {% else %}
-{% for type in types %}
-
-<input type='radio' name='type' value='{{type.id}}' id='type_{{type.id}}' onchange='tuit.setTicketType({{type.id}},"{{type.name|escape}}");'><label for='type_{{type.id}}'>{{ type.name }}</label>
-{% endfor %}
+<div class='type_list'>
+{% for type in types %}<input class='type_selector' type='radio' name='type_id' value='{{type.id}}' id='type_{{type.id}}' onchange='tuit.setTicketType({{type.id}},"{{type.name|escape}}");'><label class='type_selector_label' id='type_{{type.id}}_selector_label' for='type_{{type.id}}'>{{ type.name|escape }}</label>{% endfor %}
+<div class='end_block'></div>
+</div>
 <div id='ticket_form'>
 </div>
 {% endif %}
 
-
 </form>
-
-
 
 {% endblock %}

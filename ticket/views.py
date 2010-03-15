@@ -113,7 +113,7 @@ def new(request, type_name=None):
         # We can't save more than half of the issue before getting an id for the line, so we do it in two phases
         
         # Phase 1
-        i.type = IssueType.objects.get(id=request.POST['type'])
+        i.type = IssueType.objects.get(id=request.POST['type_id'])
         events = i.apply_post(keys)
 
         i.create_description = '[]'
