@@ -19,6 +19,9 @@ tuit.checkEmailCheckboxes(default_mail);
 <input type='hidden' name='MAX_FILE_SIZE' value='1000000'/>
 <input type='hidden' name='type' value='{{ type.id|escape }}'/>
 
+
+{% if type %}
+
 <table class='striped wide'>
 
 
@@ -39,67 +42,23 @@ tuit.checkEmailCheckboxes(default_mail);
 </tbody>
 {% include "ticket_common.html" %}
 
-<!--
-<tr>
-<td>
- <label for='category'>Category:</label>
-</td>
-<td>
-<input id='category' name='category'/>
-</td>
-</tr>
--->
-
-<!--
-<tbody>
-<tr>
-<th colspan='2'>
-<button type='button' class='advanced_head'> Advanced options</button>
-</th>
-</tr>
-</tbody>
-
-<tbody class='advanced'>
-
-
-<tr>
-<td>
- <label for='fld'>Some random field:</label>
-</td>
-<td>
-<input id='fld' name='fld' value=""/>
-</td>
-</tr>
-
-
-<tr>
-<td>
- <label for='fld2'>Some other random field:</label>
-</td>
-<td>
-<input id='fld2' name='fld2' value=""/>
-</td>
-</tr>
-
-
-
-<tr>
-<td>
- <label for='insult'>Random insult:</label>
-</td>
-<td>
-<textarea id='insult' name='insult' class='rich_edit' style='height:20em; width:30em;'></textarea>
-</td>
-</tr>
-
-</tbody>
--->
-
 </table>
 
 <button type='submit'>{%trans "Create issue" %}</button>
 <input class='button' type='submit' name='continue' value='{%trans "Create and continue" %}' />
 
+{% else %}
+{% for type in types %}
+
+<input type='radio' name='type' value='{{type.id}}' id='type_{{type.id}}' onchange='tuit.setTicketType({{type.id}},"{{type.name|escape}}");'><label for='type_{{type.id}}'>{{ type.name }}</label>
+{% endfor %}
+<div id='ticket_form'>
+</div>
+{% endif %}
+
+
 </form>
+
+
 
 {% endblock %}

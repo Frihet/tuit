@@ -1,0 +1,51 @@
+%TMPL:INCLUDE{"foswiki"}%
+%TMPL:INCLUDE{"viewtopicactionbuttons"}%
+%TMPL:INCLUDE{"viewtopbar"}%
+%TMPL:INCLUDE{"viewsidebar"}%
+
+%TMPL:DEF{"styles:default"}%
+<link rel="stylesheet" href="/static/tuit.css" type="text/css" media="screen,projection" />
+<link rel="stylesheet" href="/static/foswiki.css" type="text/css" media="screen,projection" />
+<script type="text/javascript" src="/static/common/jquery.js"></script>
+<script type="text/javascript" src="/static/common/common.js"></script>
+<script type="text/javascript" src="/tuit/ticket/i18n.js"></script>
+<script type="text/javascript" src="/static/tuit.js"></script>
+%TMPL:END%
+
+%TMPL:DEF{"breadcrumb:separator"}% &gt; %TMPL:END%
+%TMPL:DEF{"breadcrumb"}%%TMPL:P{"breadcrumb:title"}%%TMPL:P{"breadcrumb:currentweb"}%%TMPL:P{"breadcrumb:parents"}%%TMPL:P{"breadcrumb:currenttopic"}%%TMPL:END%
+%TMPL:DEF{"breadcrumb:parents"}%%META{"parent" nowebhome="on" prefix="%TMPL:P{"breadcrumb:separator"}%" separator="%TMPL:P{"breadcrumb:separator"}%" suffix=""}%%TMPL:END%
+%TMPL:DEF{"breadcrumb:topic"}%<nop>%TOPIC%%TMPL:END%
+%TMPL:DEF{"breadcrumb:title"}%<a href="/tuit">Home</a>%TMPL:END%
+%TMPL:DEF{"breadcrumb:wikitoolname"}%[[%USERSWEB%.%HOMETOPIC%][%WIKITOOLNAME%]]%TMPL:END%
+%TMPL:DEF{"breadcrumb:currentweb"}%%TMPL:P{"breadcrumb:separator"}%<a href="%SCRIPTURLPATH{"view"}%/%WEB%/%HOMETOPIC%">%MAKETEXT{"[_1]" args="<nop>%WEB%"}%</a>%TMPL:END%
+%TMPL:DEF{"breadcrumb:annotation"}%%TMPL:END%
+%TMPL:DEF{"breadcrumb:currenttopic"}%%IF{"$ %HOMETOPIC% != $ %TOPIC%" then="%TMPL:P{breadcrumb:currenttopic:noroot}%"}%%TMPL:END%
+%TMPL:DEF{"breadcrumb:currenttopic:noroot"}%%TMPL:P{"breadcrumb:separator"}%<a href='%SCRIPTURL{view}%/%WEB%/%TOPIC%' title='%MAKETEXT{"Topic revision:"}% %REVINFO{format="$rev ($date - $time)"}%'>%TMPL:P{"breadcrumb:topic"}%</a>%TMPL:P{"breadcrumb:annotation"}%%TMPL:END%
+
+%TMPL:DEF{"top:toolbarbuttons"}%%TMPL:P{"more_link"}%%TMPL:END%
+%TMPL:DEF{"topbar"}%
+  <div class='menu_boxes no_print'>
+   <div class='menu_box menu_box1'>
+    <div class='logo'></div>
+    <ul class="user_info">
+     <li class='username'>%IF{"context authenticated" then='[[%WIKIUSERNAME%][%SPACEOUT{%WIKINAME%}%]]' else='[[%SYSTEMWEB%.UserRegistration][%MAKETEXT{"Register"}%]]'}%</li>
+     <li class="logout_button">%IF{"$ LOGOUT != ''" then='%LOGOUT%' else='%LOGIN%'}%</li>
+    </ul>
+    <div class='endbox'></div>
+   </div>
+   <div class='menu_box menu_box2'>
+    <div class='main_menu_target'></div>
+    <div class='endbox'></div>
+   </div>
+   <div class='menu_box menu_box3'>
+    <div class='breadcrumb'>%TMPL:P{"breadcrumb"}%</div>
+    <div class='endbox'></div>
+   </div>
+  </div>
+%TMPL:END%
+
+%TMPL:DEF{"main"}%%TMPL:P{"topbar"}%%TMPL:P{"sidebar"}%<div class='content'><div class='content_inner'>%TMPL:P{"broadcastmessage"}%%TMPL:P{"contentheaders"}%%TMPL:P{"formstart"}%%TMPL:P{"formtop"}%<div class="endbox"></div>%TMPL:P{"attachmentstop"}%<div class="patternContent"><div class="foswikiTopic">%TMPL:P{"content"}%</div><!-- /foswikiTopic-->%TMPL:P{"contentfooterstylewrapper"}%%TMPL:P{"formbottom"}%%TMPL:P{"attachmentsbottom"}%</div><!-- /patternContent-->%TMPL:P{"footernote"}%%TMPL:P{"formend"}%<div class="endbox"></div></div><div class='copyright'><a href='http://www.freecode.no'>© 2009 Freecode AS</a></div></div>%TMPL:END%
+
+%TMPL:DEF{"formtop"}%%TMPL:P{"form"}%%TMPL:END%
+%TMPL:DEF{"formbottom"}%%TMPL:END%

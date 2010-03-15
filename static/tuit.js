@@ -32,8 +32,7 @@ var tuit = {
 		    var a = document.createElement('a');
 		    a.innerHTML = name;
 		    a.href=url;
-		    c.appendChild(a);
-		    
+		    c.appendChild(a);		    
 		    r.appendChild(c);
 		};
 
@@ -47,7 +46,7 @@ var tuit = {
 
 			      
 			      function showMore(event){
-				  show_max += 10;
+				  show_max += 20;
 
 				  for (; number_shown<(count<show_max?count:show_max); number_shown++) {
 				      var el = result.ResultSet.Result[number_shown];
@@ -507,9 +506,18 @@ var tuit = {
 	}
 	
 	
+    },
+    
+    setTicketType: function(type_id, type_name){
+	$.get('/tuit/ticket/new/', {'type_id':type_id,'partial':'1'},	
+	      function (result, status) {
+		  $('#ticket_form')[0].innerHTML = result;
+	      }
+	      );
+	$('.widget_header h2')[0].innerHTML = type_name
+
     }
     
-
 
 };
 
