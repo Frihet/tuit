@@ -534,11 +534,8 @@ var tuit = {
 			      });
 	      }
 	      );
-	      //	$('.widget_header h2')[0].innerHTML = type_name
-
+	//	$('.widget_header h2')[0].innerHTML = type_name
     }
-    
-
 };
 
 $(document).ready(function(){

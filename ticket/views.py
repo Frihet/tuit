@@ -101,6 +101,8 @@ def new(request, type_name=None):
     if not type is None:
         keys['title'] = _('New %s') % type.name    
         keys['type'] = type
+    else:
+        keys['title'] = _('New issue')
 
     keys['ticket_new'] = True
     
@@ -180,6 +182,7 @@ def new(request, type_name=None):
 
     keys['types'] = IssueType.objects.all()
     keys['issue'] = i
+    keys['issue_default_type'] = properties['issue_default_type']
     insert_view_data(keys, request, properties['web_create_default_mail'])
     template = 'ticket_new.html'
     if 'partial' in request.GET:
@@ -284,6 +287,7 @@ def view(request,id=None):
     keys['title'] = _('Viewing %(issue_type)s "%(id)d - %(subject)s"')% {'id': i.id, 'issue_type':i.type.name, 'subject':i.subject}
     keys['issue'] = i
     keys['kb_name'] = studly(i.subject)
+
     insert_view_data(keys, request, properties['web_external_default_mail'])
     return tuit_render('ticket_view.html', keys, request)
     

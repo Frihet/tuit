@@ -43,11 +43,14 @@ var field_fill = {{ field_fill_json }};
 
 {% else %}
 <div class='type_list'>
-{% for type in types %}<input class='type_selector' type='radio' name='type_id' value='{{type.id}}' id='type_{{type.id}}' onchange='tuit.setTicketType({{type.id}},"{{type.name|escape}}");'><label class='type_selector_label' id='type_{{type.id}}_selector_label' for='type_{{type.id}}'>{{ type.name|escape }}</label>{% endfor %}
+{% for type in types %}<input class='type_selector' type='radio' name='type_id' value='{{type.id}}' id='type_{{type.id}}' onchange='tuit.setTicketType({{type.id}});'><label class='type_selector_label' id='type_{{type.id}}_selector_label' for='type_{{type.id}}'>{{ type.name|escape }}</label>{% endfor %}
 <div class='end_block'></div>
 </div>
 <div id='ticket_form'>
 </div>
+<script>
+tuit.setTicketType({{issue_default_type}});
+</script>
 {% endif %}
 
 </form>
