@@ -1,0 +1,182 @@
+/* colors */
+
+*,
+a,
+a:hover,
+a:visited {
+ color: #6C6C6C;
+}
+
+
+.bar1 {
+ background-color: #7a7a7a;
+}
+
+.bar1 a, .bar1 a:hover, .bar1 a:visited {
+ color: #ffffff;
+}
+
+.bar2 {
+ border-color: #f0f0f0;
+}
+
+.bar2 .copyright * {
+ color: #b7b7b7;
+}
+
+.bar2 .login-form .form-row {
+ background-color: #c5c5c5;
+ border-color: #c5c5c5;
+ color: #6C6C6C;
+}
+
+.bar2 .login-form .form-row label {
+ color: #ffffff;
+}
+
+.bar2 .login-form .form-row input {
+ background-color: #f0f0f0;
+ color: #6C6C6C;
+}
+
+.bar2 .login-form .submit-row,
+.bar2 .login-form .submit-row input{
+ background-color: #d52026;
+ color: #ffffff;
+}
+
+.bar4 {
+ border-color: #e95129;
+}
+
+.bar4 .menu ul li {
+ color: #6C6C6C;
+}
+
+
+
+
+/* Fonts and text styles */
+
+* {
+ font-family: sans-serif;
+}
+
+a,
+a:hover,
+a:visited {
+ text-decoration: none;
+}
+
+.bar1 {
+ font-variant: small-caps;
+ font-eight: bold;
+}
+
+.bar4 .menu ul li {
+ list-style-type: square;
+}
+
+
+
+
+/* Sizes and positions */
+
+body {
+ margin: 0;
+ padding: 0;
+}
+
+.bar {
+ margin-left: 13%;
+ margin-right: 13%;
+}
+
+.bar1 {
+ margin-left: 0;
+ margin-right: 0;
+ text-align: left;
+ font-size: 8pt;
+ padding-left: 40pt;
+ padding-top: 25pt;
+ padding-bottom: 15pt;
+}
+
+.bar2 {
+ border-top-width: 15pt;
+ border-top-style: solid;
+ padding-top: 10pt;
+ padding-bottom: 30pt;
+}
+
+.bar2 .logo {
+ float: left;
+}
+
+.bar2 .copyright {
+ float: right;
+ font-size: 7pt;
+ text-align: right;
+ padding-right: 5pt;
+}
+
+.bar2 .login-form {
+ float: right;
+ font-size: 9pt;
+}
+
+.bar2 .login-form .form-row {
+ border-width: 1pt;
+ border-style: solid;
+ margin-bottom: 2pt;
+ text-align: right;
+}
+
+.bar2 .login-form .form-row *,
+.bar2 .login-form .submit-row * {
+ padding: 2pt;
+ font-size: 8pt;
+}
+
+.bar2 .login-form .form-row input {
+ width: 130pt;
+}
+
+
+.bar2 .login-form .form-row input,
+.bar2 .login-form .submit-row input {
+ border-style: none;
+}
+
+.bar2 .login-form .submit-row {
+ margin-right: 135pt; /* (.form-row input).width + (.form-row input).padding*2 + (.form-row input).border = 130+2*2+1 */
+ text-align: right;
+}
+
+.bar4 {
+ border-top-width: 3pt;
+ border-top-style: solid;
+ padding-top: 20pt;
+}
+
+.bar4 .menu {
+ float: left;
+ width: 25%;
+}
+
+.bar4 .menu h1 {
+ font-size: 12pt;
+ margin-bottom: 2pt;
+}
+
+.bar4 .menu ul {
+ margin-top: 0;
+ padding-left: 15pt;
+ font-size: 9pt;
+}
+
+.bar4 .promotionimage {
+ left: 25%;
+ position: absolute;
+}
+

@@ -4,9 +4,7 @@
 {% load i18n %}
   <head>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-    <link rel="stylesheet" href="/static/common/common.css" type="text/css" media="screen,projection" />
-    <link rel="stylesheet" href="/static/tuit.css" type="text/css" media="screen,projection" />    
-    <link rel="stylesheet" href="/static/tuit-print.css" type="text/css" media="print" />
+    <link rel="stylesheet" href="/static/login.css" type="text/css" media="screen,projection" />    
 
     <script type="text/javascript" src="/static/common/jquery.js"></script>
     <script type="text/javascript" src="/static/common/common.js"></script>
@@ -18,35 +16,86 @@
   
   <body>
 
-{% if error_message %}
-<p class="errornote">{{ error_message }}</p>
-{% endif %}
-<div class="login-content">
-<form action="{{ app_path }}" method="post" id="login-form">
-  <div class="form-row">
-    <label for="id_username">{% trans 'Username:' %}</label> <input type="text" name="username" id="id_username" />
-  </div>
-  <div class="form-row">
-    <label for="id_password">{% trans 'Password:' %}</label> <input type="password" name="password" id="id_password" />
-    <input type="hidden" name="this_is_the_login_form" value="1" />
-    <input type="hidden" name="post_data" value="{{ post_data }}" /> {#<span class="help">{% trans 'Have you <a href="/password_reset/">forgotten your password</a>?' %}</span>#}
-  </div>
-  <div class="submit-row">
-    <label>&nbsp;</label><input type="submit" value="{% trans 'Log in' %}" />
-  </div>
-</form>
+    <div class="bar bar1">
+     <a href="http://www.freetil.no">www.FreeTil.no</a>
+    </div>
 
-<script type="text/javascript">
-document.getElementById('id_username').focus()
-</script>
-</div>
+    <div class="bar bar2">
+      <img src="/static/logo_white.gif" class="logo">
 
+      <form action="{{ app_path }}" method="post" class="login-form">
+	<div class="form-row">
+	  <label for="id_username">{% trans 'Username' %}</label> <input type="text" name="username" id="id_username" />
+	</div>
+	<div class="form-row">
+	  <label for="id_password">{% trans 'Password' %}</label> <input type="password" name="password" id="id_password" />
+	  <input type="hidden" name="this_is_the_login_form" value="1" />
+	  <input type="hidden" name="post_data" value="{{ post_data }}" /> {#<span class="help">{% trans 'Have you <a href="/password_reset/">forgotten your password</a>?' %}</span>#}
+	</div>
+	<div class="submit-row">
+	  <input type="submit" value="{% trans 'Log in' %}" />
+	</div>
+	<script type="text/javascript">
+	  document.getElementById('id_username').focus()
+	</script>
+      </form>
 
-<div class='copyright'>
-  <a href='http://www.freecode.no'>© 2009 Freecode AS</a>
-</div>
-<script type='text/javascript'>
-  stripe();
-</script>
+      <div class='copyright'>
+        <div><a href='http://www.freecode.no'>© 2009 Freecode AS</a></div>
+        <div><a href="http://www.gnu.org/philosophy/free-sw.html">Free software</a></div>
+        <div>Licensed under <a href="http://www.fsf.org/licensing/licenses/gpl.html">GPL3</a>+<a href="http://www.opensource.org/licenses/PythonSoftFoundation.php">PSF</a></div>
+      </div>
+
+      <div style="clear: both"></div>
+    </div>
+
+    {% if error_message %}
+      <div class="bar bar3">
+        {{ error_message }}
+      <div>
+    {% endif %}
+
+    <div class="bar bar4">
+      <div class="menu">
+	<h1><a href="http://www.itframeworks.org/wiki/Category:ITIL">ITIL</a></h1>
+	<ul>
+	  <li><a href="http://www.itframeworks.org/wiki/Category:CSI">CSI</a></li>
+	  <li><a href="http://www.itframeworks.org/wiki/Category:ITIL_Job_descriptions">ITIL Job descriptions</a></li>
+	  <li><a href="http://www.itframeworks.org/wiki/Category:ITIL_functions">ITIL functions</a></li>
+	  <li><a href="http://www.itframeworks.org/wiki/Category:ITIL_life_cycle_phases">ITIL life cycle phases</a></li>
+	  <li><a href="http://www.itframeworks.org/wiki/Category:ITIL-Images">ITIL-Images</a></li>
+	  <li><a href="http://www.itframeworks.org/wiki/Category:ITIL-Policies">ITIL-Policies</a></li>
+	  <li><a href="http://www.itframeworks.org/wiki/Category:ITIL-definitions">ITIL-definitions</a></li>
+	  <li><a href="http://www.itframeworks.org/wiki/Category:Service_Design">Service Design</a></li>
+	  <li><a href="http://www.itframeworks.org/wiki/Category:Service_Operation">Service Operation</a></li>
+	  <li><a href="http://www.itframeworks.org/wiki/Category:Service_Strategy">Service Strategy</a></li>
+	  <li><a href="http://www.itframeworks.org/wiki/Category:Service_Transition">Service Transition</a></li>
+	</ul>
+	<h1><a href="http://www.itframeworks.org/wiki/Category:ITIL">ITIL</h1>
+	<ul>
+	  <li><a href="http://www.itframeworks.org/wiki/Category:CSI">CSI</a></li>
+	  <li><a href="http://www.itframeworks.org/wiki/Category:ITIL_Job_descriptions">ITIL Job descriptions</a></li>
+	  <li><a href="http://www.itframeworks.org/wiki/Category:ITIL_functions">ITIL functions</a></li>
+	  <li><a href="http://www.itframeworks.org/wiki/Category:ITIL_life_cycle_phases">ITIL life cycle phases</a></li>
+	  <li><a href="http://www.itframeworks.org/wiki/Category:ITIL-Images">ITIL-Images</a></li>
+	  <li><a href="http://www.itframeworks.org/wiki/Category:ITIL-Policies">ITIL-Policies</a></li>
+	  <li><a href="http://www.itframeworks.org/wiki/Category:ITIL-definitions">ITIL-definitions</a></li>
+	  <li><a href="http://www.itframeworks.org/wiki/Category:Service_Design">Service Design</a></li>
+	  <li><a href="http://www.itframeworks.org/wiki/Category:Service_Operation">Service Operation</a></li>
+	  <li><a href="http://www.itframeworks.org/wiki/Category:Service_Strategy">Service Strategy</a></li>
+	  <li><a href="http://www.itframeworks.org/wiki/Category:Service_Transition">Service Transition</a></li>
+	</ul>
+      </div>
+
+      <div class="promotionimage">
+	<map name="ImageMap_1_2050343339">
+	  <area title="Define a vision for your IT organisation that is aligned with the Business." alt="Define a vision for your IT organisation that is aligned with the Business." coords="246,107,415,143" shape="rect" href="http://www.itframeworks.org/wiki/Category:Strategy_Generation_Management"/><area title="Control your IT expenses!" alt="Control your IT expenses!" coords="416,107,707,143" shape="rect" href="http://www.itframeworks.org/wiki/Category:Financial_Management"/><area title="Ensure correct handling of future expectations and requirements." alt="Ensure correct handling of future expectations and requirements." coords="246,144,344,180" shape="rect" href="http://www.itframeworks.org/wiki/Category:Demand_Management"/><area title="Provide assurance of IT services." alt="Provide assurance of IT services." coords="345,144,707,180" shape="rect" href="http://www.itframeworks.org/wiki/Category:Service_Portfolio_Management"/><area title="Ensure agreement with your customer on services." alt="Ensure agreement with your customer on services." coords="236,181,344,307" shape="rect" href="http://www.itframeworks.org/wiki/Category:Service_Level_Management"/><area title="Guarantee an up to date service menu." alt="Guarantee an up to date service menu." coords="345,180,707,216" shape="rect" href="http://www.itframeworks.org/wiki/Category:Service_Catalog_Management"/><area title="Ensure the correct capacity of your services." alt="Ensure the correct capacity of your services." coords="345,217,415,289" shape="rect" href="http://www.itframeworks.org/wiki/Category:Capacity_Management"/><area title="Ensure the correct avalability of your services." alt="Ensure the correct avalability of your services." coords="416,217,490,289" shape="rect" href="http://www.itframeworks.org/wiki/Category:Availability_Management"/><area title="Plan for the unexpected." alt="Plan for the unexpected." coords="491,217,562,289" shape="rect" href="http://www.itframeworks.org/wiki/Category:IT_Service_Continuity_Management"/><area title="Ensure appropriate security for your services." alt="Ensure appropriate security for your services." coords="563,217,635,289" shape="rect" href="http://www.itframeworks.org/wiki/Category:Information_Security_Management"/><area title="Control who delivers to us." alt="Control who delivers to us." coords="636,217,707,289" shape="rect" href="http://www.itframeworks.org/wiki/Category:Supplier_Management"/><area title="Reply to user requests in a service minded manner." alt="Reply to user requests in a service minded manner." coords="236,307,417,343" shape="rect" href="http://www.itframeworks.org/wiki/Category:Request_Fulfilment_Management"/><area title="Solve the unexpected in the daily operations!" alt="Solve the unexpected in the daily operations!" coords="236,344,345,379" shape="rect" href="http://www.itframeworks.org/wiki/Category:Incident_Management"/><area title="Detect and sort activities in your IT infrastructure." alt="Detect and sort activities in your IT infrastructure." coords="236,379,327,416" shape="rect" href="http://www.itframeworks.org/wiki/Category:Event_Management"/><area title="Ensure correct access to your services." alt="Ensure correct access to your services." coords="236,417,308,452" shape="rect" href="http://www.itframeworks.org/wiki/Category:Access_Management"/><area title="Fix the unexpected in the daily operations." alt="Fix the unexpected in the daily operations." coords="345,344,417,452" shape="rect" href="http://www.itframeworks.org/wiki/Category:Problem_Management"/><area title="Reduce mistakes effecting Business." alt="Reduce mistakes effecting Business." coords="418,307,472,452" shape="rect" href="http://www.itframeworks.org/wiki/Category:Change_Management"/><area title="Control the changes to the IT infrastructure." alt="Control the changes to the IT infrastructure." coords="472,307,707,344" shape="rect" href="http://www.itframeworks.org/wiki/Category:Transition_Planning_and_Support_Management"/><area title="Predicted performance vs. Actual performance." alt="Predicted performance vs. Actual performance." coords="472,367,535,452" shape="rect" href="http://www.itframeworks.org/wiki/Category:Evaluation_Management"/><area title="Change services without unexpected downtime." alt="Change services without unexpected downtime." coords="536,344,615,452" shape="rect" href="http://www.itframeworks.org/wiki/Category:Release_and_Deployment_Management"/><area title="Assure that your service does what is intended." alt="Assure that your service does what is intended." coords="615,344,689,452" shape="rect" href="http://www.itframeworks.org/wiki/Category:Validation_and_Testing_Management"/><area title="Keep the knowledge in your company!" alt="Keep the knowledge in your company!" coords="236,453,689,475" shape="rect" href="http://www.itframeworks.org/wiki/Category:Knowledge_Management"/><area title="Keep track of how your services are interconnected." alt="Keep track of how your services are interconnected." coords="236,476,689,499" shape="rect" href="http://www.itframeworks.org/wiki/Category:Service_Assets_and_Configuration_Management"/><area title="Know how to measure your services." alt="Know how to measure your services." coords="234,510,392,535" shape="rect" href="http://www.itframeworks.org/wiki/Category:Service_Measurement_Management"/><area title="Ensure correct analysis of your services." alt="Ensure correct analysis of your services." coords="392,510,549,535" shape="rect" href="http://www.itframeworks.org/wiki/Category:Service_Reporting_Management"/><area title="Standstill = Decline!" alt="Standstill = Decline!" coords="550,510,707,535" shape="rect" href="http://www.itframeworks.org/wiki/Category:CSI"/><area title="Friendly and helpful single point of contact for your users." alt="Friendly and helpful single point of contact for your users." coords="215,307,235,499" shape="rect" href="http://www.itframeworks.org/wiki/Service_Desk"/><area title="Contract between you and your customers." alt="Contract between you and your customers." coords="209,181,235,307" shape="rect" href="http://www.itframeworks.org/wiki/Service_Level_Agreement"/>
+	  </map>
+	  <img border="0" width="800" height="600" usemap="#ImageMap_1_2050343339" src="/static/800px-ITILv3_TheMap.png" alt=""/>
+	  <div style="margin-left: 0px; margin-top: -20px; text-align: left;">
+	  <a title="About this image" href="http://www.itframeworks.org/wiki/Image:ITILv3_TheMap.png"><img style="border: medium none ;" src="/static/desc-20.png" alt="About this image"/></a>
+	</div>
+      </div>
+    </div>
   </body>
 </html>
