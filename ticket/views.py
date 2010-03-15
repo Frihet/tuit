@@ -97,7 +97,6 @@ def new(request, type_name=None):
         type = IssueType.objects.get(name=type_name)
     elif 'type_id' in request.GET:
         type = IssueType.objects.get(id=int(request.GET['type_id']))
-        print "LFASDFASDFASDFASDFASFASDFAASDFFDAS\n\n\n\n\n";
 
     if not type is None:
         keys['title'] = _('New %s') % type.name    
@@ -175,8 +174,10 @@ def new(request, type_name=None):
             for it in ('subject','description','category','impact_string','urgency_string','requester_string','assigned_to_string','cc_string','co_responsible_string'):
                 wrap_dict[it] =getattr(template, it)
             i=ModelWrapper(i, wrap_dict)
+        else:
+            for mail_checkbox in properties['web_create_default_mail']:
+                keys[mail_checkbox + "_email"] = "yes"
 
-    keys['create_default_mail_json'] = to_json(properties['web_create_default_mail'])
     keys['types'] = IssueType.objects.all()
     keys['issue'] = i
     insert_view_data(keys, request, properties['web_create_default_mail'])
