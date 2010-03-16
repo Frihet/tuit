@@ -330,7 +330,7 @@ class Issue(models.Model):
     subject = models.CharField(maxlength=256)
     
     # HTML is ok in this field
-    description = models.CharField(maxlength=8192)
+    description = models.CharField(maxlength=819200)
     impact = models.IntegerField()
     urgency = models.IntegerField()
     creation_date = models.DateTimeField(auto_now_add=True)
@@ -338,7 +338,7 @@ class Issue(models.Model):
     
     # This field contains optional additional information about this
     # update, serialized in the JSON format. Leave it blank.
-    create_description = models.CharField(maxlength=8192)
+    create_description = models.CharField(maxlength=819200)
     creator = models.ForeignKey(User, related_name='created')
 
     location = models.CharField(maxlength=256, blank=True)
@@ -1139,7 +1139,7 @@ class IssueFieldValue(models.Model):
 
     issue = models.ForeignKey(Issue)                          
     field = models.ForeignKey(IssueField)                     
-    value = models.CharField(maxlength=8192)                  
+    value = models.CharField(maxlength=819200)                  
    
 class IssueUpdate(models.Model):
     """
@@ -1155,11 +1155,11 @@ class IssueUpdate(models.Model):
     contact = models.ForeignKey(Contact,null=True,blank=True)
     
     # HTML ok in this field
-    comment = models.CharField(maxlength=8192)
+    comment = models.CharField(maxlength=819200)
 
     # This field contains optional additional information about this
     # update, serialized in the JSON format.
-    description = models.CharField(maxlength=8192)
+    description = models.CharField(maxlength=819200)
 
     creation_date = models.DateTimeField(auto_now_add=True)
 
