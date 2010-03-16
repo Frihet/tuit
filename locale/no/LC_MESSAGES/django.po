@@ -536,14 +536,12 @@ msgid "KB Adminstration"
 msgstr "KB-administrasjon"
 
 #: templates/admin/tuitadmin.html:26
-#, fuzzy
 msgid ""
 "The KB Adminstration module lets an administrator edit KB settings such as "
-"web subdivissions and access control."
+"web subdivisions and access control."
 msgstr ""
-"Modulen Systeminnstillinger gir en administrator adgang til å redigere "
-"systeminnstillinger som menyinnhold og typer søk.  Denne modulen inneholder "
-"også autentiseringsinnstillinger og administrasjon av brukertilgang."
+"Modulen KB-administrasjon gir en administrator adgang til å redigere "
+"KB-innstillinger systeminnstillinger som web-inndelinger og brukertilgang."
 
 #: templates/admin/tuitadmin.html:29
 msgid "The Log Viewer module displays the event log in a table format."
