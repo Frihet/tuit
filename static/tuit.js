@@ -511,7 +511,7 @@ var tuit = {
 	$("#type_"+type_id+"_selector_label").addClass("selected");
 	$.get('/tuit/ticket/new/', {'type_id':type_id,'partial':'1'},	
 	      function (result, status) {
-		  $('#ticket_form')[0].innerHTML = result;
+	       $('#ticket_form').html(result);
 		  
 		  var d = $('#ticket_form')[0].getElementsByTagName("script");
 		  var t = d.length
