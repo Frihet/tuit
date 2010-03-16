@@ -98,6 +98,10 @@ table * {
     border-bottom-color: white;
 }
 
+.ticket_type_list
+{
+    list-style: None;
+}
 
 /**** Styling of popups ****/
 .popup {
