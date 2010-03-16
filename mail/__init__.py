@@ -86,6 +86,7 @@ import os
 from email.Header import decode_header
 from tuit.ticket.models import *
 from tuit.util import email_valid, properties
+import tuit.scrubber
 
 import email.mime.image
 import email.mime.audio
@@ -155,8 +156,7 @@ def scrub_html_email(text, cid_mapping={}):
 
     mapped = soup.renderContents()
 
-    from scrubber import Scrubber
-    scrubber = Scrubber(autolink=False)
+    scrubber = tuit.scrubber.Scrubber(autolink=False)
 
     # The scrubber removes complete html documents out of the box? Weird...
     scrubber.disallowed_tags_save_content.add('html')
@@ -428,8 +428,8 @@ class Mailer:
         if username:
             s.login(username, password)
         
-        s.sendmail(sender, recipient.email
-                   , msg.as_string())
+        s.sendmail("", recipient.email, # Empty sender as per http://marc.merlins.org/netrants/autoresponders.txt
+                   msg.as_string())
         s.quit()
         logging.getLogger('mail').info('Sent email with subject %s to %s' % (subject, recipient))
       except:
@@ -502,16 +502,15 @@ class Message(mimetools.Message):
     def subject(self):
         return self.getheader('subject') or None
 
-    @property
-    def from_address(self):
-        f = self.getheader('from') or None
+    def from_address(self, header = 'from'):
+        f = self.getheader(header) or None
         if email_valid(f):
             return f
-        m=re.search(r'(.*[^ ]) *<([^\s<>]+@[a-z0-9_.]+)>', f)
+        m=re.search(r'(.*[^ ])? *<([^\s<>]+@[a-z0-9_.]+)>', f)
         if m:
             return m.groups()[1]
 
-    @property 
+    @property
     def from_name(self):
         f = self.getheader('from') or None
         if email_valid(f):
@@ -985,17 +984,22 @@ class MailGW:
                 return 1
             for i in range(1, numMessages+1):
                 (typ, data) = server.fetch(str(i), '(RFC822)')
-
-                # process the message
                 s = cStringIO.StringIO(data[0][1])
                 s.seek(0)
-#                try:
-                message_status = self.process_message(Message(s))
-#                except :
-#                    message_status='error'
-                # copy the message and mark it as deleted.
-
                 
+                m = Message(s)
+
+                if m.from_address('from') != m.from_address('return-path'):
+                    logging.getLogger('mail/loop').error('Possible mail loop: from address (%s) != return path (%s)' % (m.from_address('from'), m.from_address('return-path')))
+                    message_status = 'mail_loop'
+                else:
+                    try:
+                        message_status = self.process_message(m)
+                    except:
+                        message_status='error'
+
+                # copy the message and mark it as deleted.
+         
                 box_name = message_status
                 # Don't check return status - if we failed, either it
                 # means the directory existed, or the next operation
@@ -1027,9 +1031,9 @@ class MailGW:
         impact = properties['issue_default_impact']
         urgency = properties['issue_default_urgency']
 
-        u = User.objects.filter(email=message.from_address)
+        u = User.objects.filter(email=message.from_address())
         if len(u) == 0:
-            self.logger.error('Unknown user: %s'% message.from_address)
+            self.logger.error('Unknown user: %s'% message.from_address())
             return 'unmatched_user'
         
         user=u[0]
@@ -1120,17 +1124,17 @@ class MailGW:
         user = None
         contact = None
         try:
-            u = User.objects.filter(email=message.from_address)
+            u = User.objects.filter(email=message.from_address())
             if len(u) == 0:
                 contact = make_contact(message.from_full)
 #                return "unmatched_user"
-#                u = Contact.objects.filter(email=message.from_address)
+#                u = Contact.objects.filter(email=message.from_address())
 #                if len(u) == 0:
 #                    self.logger.error("Recived email with subject %s from user %s, but no such user could be found" % )
             else:
                 user=u[0]
         except:
-            self.logger.error("Recived email from %s, but user is unknown" % message.from_address)
+            self.logger.error("Recived email from %s, but user is unknown" % message.from_address())
             return 'unmatched_user'
 
         iu = IssueUpdate(issue=i,
