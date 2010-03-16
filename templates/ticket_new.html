@@ -10,10 +10,10 @@ var field_fill = {{ field_fill_json }};
 
 </script>
 
+{% if type %}
 <form  enctype="multipart/form-data"  method='post' action='' accept-charset='utf-8'>
 <input type='hidden' name='MAX_FILE_SIZE' value='1000000'/>
 
-{% if type %}
 
 <input type='hidden' name='type_id' value='{{ type.id|escape }}'/>
 <table class='striped wide'>
@@ -40,10 +40,12 @@ var field_fill = {{ field_fill_json }};
 
 <button type='submit'>{%trans "Create issue" %}</button>
 <input class='button' type='submit' name='continue' value='{%trans "Create and continue" %}' />
+</form>
 
 {% else %}
+<!--
 <div class='type_list'>
-{% for type in types %}<input class='type_selector' type='radio' name='type_id' value='{{type.id}}' id='type_{{type.id}}' onchange='tuit.setTicketType({{type.id}});'><label class='type_selector_label' id='type_{{type.id}}_selector_label' for='type_{{type.id}}'>{{ type.name|escape }}</label>{% endfor %}
+{% for type in types %}<input class='type_selector' type='radio' name='type_id' value='{{type.id}}' id='type_{{type.id}}' onchange='tuit.setTicketType({{type.id}});'><label cla
 <div class='end_block'></div>
 </div>
 <div id='ticket_form'>
@@ -51,8 +53,17 @@ var field_fill = {{ field_fill_json }};
 <script>
 tuit.setTicketType({{issue_default_type}});
 </script>
+-->
+<form method='get' action='' accept-charset='utf-8'>
+  <ul class='ticket_type_list'>
+    {% for type in types %}
+    <li><input type='radio' name='type' value='{{type.name|escape}}' id='type_{{type.id}}'><label id='type_{{type.id}}_selector_label' for='type_{{type.id}}'>{{ type.name|escape }}</label></li>
+    {% endfor %}
+  </ul>
+  <button type='submit'>{% trans "Send" %}</button>
+</form>
+
 {% endif %}
 
-</form>
 
 {% endblock %}
