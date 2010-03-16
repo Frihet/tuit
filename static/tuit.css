@@ -511,7 +511,9 @@ thead th {
 /**** Styling of popups ****/
 .popup {
  display: none;
- position: absolute;
+ position: fixed;
+ *position: absolute; /* IE7 hack */
+ _position: absolute; /* IE6 hack */
  left: 13%;
  margin-left: 130pt;
  padding-top: 25pt;
