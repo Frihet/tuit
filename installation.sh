@@ -168,7 +168,7 @@ In /etc/foswiki/LocalSite.cfg:
 
 # FIXME: What about installing the templates?
 
-# FXIME: What about WebLeftBar
+# To change the left hand menu, edit the topic WebLeftBar in the System web.
 
 # FXIME: What about initial content?
 
