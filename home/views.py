@@ -49,7 +49,7 @@ def home(request):
 #               Issue.objects.exclude(current_status__in = status_closed).filter(assigned_to=request.user).extra(select={'priority_placeholder':'impact+urgency'}).order_by('-priority_placeholder'),
 #               request, 'my_priority'),
 #        Widget(_('My last updates'),
-#               IssueUpdate.objects.order_by('-creation_date').filter(user=request.user).distinct('issu#e_id'), request, 'my_latest_updates', class_names='full_width'),
+#               IssueUpdate.objects.order_by('-creation_date').filter(user=request.user).distinct('issu#e_id'), request, 'my_latest_updates', class_names='widget_2'),
 #        Widget(_('Latest unassigned, open tickets'),
 #               Issue.objects.exclude(current_status__in = status_closed).filter(assigned_to__isnull=True).order_by('creation_date'),
 #               request,'unassigned_latest'),

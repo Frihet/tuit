@@ -82,7 +82,7 @@ def show(request, id=None, uname=None):
                request,
                'owned'),
         Widget(_('This users last updates'),
-               last_updates, request, 'updates',class_names='full_width'),
+               last_updates, request, 'updates',class_names='widget_2'),
         ]
     
     keys['title'] = "Details for user %s" % user.username

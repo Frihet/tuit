@@ -42,7 +42,7 @@ def tuit_render(name, keys, request):
 
     last_updates = IssueUpdate.objects.order_by('-creation_date').filter(user=request.user).distinct('issue_id')
     keys['recent_updates'] = Widget(_('Latest updates'),
-                                    last_updates, request, 'my_updates',class_names='full_width',
+                                    last_updates, request, 'my_updates',class_names='widget_2',
                                     style='list',
                                     columns = (('update','update'),))
 
