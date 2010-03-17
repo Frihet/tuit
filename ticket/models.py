@@ -628,7 +628,7 @@ class Issue(models.Model):
                     try:
                         new = int(values[el.field.name])
                     except:
-                        self.error(el.field.name, _('Invalid value: %s.') % values[el.field.name])
+                        self.error(el.field.short_description, _('Invalid value: %s.') % values[el.field.name])
                         continue
                     if old != new:
                         el.value.item = IssueFieldDropdownItem.objects.get(id=new)
@@ -660,9 +660,9 @@ class Issue(models.Model):
                         el.value.value = new
                         events.append({'field':el.field.name, 'old':old, 'new':new})
                     if new == "" and not el.field.blank:
-                        self.error(el.field.name, _('This field is required.'))
+                        self.error(el.field.short_description, _('This field is required.'))
             elif not el.field.blank:
-                self.error(el.field.name, _('This field is required.'))
+                self.error(el.field.short_description, _('This field is required.'))
 
         return events
 
@@ -1207,7 +1207,7 @@ class IssueUpdate(models.Model):
                         return str
                     text = truncate(remove_html_tags(self.comment),24)
                     return "<a href='%s'>%s</a>" % (self.issue.url_internal, text)
-
+                                        
                 elif col == 'creation_date':
                     return datetime_format(self.creation_date)
                 else:

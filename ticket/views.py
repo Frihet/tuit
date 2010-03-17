@@ -120,13 +120,20 @@ def new(request, type_name=None):
 
         i.create_description = '[]'
 
-        print 'FOO', request.POST
-        print 'Issue of type', i.type
-
         errors = i.validate()
-
-        print 'BAR', errors
-
+        # FIXME: Ugly hack to get field names trasnslated in error
+        # messages. Drop when we have fully dynamic forms in R2.
+        name_lookup = dict(map(lambda i:(i.name, i.short_description),IssueField.objects.all()))
+        print name_lookup
+        formated_errors = {}
+        for key, value in errors.iteritems():
+            if key in name_lookup:
+                formated_errors[name_lookup[key]] = value
+            elif key + "_string" in name_lookup:
+                formated_errors[name_lookup[key+"_string"]] = value
+            else:
+                formated_errors[key] = value
+        errors = formated_errors
         if not errors:
             i.save()
 
