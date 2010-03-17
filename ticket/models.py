@@ -59,6 +59,9 @@ def user_name(u):
 User.format = property(format_user_email)
 User.name = property(user_name)
 
+# Disable the 'Show on net site' link in admin backend
+del User.get_absolute_url
+
 def get_user(name):
     """
     Return user with specified name, or None if no such user exists.
