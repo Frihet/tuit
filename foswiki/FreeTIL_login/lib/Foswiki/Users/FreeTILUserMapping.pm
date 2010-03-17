@@ -1,7 +1,6 @@
 # Module of Foswiki - The Free and Open Source Wiki, http://foswiki.org/
 #
-# Copyright (C) 2006-2009 Michael Daum http://michaeldaumconsulting.com
-# Portions Copyright (C) 2006 Spanlink Communications
+# Copyright (C) 2010 Egil Möller, FreeCode AS <egil.moller@freecode.no>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -27,8 +26,8 @@ sub new {
 
   my $this = bless($class->SUPER::new($session), $class);
 
-  $this->{authUser} = $session->{loginManager}->{_freetil_user}; #$session->{loginManager}->{_cgisession}->param('FREETIL_USER');
-  @{$this->{eachGroupMember}} = @{$session->{loginManager}->{_freetil_groups}}; #split(/,/, $session->{loginManager}->{_cgisession}->param('FREETIL_GROUPS'));
+  $this->{authUser} = $session->{loginManager}->{_freetil_user};
+  @{$this->{eachGroupMember}} = @{$session->{loginManager}->{_freetil_groups}};
   return $this;
 }
 
@@ -38,17 +37,11 @@ sub addUser {
 
 sub getLoginName {
   my ($this, $cUID) = @_;
-  print "\n\n";
-  print $cUID;
-  die(1);
   return $cUID;
 }
 
 sub getWikiName {
   my ($this, $cUID) = @_;
-  print "\n\n";
-  print $cUID;
-  die(1);
   return $cUID;
 }
 
@@ -61,7 +54,8 @@ sub userExists {
 }
 
 sub eachUser {
-  return new Foswiki::ListIterator(());
+  my ($this) = @_;
+  return new Foswiki::ListIterator(($this->{authUser}));
 }
 
 sub findUserByEmail {
@@ -70,27 +64,16 @@ sub findUserByEmail {
 
 sub findUserByWikiName {
   my ($this, $wikiName) = @_;
-  print "\n\n";
-  print $wikiName;
-  die(1);
   return ($wikiName);
 }
 
 sub login2cUID {
   my ($this, $name, $dontcheck) = @_;
-  print "\n\n";
-  print $name;
-  die(1);
   return $name;
 }
 
 sub eachGroupMember {
   my ($this, $groupName, $seen) = @_;
-
-  # print "\n\n";
-  # print "GROUP: ", $groupName, "\n";
-  # print "GROUPS: ", join(", ", @{$this->{eachGroupMember}}), "\n";
-  # print "\n\n";
 
   if (grep { "$_" eq "$groupName" } @{$this->{eachGroupMember}}) {
     return new Foswiki::ListIterator([$this->{authUser}]);
@@ -99,25 +82,17 @@ sub eachGroupMember {
 }
 
 sub isGroup {
-    my ($this, $groupName) = @_;
-    return grep { "$_" eq "$groupName" } @{$this->{eachGroupMember}};
+  my ($this, $groupName) = @_;
+  return grep { "$_" eq "$groupName" } @{$this->{eachGroupMember}};
 }
 
 sub eachGroup {
-    my ($this) = @_;
-    return new Foswiki::ListIterator(@{$this->{eachGroupMember}});
+  my ($this) = @_;
+  return new Foswiki::ListIterator(@{$this->{eachGroupMember}});
 }
-
-
-
 
 sub eachMembership {
   my ($this, $cUID) = @_;
-
-  print "\n\n";
-  print "GROUPS: ", $this->{loginManager}->{_cgisession}->param('FREETIL_GROUPS');
-  print "\n\n";
-  die(1);
 
   my @groups = $this->getListOfGroups();
 

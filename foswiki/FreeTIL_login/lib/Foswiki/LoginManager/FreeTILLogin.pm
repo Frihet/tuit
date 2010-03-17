@@ -1,6 +1,6 @@
 # Module of Foswiki - The Free and Open Source Wiki, http://foswiki.org/
 #
-# Copyright (C) 2007-2009 Michael Daum http://michaeldaumconsulting.com
+# Copyright (C) 2010 Egil Möller, FreeCode AS <egil.moller@freecode.no>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -54,15 +54,6 @@ sub _LOGOUT {
     return '';
 }
 
-
-sub forceAuthentication {
-    return 0;
-}
-
-sub loginUrl {
-    return '/tuit/account/login/';
-}
-
 sub getUser {
     my $this = shift;
 
@@ -96,7 +87,6 @@ sub getUser {
 	    my $response_data = jsonToObj($response_body);
 
 	    if (!$response_data->{'username'}) {
-		print "\n\nUnable to authenticate\n"; die(1);
 		$this->{session}->{response}
 		  ->redirect( -url => "/tuit/account/login/");
                 return;
@@ -107,7 +97,6 @@ sub getUser {
 
 	    return $response_data->{'username'};
     } else {
-	print "\n\nUnable to fetch auth data\n"; die(1);
 	Foswiki::LoginManager::_trace(
 	    $this,
 	    "Unable to fetch login data from FreeTIL: " .$curl->strerror($retcode)." ($retcode)\n");
@@ -115,13 +104,6 @@ sub getUser {
 	    ->redirect( -url => "/tuit/account/login/");
 
     }
-}
-
-sub loadSession {
-    my $this = shift;
-    my $authUser = $this->SUPER::loadSession(@_);
-
-    return $this->getUser();
 }
 
 1;
