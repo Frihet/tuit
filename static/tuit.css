@@ -128,6 +128,11 @@ table * {
     color: #ffffff;
 }
 
+.patternContent h1
+{
+    background-color:#6c6c6c;
+    color: #ffffff;
+}
 /**** Styling of mouseovers ****/
 :hover.mouseoverowner .onmouseover {
  background-color: #ecebeb;
@@ -736,3 +741,12 @@ button {
 {
     text-decoration: none;
 }
+/************ foswiki header************/
+.patternContent h1
+{
+    display:block;
+    width: 100%;
+    padding: 4pt;
+    font-size: 12pt;
+}
+
