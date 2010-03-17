@@ -122,6 +122,12 @@ table * {
  background-color: #c4c2c2;
 }
 
+.help h1 a
+{
+    background-color:#6c6c6c;
+    color: #ffffff;
+}
+
 /**** Styling of mouseovers ****/
 :hover.mouseoverowner .onmouseover {
  background-color: #ecebeb;
@@ -192,6 +198,28 @@ select {
 .end_block
 {
     clear:both;
+}
+
+/**************** styling the help page ***********/
+
+.help h1 a
+{
+    display: block;
+    width: 100%;
+    padding: 4pt;
+    font-size: 12pt;
+}
+
+.help h2 a
+{
+    font-size: 11pt;
+    font-weight: bold;
+}
+
+.help h3 a
+{
+    font-size: 8pt;
+    font-weight: bold;
 }
 
 /**************** images ****************/
@@ -312,6 +340,11 @@ body {
  position: absolute;
  top: 8pt;
  right: 0;
+}
+
+.search input
+{
+    width: 155pt;
 }
 
 .menu_box1 .user_info {
@@ -685,14 +718,21 @@ button {
 
 /**************** TOC *********************/
 
-.toc_h2
-{
- padding-left: 1em;   
- list-style-type: none;
-}
 .toc_h1
 {
- padding-left: 0em;   
- list-style-type: none;
+    padding-left: 0em;   
+    list-style-type: none;
+    font-weight: bold;
 }
 
+.toc_h2
+{
+    padding-left: 2em;   
+    list-style-type: none;
+}
+
+.toc_h2 a,
+.toc_h1 a
+{
+    text-decoration: none;
+}
