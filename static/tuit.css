@@ -544,13 +544,13 @@ thead th {
  margin: 0px;
 }
 
-/* Align of forms of django backend */
+/* Align forms of django backend */
 
 #content-main fieldset label
 {
-float: left;
-display:block;
-width:30%;
+    float: left;
+    display:block;
+    width:30%;
 }
 
 #content-main fieldset label.vCheckboxLabel
