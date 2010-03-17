@@ -12,12 +12,11 @@ var field_fill = {{ field_fill_json }};
 
 {% if type %}
 <form  enctype="multipart/form-data"  method='post' action='' accept-charset='utf-8'>
+
 <input type='hidden' name='MAX_FILE_SIZE' value='1000000'/>
-
-
 <input type='hidden' name='type_id' value='{{ type.id|escape }}'/>
-<table class='striped wide'>
 
+<table class='striped wide'>
 
 <tbody>
 <tr>
