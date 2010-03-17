@@ -122,6 +122,12 @@ table * {
  background-color: #c4c2c2;
 }
 
+.help h1 a
+{
+    background-color:#6c6c6c;
+    color: #ffffff;
+}
+
 /**** Styling of mouseovers ****/
 :hover.mouseoverowner .onmouseover {
  background-color: #ecebeb;
@@ -192,6 +198,15 @@ select {
 .end_block
 {
     clear:both;
+}
+
+/**************** styling the help page ***********/
+
+.help h1 a
+{
+    display: block;
+    width: 100%;
+    padding: 4pt;
 }
 
 /**************** images ****************/
