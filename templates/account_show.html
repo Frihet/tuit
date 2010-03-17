@@ -2,54 +2,58 @@
 {% load i18n %}
 
 {%block content %} 
-{% if home_user %}
-<table>
-  <tr>
-    <td>
-      Full name:
-    </td>
-    <td>
-      {{ home_user.first_name}} {{ home_user.last_name}}
-    </td>
-  </tr>
-  <tr>
-    <td>
-      Email:
-    </td>
-    <td>
-      <a href='mailto:{{ home_user.email}}'>{{ home_user.email}}</a>
-    </td>
-  </tr>
-  <tr>
-    <td>
-      Location:
-    </td>
-    <td>
-      {{ home_user.get_profile.location}}
-    </td>
-  </tr>
-  <tr>
-    <td>
-      Building:
-    </td>
-    <td>
-      {{ home_user.get_profile.building}}
-    </td>
-  </tr>
-  <tr>
-    <td>
-      Office:
-    </td>
-    <td>
-      {{ home_user.get_profile.office}}
-    </td>
-  </tr>
-</table>
-{% for widget in widgets %}
-{{ widget.html }}
-{% endfor %}
-{% else %}
-{% trans "No matching items found" %}
-{% endif %}
-
+  {% if home_user %}
+    <div class="widget widget_1">
+      <div class="widget_header">
+        <h2>{{ home_user.first_name}} {{ home_user.last_name}}</h2>
+      </div>
+      <table class="striped">
+	<tr>
+	  <td>
+	    Full name:
+	  </td>
+	  <td>
+	    {{ home_user.first_name}} {{ home_user.last_name}}
+	  </td>
+	</tr>
+	<tr>
+	  <td>
+	    Email:
+	  </td>
+	  <td>
+	    <a href='mailto:{{ home_user.email}}'>{{ home_user.email}}</a>
+	  </td>
+	</tr>
+	<tr>
+	  <td>
+	    Location:
+	  </td>
+	  <td>
+	    {{ home_user.get_profile.location}}
+	  </td>
+	</tr>
+	<tr>
+	  <td>
+	    Building:
+	  </td>
+	  <td>
+	    {{ home_user.get_profile.building}}
+	  </td>
+	</tr>
+	<tr>
+	  <td>
+	    Office:
+	  </td>
+	  <td>
+	    {{ home_user.get_profile.office}}
+	  </td>
+	</tr>
+      </table>
+    </div>
+    {% for widget in widgets %}
+      {{ widget.html }}
+    {% endfor %}
+  {% else %}
+    {% trans "No matching items found" %}
+  {% endif %}
 {% endblock %}

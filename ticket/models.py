@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 
 from django.db import models
+import django.core.validators
+from django.utils.translation import gettext, gettext_lazy, ngettext
 from django.contrib.auth.models import *
 from django.utils.html import strip_tags
 from tuit.html2text import html2text
@@ -58,6 +60,12 @@ def user_name(u):
 
 User.format = property(format_user_email)
 User.name = property(user_name)
+
+def validate_char(self, field_data, all_data):
+    if len(field_data) >  self.maxlength:
+        raise django.core.validators.ValidationError, gettext("This value is too long.")
+
+models.CharField.validate = validate_char
 
 # Disable the 'Show on net site' link in admin backend
 del User.get_absolute_url

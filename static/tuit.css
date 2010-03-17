@@ -479,8 +479,12 @@ menu_box1 .user_info {
 }
 
 .widget_header h2 {
- font-size: 12pt;
  margin: 0;
+}
+
+.widget_header h2,
+.widget_header h2 * {
+ font-size: 12pt;
 }
 
 .widget table {
