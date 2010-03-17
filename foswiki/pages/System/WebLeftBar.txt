@@ -1,0 +1,5 @@
+%META:TOPICINFO{author="BaseUserMapping_333" date="1268819034" format="1.1" reprev="1.3" version="1.3"}%
+<ul><li>
+
+---++ %MAKETEXT{"Toolbox"}%
+</li> <li>[[%SCRIPTURLPATH{"view"}%/%BASEWEB%/WebCreateNewTopic?topicparent=%BASETOPIC%][%MAKETEXT{"Create New Topic"}%]]</li> <li>[[%BASEWEB%.WebTopicList][%MAKETEXT{"Index"}%]]</li> <li>[[%BASEWEB%.WebSearch][%MAKETEXT{"Search"}%]]</li> <li>[[WebChanges][%MAKETEXT{"Changes"}%]]</li> <li>[[WebNotify][%MAKETEXT{"Notifications"}%]]</li> <li>[[WebRss][%MAKETEXT{"RSS Feed"}%]]</li> <li>[[WebStatistics][%MAKETEXT{"Statistics"}%]]</li> <li>[[WebPreferences][%MAKETEXT{"Preferences"}%]]</li></ul>

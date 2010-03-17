@@ -2,6 +2,10 @@
 # * General setup *
 # *****************
 
+##############################################
+# Assumes tuit lives in /srv/www/django/tuit #
+##############################################
+
 # Common packages
 
 apt-get install git-core curl gettext postgresql-8.3
@@ -30,8 +34,6 @@ echo "local   all   all    md5" >> /etc/postgresql/8.3/main/pg_hba.conf
 # **********************
 
 # Configure apache: 
-# edit /etc/apache/sites-available/tuit
-# (Assumes tuit lives in /srv/www/django/tuit)
 
 DocumentRoot "/var/www/html"
 RedirectMatch ^/$ /tuit
@@ -166,11 +168,16 @@ In /etc/foswiki/LocalSite.cfg:
   $Foswiki::cfg{UseClientSessions} = 0;
   $Foswiki::cfg{UserMappingManager} = 'Foswiki::Users::FreeTILUserMapping';
 
-# FIXME: What about installing the templates?
+# To install the templates
+In /etc/foswiki/LocalSite.cfg:
+  $Foswiki::cfg{TemplateDir} = '/srv/www/django/tuit/foswiki/templates';
+  $Foswiki::cfg{TemplatePath} = '/srv/www/django/tuit/foswiki/templates/$web/$name.$skin.tmpl, /srv/www/django/tuit/foswiki/templates/$name.$skin.tmpl, $web.$skinSkin$nameTemplate, System.$skinSkin$nameTemplate, /var/lib/foswiki/tem\
+plates/$web/$name.tmpl, /srv/www/django/tuit/foswiki/templates/$name.tmpl, $web.$nameTemplate, System.$nameTemplate';
 
-# To change the left hand menu, edit the topic WebLeftBar in the System web.
+# Install some initial content in the System web (e.g. WebLeft bar for
+# the left menu, WebsPreferences for the admin UI)
+rsync -a /srv/www/django/tuit/foswiki/pages/ /var/lib/foswiki/data
 
-# FXIME: What about initial content?
 
 # ***************
 # * DATE FORMAT *
