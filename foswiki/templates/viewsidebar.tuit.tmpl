@@ -1,6 +1,6 @@
 %{ to include a side bar on a page, just include this template in the page template }%
 
-%TMPL:DEF{"topicaction"}%<div class='pageactions action_menu_item'><h2>Page actions</h2>%TMPL:P{"topicactionbuttons"}%</div>%TMPL:END%
+%TMPL:DEF{"topicaction"}%<div class='pageactions action_menu_item'><h2>%MAKETEXT{"Page actions"}%</h2>%TMPL:P{"topicactionbuttons"}%</div>%TMPL:END%
 
 %TMPL:DEF{"sidebar"}%<div class='action_menu'>%INCLUDE{"%SYSTEMWEB%.WebLeftBar"}%%TMPL:P{"topicaction"}%<ul class="comment_target"></ul></div>%TMPL:END%
 
