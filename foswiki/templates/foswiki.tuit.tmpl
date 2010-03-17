@@ -20,7 +20,7 @@
 %TMPL:DEF{"breadcrumb:wikitoolname"}%[[%USERSWEB%.%HOMETOPIC%][%WIKITOOLNAME%]]%TMPL:END%
 %TMPL:DEF{"breadcrumb:currentweb"}%%TMPL:P{"breadcrumb:separator"}%<a href="%SCRIPTURLPATH{"view"}%/%WEB%/%HOMETOPIC%">%MAKETEXT{"[_1]" args="<nop>%WEB%"}%</a>%TMPL:END%
 %TMPL:DEF{"breadcrumb:annotation"}%%TMPL:END%
-%TMPL:DEF{"breadcrumb:currenttopic"}%%IF{"$ %HOMETOPIC% != $ %TOPIC%" then="%TMPL:P{breadcrumb:currenttopic:noroot}%"}%%TMPL:END%
+%TMPL:DEF{"breadcrumb:currenttopic"}%%IF{"$ '%HOMETOPIC%' != $ '%TOPIC%'" then="%TMPL:P{breadcrumb:currenttopic:noroot}%"}%%TMPL:END%
 %TMPL:DEF{"breadcrumb:currenttopic:noroot"}%%TMPL:P{"breadcrumb:separator"}%<a href='%SCRIPTURL{view}%/%WEB%/%TOPIC%' title='%MAKETEXT{"Topic revision:"}% %REVINFO{format="$rev ($date - $time)"}%'>%TMPL:P{"breadcrumb:topic"}%</a>%TMPL:P{"breadcrumb:annotation"}%%TMPL:END%
 
 %TMPL:DEF{"top:toolbarbuttons"}%%TMPL:P{"more_link"}%%TMPL:END%
