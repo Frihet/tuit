@@ -10,7 +10,7 @@
 %TMPL:DEF{"formtop"}%%TMPL:P{"form"}%%TMPL:END%
 %TMPL:DEF{"formbottom"}%%TMPL:END%
 
-%TMPL:DEF{"textarea"}%<div class="widget widget_2"><div class="widget_header"><h2>Content</h2> %TMPL:P{"toolbar"}% %TMPL:P{"pagehelp"}%%IF{"defined 'EDITOR_MESSAGE'" then="%EDITOR_MESSAGE%"}%</div><textarea class="foswikiTextarea foswikiEditboxStyleProportional foswikiWysiwygEdit" id="topic" name="text" rows="%EDITBOXHEIGHT%" cols="%EDITBOXWIDTH%" style='%EDITBOXSTYLE%'>%TEXT%</textarea></div>%TMPL:END%
+%TMPL:DEF{"textarea"}%<div class="widget widget_2"><div class="widget_header"><h2>%MAKETEXT{"Content"}%</h2> %TMPL:P{"toolbar"}% %TMPL:P{"pagehelp"}%%IF{"defined 'EDITOR_MESSAGE'" then="%EDITOR_MESSAGE%"}%</div><textarea class="foswikiTextarea foswikiEditboxStyleProportional foswikiWysiwygEdit" id="topic" name="text" rows="%EDITBOXHEIGHT%" cols="%EDITBOXWIDTH%" style='%EDITBOXSTYLE%'>%TEXT%</textarea></div>%TMPL:END%
 
 %TMPL:DEF{"topicaction"}%%TMPL:END%
 
