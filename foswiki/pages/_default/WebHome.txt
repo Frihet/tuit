@@ -1,0 +1,15 @@
+%META:TOPICINFO{author="BaseUserMapping_333" date="1267111203" format="1.1" reprev="1.3" version="1.3"}%
+---+!! Intern kunnskapsbase
+
+---++ %MAKETEXT{"Available Information"}%
+   * Legg inn artikler i kunnskapsbase for intern bruk her
+   * Dette er et tillegg til den generelle kunnskapsbasen
+<form action='%SCRIPTURLPATH{"search"}%/%WEB%/'> 
+   * <input type="text" name="search" size="22" /> <input type="submit" class="foswikiSubmit" value="%MAKETEXT{"Search"}%" /> - [[WebSearchAdvanced][%MAKETEXT{"advanced search"}%]]
+   * WebTopicList - alle emner i alfabetisk rekkefølge
+   * WebChanges - nylig utførte endringer i denne kunnskapsbasen
+   * WebNotify - abonner på e-postvarslinger som sendes ut ved endringer
+   * WebRss, WebAtom - RSS- og ATOM-oppdateringer ved endringer
+   * WebStatistics - liste over populære emner og aktive bidragsytere
+   * WebPreferences - innstillinger for denne kunnskapsbasen
+</form>
