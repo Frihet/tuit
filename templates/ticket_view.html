@@ -441,6 +441,7 @@ var external_default_mail = {{ external_default_mail_json }};
 	{% endfor %}
 
 	{% for update in issue.updates %}
+	{% if show_internal or not update.internal %}
 	<tr>
 	  <td>
 	    {% trans "Update" %}: {{ update.summary }} 
@@ -463,7 +464,7 @@ var external_default_mail = {{ external_default_mail_json }};
 	  </td>
 	</tr>
 	{% endfor %}
-	
+	{% endif %}
 	{% endfor %}
 
       </table>

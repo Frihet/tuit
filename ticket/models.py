@@ -1180,7 +1180,7 @@ class IssueUpdate(models.Model):
 
     @property
     def creator(self):
-        if self.user:
+        if self.user_id:
             return self.user
         return self.contact
 
@@ -1194,8 +1194,12 @@ class IssueUpdate(models.Model):
 
     @property
     def summary(self):
-        return "%s: %s..." % (self.creator.name, remove_html_tags(self.comment)[:32])
-
+        try:
+            return "%s: %s..." % (self.creator.name, remove_html_tags(self.comment)[:32])
+        except:
+            return remove_html_tags(self.comment)[:32]
+            
+            
     @property
     def html_default_columns(self):
         """
