@@ -306,7 +306,7 @@ deb http://fosiki.com/Foswiki_debian/ stable main contrib
 deb-src http://fosiki.com/Foswiki_debian/ stable main contrib
 EOF
 apt-get update -y
-apt-get install -y --force-yes foswiki libwww-curl-perl libjson-perl < /dev/null
+apt-get install -y --force-yes foswiki libwww-curl-perl libjson-perl foswiki-treeplugin < /dev/null
 
 #Apply patch from http://foswiki.org/Tasks/Item1805
 patch /var/lib/foswiki/lib/Foswiki/UI.pm <<EOF
@@ -359,7 +359,7 @@ patch /etc/foswiki/LocalSite.cfg <<EOF
 +\$Foswiki::cfg{Register}{EnableNewUserRegistration} = 0;
  \$Foswiki::cfg{EnableEmail} = 0; 
  \$Foswiki::cfg{WebMasterEmail} = 'webmaster@localhost';
-@@ -21,6 +24,10 @@
+@@ -25,6 +28,12 @@
  \$Foswiki::cfg{LogDir} = '/var/log/foswiki';
  \$Foswiki::cfg{ConfigurationLogName} = '\$Foswiki::cfg{LogDir}/configurationlog.txt';
  \$Foswiki::cfg{DebugFileName} = '\$Foswiki::cfg{LogDir}/debug.txt';
@@ -368,6 +368,8 @@ patch /etc/foswiki/LocalSite.cfg <<EOF
 +
 +\$Foswiki::cfg{TemplateDir} = '/srv/www/django/tuit/foswiki/templates';
 +\$Foswiki::cfg{TemplatePath} = '/srv/www/django/tuit/foswiki/templates/\$web/\$name.\$skin.tmpl, /srv/www/django/tuit/foswiki/templates/\$name.\$skin.tmpl, \$web.\$skinSkin\$nameTemplate, System.\$skinSkin\$nameTemplate, /var/lib/foswiki/templates/\$web/\$name.tmpl, /srv/www/django/tuit/foswiki/templates/\$name.tmpl, \$web.\$nameTemplate, System.\$nameTemplate';
++\$Foswiki::cfg{Plugins}{TreePlugin}{Enabled} = 1;
++\$Foswiki::cfg{Plugins}{TreePlugin}{Module} = 'Foswiki::Plugins::TreePlugin';
 +
  1;
 EOF
