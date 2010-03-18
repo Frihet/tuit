@@ -377,7 +377,7 @@ patch /etc/foswiki/LocalSite.cfg <<EOF
 +\$Foswiki::cfg{Register}{EnableNewUserRegistration} = 0;
  \$Foswiki::cfg{EnableEmail} = 0; 
  \$Foswiki::cfg{WebMasterEmail} = 'webmaster@localhost';
-@@ -25,6 +28,12 @@
+@@ -25,6 +28,15 @@
  \$Foswiki::cfg{LogDir} = '/var/log/foswiki';
  \$Foswiki::cfg{ConfigurationLogName} = '\$Foswiki::cfg{LogDir}/configurationlog.txt';
  \$Foswiki::cfg{DebugFileName} = '\$Foswiki::cfg{LogDir}/debug.txt';
@@ -385,9 +385,12 @@ patch /etc/foswiki/LocalSite.cfg <<EOF
  \$Foswiki::cfg{LogFileName} = '\$Foswiki::cfg{LogDir}/log%DATE%.txt';
 +
 +\$Foswiki::cfg{TemplateDir} = '/srv/www/django/tuit/foswiki/templates';
-+\$Foswiki::cfg{TemplatePath} = '/srv/www/django/tuit/foswiki/templates/\$web/\$name.\$skin.tmpl, /srv/www/django/tuit/foswiki/templates/\$name.\$skin.tmpl, \$web.\$skinSkin\$nameTemplate, System.\$skinSkin\$nameTemplate, /var/lib/foswiki/templates/\$web/\$name.tmpl, /srv/www/django/tuit/foswiki/templates/\$name.tmpl, \$web.\$nameTemplate, System.\$nameTemplate';
++\$Foswiki::cfg{TemplatePath} = '/srv/www/django/tuit/foswiki/templates/\$web/\$name.\$skin.tmpl, /srv/www/django/tuit/foswiki/templates/\$name.\$skin.tmpl, /srv/www/django/tuit/foswiki/templates/\$name.pattern.tmpl, \$web.\$skinSkin\$nameTemplate, System.\$skinSkin\$nameTemplate, /var/lib/foswiki/templates/\$web/\$name.tmpl, /srv/www/django/tuit/foswiki/templates/\$name.tmpl, \$web.\$nameTemplate, System.\$nameTemplate';
 +\$Foswiki::cfg{Plugins}{TreePlugin}{Enabled} = 1;
 +\$Foswiki::cfg{Plugins}{TreePlugin}{Module} = 'Foswiki::Plugins::TreePlugin';
++\$Foswiki::cfg{UserInterfaceInternationalisation} = 1;
++\$Foswiki::cfg{Languages}{no}{Enabled} = 1;
++\$Foswiki::cfg{DefaultDateFormat} = '\$day.\$mo.\$year';
 +
  1;
 EOF
@@ -400,6 +403,7 @@ rsync -a /srv/www/django/tuit/foswiki/locale/ /var/lib/foswiki/locale/
 rsync -a /srv/www/django/tuit/foswiki/pages/ /var/lib/foswiki/data/
 rsync -a /var/lib/foswiki/data/_default/ /var/lib/foswiki/data/KB
 rsync -a /var/lib/foswiki/data/_default/ /var/lib/foswiki/data/IKB
+chown  www-data:www-data /var/lib/foswiki/data
 
 # ***************
 # * DATE FORMAT *
