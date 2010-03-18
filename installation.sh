@@ -297,7 +297,7 @@ insert into ticket_property (name, value) values ('priority_class', '[null, "eme
 insert into ticket_property (name, value) values ('priority_matrix', '[[1, 1, 2, 3,3],[1,2,2,3,4],[2,2,3,4,5],[2,3,4,4,5],[3,4,5,5,5]]');
 insert into ticket_property (name, value) values ('mail_update_mail', '["requester","assigned_to","co_responsible_list","last_updater"]');
 
-insert into django_site(id,name,domain) values (1, '$(hostname)','$(hostname -f)')
+insert into django_site(id,name,domain) values (1, '$(hostname)','$(hostname -f)');
 insert into auth_group (name) values('AdminGroup');
 insert into auth_user (username, password, first_name, last_name, email, is_staff, is_active, is_superuser, last_login, date_joined) values('admin', 'sha1$77ba2$faa623130e3bdb5f94ad02196f099488ab7828c4', '', '', '', true, true, true, '2010-03-17', '2010-03-17');
 insert into auth_user_groups (user_id, group_id) select auth_user.id, auth_group.id from auth_user, auth_group where auth_user.username = 'admin' and auth_group.name = 'AdminGroup'; 
