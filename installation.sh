@@ -180,21 +180,19 @@ ln -s python-symmetric-jsonrpc/symmetricjsonrpc json
 
 cp settings.py.example settings.py 
 patch settings.py <<EOF
---- settings.py.example	2009-12-10 17:26:51.000000000 +0100
-+++ settings.py	2010-02-23 15:14:19.000000000 +0100
-@@ -10,9 +10,9 @@
- MANAGERS = ADMINS
- 
+--- settings.py.example	2010-03-18 11:55:35.000000000 +0100
++++ settings.py	2010-03-18 13:08:28.000000000 +0100
+@@ -12,8 +12,8 @@
  DATABASE_ENGINE = 'postgresql_psycopg2'           # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'ado_mssql'.
--DATABASE_NAME = 'tuit'             # Or path to database file if using sqlite3.
-+DATABASE_NAME = 'tuit'             # Or path to database file if using sqlite3.
+ DATABASE_NAME = 'tuit'             # Or path to database file if using sqlite3.
  DATABASE_USER = 'tuit'             # Not used with sqlite3.
 -DATABASE_PASSWORD = 'Sommer2009!'         # Not used with sqlite3.
-+DATABASE_PASSWORD = '${TUIT_DB_PW}'         # Not used with sqlite3.
 -DATABASE_HOST = ''             # Set to empty string for localhost. Not used with sqlite3.
-+DATABASE_HOST = 'localhost'             # Set to empty string for localhost. Not used with sqlite3.
++DATABASE_PASSWORD = '${TUIT_DB_PW}'         # Not used with sqlite3.
++DATABASE_HOST = '$(hostname -f)'             # Set to empty string for localhost. Not used with sqlite3.
  DATABASE_PORT = ''             # Set to empty string for default. Not used with sqlite3.
  
+ # Local time zone for this installation. Choices can be found here:
 @@ -62,10 +62,7 @@
      'django.middleware.common.CommonMiddleware',
      'django.contrib.sessions.middleware.SessionMiddleware',
@@ -207,7 +205,7 @@ patch settings.py <<EOF
      'django.middleware.doc.XViewMiddleware',
  )
  
-@@ -75,21 +72,25 @@
+@@ -75,7 +72,7 @@
      # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
      # Always use forward slashes, even on Windows.
      # Don't forget to use absolute paths, not relative paths.
@@ -216,13 +214,7 @@ patch settings.py <<EOF
  )
  
  INSTALLED_APPS = (
-     'django.contrib.auth',
-     'django.contrib.contenttypes',
-     'django.contrib.sessions',
--    'django.contrib.sites',
-     "django.contrib.admin",
-     'tuit.search',
-     'tuit.menu',
+@@ -89,7 +86,12 @@
      'tuit.ticket',
      'tuit.account',
      'tuit.home',
@@ -235,10 +227,24 @@ patch settings.py <<EOF
 + )
  
  LOGIN_REDIRECT_URL='/tuit/search'
+ 
 EOF
 
 # Create tuit tables
 python manage.py syncdb
+
+patch settings.py <<EOF
+--- settings.py.orig	2010-03-18 13:11:06.000000000 +0100
++++ settings.py	2010-03-18 13:11:21.000000000 +0100
+@@ -79,7 +79,6 @@
+     'django.contrib.auth',
+     'django.contrib.contenttypes',
+     'django.contrib.sessions',
+-    'django.contrib.sites',
+     "django.contrib.admin",
+     'tuit.search',
+     'tuit.menu',
+EOF
 
 # Compile po files
 python /var/lib/python-support/python2.5/django/bin/compile-messages.py
