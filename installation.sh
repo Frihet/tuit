@@ -1,3 +1,4 @@
+#! /bin/bash
 ############################################################
 #                    General setup                         #
 ############################################################
@@ -6,9 +7,16 @@
 # Assumes you want a username admin with password freetil  #
 ############################################################
 
+# Exit on any errors
+set -e
+
+# Print what we're doing
+set -v
+
+# Update package lists so we'll install latest version of everything
 apt-get update
 
-# Common packages
+# Misc common packages
 apt-get install -y git-core curl gettext postgresql-8.3 python-psycopg2 gcc pwgen
 
 # Set up locales
