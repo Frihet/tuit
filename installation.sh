@@ -309,9 +309,17 @@ insert into auth_user_groups (user_id, group_id) select auth_user.id, auth_group
 
 EOF
 
+# Fix access rights
 su postgres <<EOF
 for table in \$(echo "select c.relname FROM pg_catalog.pg_class c;" | psql tuit | grep -v "pg_" | grep -v "sql_" | grep "^ "); do
   echo "grant all on table \$table to tuit;"
+done | psql tuit
+EOF
+
+# Fix brain damage resulting from fixtures
+su postgres <<EOF
+for sequence in \$(echo "select c.relname FROM pg_catalog.pg_class c;" | psql tuit | grep -v "pg_" | grep -v "sql_" | grep "^ " | grep _seq); do
+  echo "select setval('\$sequence', 1000);"
 done | psql tuit
 EOF
 
