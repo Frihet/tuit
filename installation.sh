@@ -381,6 +381,9 @@ patch /etc/foswiki/LocalSite.cfg <<EOF
  1;
 EOF
 
+# Install translations
+rsync -a /srv/www/django/tuit/foswiki/locale/ /var/lib/foswiki/locale/
+
 # Install some initial content in the System web (e.g. WebLeft bar for
 # the left menu, WebsPreferences for the admin UI)
 rsync -a /srv/www/django/tuit/foswiki/pages/ /var/lib/foswiki/data/
