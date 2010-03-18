@@ -17,7 +17,7 @@ set -v
 apt-get update
 
 # Misc common packages
-apt-get install -y git-core curl gettext postgresql-8.3 python-psycopg2 gcc pwgen
+apt-get install -y git-core curl gettext postgresql-8.3 python-psycopg2 gcc pwgen apache2 libapache2-mod-python
 
 # Set up locales
 apt-get install -y language-pack-en language-pack-nb
