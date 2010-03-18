@@ -107,7 +107,6 @@ cd /srv/www/html
 git clone http://github.com/freecode/freecmdb.git FreeCMDB
 cd FreeCMDB
 git clone http://github.com/freecode/fc-framework.git common
-cd ..
 cat > config.php <<EOF
 <?php
 define('FC_DSN_DEFAULT', 'pgsql:dbname=tuit;host=127.0.0.1;user=tuit;password=${TUIT_DB_PW}');
