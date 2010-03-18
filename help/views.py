@@ -6,7 +6,6 @@ from tuit.util import *
 from django.utils.translation import gettext as _
 import tuit.settings 
 
-@login_required
 def help(request):
     try:
         return tuit_render("help.%s.html" % tuit.settings.LANGUAGE_CODE, {'title':_('Help')}, request)
