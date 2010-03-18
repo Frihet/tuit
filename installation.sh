@@ -411,7 +411,7 @@ rsync -a /srv/www/django/tuit/foswiki/locale/ /var/lib/foswiki/locale/
 rsync -a /srv/www/django/tuit/foswiki/pages/ /var/lib/foswiki/data/
 rsync -a /var/lib/foswiki/data/_default/ /var/lib/foswiki/data/KB
 rsync -a /var/lib/foswiki/data/_default/ /var/lib/foswiki/data/IKB
-chown  www-data:www-data /var/lib/foswiki/data
+chown -R www-data:www-data /var/lib/foswiki/data/
 
 # ***************
 # * DATE FORMAT *
