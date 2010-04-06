@@ -42,6 +42,7 @@ def insert_view_data(keys, request, default_checked_list):
         elif box in default_checked:
             keys[box]='checked'
 
+def all_files(files, 
 
 def handle_files( issue, update, files ):
     res=[]
@@ -77,7 +78,7 @@ def new(request, type_name=None):
     View for creating a new ticket
     """
     
-    # Do a copy to get a real dict, no a weird django-style query-dict
+    # Do a copy to get a real dict, not a weird django-style query-dict
     # with their pseudo-list interface.
     keys = request.POST.copy()
     
@@ -147,7 +148,7 @@ def new(request, type_name=None):
         
             print 'BAZ', errors
             if not errors:
-                events.extend(handle_files(i, None, request.FILES))
+                events.extend(handle_files(i, None, request.FILES, request.POST))
                 events.extend(send_email('web_create', request.POST, i, None))
 
                 i.description_data={'type':'web','events':events, 'by':request.user.username}
