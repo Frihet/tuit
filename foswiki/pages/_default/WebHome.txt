@@ -1,0 +1,10 @@
+%META:TOPICINFO{author="BaseUserMapping_333" date="1268827292" format="1.1" version="1.7"}%
+---+!! Kunnskapsbase
+
+%TREE{}%
+
+%MAKETEXT{"Available Information"}%
+   * Generell kunnskapsbase
+   * Her legger du inn artikler basert på løste saker
+
+---++

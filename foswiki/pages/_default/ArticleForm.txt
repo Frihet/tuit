@@ -1,0 +1,8 @@
+%META:TOPICINFO{author="BaseUserMapping_333" date="1265358495" format="1.1" version="1.5"}%
+%META:TOPICPARENT{name="WebHome"}%
+| *Name* | *Type* | *Size* | *Values* | *Tooltip Message* | *Attributes* |
+| %MAKETEXT{"Name"}% | text | 64 | | | |
+| %MAKETEXT{"Summary"}% | text | 512 | | | |
+| %MAKETEXT{"Operating System"}% | checkbox | 7 | BSD, Linux, Ubuntu, Solaris, AIX, Digital Unix, Amiga OS | | |
+| %MAKETEXT{"Article priority"}% | radio | 5 | 1,2,3,4,5 | | |
+| %MAKETEXT{"Problem description"}% | text | 512 | | | |

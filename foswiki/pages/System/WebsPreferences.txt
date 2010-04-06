@@ -1,8 +1,8 @@
-%META:TOPICINFO{author="BaseUserMapping_333" date="1268405673" format="1.1" reprev="1.1" version="1.1"}%
+%META:TOPICINFO{author="BaseUserMapping_333" date="1268826905" format="1.1" version="1.2"}%
 ---+ Wiki web management
  [[%SYSTEMWEB%.WebsCreate][Create a new web]]
 
 [[%SYSTEMWEB%. WebPreferences][Global configuration]]
 ---++ Manage existing webs
- <table border="0"> <tbody><tr><th>Web name</th><th>&nbsp;</th></tr> %WEBLIST{"
-   <tr><td>[[$name.WebHome][$name]]</td><td>[[$name.WebPreferences][configure]] <a href="%SCRIPTURLPATH{"rename"}%/$name/WebHome?action=renameweb" rel='nofollow'>%MAKETEXT{"rename/move/delete"}%</a></td></tr>"}% </tbody></table>
+ <table border="0"> <tbody><tr><th>Web name</th><th> </th></tr> %WEBLIST{"
+   <tr><td>[[$name.WebHome][$name]]</td><td>[[$name.WebPreferences][configure]] <a href="%SCRIPTURLPATH{"rename"}%/$name/WebHome?action=renameweb" rel='nofollow'>%MAKETEXT{"rename/move/delete"}%</a> [[$name.WebStatistics][%MAKETEXT{"statistics"}%]]</td></tr>"}% </tbody></table>
