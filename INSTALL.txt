@@ -1,0 +1,8 @@
+To install FreeTIL, run ./installation.sh in the current directory on
+a Ubuntu Hardy or later. After installation, go to the web address of
+your machine using your web browser, and log in as
+
+Brukernavn: admin
+Passord: freetil
+
+Have fun!
