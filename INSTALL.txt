@@ -6,3 +6,11 @@ Brukernavn: admin
 Passord: freetil
 
 Have fun!
+
+
+Notes:
+
+Do not make the same FreeTIL instance available using multiple domain
+names - cookie / login handling will break if you do that. To resolve
+issues originating from this, consider using Apaches Redirect or
+Redirectmatch directives in conjucntion with VirtualHost:s.
