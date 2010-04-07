@@ -16,16 +16,8 @@
       <form method='get' action='' accept-charset='utf-8'>
 	<table class='striped'>
 	  <tr>
-	    <th><label for='username'>{% trans "Username" %}</label></th>
-	    <td><input id='username' name='username' value='{{ username|escape }}' /></td>
-	  </tr>
-	  <tr>
-	    <th><label for='first_name'>{% trans "Given name" %}</label></th>
-	    <td><input id='first_name' name='first_name' value='{{ first_name|escape }}' /></td>
-	  </tr>
-	  <tr>
-	    <th><label for='last_name'>{% trans "Surname" %}</label></th>
-	    <td><input id='last_name' name='last_name' value='{{ last_name|escape }}' /></td>
+	    <th><label for='search'>{% trans "Search" %}</label></th>
+	    <td><input id='search' name='search' value='{{ search|escape }}' /></td>
 	  </tr>
 	</table>
 	<button type='submit'>{% trans "Filter" %}</button>

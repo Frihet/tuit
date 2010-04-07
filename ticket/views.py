@@ -15,6 +15,7 @@ import logging
 from tuit.query.models import GenericFillItem
 import traceback
 import tuit.home.widget
+#from django.db.models import Q
 
 def studly(str):
     """
@@ -401,19 +402,14 @@ def user_list(request):
     if not request.user.is_staff:
         return None
 
-
-    items = User.objects.all()
+    items = User.objects
     print items
 
-    username = request.GET.get('username', '')
-    if username:
-        items = items.filter(username__contains = username)
-    first_name = request.GET.get('first_name', '')
-    if first_name:
-        items = items.filter(first_name__contains = first_name)
-    last_name = request.GET.get('last_name', '')
-    if last_name:
-        items = items.filter(last_name__contains = username)
+    search = request.GET.get('search', '')
+    if search:
+        items = items.filter(username__contains = search) | items.filter(first_name__contains = search) | items.filter(last_name__contains = search) | items.filter(email__contains = search)
+    else:
+        items = items.all()
 
     items = items.order_by('username')
 
@@ -425,9 +421,7 @@ def user_list(request):
             'user_list',
             item_count=10,
             class_names="widget_2"),
-          'username': username,
-          'first_name': first_name,
-          'last_name': last_name
+          'search': search,
           }
     
     return tuit_render('user_list.html', keys, request)
@@ -435,7 +429,7 @@ def user_list(request):
 
 @login_required
 def user_edit(request,id=None):
-    if not request.user.is_staff:
+    if not request.user.is_staff and request.user.id != int(id):
         return None
 
     errors = {}

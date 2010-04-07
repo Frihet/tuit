@@ -5,7 +5,7 @@
   {% if home_user %}
     <div class="widget widget_1">
       <div class="widget_header">
-        <h2>{{ home_user.first_name}} {{ home_user.last_name}}</h2>
+        <h2>{{ home_user.first_name}} {{ home_user.last_name}} <a href="/tuit/admin/ticket/ticket/userprofile/{{ home_user.id}}">{% trans "Edit" %}</a></h2>
       </div>
       <table class="striped">
 	<tr>

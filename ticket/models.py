@@ -1665,23 +1665,92 @@ class UserProfile(models.Model):
     def __str__(self):
         return self.user.username
 
+class DummyProfile(object):
+    def __getattr__(self, name):
+        return ''
 
 class UserMonkey(object):
     @property
     def html_default_columns(self):
-        return ((_('Username'),'username'),(_('Given name'),'first_name'),(_('Surname'),'last_name'),(_('E-mail'),'email'),('','buttons'))
+        return ((_('User data'),'user_data'),(_('Profile data'),'profile_data'),('','buttons'))
 
-    def html_cell__username(self):
-        return cgi.escape(self.username)
+    def html_cell__user_data(self):
+        return """
+<table class='formfield'>
+ <tr>
+  <th>%(username_t)s</th>
+  <td>%(username)s</td>
+ </tr>
+ <tr>
+  <th>%(name_t)s</th>
+  <td>%(first_name)s %(last_name)s</td>
+ </tr>
+ <tr>
+  <th>%(email_t)s</th>
+  <td>%(email)s</td>
+ </tr>
+</table>
+        """ % {'username_t': _('Username'),
+               'name_t': _('Name'),
+               'email_t': _('E-mail'),
+               'username': cgi.escape(self.username),
+               'first_name': cgi.escape(self.first_name),
+               'last_name': cgi.escape(self.last_name),
+               'email': cgi.escape(self.email),
+               }
 
-    def html_cell__first_name(self):
-        return cgi.escape(self.first_name)
+    def html_cell__profile_data(self):
+        try:
+            profile = self.get_profile()
+        except:
+            profile = DummyProfile()
+        return """
+<table class='formfield'>
+ <tr>
+  <th>%(location_t)s</th>
+  <td>%(location)s</td>
+ </tr>
+ <tr>
+  <th>%(building_t)s</th>
+  <td>%(building)s</td>
+ </tr>
+ <tr>
+  <th>%(office_t)s</th>
+  <td>%(office)s</td>
+ </tr>
+ <tr>
+  <th>%(telephone_t)s</th>
+  <td>%(telephone)s</td>
+ </tr>
+ <tr>
+  <th>%(mobile_t)s</th>
+  <td>%(mobile)s</td>
+ </tr>
+ <tr>
+  <th>%(pc_t)s</th>
+  <td>%(pc)s</td>
+ </tr>
+ <tr>
+  <th>%(signature_t)s</th>
+  <td>%(signature)s</td>
+ </tr>
+</table>
+        """ % {'location_t': _('Location'),
+               'building_t': _('Building'),
+               'office_t': _('Office'),
+               'telephone_t': _('Telephone'),
+               'mobile_t': _('Mobile'),
+               'pc_t': _('PD'),
+               'signature_t': _('Signature'),
 
-    def html_cell__last_name(self):
-        return cgi.escape(self.last_name)
-
-    def html_cell__email(self):
-        return cgi.escape(self.email)
+               'location': cgi.escape(profile.location),
+               'building': cgi.escape(profile.building),
+               'office': cgi.escape(profile.office),
+               'telephone': cgi.escape(profile.telephone),
+               'mobile': cgi.escape(profile.mobile),
+               'pc': cgi.escape(profile.pc),
+               'signature': cgi.escape(profile.signature),
+               }
 
     def html_cell__buttons(self):
         return "<a href='%s' class='button'>%s</a>" % (self.id, _('Edit'))
