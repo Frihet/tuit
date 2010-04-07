@@ -14,6 +14,7 @@ from django.utils.translation import gettext_noop
 import logging
 from tuit.query.models import GenericFillItem
 import traceback
+import tuit.home.widget
 
 def studly(str):
     """
@@ -400,10 +401,37 @@ def user_list(request):
     if not request.user.is_staff:
         return None
 
-    data = {
-        "users": django.contrib.auth.models.User.objects.all()
-        }
-    return tuit_render('user_list.html', data, request)
+
+    items = User.objects.all()
+    print items
+
+    username = request.GET.get('username', '')
+    if username:
+        items = items.filter(username__contains = username)
+    first_name = request.GET.get('first_name', '')
+    if first_name:
+        items = items.filter(first_name__contains = first_name)
+    last_name = request.GET.get('last_name', '')
+    if last_name:
+        items = items.filter(last_name__contains = username)
+
+    items = items.order_by('username')
+
+    keys={'title': _("Manage user profiles"),
+          'user_list_widget': tuit.home.widget.Widget(
+            _('Matching user profiles'),
+            items,
+            request,
+            'user_list',
+            item_count=10,
+            class_names="widget_2"),
+          'username': username,
+          'first_name': first_name,
+          'last_name': last_name
+          }
+    
+    return tuit_render('user_list.html', keys, request)
+
 
 @login_required
 def user_edit(request,id=None):

@@ -1666,3 +1666,32 @@ class UserProfile(models.Model):
         return self.user.username
 
 
+class UserMonkey(object):
+    @property
+    def html_default_columns(self):
+        return ((_('Username'),'username'),(_('Given name'),'first_name'),(_('Surname'),'last_name'),(_('E-mail'),'email'),('','buttons'))
+
+    def html_cell__username(self):
+        return cgi.escape(self.username)
+
+    def html_cell__first_name(self):
+        return cgi.escape(self.first_name)
+
+    def html_cell__last_name(self):
+        return cgi.escape(self.last_name)
+
+    def html_cell__email(self):
+        return cgi.escape(self.email)
+
+    def html_cell__buttons(self):
+        return "<a href='%s' class='button'>%s</a>" % (self.id, _('Edit'))
+
+    def html_cell(self, col):
+        return getattr(self, 'html_cell__' + col)()
+
+    def html_row(self, columns):
+        return map(self.html_cell, columns)
+
+for method in UserMonkey.__dict__.keys():
+    if not method.startswith('_'):
+        setattr(User, method, UserMonkey.__dict__[method])
