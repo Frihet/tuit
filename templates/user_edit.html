@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{%block sidebar %} 
+{% endblock %}
+
+{%block content_wrapper %}
+ <div class='content'>
+  <div class='content_inner'>
+   <div class="widget widget_2">
+    <div class="widget_header">
+     <h2><a name='top'>{% if edit_user.user.isername %}{% trans "Edit user" %} {{ edit_user.user.username }} ({{ edit_user.user.first_name }} {{ edit_user.user.last_name }}){% else %}New user{% endif %}</a></h2>
+    </div>
+    {%block content %}
+     <form method="POST">
+      <table>
+       <tr>
+	<th>Attribute</th>
+	<th>Value</th>
+       </tr>
+<!--
+       <tr>
+	<td>{% trans "Username" %}</td>
+	<td><input type="text" name="user_username" value="{{ edit_user.user.username }}" /></td>
+       </tr>
+       <tr>
+	<td>{% trans "Given name" %}</td>
+	<td><input type="text" name="user_first_name" value="{{ edit_user.user.first_name }}" /></td>
+       </tr>
+       <tr>
+	<td>{% trans "Surname" %}</td>
+	<td><input type="text" name="user_last_name" value="{{ edit_user.user.last_name }}" /></td>
+       </tr>
+       <tr>
+	<td>{% trans "Email" %}</td>
+	<td><input type="text" name="user_email" value="{{ edit_user.user.email }}" /></td>
+       </tr>
+       <tr>
+	<td>{% trans "Password" %}</td>
+	<td>
+         <input type="password" name="user_password" value="" />
+         <input type="password" name="user_password_retype" value="" />
+	</td>
+       </tr>
+-->
+
+       <tr>
+	<td>{% trans "Location" %}</td>
+	<td><input type="text" name="location" value="{{ edit_user.location }}" /></td>
+       </tr>
+       <tr>
+	<td>{% trans "Building" %}</td>
+	<td><input type="text" name="building" value="{{ edit_user.building }}" /></td>
+       </tr>
+       <tr>
+	<td>{% trans "Office" %}</td>
+	<td><input type="text" name="office" value="{{ edit_user.office }}" /></td>
+       </tr>
+       <tr>
+	<td>{% trans "telephone" %}</td>
+	<td><input type="text" name="telephone" value="{{ edit_user.telephone }}" /></td>
+       </tr>
+       <tr>
+	<td>{% trans "Mobile" %}</td>
+	<td><input type="text" name="mobile" value="{{ edit_user.mobile }}" /></td>
+       </tr>
+       <tr>
+	<td>{% trans "PC" %}</td>
+	<td><input type="text" name="pc" value="{{ edit_user.pc }}" /></td>
+       </tr>
+       <tr>
+	<td>{% trans "Signature" %}</td>
+	<td><textarea name="signature">{{ edit_user.signature }}</textarea></td>
+       </tr>
+
+      </table>
+      <button type="submit" name="submit">Save</button>
+     </form>
+    {%endblock %}
+   </div>
+   <div class='content_post'></div>
+   <div class='copyright'>
+    <a href='http://www.freecode.no'>© 2010 Freecode AS</a>
+   </div>
+  </div>
+ </div>
+{%endblock %}
+

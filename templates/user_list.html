@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{%block sidebar %} 
+{% endblock %}
+
+{%block content_wrapper %}
+ <div class='content'>
+  <div class='content_inner'>
+   <div class="widget widget_2">
+    <div class="widget_header">
+     <h2><a name='top'>{% trans "Edit users" %}</a></h2>
+    </div>
+    {%block content %}
+     <table>
+      <tr>
+       <th>{% trans "Username" %}</th>
+       <th>{% trans "Given name" %}</th>
+       <th>{% trans "Surname" %}</th>
+       <th>{% trans "E-mail" %}</th>
+       <th></th>
+       <th><!-- <a href="new" class="button">{% trans "Add new user" %}</a> --></th>
+      </tr>
+
+      {% for user in users %}
+       <tr>
+	<td>{{ user.username }}</td>
+	<td>{{ user.first_name }}</td>
+	<td>{{ user.last_name }}</td>
+	<td>{{ user.email }}</td>
+	<td>
+         {% if not user.is_active %}{% trans "inactive" %}{% endif %}
+         {% if user.is_staff %}{% trans "staff" %}{% endif %}
+         {% if user.is_superuser %}{% trans "root" %}{% endif %}
+        </td>
+	<td>
+         <a href="{{ user.id }}" class="button">{% trans "Edit" %}</a>
+         <!-- <a class="remove button" onclick="return confirm('Er du sikker?');" href="{{ user.id }}/remove">{% trans "Delete" %}</a> -->
+        </td>
+       </tr>
+      {% endfor %}
+     </table>
+    {%endblock %}
+   </div>
+   <div class='content_post'></div>
+   <div class='copyright'>
+    <a href='http://www.freecode.no'>© 2010 Freecode AS</a>
+   </div>
+  </div>
+ </div>
+{%endblock %}
+
