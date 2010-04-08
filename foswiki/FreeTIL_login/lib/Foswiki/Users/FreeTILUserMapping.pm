@@ -27,7 +27,11 @@ sub new {
   my $this = bless($class->SUPER::new($session), $class);
 
   $this->{authUser} = $session->{loginManager}->{_freetil_user};
-  @{$this->{eachGroupMember}} = @{$session->{loginManager}->{_freetil_groups}};
+  if ($session->{loginManager}->{_freetil_groups}) {
+    @{$this->{eachGroupMember}} = @{$session->{loginManager}->{_freetil_groups}};
+  } else {
+    @{$this->{eachGroupMember}} = [];
+  }
   return $this;
 }
 
