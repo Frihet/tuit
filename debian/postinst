@@ -1,0 +1,167 @@
+#! /bin/sh
+
+# source debconf stuff
+. /usr/share/debconf/confmodule
+
+# source dbconfig-common shell library, and call the hook function
+if ! [ -f /usr/share/dbconfig-common/dpkg/postinst.pgsql ]; then
+  echo "dbconfig-common / PostgreSQL is broken"
+  exit 1
+fi
+
+. /usr/share/dbconfig-common/dpkg/postinst.pgsql
+
+dbc_go tuit $@
+
+. /etc/dbconfig-common/tuit.conf
+
+# dbc_generate_include doesn't seem able to set the right password :(
+[ "$dbc_dbserver" ] || dbc_dbserver=localhost
+
+cp /usr/share/python-support/tuit/tuit/settings.py.example /usr/share/python-support/tuit/tuit/settings.py
+patch /usr/share/python-support/tuit/tuit/settings.py <<EOF
+--- settings.py.example	2010-03-18 11:55:35.000000000 +0100
++++ settings.py	2010-03-18 13:08:28.000000000 +0100
+@@ -12,8 +12,8 @@
+ DATABASE_ENGINE = 'postgresql_psycopg2'           # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'ado_mssql'.
+-DATABASE_NAME = 'tuit'             # Or path to database file if using sqlite3.
+-DATABASE_USER = 'tuit'             # Not used with sqlite3.
+-DATABASE_PASSWORD = 'Sommer2009!'         # Not used with sqlite3.
+-DATABASE_HOST = ''             # Set to empty string for localhost. Not used with sqlite3.
++DATABASE_NAME = '$dbc_dbname'             # Or path to database file if using sqlite3.
++DATABASE_USER = '$dbc_dbuser'             # Not used with sqlite3.
++DATABASE_PASSWORD = '$dbc_dbpass'         # Not used with sqlite3.
++DATABASE_HOST = '$dbc_dbserver'             # Set to empty string for localhost. Not used with sqlite3.
+ DATABASE_PORT = ''             # Set to empty string for default. Not used with sqlite3.
+ 
+ # Local time zone for this installation. Choices can be found here:
+@@ -62,10 +62,7 @@
+     'django.middleware.common.CommonMiddleware',
+     'django.contrib.sessions.middleware.SessionMiddleware',
+ #    'django.middleware.locale.LocaleMiddleware',
+-#    'django.contrib.auth.middleware.AuthenticationMiddleware',
+-    'tuit.iwa.middleware.AuthenticationMiddleware',
+-#    'django.contrib.auth.middleware.AuthenticationMiddleware',
+-#    'django.contrib.auth.middleware.RemoteUserMiddleware',
++    'django.contrib.auth.middleware.AuthenticationMiddleware',
+     'django.middleware.doc.XViewMiddleware',
+ )
+ 
+@@ -75,7 +72,7 @@
+     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
+     # Always use forward slashes, even on Windows.
+     # Don't forget to use absolute paths, not relative paths.
+-    '/var/www/tuit/templates/',
++    '/usr/share/python-support/tuit/tuit/templates/',
+ )
+ 
+ INSTALLED_APPS = (
+@@ -89,7 +86,12 @@
+     'tuit.ticket',
+     'tuit.account',
+     'tuit.home',
+-)
++    'tuit.trend',
++    'tuit.comment',
++    'tuit.status',
++    'tuit.query',
++    'tuit.tuitadmin',
++ )
+ 
+ LOGIN_REDIRECT_URL='/tuit/search'
+ 
+EOF
+
+# Create tuit tables
+(
+ cd /usr/share/python-support/tuit/tuit;
+ yes no | python manage.py syncdb;
+ python manage.py loaddata ticket/fixtures/default_data.json 
+ python manage.py loaddata menu/fixtures/default_data.json 
+ python manage.py loaddata search/fixtures/default_data.json 
+
+ python /var/lib/python-support/python2.5/django/bin/compile-messages.py
+)
+
+patch /usr/share/python-support/tuit/tuit/settings.py <<EOF
+--- settings.py.orig	2010-03-18 13:11:06.000000000 +0100
++++ settings.py	2010-03-18 13:11:21.000000000 +0100
+@@ -79,7 +79,6 @@
+     'django.contrib.auth',
+     'django.contrib.contenttypes',
+     'django.contrib.sessions',
+-    'django.contrib.sites',
+     "django.contrib.admin",
+     'tuit.search',
+     'tuit.menu',
+EOF
+
+# Install the following crontab entry for user www-data:
+crontab -u www-data - <<EOF
+# m h  dom mon dow   command
+* * * * * cd /usr/share/python-support/tuit/tuit/; python bin/mail.py
+EOF
+
+export PGPASSFILE="$(mktemp)"
+echo "$dbc_dbserver:*:$dbc_dbname:$dbc_dbuser:$dbc_dbpass" > $PGPASSFILE
+
+psql -U $dbc_dbuser $dbc_dbname <<EOF
+insert into ticket_property (name, value) values ('issue_default_status', '1');
+insert into ticket_property (name, value) values ('username_case_insensitive', 'true');
+insert into ticket_property (name, value) values ('email_registration_confirmation', 'false');
+insert into ticket_property (name, value) values ('tracker_web', '"http://$(hostname -f)/"');
+insert into ticket_property (name, value) values ('pgp_roles', 'false');
+insert into ticket_property (name, value) values ('pgp_enable', 'false');
+insert into ticket_property (name, value) values ('mailgw_ignore_alternatives', 'false');
+insert into ticket_property (name, value) values ('issue_closed_id', '[2]');
+insert into ticket_property (name, value) values ('date_format', '"%d.%m.%Y"');
+insert into ticket_property (name, value) values ('site_url', '"http://$(hostname -f)"');
+insert into ticket_property (name, value) values ('site_location', '"/tuit"');
+insert into ticket_property (name, value) values ('default_charset', '"latin-1"');
+insert into ticket_property (name, value) values ('web_external_default_mail', '["requester","assigned_to","co_responsible"]');
+insert into ticket_property (name, value) values ('web_internal_default_mail', '["assigned_to"]');
+insert into ticket_property (name, value) values ('issue_default_impact', '3');
+insert into ticket_property (name, value) values ('issue_default_urgency', '3');
+insert into ticket_property (name, value) values ('datetime_format', '"%d.%m.%Y %H:%M"');
+insert into ticket_property (name, value) values ('attachment_directory', '"/srv/www/django/tuit/attachments"');
+insert into ticket_property (name, value) values ('issue_default_type', '1');
+insert into ticket_property (name, value) values ('issue_default_category', '6');
+insert into ticket_property (name, value) values ('web_create_default_mail', '["requester","assigned_to","co_responsible"]');
+insert into ticket_property (name, value) values ('mail_create_mail', '["requester"]');
+insert into ticket_property (name, value) values ('admin_email', '"root@$(hostname -f)"');
+insert into ticket_property (name, value) values ('site_description', '"New FreeTIL site at $(hostname -f)"');
+insert into ticket_property (name, value) values ('priority_class', '[null, "emergency","emergency","normal","normal","normal"]');
+insert into ticket_property (name, value) values ('priority_matrix', '[[1, 1, 2, 3,3],[1,2,2,3,4],[2,2,3,4,5],[2,3,4,4,5],[3,4,5,5,5]]');
+insert into ticket_property (name, value) values ('mail_update_mail', '["requester","assigned_to","co_responsible_list","last_updater"]');
+
+delete from django_site;
+delete from auth_user_groups;
+delete from auth_group;
+delete from auth_user;
+
+insert into django_site(id,name,domain) values (1, '$(hostname)','$(hostname -f)');
+insert into auth_group (name) values('AdminGroup');
+insert into auth_user (username, password, first_name, last_name, email, is_staff, is_active, is_superuser, last_login, date_joined) values('admin', 'sha1\$77ba2\$faa623130e3bdb5f94ad02196f099488ab7828c4', '', '', '', true, true, true, '2010-03-17', '2010-03-17');
+insert into auth_user_groups (user_id, group_id) select auth_user.id, auth_group.id from auth_user, auth_group where auth_user.username = 'admin' and auth_group.name = 'AdminGroup'; 
+
+EOF
+
+# Fix brain damage resulting from fixtures
+for sequence in $(
+  echo "select c.relname FROM pg_catalog.pg_class c;" |
+   psql -U $dbc_dbuser $dbc_dbname |
+   grep -v "pg_" |
+   grep -v "sql_" |
+   grep "^ " |
+   grep _seq
+ ); do
+  echo "select setval('$sequence', 1000);"
+done |
+ psql -U $dbc_dbuser $dbc_dbname
+
+rm "$PGPASSFILE"
+
+a2enmod proxy_http
+a2enmod proxy
+a2enmod mod_python
+a2enmod rewrite
