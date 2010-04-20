@@ -30,7 +30,7 @@ import django.template
 # app... These are issue specific utils. Either way, they're polluting
 # the model namespace where they are... :-/
 
-PLACEHOLDER = (_('Ticket'),_('Auth'))
+PLACEHOLDER = (_('Ticket'),_('Auth'),_('comment'))
 
 def remove_html_tags(data):
     import re
@@ -255,8 +255,8 @@ class Contact(models.Model):
     A contact is a person who is not a user, but still is included in
     a ticket cc list or the originator of an issue update.
     """
-    email = models.CharField(maxlength=320, unique=True)
-    name = models.CharField(maxlength=512,blank=True)
+    email = models.CharField(_('email'),maxlength=320, unique=True)
+    name = models.CharField(_('name'),maxlength=512,blank=True)
     
     @property
     def description(self):
@@ -308,6 +308,33 @@ class CiDependency(models.Model):
     class Meta:
         unique_together = (('issue','ci_id'),)
 
+class IssueDependencyType(models.Model):
+    """
+    Type of issue, e.g. incident, problem or RfC.
+    """
+    name = models.CharField(_('name'), maxlength=256, unique=True)
+    reverse_name = models.CharField(_('name when used in reverse direction'), maxlength=256, unique=True)
+
+    def __str__(self):
+        return self.name
+
+    class Admin: 
+        pass
+
+    class Meta:
+        ordering = ['name']
+        verbose_name_plural = _('types of issue dependencies')
+        verbose_name = _('type of issue dependency')
+
+class IssueDependency(models.Model):
+    dependant = models.ForeignKey("Issue", related_name="dependencies")
+    dependency = models.ForeignKey("Issue", related_name="dependants")
+    type = models.ForeignKey(IssueDependencyType)
+
+    def __str__(self):
+        return "%s - %s -> %s - %s" % (self.dependant.id, self.dependant.subject, self.dependency.id, self.dependency.subject)
+
+
 class Issue(models.Model):
     """
     This is the main issue table. Contains the bulk of the data about
@@ -345,7 +372,6 @@ class Issue(models.Model):
     impact = models.IntegerField()
     urgency = models.IntegerField()
     creation_date = models.DateTimeField(auto_now_add=True)
-    dependencies = models.ManyToManyField('self', symmetrical=False, related_name='dependants')
     
     # This field contains optional additional information about this
     # update, serialized in the JSON format. Leave it blank.
@@ -596,7 +622,7 @@ class Issue(models.Model):
         """
         This is the main work engine of incident and update
         creation. It takes a bunch of incident data in string format
-        (as supplied by a web form) and maps it to the correct fields,
+        (as supplied by a web form) and maps ti to the correct fields,
         performing foreign key lookups, traversing junction tables,
         etc. as needed.
         """
@@ -616,6 +642,10 @@ class Issue(models.Model):
 
         for el in attrs:
             old[el] = getattr(self,el)
+
+#        if self.id:
+#            old['dependencies'] = ...
+
 
         for el in attrs:
             if el in values:
@@ -675,6 +705,34 @@ class Issue(models.Model):
             elif not el.field.blank:
                 self.error(el.field.short_description, _('This field is required.'))
 
+        if self.id:
+            prog = re.compile(r"dependency_([0-9]*)_id")
+            self.dependencies.all().delete();
+            self.dependants.all().delete();
+            for i in values:
+                result = prog.match(i)
+                if result:
+                    idx = result.group(1)
+                    id = values[i]
+                    type = values["dependency_"+idx+"_type"]
+                    type_arr = type.split('_');
+                    t = IssueDependencyType.objects.get(id=int(type_arr[0]))
+                    reverse = len(type_arr)>1
+                    i = Issue.objects.get(id=int(id))
+                    if reverse:
+                        dep = IssueDependency(dependency=self,
+                                              dependant=i,
+                                              type=t)
+                        self.dependants.add(dep)
+                    else:
+                        dep = IssueDependency(dependency=i,
+                                              dependant=self,
+                                              type=t)
+                        self.dependencies.add(dep)
+
+            
+
+#        self.error('dependencies', 'Jag ær ett svart litet regnmoln')
         return events
 
     def error(self, name, msg):
@@ -779,6 +837,10 @@ class Issue(models.Model):
         return "\n".join(map(lambda x: "%s - %s %s" % (x.username, x.first_name, x.last_name), self.co_responsible.all()))
 
 
+    @property
+    def dependencies_string(self):
+        return ""
+
     def set_co_responsible_string(self, val):
         self.co_responsible.clear()
         for name in val.split('\n'):
@@ -838,24 +900,24 @@ class Issue(models.Model):
 
     urgency_string = property(get_urgency_string, set_urgency_string)
 
-    def get_dependencies_string(self):
-        if self.id is None:
-            return ""
-        return "\n".join(map(lambda x: "%d - %s" % (x.id, x.subject),self.dependencies.all()))
+#    def get_dependencies_string(self):
+#        if self.id is None:
+#            return ""
+#        return "\n".join(map(lambda x: "%s: %d - %s" % (x.type.name, x.dependency.id, x.dependency.subject),self.dependencies.all()))
     
-    def set_dependencies_string(self, val):
-        self.dependencies.clear()
-        for name in val.split('\n'):
-            name=name.strip()
-            if name == '':
-                continue
-            i = get_issue(name)
-            if i is None:
-                self.error('dependencies_string',_('Invalid issue: %s') % name)
-            else:
-                self.dependencies.add(i)
-
-    dependencies_string = property(get_dependencies_string, set_dependencies_string)
+#    def set_dependencies_string(self, val):
+#        self.dependencies.clear()
+#        for name in val.split('\n'):
+#            name=name.strip()
+#            if name == '':
+#                continue
+#            i = get_issue(name)
+#            if i is None:
+#                self.error('dependencies_string',_('Invalid issue: %s') % name)
+#            else:
+#                self.dependencies.add(i)
+#
+#    dependencies_string = property(get_dependencies_string, set_dependencies_string)
 
     def get_ci_string(self):
         try:
@@ -953,6 +1015,7 @@ class Issue(models.Model):
         Conveniance function. You may use extra fields as regular
         attributes if you wish.
         """
+
         if name[0] == '_':
             raise AttributeError()
                 
@@ -997,7 +1060,7 @@ class IssueField(models.Model):
 
     # This is a short 'slug' name, should only countain letters,
     # numbers and underscores. Will not be shown to the user.
-    name = models.CharField(maxlength=64, help_text=_('Do not translate or change this string'))
+    name = models.CharField(_('name'),maxlength=64, help_text=_('Do not translate or change this string'))
     
     # The human-editable name 
     short_description = models.CharField(_('short description'),maxlength=64)
@@ -1327,8 +1390,8 @@ class Property(models.Model):
     General purpose key/value pair store. Why doesn't django have one of these OOTB?
     """
 
-    name = models.CharField(maxlength=1024, unique=True)
-    value = models.TextField(maxlength=8192)
+    name = models.CharField(_('name'),maxlength=1024, unique=True)
+    value = models.TextField(_('value'),maxlength=8192)
     
     def __str__(self):
         return self.name
@@ -1346,12 +1409,12 @@ class SmtpConfiguration(models.Model):
     """
     Smtp email server config data
     """
-    host = models.CharField(maxlength=256)
-    port = models.IntegerField()
-    username = models.CharField(maxlength=256, null=True, blank=True)
-    password = models.CharField(maxlength=256, null=True, blank=True)
-    use_ssl = models.BooleanField()
-    use_tls = models.BooleanField()
+    host = models.CharField(_('host'),maxlength=256)
+    port = models.IntegerField(_('port'))
+    username = models.CharField(_('username'),maxlength=256, null=True, blank=True)
+    password = models.CharField(_('password'),maxlength=256, null=True, blank=True)
+    use_ssl = models.BooleanField(_('use ssl'))
+    use_tls = models.BooleanField(_('use tls'))
 
     def __str__(self):
         return _("SMTP configuration: %s") % self.host
@@ -1369,14 +1432,14 @@ class ImapConfiguration(models.Model):
     """
     IMAP email server config data
     """
-    host = models.CharField(maxlength=256)
-    port = models.IntegerField()
-    mailbox = models.CharField(maxlength=256, blank=True)
-    username = models.CharField(maxlength=256, null=True, blank=True)
-    password = models.CharField(maxlength=256, null=True, blank=True)
-    use_ssl = models.BooleanField()
-    email = models.EmailField(maxlength=320)
-    name = models.CharField(maxlength=256)
+    host = models.CharField(_('host'),maxlength=256)
+    port = models.IntegerField(_('port'))
+    mailbox = models.CharField(_('mailbox'),maxlength=256, blank=True)
+    username = models.CharField(_('user name'),maxlength=256, null=True, blank=True)
+    password = models.CharField(_('password'),maxlength=256, null=True, blank=True)
+    use_ssl = models.BooleanField(_('use ssl'))
+    email = models.EmailField(_('email'),maxlength=320)
+    name = models.CharField(_('name'),maxlength=256)
 
     def __str__(self):
         return _("IMAP configuration: %s") % self.host
@@ -1394,9 +1457,9 @@ class EmailTemplate(models.Model):
     """
     Email template. Used for sending emails after e.g. issue updates.
     """
-    subject = models.CharField(maxlength=1024)
-    body = models.TextField(maxlength=8192)
-    name = models.CharField(maxlength=512, help_text=_('Do not translate or change this string'))
+    subject = models.CharField(_('subject'),maxlength=1024)
+    body = models.TextField(_('body'),maxlength=8192)
+    name = models.CharField(_('name'),maxlength=512, help_text=_('Do not translate or change this string'))
 
     def __str__(self):
         return self.name
@@ -1486,7 +1549,7 @@ class EmailTemplate(models.Model):
 
                 body_template = django.template.Template(self.body)
                 html = self.body
-
+                
                 html = body_template.render(context)
 
                 # Make sure we have a str and not a unicode, or html2text will mess up
@@ -1596,9 +1659,9 @@ class Event(models.Model):
     """
     A simple event handler, stored in the db.
     """
-    description = models.TextField(maxlength=256)
-    event = models.CharField(maxlength=64)
-    code = models.TextField(maxlength=8192)
+    description = models.TextField(_('description'),maxlength=256)
+    event = models.CharField(_('event'),maxlength=64)
+    code = models.TextField(_('code'),maxlength=8192)
 
     def __str__(self):
         return self.event +': '+self.description

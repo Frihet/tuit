@@ -35,6 +35,7 @@ def insert_view_data(keys, request, default_checked_list):
     keys['impacts'] = map(lambda x:str(x),range(1,6))
     keys['urgencies'] = map(lambda x:str(x),range(1,6))
     keys['types'] = IssueType.objects.all().order_by('name')
+    keys['dependency_types'] = IssueDependencyType.objects.all().order_by('name')
     for box in ('update_dependants','internal','assigned_to_email','requester_email','co_responsible_email','cc_email'):
         if request.method=='POST':
             if box in request.POST:
@@ -42,21 +43,67 @@ def insert_view_data(keys, request, default_checked_list):
         elif box in default_checked:
             keys[box]='checked'
 
+def get_server_files(post):
+    def format_server_file(idx):
+        save_dir = properties['attachment_directory']
+        full_dir=save_dir + "/temp/"
+        f = open( full_dir + post['upload_localname_'+str(idx)],'r')
+        content = f.read()
+        f.close()
+        return {'localname':post['upload_localname_'+str(idx)],
+                'content': content,
+                'filename': post['upload_filename_' + str(idx)],
+                'mime': post['upload_mime_' + str(idx)],
+                'content-type': post['upload_mime_' + str(idx)],
+                'idx':idx}
+    return map(format_server_file, range(int(post['upload_count'])))
 
-def handle_files( issue, update, files ):
+def handle_files( issue, update, files, post ):
     res=[]
-    print 'TRY HANDLING FILES!!!'
 #    print files
     idx = 0
+    for file in get_server_files(post):
+        IssueAttachment.create(issue, update, file['content'], file['filename'], file['content-type'], idx)
+        idx += 1
     for filename in files:
-        print 'handle a file...'
         file = files[filename]
 #        print file
 #        IssueAttachment.create(issue, update, file.read(), file.name, file.content_type)
         IssueAttachment.create(issue, update, file['content'], file['filename'], file['content-type'], idx)
         idx += 1
-        print 'ok'
-    print 'DONE AND DONE!!!'
+    return res
+
+def handle_files_error( issue, update, files, post ):
+    """
+    When a validation error occured, we still need to save our
+    precious files, so that the user doesn't have to reupload them.
+    """
+    res=get_server_files(post)
+#    print files
+    idx = len(res)
+    for filename in files:
+        file = files[filename]
+
+        save_dir = properties['attachment_directory']
+        full_dir=save_dir + "/temp"
+        import os, tempfile
+        try:
+            os.makedirs(full_dir)
+        except:
+            pass
+        fullname = tempfile.mkstemp(dir=full_dir)
+        os.close(fullname[0])
+        f = open(fullname[1], 'w')
+        try:
+            f.write(file['content'])
+        finally:
+            f.close()
+        res.append({"localname": fullname[1].split('/')[-1],
+                    'filename':file['filename'],
+                    'content-type':file['content-type'],
+                    'mime':file['content-type'],
+                    'idx':idx})
+        idx += 1
     return res
 
 
@@ -69,6 +116,53 @@ def format_errors(errors):
     for key, val in errors.iteritems():
         for msg in val:
             res += "<div class='error'>%s: %s</div>" % (key, msg)
+    return res
+
+def parse_post_dependencies(post):
+#    return [{'description': "Trololololo: Ha ha ha!",'idx':0,'id':3180,'type':'1_reverse'}]
+    res = [];
+    
+    prog = re.compile(r"dependency_([0-9]*)_id")
+    for i in post:
+        result = prog.match(i)
+        if result:
+            idx = result.group(1)
+            id = post[i]
+            type = post["dependency_"+idx+"_type"]
+            type_arr = type.split('_');
+            t = IssueDependencyType.objects.get(id=int(type_arr[0]))
+            type_desc = ""
+            if len(type_arr) == 1:
+                type_desc = t.name
+            else:
+                type_desc = t.reverse_name
+            i = Issue.objects.get(id=int(id))
+            description = "%s: %s - %s" % (type_desc, i.id, i.subject)
+            res.append({'description': description,'idx':idx,'id':id,'type':type})
+            
+    return res
+
+def parse_issue_dependencies(issue):
+    res = [];
+    idx = 0
+    for dep in issue.dependencies.all():
+        description = "%s: %s - %s" % (dep.type.name, dep.dependency.id, dep.dependency.subject)   
+        res.append({
+                'description': description,
+                'idx':idx,
+                'id':dep.dependency.id,
+                'type':dep.type.id})
+        idx+=1;
+
+    for dep in issue.dependants.all():
+        description = "%s: %s - %s" % (dep.type.reverse_name, dep.dependant.id, dep.dependant.subject)   
+        res.append({
+                'description': description,
+                'idx':idx,
+                'id':dep.dependant.id,
+                'type': "%s_reverse" % dep.type.id })
+        idx+=1;
+
     return res
 
 @login_required
@@ -105,9 +199,9 @@ def new(request, type_name=None):
         keys['title'] = _('New issue')
 
     keys['ticket_new'] = True
-    
-    
+    keys['file_count'] = 0
     i = Issue()
+    keys['dependencies'] = []
     i.creator = request.user
     
     if request.method == 'POST': 
@@ -145,9 +239,8 @@ def new(request, type_name=None):
 
             errors = i.validate()
         
-            print 'BAZ', errors
             if not errors:
-                events.extend(handle_files(i, None, request.FILES))
+                events.extend(handle_files(i, None, request.FILES, request.POST))
                 events.extend(send_email('web_create', request.POST, i, None))
 
                 i.description_data={'type':'web','events':events, 'by':request.user.username}
@@ -169,7 +262,10 @@ def new(request, type_name=None):
         logging.getLogger('ticket').error('Tried to create issue, but got the following errors: %s' % str(errors));
         keys['errors'] = errors
         keys['messages'] += format_errors(errors)
+        keys['files'] = handle_files_error(i, None, request.FILES, request.POST)
+        keys['file_count'] = len(keys['files'])
 
+        keys['dependencies'] = parse_post_dependencies(request.POST)
         i=ModelWrapper(i, request.POST)
     else:
         # This is not a form submission, show an empty form
@@ -240,6 +336,8 @@ def view(request,id=None):
     keys['messages'] = ""
     keys['update']=None
     keys['show_internal'] = request.user.has_perm('ticket.view_internal')
+    keys['file_count'] = 0
+    keys['dependencies'] = parse_issue_dependencies(i)
 
     if request.method == 'POST': 
         # If the form has been submitted...
@@ -266,7 +364,7 @@ def view(request,id=None):
 
             iu.save()
 
-            events.extend(handle_files(i, iu, request.FILES))
+            events.extend(handle_files(i, iu, request.FILES, request.POST))
             events.extend(send_email('web_update', request.POST, i, iu))
                                
             iu.description_data={'type':'web','events':events,'by':request.user.username}
@@ -285,6 +383,10 @@ def view(request,id=None):
         logging.getLogger('ticket').error('Tried to create issue update, but got the following errors: %s' % str(errors));
         keys['errors'] = errors
         keys['update']=iu
+
+        keys['dependencies'] = parse_post_dependencies(request.POST)
+        keys['files'] = handle_files_error(i, None, request.FILES, request.POST)
+        keys['file_count'] = len(keys['files'])
 
         keys['messages'] += format_errors(errors)
 

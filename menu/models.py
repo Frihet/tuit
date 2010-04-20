@@ -5,11 +5,11 @@ from django.db import models
 PLACEHOLDER=_('Components')
 
 class Component(models.Model):
-    alias = models.CharField(maxlength=64)
-    name = models.CharField(maxlength=512)
-    url = models.CharField(maxlength=512)
-    permission = models.CharField(maxlength=64,blank=True)
-    view_order = models.IntegerField()
+    alias = models.CharField(_('alias'),maxlength=64)
+    name = models.CharField(_('name'),maxlength=512)
+    url = models.CharField(_('url'),maxlength=512)
+    permission = models.CharField(_('permission'),maxlength=64,blank=True)
+    view_order = models.IntegerField(_('view order'),)
 
     def __str__(self):
         return self.name

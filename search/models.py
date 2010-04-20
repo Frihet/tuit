@@ -6,10 +6,10 @@ import datetime
 PLACEHOLDER = _('Search types')
 
 class SearchType(models.Model):
-    name = models.CharField(maxlength=512)
-    url = models.CharField(maxlength=512)
-    view_order = models.IntegerField()
-    permission = models.CharField(maxlength=64,blank=True)
+    name = models.CharField(_('name'),maxlength=512)
+    url = models.CharField(_('url'),maxlength=512)
+    view_order = models.IntegerField(_('view order'))
+    permission = models.CharField(_('permission'),maxlength=64,blank=True)
 
     def __str__(self):
         return self.name

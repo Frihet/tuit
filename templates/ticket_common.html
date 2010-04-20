@@ -213,10 +213,29 @@
       <label for='dependencies_string'>{%trans "Depends on issues" %}:</label>
     </td>
     <td>
-      <textarea class='depend' name='dependencies_string' id='dependencies_string'>{{ issue.dependencies_string }}</textarea>
-    </td>
-  <td></td></tr>
 
+      <ul id='dependencies_list'>
+	{% for dep in dependencies %}
+	<li id='dependency_{{ dep.idx }}'>
+	  {{ dep.description|escape }}<button onclick='$("#dependency_{{ dep.idx }}").remove()'>-</button>
+	  <input type='hidden' name='dependency_{{ dep.idx }}_id' value='{{ dep.id }}'>
+	  <input type='hidden' name='dependency_{{ dep.idx }}_type' value='{{ dep.type }}'>
+	</li>
+	{% endfor %}
+      </ul>
+      <select id='p_depend_type'>
+	{% for dep in dependency_types %}
+	<option value='{{ dep.id }}'>{{ dep.name|escape }}</option>
+	<option value='{{ dep.id }}_reverse'>{{ dep.reverse_name|escape }}</option>
+	{% endfor %}
+      </select>
+      <input id='p_depend' class='depend'>
+      <button type='button' onclick='tuit.addDependency()'>{% trans "Add" %}</button>
+      
+    </td><td>
+    </td>
+</tr>
+  
   {% if ticket_new %}
     <tr>
       <td>
@@ -249,7 +268,29 @@
     <td>
       <button type='button' onclick='javascript:tuit.addFileWidget();'>{%trans "Add file" %}</button>
     </td>
+
   <td></td></tr>
+  <tr>
+    <td>
+      {% trans "Already uploaded files" %}: 
+    </td>
+    <td>
+      <ul class='uploaded'>
+	{% for file in files %}
+	<li id='upload_{{ file.idx }}'>
+	  <input type='hidden' name='upload_localname_{{ file.idx }}' value='{{ file.localname|escape}}'> 
+	  <input type='hidden' name='upload_filename_{{ file.idx }}' value='{{ file.filename|escape}}'> 
+	  <input type='hidden' name='upload_mime_{{ file.idx }}' value='{{ file.mime|escape}}'> 
+	  {{ file.filename|escape }} <button type='button' onclick='javascript:$("#upload_{{ file.idx }}").remove();'>{% trans "remove" %}</button>
+	</li>
+	{% endfor %}
+	<input type='hidden' name='upload_count' value='{{ file_count }}'>
+      </ul>
+    </td>    
+  </tr>
+    
+
+
 </tbody>
 
 

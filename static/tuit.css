@@ -103,6 +103,10 @@ table * {
     list-style: None;
 }
 
+input.file{
+    color:black;
+}
+
 /**** Styling of popups ****/
 .popup {
  background-color: #ffffff;
@@ -750,3 +754,8 @@ button {
     font-size: 12pt;
 }
 
+/******* Disable search icon in admin interface - broken in IE... ******/
+.module #toolbar img
+{
+    display: none;
+}

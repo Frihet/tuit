@@ -7,10 +7,10 @@ from tuit.ticket.models import IssueField
 PLACEHOLDER=_('Query')
 
 class GenericFillItem(models.Model):
-    field = models.ForeignKey(IssueField)
-    value = models.CharField(maxlength=32000)
-    condition_name = models.ForeignKey(IssueField, related_name = 'trigged_by')
-    condition_value = models.CharField(maxlength=64)
+    field = models.ForeignKey(IssueField,verbose_name=_('field'))
+    value = models.CharField(_('value'),maxlength=32000)
+    condition_name = models.ForeignKey(IssueField,verbose_name=_('condition name'), related_name = 'trigged_by')
+    condition_value = models.CharField(_('condition value'),maxlength=64)
 
     def __str__(self):
         return self.condition_name.name + ": " + self.condition_value + " -> " + str(self.field) + ": " + str(self.value)

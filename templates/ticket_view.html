@@ -194,21 +194,10 @@
       <td>
 	<ul>
 	  {% for dep in issue.dependencies.all %}
-	  <li><a href='../{{ dep.id }}'>{{ dep.id }} - {{ dep.subject|escape }}</a></li>
+	  <li><a href='../{{ dep.dependency.id }}'>{{ dep.type.name|escape}}: {{ dep.dependency.id }} - {{ dep.dependency.subject|escape }}</a></li>
 	  {% endfor %}
-	</ul>
-      </td>
-    </tr>
-
-
-    <tr>
-      <td class='label'>
-	{%trans "Depended on by these issues" %}:
-      </td>
-      <td>
-	<ul>
 	  {% for dep in issue.dependants.all %}
-	  <li><a href='../{{ dep.id }}'>{{ dep.id }} - {{ dep.subject|escape }}</a></li>
+	  <li><a href='../{{ dep.dependant.id }}'>{{ dep.type.reverse_name|escape}}: {{ dep.dependant.id }} - {{ dep.dependant.subject|escape }}</a></li>
 	  {% endfor %}
 	</ul>
       </td>

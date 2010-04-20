@@ -7,6 +7,8 @@ var tuit = {
 	  Filled out by i18n script
 	 */
     },
+    
+    dependency_id: 0,
 
     /*
       Perform all searches specified by data.
@@ -144,8 +146,9 @@ var tuit = {
 		var type = value.getAttribute("type");
 		if ( type  == "submit" || type == "button" || type == "reset")	
 		    $(value).addClass("button");
-		else if (type == "radio" || type == "checkbox" || type == "text") 
+		else if (type == "radio" || type == "checkbox" || type == "text" || type=="file") 
 		    $(value).addClass(type);
+
 	    } );
 	tuit.setupForm();
 	tuit.getComments();
@@ -535,6 +538,45 @@ var tuit = {
 	      }
 	      );
 	//	$('.widget_header h2')[0].innerHTML = type_name
+    },
+    
+    addDependency: function(){
+	var dependency_type_field = $('#p_depend_type')[0];
+	var dependency_field = $('#p_depend')[0];
+	if(dependency_field.value == "")
+	    return;
+	
+	var id=0;
+	while($("#dependency_" + id).length != 0)
+	    id++;
+
+	var list = $('#dependencies_list')[0];
+	var li = document.createElement('li');
+	li.id="dependency_" + id;
+	li.appendChild(document.createTextNode(dependency_type_field.options[dependency_type_field.selectedIndex].text));
+	li.appendChild(document.createTextNode(": "));
+	li.appendChild(document.createTextNode(dependency_field.value+ " "));
+	var dep_type = document.createElement('input');
+	dep_type.type='hidden';
+	dep_type.name='dependency_' + id + '_type';
+	dep_type.value=dependency_type_field.value;
+	li.appendChild(dep_type);
+
+	var dep_id = document.createElement('input');
+	dep_id.type='hidden';
+	dep_id.name='dependency_' + id + '_id';
+	dep_id.value=dependency_field.value.split(' ')[0];
+	li.appendChild(dep_id);
+	
+	var b=document.createElement('button');
+	b.className='dependency_remove';
+	b.type='button';
+	
+	b.onclick=function(){$('#dependency_' + id).remove();};	
+	b.appendChild(document.createTextNode("-"));
+	li.appendChild(b);
+
+	list.appendChild(li);
     }
 };
 
