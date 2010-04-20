@@ -11,7 +11,14 @@
 }
 
 .foswikiFormTable input {
- width: 100%;
+    width: 100%;
+}
+
+.foswikiFormTable input.foswikiRadioButton,
+.foswikiFormTable input.foswikiCheckbox
+{
+    width: auto;
+    min-width: auto;
 }
 
 table {
