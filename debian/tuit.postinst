@@ -18,6 +18,10 @@ dbc_go tuit $@
 # dbc_generate_include doesn't seem able to set the right password :(
 [ "$dbc_dbserver" ] || dbc_dbserver=localhost
 
+export PGPASSFILE=/usr/share/python-support/tuit/tuit/pgpass
+chmod go-rwx $PGPASSFILE
+echo "$dbc_dbserver:*:$dbc_dbname:$dbc_dbuser:$dbc_dbpass" >> $PGPASSFILE
+
 cp /usr/share/python-support/tuit/tuit/settings.py.example /usr/share/python-support/tuit/tuit/settings.py
 patch /usr/share/python-support/tuit/tuit/settings.py <<EOF
 --- settings.py.example	2010-03-18 11:55:35.000000000 +0100
@@ -102,9 +106,6 @@ crontab -u www-data - <<EOF
 * * * * * cd /usr/share/python-support/tuit/tuit/; python bin/mail.py
 EOF
 
-export PGPASSFILE="$(mktemp)"
-echo "$dbc_dbserver:*:$dbc_dbname:$dbc_dbuser:$dbc_dbpass" > $PGPASSFILE
-
 psql -U $dbc_dbuser $dbc_dbname <<EOF
 insert into ticket_property (name, value) values ('issue_default_status', '1');
 insert into ticket_property (name, value) values ('username_case_insensitive', 'true');
@@ -158,8 +159,6 @@ for sequence in $(
   echo "select setval('$sequence', 1000);"
 done |
  psql -U $dbc_dbuser $dbc_dbname
-
-rm "$PGPASSFILE"
 
 a2enmod proxy_http
 a2enmod proxy
