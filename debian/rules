@@ -63,6 +63,13 @@ install-indep:
 	mkdir -p debian/tuit/usr/share/python-support/tuit/tuit/attachments
 	chmod ugo+rwx debian/tuit/usr/share/python-support/tuit/tuit/attachments
 
+	mkdir -p debian/tuit-foswiki/var/lib/foswiki/data
+	mkdir -p debian/tuit-foswiki/var/lib/foswiki/tuit-templates/
+	rsync -a foswiki/FreeTIL_login/ debian/tuit-foswiki/var/lib/foswiki/
+	rsync -a foswiki/pages/ debian/tuit-foswiki/var/lib/foswiki/data/
+	rsync -a foswiki/pages/ debian/tuit-foswiki/var/lib/foswiki/data/_tuit/
+	rsync -a foswiki/templates/ debian/tuit-foswiki/var/lib/foswiki/tuit-templates/
+
 	dh_install -i
 
 install-arch:

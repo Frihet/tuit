@@ -7,7 +7,13 @@ Standards-Version: 3.7.2
 
 Package: tuit
 Architecture: all
-Depends: ${shlibs:Depends}, ${misc:Depends}, fccommon, dbconfig-common, python-symmetric-jsonrpc, foswiki, apache2, libapache2-mod-python, libapache2-mod-proxy-html, python-django, python-beautifulsoup, postgresql-8.3, python-psycopg2
+Depends: ${shlibs:Depends}, ${misc:Depends}, fccommon, dbconfig-common, python-symmetric-jsonrpc, apache2, libapache2-mod-python, libapache2-mod-proxy-html, python-django, python-beautifulsoup, postgresql-8.3, python-psycopg2
 Description: Tuit is an ITILized ticket management system
  Tuit is an ITILized ticket management system that can be integrated
  with FreeCMDB and FosWIKI to create a comprehensive ITIL toolchain.
+
+Package: tuit-foswiki
+Architecture: all
+Depends: ${shlibs:Depends}, ${misc:Depends}, foswiki, libwww-curl-perl, libjson-perl, foswiki-treeplugin
+Description: Tuit is an ITILized ticket management system
+ This package integrates TUIT with FosWIKI. It provides theme integration as well as login integration.
