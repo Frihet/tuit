@@ -36,10 +36,12 @@ def results(request):
 
     vars['status_all'] = Status.objects.all()
 
+    locations = filter(lambda x:check_permission(x.permission,request.user),
+                       SearchType.objects.all().order_by('view_order'))
+
     if 'freetext' in request.GET:
         results = []
-        locations = filter(lambda x:check_permission(x.permission,request.user),
-                           SearchType.objects.all().order_by('view_order'))
+
         for typ in locations:
             url = typ.url % ModelDict(request.GET)
             #content = fetch_url(url)
@@ -47,7 +49,7 @@ def results(request):
 
         vars['results']=to_json(results)
 
-    vars['types'] = SearchType.objects.all().order_by('view_order')
+    vars['types'] = locations
     #vars = request.GET#dict(request.GET)
 
     return tuit_render('search.html', vars, request)

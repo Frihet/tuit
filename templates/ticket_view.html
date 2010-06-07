@@ -339,7 +339,7 @@ var external_default_mail = {{ external_default_mail_json }};
     <a href="javascript:popupHide('kb_popup')">x</a>
   </div>
   <div class='popup_content'>
-    <form method='post' action='/cgi-bin/foswiki/manage/KB/' id='kb_form' accept-charset='iso-8859-1' accept-charset='utf-8'>
+    <form method='post' action='{{ foswiki_url }}/manage/KB/' id='kb_form' accept-charset='iso-8859-1' accept-charset='utf-8'>
       <input type='hidden' name='action' value='create'/>
       <input type='hidden' name='onlynewtopic' value='on'/>
       <input type='hidden' name='topicparent' value='WebHome'/>
@@ -358,7 +358,7 @@ var external_default_mail = {{ external_default_mail_json }};
 	  <td>
 	  </td>
 	  <td>
-	    <input id='kb_internal' class='checkbox' type='checkbox' onchange="$('#kb_form')[0].action=($('#kb_internal')[0].checked)?'/cgi-bin/foswiki/manage/IKB/':'/cgi-bin/foswiki/manage/KB/';" />
+	    <input id='kb_internal' class='checkbox' type='checkbox' onchange="$('#kb_form')[0].action=($('#kb_internal')[0].checked)?'{{ foswiki_url }}/manage/IKB/':'{{ foswiki_url }}/manage/KB/';" />
 	    <label for='kb_internal'>{% trans "Internal" %}</label>
 	  </td>
 	</tr>

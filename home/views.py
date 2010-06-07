@@ -22,18 +22,31 @@ def home(request):
     if not hasattr(status_closed,'__iter__'):
         status_closed=[status_closed]
     keys={'tip':Tip.current()}
-    
-    widgets = map(lambda x: Widget(_('My highest priority open tickets of type %s') % x.name,
-                                           Issue.objects.exclude(current_status__in = status_closed).filter(assigned_to=request.user).filter(type=x).extra(select={'priority_placeholder':'impact+urgency'}).order_by('-priority_placeholder'),
-                                           request, 'my_priority_' + x.name),
-                          IssueType.objects.all().order_by('name'))
-    widgets.append(Widget(_('Latest open tickets'),
-               Issue.objects.exclude(current_status__in = status_closed).order_by('-creation_date'),
-               request, 'latest'))
 
-    widgets.append(Widget(_('Oldest unassigned, open tickets'),
-               Issue.objects.exclude(current_status__in = status_closed).filter(assigned_to__isnull=True).order_by('creation_date'),
-               request,'unassigned_oldest'))
+    if request.user.is_staff:
+    
+        widgets = map(lambda x: Widget(_('My highest priority open tickets of type %s') % x.name,
+                                       Issue.objects.exclude(current_status__in = status_closed).filter(assigned_to=request.user).filter(type=x).extra(select={'priority_placeholder':'impact+urgency'}).order_by('-priority_placeholder'),
+                                       request, 'my_priority_' + x.name),
+                      IssueType.objects.all().order_by('name'))
+        widgets.append(Widget(_('Latest open tickets'),
+                              Issue.objects.exclude(current_status__in = status_closed).order_by('-creation_date'),
+                              request, 'latest'))
+
+        widgets.append(Widget(_('Oldest unassigned, open tickets'),
+                              Issue.objects.exclude(current_status__in = status_closed).filter(assigned_to__isnull=True).order_by('creation_date'),
+                              request,'unassigned_oldest'))
+    else:
+        widgets = [
+            Widget(_('My tickets by date'),
+                   Issue.objects.filter(requester=request.user).extra(select={'priority_placeholder':'impact+urgency'}).order_by('creation_date'),
+                   request, 'my_by_date',
+                   (('','id'),('','sep'),(_('Issue name'),'name'),(_('Priority'),'priority'),(_('Status'),'current_status'),(_('Creation date'),'creation_date'))),
+            Widget(_('My tickets by status'),
+                   Issue.objects.filter(requester=request.user).extra(select={'priority_placeholder':'impact+urgency'}).order_by('current_status'),
+                   request, 'my_by_status',
+                   (('','id'),('','sep'),(_('Issue name'),'name'),(_('Priority'),'priority'),(_('Status'),'current_status'))),
+            ]
 
     keys['widgets'] = widgets
 

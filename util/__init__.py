@@ -39,6 +39,9 @@ def tuit_render(name, keys, request):
     keys['application'] = 'FreeTIL'
     keys['user']=request.user
     keys['counter'] = "%.4f" % time.time()
+    if 'foswiki_url' not in properties:
+        properties['foswiki_url'] = '/cgi-bin/foswiki/'
+    keys['foswiki_url'] = properties['foswiki_url']
 
     last_updates = IssueUpdate.objects.order_by('-creation_date').filter(user=request.user).distinct('issue_id')
     keys['recent_updates'] = Widget(_('Latest updates'),

@@ -131,8 +131,12 @@ var tuit = {
 
        	var main_menu = $('.main_menu');
        	var breadcrumb_head = $('.breadcrumb a + a')[0];
-        if (breadcrumb_head === undefined) breadcrumb_head = $('.breadcrumb a')[0];	
+        if (breadcrumb_head === undefined) 
+	    breadcrumb_head = $('.breadcrumb a')[0];	
 
+        if (breadcrumb_head === undefined) 
+	    return;
+	
 	main_menu.children().each(function(i, li) {
  	    if (tuit.cleanupUrl($(li).find("a")[0].href) == tuit.cleanupUrl(breadcrumb_head.href))
 	        $(li).addClass('active');

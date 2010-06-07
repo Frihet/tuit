@@ -300,7 +300,9 @@ def update_dependants(issue, update, send_to, ignore):
     Update all dependant tickets as well, and send emails to the
     relevant people.
     """
-    for i in issue.dependants.all():
+
+    for i_d in issue.dependants.all():
+        i = i_d.dependant
         if i in ignore:
             continue
         ignore.add(i)
@@ -316,7 +318,6 @@ def update_dependants(issue, update, send_to, ignore):
         iu.description_data={'type':'web','events':events}
         iu.save()
         update_dependants(i, iu, send_to, ignore)
-
 
 @login_required
 def view(request,id=None):

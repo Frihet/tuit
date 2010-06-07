@@ -384,7 +384,7 @@ class Issue(models.Model):
     telephone = models.TextField(maxlength=512, blank=True)
     mobile = models.TextField(maxlength=512, blank=True)
     pc = models.TextField(maxlength=512, blank=True)
-
+    
     # Any errors encoundered during apply_post go here.
     _errors={}
 
@@ -549,6 +549,8 @@ class Issue(models.Model):
                 'priority':lambda: "%s" % self.priority,
                 'owner':lambda: user_desc(self.assigned_to),
                 'requester':lambda: user_desc(self.requester),
+                'current_status':lambda: self.current_status.name,
+                'creation_date':lambda: date_format(self.creation_date),
                 }[col]() 
         except:
             logging.getLogger('ticket').error('Issue.html_cell failed while fetching column %s for issue %d' %
