@@ -8,11 +8,14 @@ import datetime
 from django.contrib.auth.models import *
 from tuit.util import *
 import re
+import django.contrib.auth.models
 from django.utils.translation import gettext as _
 from django.utils.translation import gettext_noop
 import logging
 from tuit.query.models import GenericFillItem
 import traceback
+import tuit.home.widget
+#from django.db.models import Q
 
 def studly(str):
     """
@@ -171,7 +174,7 @@ def new(request, type_name=None):
     View for creating a new ticket
     """
     
-    # Do a copy to get a real dict, no a weird django-style query-dict
+    # Do a copy to get a real dict, not a weird django-style query-dict
     # with their pseudo-list interface.
     keys = request.POST.copy()
     
@@ -496,4 +499,87 @@ def email(request, id):
         logging.getLogger('ticket').error('No email template of type %s could be found' % template_name)
         error = _("No email template named %s could be found") % template_name
     return tuit_render('ticket_email.html', {'ok':ok,'email':name,'issue':i, 'error':error}, request)
+
+
+@login_required
+def user_list(request):
+    if not request.user.is_staff:
+        return None
+
+    items = User.objects
+    print items
+
+    search = request.GET.get('search', '')
+    if search:
+        items = items.filter(username__contains = search) | items.filter(first_name__contains = search) | items.filter(last_name__contains = search) | items.filter(email__contains = search)
+    else:
+        items = items.all()
+
+    items = items.order_by('username')
+
+    keys={'title': _("Manage user profiles"),
+          'user_list_widget': tuit.home.widget.Widget(
+            _('Matching user profiles'),
+            items,
+            request,
+            'user_list',
+            item_count=10,
+            class_names="widget_2"),
+          'search': search,
+          }
+    
+    return tuit_render('user_list.html', keys, request)
+
+
+@login_required
+def user_edit(request,id=None):
+    if not request.user.is_staff and request.user.id != int(id):
+        return None
+
+    errors = {}
+
+    if id == 'new':
+        user_profile = UserProfile()
+        user_profile.user = django.contrib.auth.models.User()
+        pass
+    else:
+        try:
+            user_profile = UserProfile.objects.get(user = int(id))
+        except:
+            user = django.contrib.auth.models.User.objects.get(id=int(id))
+            user_profile = UserProfile()
+            user_profile.user = user
+
+    if request.method == 'POST': 
+
+        # if request.POST['user_password'] != request.POST['user_password_retype']:
+        #     errors['password'] = ["Passwords don't match"]
+        # elif id == 'new' and not request.POST['user_password']:
+        #     errors['password'] = ["Passwords is empty"]
+        # elif not request.POST['user_username']:
+        #     errors['username'] = ["Username is empty"]
+        # else:
+        # del request.POST['user_password_retype']
+        # if not request.POST['user_password']:
+        #     del request.POST['user_password']
+        for name, value in request.POST.iteritems():
+            if name.startswith('user_'):
+                setattr(user_profile.user, name[len('user_'):], value[0])
+            else:
+                setattr(user_profile, name, value[0])
+        user_profile.save()
+        user_profile.user.save()
+        return HttpResponseRedirect("..")
+    data = {
+        "edit_user": user_profile,
+        'errors': errors,
+        'messages': format_errors(errors)
+        }
+    return tuit_render('user_edit.html', data, request)
+
+@login_required
+def user_remove(request,id=None):
+    user = django.contrib.auth.models.User.objects.get(id=int(id))
+    user.delete()
+    return HttpResponseRedirect("../..")
 

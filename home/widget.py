@@ -148,11 +148,10 @@ class Widget:
                     if time > 0.75:
                         logging.getLogger('performance').warning('DB access for widget «%s», user %s took %.2f seconds' % (self.slug, self.request.user.username, time))                    
                 return hdr + rows
-
             else:
-                return "Unknown widget style"
+                raise Exception("Unknown widget style")
         except:
             import traceback
             traceback.print_exc()
-            return ""
+            return _("<div class='error'>There was an problem while showing this widget.</div>")
         

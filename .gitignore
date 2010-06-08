@@ -8,3 +8,6 @@ ad_csv
 .goutput*
 settings.py
 *.pot
+build-indep-stamp
+configure-stamp
+build-arch-stamp

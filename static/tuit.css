@@ -557,6 +557,10 @@ thead th {
     width: 8em;
 }
 
+table.formfield tr th {
+ width: 30%;
+}
+
 
 /**** Styling of popups ****/
 .content .popup {
