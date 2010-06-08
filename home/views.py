@@ -43,7 +43,7 @@ def home(request):
                    request, 'my_by_date',
                    (('','id'),('','sep'),(_('Issue name'),'name'),(_('Priority'),'priority'),(_('Status'),'current_status'),(_('Creation date'),'creation_date'))),
             Widget(_('My tickets by status'),
-                   Issue.objects.filter(requester=request.user).extra(select={'priority_placeholder':'impact+urgency'}).order_by('current_status'),
+                   Issue.objects.filter(requester=request.user).extra(select={'priority_placeholder':'impact+urgency'}).extra(tables=['ticket_status'],where=['ticket_status.id = current_status_id']).order_by('ticket_status.name'),
                    request, 'my_by_status',
                    (('','id'),('','sep'),(_('Issue name'),'name'),(_('Priority'),'priority'),(_('Status'),'current_status'))),
             ]
