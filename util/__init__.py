@@ -10,7 +10,7 @@ from urllib import quote
 import django.contrib.auth.models
 import cgi
 import time
-
+import re
 
 import logging
 
@@ -41,6 +41,7 @@ def tuit_render(name, keys, request):
     keys['counter'] = "%.4f" % time.time()
     if 'foswiki_url' not in properties:
         properties['foswiki_url'] = '/cgi-bin/foswiki/'
+
     keys['foswiki_url'] = properties['foswiki_url']
 
     last_updates = IssueUpdate.objects.order_by('-creation_date').filter(user=request.user).distinct('issue_id')

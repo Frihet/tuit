@@ -126,14 +126,14 @@ var tuit = {
        	var menu_target = $('.main_menu_target');
 
 	if(menu_target.length) {
-	    menu_target.replaceWith($.ajax({url: "/tuit/menu/", async: false}).responseText)
+	    menu_target.replaceWith($.ajax({url: "/tuit/menu/?time="+tuit.time(), async: false}).responseText)
         }
 
        	var main_menu = $('.main_menu');
        	var breadcrumb_head = $('.breadcrumb a + a')[0];
         if (breadcrumb_head === undefined) 
 	    breadcrumb_head = $('.breadcrumb a')[0];	
-
+	
         if (breadcrumb_head === undefined) 
 	    return;
 	
@@ -325,7 +325,7 @@ var tuit = {
 	    }
 
 
-	    $.getJSON('/tuit/comment/get/',{'url':window.location.pathname},
+	    $.getJSON('/tuit/comment/get/',{'url':window.location.pathname,'time':tuit.time()},
 		      function (data, status) {
 			  if (data === false) {
 			      return;

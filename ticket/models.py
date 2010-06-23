@@ -33,9 +33,8 @@ import django.template
 PLACEHOLDER = (_('Ticket'),_('Auth'),_('comment'))
 
 def remove_html_tags(data):
-    import re
-    p = re.compile(r'<.*?>')
-    return p.sub('', data)
+    p = re.compile(r'<[^>]+>')
+    return p.sub('', data).replace("<","").replace(">","");
 
 def format_user(u):
     """
@@ -1287,12 +1286,12 @@ class IssueUpdate(models.Model):
                         return str
                     text = truncate(remove_html_tags(self.comment),24)
                     return "<a href='%s'>%s</a>" % (self.issue.url_internal, text)
-                                        
                 elif col == 'creation_date':
                     return datetime_format(self.creation_date)
                 else:
                     return self.issue.html_cell(col)
             except:
+                print "Problem in issue update", self.id
                 traceback.print_exc()
                 raise
 

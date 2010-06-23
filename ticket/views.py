@@ -335,6 +335,8 @@ def view(request,id=None):
     except:
         return tuit_render('ticket_view.html', {}, request)
 
+    if not request.user.is_staff and i.requester != request.user:
+        return tuit_render('ticket_view.html', {}, request)
 
     keys = request.POST.copy()
     keys['messages'] = ""

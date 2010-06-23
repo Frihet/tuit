@@ -997,6 +997,8 @@ class MailGW:
                         message_status = self.process_message(m)
                     except:
                         message_status='error'
+                if message_status is None:
+                    message_status='error'
 
                 # copy the message and mark it as deleted.
          
@@ -1010,7 +1012,11 @@ class MailGW:
                 if copy_type == 'OK':
                     server.store(str(i), '+FLAGS', r'(\Deleted)')
                 else:
-                    self.logger.error('failed to copy message to %s-folder' % box_name)
+                    try:
+                        self.logger.error('failed to copy message to %s-folder' % box_name)
+                    except:
+                        pass
+                    print 'failed to copy message to %s-folder' % box_name
 
             if numMessages > 0:
                 self.logger.info('Processed %d message(s)' % numMessages)
