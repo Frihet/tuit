@@ -81,26 +81,67 @@ Date.format = '{{ js_date_format }}';
       <td></td>
     </tr>
 
-</tbody>
-
-
-<tbody class='no_print ticket_edit'>
-  <tr>
-    <th colspan='3' class="odd">&nbsp;</th>
-  </tr>
-  {% for it in issue.extra_fields %}
     <tr>
       <td>
-	<label for='{{ it.field.name|escape }}'>{{ it.field.short_description|escape }}:</label>{% if it.field.blank %}{% else %}*{% endif %}
+	<label for='telefon'>Telefon:</label>
       </td>
       <td>
-	{{ it.render_input }}
+        <input id='telefon' name='telefon' >
       </td>
       <td></td>
     </tr>
-  {% endfor %}
-</tbody>
 
+    <tr>
+      <td>
+	<label for='reason'>Reason for change:</label>
+      </td>
+      <td>
+        <textarea id='reason' name='reason' class='rich_edit' style='height:20em; width:80%;'></textarea>
+      </td>
+      <td></td>
+    </tr>
+
+    <tr>
+      <td>
+	<label for='other_systems'>What other systems are effected:</label>
+      </td>
+      <td>
+        <textarea id='other_systems' name='other_systems' class='rich_edit' style='height:20em; width:80%;'></textarea>
+      </td>
+      <td></td>
+    </tr>
+
+    <tr>
+      <td>
+	<label for='User count'>How many users are effected:</label>
+      </td>
+      <td>
+        <textarea id='user_count' name='user_count' class='rich_edit' style='height:20em; width:80%;'></textarea>
+      </td>
+      <td></td>
+    </tr>
+
+    <tr>
+      <td>
+	<label for='prio'>Priority description:</label>
+      </td>
+      <td>
+        <textarea id='prio' name='prio' class='rich_edit' style='height:20em; width:80%;'></textarea>
+      </td>
+      <td></td>
+    </tr>
+
+    <tr>
+      <td>
+	<label for='consequence'>Consequence of rejection:</label>
+      </td>
+      <td>
+        <textarea id='consequence' name='consequence' class='rich_edit' style='height:20em; width:80%;'></textarea>
+      </td>
+      <td></td>
+    </tr>
+
+</tbody>
 
 </table>
 
