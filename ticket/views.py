@@ -47,6 +47,8 @@ def insert_view_data(keys, request, default_checked_list):
             keys[box]='checked'
 
 def get_server_files(post):
+    if 'upload_count' not in post:
+        return []
     def format_server_file(idx):
         save_dir = properties['attachment_directory']
         full_dir=save_dir + "/temp/"

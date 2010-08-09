@@ -43,15 +43,11 @@ Date.format = '{{ js_date_format }}';
   <h2>Raporter ny sak</h2>
 
   
-  <form method='post' action='/ticket/new/' accept-charset='utf-8'>
-    
-
-
-
-
+  <form method='post' action='/tuit/ticket/new/' accept-charset='utf-8'>
+    <input type='hidden' name='requester_string' value='{{ user.username|escape }}'>
+    <input type='hidden' name='current_status_string' value='{{ issue_default_status }}'>
 
 <table>
-
 
 <tbody class='ticket_edit no_print'>
 <tr>
@@ -60,7 +56,7 @@ Date.format = '{{ js_date_format }}';
       </td>
       <td>
     {% for type in types %}
-    <input type='radio' name='type' value='{{type.name|escape}}' id='type_{{type.id}}'><label id='type_{{type.id}}_selector_label' for='type_{{type.id}}'>{{ type.name|escape }}</label><br>
+    <input type='radio' name='type_id' value='{{type.id}}' id='type_{{type.id}}'><label id='type_{{type.id}}_selector_label' for='type_{{type.id}}'>{{ type.name|escape }}</label><br>
     {% endfor %}
       </td>
   </tr>

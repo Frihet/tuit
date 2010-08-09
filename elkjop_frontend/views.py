@@ -22,5 +22,9 @@ def view(request):
     w = Widget('Mine saker', Issue.objects.filter(requester=user).exclude(current_status__in = status_closed).order_by('creation_date'), request, 'new')
     keys['widget'] = w
     keys['user'] = user
+    keys['issue_default_status'] = properties['issue_default_status']
     keys['types'] = IssueType.objects.all().order_by('name')
+    i = Issue()
+    i.type = IssueType.objects.all()[0]
+    keys['issue'] = i
     return tuit_render("elkjop_simple.html", keys, request)
