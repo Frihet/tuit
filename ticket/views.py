@@ -290,7 +290,8 @@ def new(request, type_name=None):
                     url = '/tuit/ticket/view/%d' % i.id 
                     if 'continue' in request.POST:
                         url = '/tuit/ticket/new/?type=' + cgi.escape(i.type.name)
-    
+                    elif 'new_url' in request.POST:
+                        url = request.POST['new_url']
                     return HttpResponseRedirect(url)
 
         # This code is only reached oif we get an error while processing the form
