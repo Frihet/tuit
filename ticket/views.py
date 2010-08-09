@@ -169,6 +169,34 @@ def parse_issue_dependencies(issue):
     return res
 
 @login_required
+def move(request):
+    key_out={}
+    print 'aaa'
+
+    try:
+        id = request.POST['id']
+        t_id = request.POST['type']
+        i=Issue.objects.get(id=id)
+        t=IssueType.objects.get(id=t_id)
+        i.type = t
+        errors = i.validate()
+        print 'bbb'
+        if not errors:
+            i.save()
+            url = '/tuit/ticket/view/%d' % i.id 
+            return HttpResponseRedirect(url)
+        key_out['errors'] = errors
+    except:
+        traceback.print_exc()
+        pass
+    print 'ccc'
+    return tuit_render('ticket_view.html', key_out, request)
+    
+    
+
+
+
+@login_required
 def new(request, type_name=None):
     """
     View for creating a new ticket
@@ -250,16 +278,18 @@ def new(request, type_name=None):
                 
                 # Fire of event handler
                 Event.fire(['web_create','create'], i)
-                i.save()
+                errors = i.validate()
+                if not errors:
+                    i.save()
                 
-                # If everything went ok with form submission, this is where we return
-                logging.getLogger('ticket').info('Created issue with id %d' % i.id)
+                    # If everything went ok with form submission, this is where we return
+                    logging.getLogger('ticket').info('Created issue with id %d' % i.id)
 
-                url = '/tuit/ticket/view/%d' % i.id 
-                if 'continue' in request.POST:
-                    url = '/tuit/ticket/new/?type=' + cgi.escape(i.type.name)
+                    url = '/tuit/ticket/view/%d' % i.id 
+                    if 'continue' in request.POST:
+                        url = '/tuit/ticket/new/?type=' + cgi.escape(i.type.name)
     
-                return HttpResponseRedirect(url)
+                    return HttpResponseRedirect(url)
 
         # This code is only reached oif we get an error while processing the form
         logging.getLogger('ticket').error('Tried to create issue, but got the following errors: %s' % str(errors));
@@ -368,23 +398,23 @@ def view(request,id=None):
 
         if not errors:
 
-            iu.save()
-
-            events.extend(handle_files(i, iu, request.FILES, request.POST))
-            events.extend(send_email('web_update', request.POST, i, iu))
-                               
-            iu.description_data={'type':'web','events':events,'by':request.user.username}
-
             Event.fire(['web_update','update'], i, iu)
+            errors = i.validate()
+            if not errors:
+            
+                iu.save()
+                events.extend(handle_files(i, iu, request.FILES, request.POST))
+                events.extend(send_email('web_update', request.POST, i, iu))
+                               
+                iu.description_data={'type':'web','events':events,'by':request.user.username}
 
-            i.save()
-            iu.save()
+                i.save()
+                iu.save()
 
+                if 'update_dependants' in request.POST:
+                    update_dependants(i, iu, request.POST, set())
 
-            if 'update_dependants' in request.POST:
-                update_dependants(i, iu, request.POST, set())
-
-            return HttpResponseRedirect('/tuit/ticket/view/%d' % i.id) # Redirect after successfull POST
+                return HttpResponseRedirect('/tuit/ticket/view/%d' % i.id) # Redirect after successfull POST
         # We failed. Show errors!
         logging.getLogger('ticket').error('Tried to create issue update, but got the following errors: %s' % str(errors));
         keys['errors'] = errors

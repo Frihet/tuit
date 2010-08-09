@@ -11,6 +11,7 @@
 <span class='no_print'>
   <button type='button' class='kb_button' onclick='$(".internal").toggle()'>{%trans "Toggle internal update visibility" %}</button>
   <button type='button' class='kb_button' onclick='$("#copy_popup").show(50);'>{%trans "Create new ticket based on this ticket" %}</button>
+  <button type='button' class='kb_button' onclick='$("#move_popup").show(50);'>{%trans "Move ticket" %}</button>
   <button type='button' class='kb_button' onclick='$("#forward_popup").show(50);'>{%trans "Send this ticket by email" %}</button>
 </span>
 
@@ -394,6 +395,35 @@ var external_default_mail = {{ external_default_mail_json }};
       </table>
       <button type='submit'>{% trans "Create" %}</button>
       <button type='button' onclick='$("#copy_popup").hide();'>{% trans "Cancel" %}</button>
+    </form>
+  </div>
+</div>
+
+<div class='popup' id='move_popup'>
+  <div class='popup_title'>
+    {% trans "Move ticket" %}
+    <a href="javascript:popupHide('move_popup')">x</a>
+  </div>
+  <div class='popup_content'>
+    <form method='post' action='/tuit/ticket/move/' id='move_form' accept-charset='utf-8'>
+      <input type='hidden' name='id' value='{{ issue.id }}'/>
+      <table class='striped'>
+
+	<tr>
+	  <td>
+	    <label for='type'>{%trans "Issue type" %}:</label>
+	  </td>
+	  <td>
+	    <select name='type' id='type'>
+	      {% for t in types %}    
+	      <option value='{{t.id}}' {% ifequal t.id issue.type.id %}selected{% endifequal %}>{{t.name|escape}}</option>
+	      {% endfor %}
+	    </select>
+	  </td>
+	</tr>
+      </table>
+      <button type='submit'>{% trans "Create" %}</button>
+      <button type='button' onclick='$("#move_popup").hide();'>{% trans "Cancel" %}</button>
     </form>
   </div>
 </div>

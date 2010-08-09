@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load tuit_extras %}
+{% load i18n %}
+
+{%block content %} 
+
+<table>
+{% for day in schedule %}
+<tr>
+  <th>
+    {{ day.date|date_format }}
+  </th>
+</tr>
+
+{% for issue in day.issues %}
+<tr>
+  <td>
+    {{ issue.html }}
+  </td>
+  
+</tr>
+
+{% endfor %}
+
+
+{% endfor %}
+</table>
+{% endblock %}

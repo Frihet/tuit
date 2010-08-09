@@ -67,7 +67,9 @@ def validate_char(self, field_data, all_data):
 models.CharField.validate = validate_char
 
 # Disable the 'Show on net site' link in admin backend
-del User.get_absolute_url
+
+if hasattr(User,'get_absolute_url'):
+    del User.get_absolute_url
 
 def get_user(name):
     """
@@ -154,6 +156,10 @@ class IssueType(models.Model):
 
     def __str__(self):
         return self.name
+
+    def save(self):
+        Event.fire(['issue_type_save'], issue_type=self)
+        return models.Model.save(self)
 
     class Admin: 
         pass
@@ -862,9 +868,7 @@ class Issue(models.Model):
         Perform regular validation but also return any errrors from apply_post()-call.
         """
         res = self._errors.copy()
-        print 'ABC internal errors', res 
         for name, value_list in models.Model.validate(self).iteritems():
-            print 'Model error!', name, value_list
             if name in res:
                 res[name].extend(value_list)
             else:
@@ -1676,7 +1680,6 @@ class Event(models.Model):
             name=[name]
         for ev in Event.objects.filter(event__in=name):
             try:
-                print 123
                 # Ignore exceptions in user supplied code. Users can't code worth crap. :-)
                 ev.run(issue, update, **kw)
             except:

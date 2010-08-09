@@ -11,6 +11,7 @@ import django.contrib.auth.models
 import cgi
 import time
 import re
+import datetime
 
 import logging
 
@@ -198,6 +199,14 @@ class DbHandler(logging.Handler):
 def log_init():    
     logging.getLogger().addHandler(DbHandler())
     logging.getLogger().setLevel(1)
+
+
+def date_valid(datestr):
+    try:
+        return datetime.datetime.strptime(datestr, properties['date_format'])
+    except:
+        
+        return False
 
 
 def email_valid(emailkey):

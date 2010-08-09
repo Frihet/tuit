@@ -209,6 +209,14 @@ select {
     clear:both;
 }
 
+textarea#id_code
+{
+    font-family: monospace;
+    width: 100%;
+    height: 20em;
+    
+}
+
 /**************** styling the help page ***********/
 
 .help h1 a
@@ -483,6 +491,12 @@ menu_box1 .user_info {
  min-width: 150pt;
 }
 
+.content input.radio,
+.content input.checkbox
+{
+    min-width: none;
+    width: auto;
+}
 .content_post {
  clear: both;
 }

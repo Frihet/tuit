@@ -1,0 +1,112 @@
+{% extends "ticket.html" %}
+{% load tuit_extras %}
+{% load i18n %}
+
+{%block breadcrumb %}&gt; <a href="/tuit/help">Help</a>{%endblock %}
+
+{%block content %} 
+
+<h2>Writing widgets</h2>
+<p>
+A simple widget definition looks like this:
+</p>
+<pre>
+Widget('Dings',Issue.objects.order_by('-creation_date'), request, 'things')
+</pre>
+<p>
+The paramaters are:
+</p>
+<dl>
+  <dt>title</dt><dl>the name to display at the top of the widget.</dl>
+  <dt>items</dt><dl> a set of items to show. This must be a Django query set, see below.</dl>
+  <dt>request</dt><dl>the http request object.</dl>
+  <dt>id</dt><dl>the html id to use for the widget. Every widget needs a uniqe string here, consisting of only alphanumeric characters.</dl>
+</dl>
+
+<h3>Selecting items</h3>
+<p>
+To select a set of issues to show in a widget, start out with the query set Issue.objects. This represents all known issues. You can use the filter method to remove issues that do not fit a pattern like this:
+</p>
+<pre>
+Issue.objects.filter(requester=request.user)
+</pre>
+<p>
+Request.user is the user who is viewing the page. 
+</p>
+<p>
+You can do the opposite, to remove all issues matching a specified pattern, using the exclude method:
+</p>
+<pre>
+Issue.objects.exclude(current_status = 3)
+</pre>
+<p>
+This will exclude any issues that have the status 3.
+</p>
+
+<p>
+If you append '__in' to a field, you can filter on a list of things, like this:
+</p>
+<pre>
+Issue.objects.exclude(current_status__in = [3,5,7])
+</pre>
+<p>
+This will exclude any issues that have the status 3, 5 or 7.
+</p>
+
+Some common things you can filter against:
+<table>
+<tr><th>Name</th><th>Description</th><th>Example</th><th>Example explanation</th></tr>
+<tr><td>id</td><td>Filter on issue number</td><td>filter(id__in=[3,4,5,6])</td><td>Only show items with item id 3, 4, 5 or 6</td></tr>
+<tr><td>type__name</td><td>Issue type name, e.g. rfc</td><td>exclude(type__name='rfc')</td><td>Exclude all rfc issues</td></tr>
+<tr><td>category__name</td><td>Category name</td><td></td><td></td></tr>
+<tr><td>assigned_to</td><td>User responsible for this issue</td><td></td><td></td></tr>
+<tr><td>requester</td><td>User who requested this issue</td><td></td><td></td></tr>
+<tr><td>subject</td><td>Subject of issue</td><td></td><td></td></tr>
+<tr><td>impact</td><td>Impact of this issue</td><td></td><td></td></tr>
+<tr><td>urgency</td><td>Urgency of this issue</td><td></td><td></td></tr>
+<tr><td>creation_date</td><td>Date when this issue was created</td><td></td><td></td></tr>
+
+</table>
+
+<h3>Ordering items</h3>
+<p>
+  To view items in a specific order, use the order_by method. You can order by any of the fields that you can filter against, as described in the table above, except those containing a double underscore (__). Prepend a minus (-) to reverse the sort ordering. A few examples:
+</p>
+<pre>
+  Issue.objects.order_by('-creation_date')     # Order by creation date, ascending order
+  Issue.objects.order_by('impact')     # Order by creation date
+</pre>
+
+<h3>Controlling how things are presented</h3>
+<p>
+  There are optional extra column to specify in more detail how the table should be presented.
+</p>
+<pre>
+Widget(
+    'Dings',
+    Issue.objects.filter(requester=request.user).order_by('ticket_status.name'),
+    request, 
+    'things',
+    (('','id'),('','sep'),('Issue name','name'),('Priority','priority'),('Status','current_status')),
+    50,
+    'widget_2'),
+</pre>
+<p>
+
+The first extra item in the example above is a list of columns. Each colomns specifies two things, the name to who at the top of the screen and the name of the field to display. The possible fields are listed below.
+</p>
+<ul>
+<li>id, the issue number</li>
+<li>sep, a separator in the form of a dash (-)</li>
+<li>name, the subject of the issue</li>
+<li>priority, the issue priority</li>
+<li>current_status, the name of the status of the issue</li>
+<li>owner, the owner of the issue</li>
+<li>requester, the requester of the issue</li>
+<li>creation_date, the date of creation for the issue</li>
+</ul>
+<p>
+The next parameter is the number of items to show per page. The last parameter can be either 'widget_1' for half width widgets (the default) or 'widget_2' for full width widgets.
+</p>
+
+{% endblock %}

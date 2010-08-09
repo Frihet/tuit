@@ -11,7 +11,7 @@ from tuit.util import *
 from django.utils.translation import gettext as _
 import logging
 from tuit.home.widget import Widget
-from tuit.home.models import Tip
+from tuit.home.models import *
 
 @login_required
 def home(request):
@@ -23,7 +23,9 @@ def home(request):
         status_closed=[status_closed]
     keys={'tip':Tip.current()}
 
-    if request.user.is_staff:
+    widgets=[]
+    if False:
+      if request.user.is_staff:
     
         widgets = map(lambda x: Widget(_('My highest priority open tickets of type %s') % x.name,
                                        Issue.objects.exclude(current_status__in = status_closed).filter(assigned_to=request.user).filter(type=x).extra(select={'priority_placeholder':'impact+urgency'}).order_by('-priority_placeholder'),
@@ -36,7 +38,7 @@ def home(request):
         widgets.append(Widget(_('Oldest unassigned, open tickets'),
                               Issue.objects.exclude(current_status__in = status_closed).filter(assigned_to__isnull=True).order_by('creation_date'),
                               request,'unassigned_oldest'))
-    else:
+      else:
         widgets = [
             Widget(_('My tickets by date'),
                    Issue.objects.filter(requester=request.user).extra(select={'priority_placeholder':'impact+urgency'}).order_by('creation_date'),
@@ -47,6 +49,9 @@ def home(request):
                    request, 'my_by_status',
                    (('','id'),('','sep'),(_('Issue name'),'name'),(_('Priority'),'priority'),(_('Status'),'current_status'))),
             ]
+
+    for i in DashboardWidget.objects.all():
+        widgets.extend(i.render(request))
 
     keys['widgets'] = widgets
 

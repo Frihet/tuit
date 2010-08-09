@@ -4,8 +4,14 @@
 from django.db import models
 from django.utils.translation import gettext as _
 import datetime
+from tuit.util import *
+from tuit.home.widget import Widget
+from tuit.ticket.models import Issue
+
 
 # Here begins the list of models proper
+
+PLACEHOLDER = (_('Tip'),_('Widget'))
 
 class Tip(models.Model):
     """
@@ -36,3 +42,39 @@ class Tip(models.Model):
             tb.print_exc()
             return None
 
+
+class DashboardWidget(models.Model):
+    """
+    Additional home page widgets
+    """
+
+    code = models.TextField(maxlength=819200)
+    view_order = models.IntegerField(_('view order'))
+    permission = models.CharField(_('permission'),maxlength=64,blank=True)
+
+    def __str__(self):
+        return "Widget number %d, with permission %s" % (self.view_order, self.permission)
+
+    class Admin: 
+        pass
+
+    class Meta:
+        ordering = ['view_order']
+        verbose_name_plural = _('Dashboard Widgets')
+        verbose_name = _('Dashboard Widget')
+
+    def render(self, request):
+        if not check_permission(self.permission, request.user):
+            return ""
+        result=[]
+        user=request.user
+        try:
+            exec self.code.replace('\r','')
+        except:
+            print self.code
+            import traceback as tb
+            tb.print_exc()
+            return []
+        return result
+
+        
