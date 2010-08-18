@@ -96,6 +96,8 @@ import email.mime.base
 from email import Encoders
 import BeautifulSoup
 
+do_send_email=True
+
 def unaliasCharset(charset):
     if charset:
         return charset.lower().replace("windows-", 'cp')
@@ -321,8 +323,10 @@ class Mailer:
 
     @staticmethod
     def send_email(subject, recipient, body_text, body_html, attachments=[]):
+      if not do_send_email:
+          return
       try:
-
+          
         config = SmtpConfiguration.objects.all()
         if len(config) != 1:
             raise "Could not find exactly one SMTP configuration object"
@@ -504,6 +508,8 @@ class Message(mimetools.Message):
 
     def from_address(self, header = 'from'):
         f = self.getheader(header) or None
+        if not f:
+            return None
         if email_valid(f):
             return f
         m=re.search(r'(.*[^ ])? *<([^\s<>]+@[a-z0-9_.]+)>', f)
@@ -513,6 +519,8 @@ class Message(mimetools.Message):
     @property
     def from_name(self):
         f = self.getheader('from') or None
+        if not f:
+            return None
         if email_valid(f):
             return f
         m=re.search(r'(.*[^ ]) *<([^\s<>]+@[a-z0-9_.]+)>', f)
@@ -982,26 +990,28 @@ class MailGW:
                 self.logger.error('Invalid message count from mailbox %r'%
                     data[0])
                 return 1
-            for i in range(1, numMessages+1):
+
+            for i in range(1, min(2,numMessages+1)):
                 (typ, data) = server.fetch(str(i), '(RFC822)')
                 s = cStringIO.StringIO(data[0][1])
                 s.seek(0)
                 
                 m = Message(s)
 
-                if m.from_address('from') != m.from_address('return-path'):
-                    logging.getLogger('mail/loop').error('Possible mail loop: from address (%s) != return path (%s)' % (m.from_address('from'), m.from_address('return-path')))
+                if m.from_address('from') != m.from_address('return-path') and not (m.from_address('return-path') == None) :
+                    logging.getLogger('mail/loop').error('Possible mail loop: from address (%s) != return path (%s)' % (m.from_address('from'), m.from_address('return-path')))                
                     message_status = 'mail_loop'
                 else:
                     try:
                         message_status = self.process_message(m)
                     except:
+                        print traceback.format_exc()
                         message_status='error'
                 if message_status is None:
                     message_status='error'
 
                 # copy the message and mark it as deleted.
-         
+                print "Processed message, got status", message_status
                 box_name = message_status
                 # Don't check return status - if we failed, either it
                 # means the directory existed, or the next operation
@@ -1018,9 +1028,9 @@ class MailGW:
                         pass
                     print 'failed to copy message to %s-folder' % box_name
 
+            server.close()
             if numMessages > 0:
                 self.logger.info('Processed %d message(s)' % numMessages)
-            server.close()
         finally:
             try:
 #                server.expunge()
@@ -1125,9 +1135,10 @@ class MailGW:
     def process_message(self, message):
         (content, attachments, content_type) = message.extract_content()
         
-#        print 'Processing message', message.subject
+        #print 'Processing message', message.subject
 
         id = extract_message_id(message.subject)
+
         if id is None:
             return self.create_issue(message)
 
@@ -1164,17 +1175,13 @@ class MailGW:
         attachment_mapping = {}
 
         for (idx,attachment) in enumerate(attachments):
-            print 'FOUND ATTACHMENT!!!'
             if not attachment.name:
                 attachment.name = "unnamed"
             try:
                 ia = IssueAttachment.create(i, iu, attachment.body, attachment.name, attachment.mime_type, idx)
                 attachment_mapping[attachment.id] = ia.url_internal
-                print 'lalala'
             except:
-                print 'halp'
                 logging.getLogger('mail').error('Could not save attachment %s of issue update %d.\n%s' % (attachment.name, iu.id, traceback.format_exc()))
-                print 'halp2'
 
 #name
             #body 
@@ -1192,14 +1199,14 @@ class MailGW:
         if len(e) > 0:
             e=e[0]
             events.extend(e.send(properties['mail_update_mail'], issue=i, update=iu))
-        print 'Emails sent'
+#        print 'Emails sent'
 
         iu.description_data={'type':'email','events':events}
-        print 'Description updated'
+#        print 'Description updated'
 
         Event.fire(['mail_update','update'], i, iu)
 
-        print 'events fired'
+#        print 'events fired'
 
         i.save()
         iu.save()
