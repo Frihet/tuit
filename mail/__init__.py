@@ -1034,6 +1034,15 @@ class MailGW:
     def create_issue(self, message):
         subject = message.subject
         (content, attachments, content_type) = message.extract_content()
+        if subject == "":
+            subject = _("Unnamed issue")
+        elif len(subject) > 250:
+            if content_type == 'text/html':
+                content = cgi.escape(subject) + "<br>" + content
+            else:
+                content = subject + "\n" + content
+            subject = subject[0:250]
+
         impact = properties['issue_default_impact']
         urgency = properties['issue_default_urgency']
 
