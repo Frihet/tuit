@@ -504,7 +504,7 @@ class Message(mimetools.Message):
 
     @property
     def subject(self):
-        return self.getheader('subject') or None
+        return self.getheader('subject') or ""
 
     def from_address(self, header = 'from'):
         f = self.getheader(header) or None
@@ -1005,10 +1005,14 @@ class MailGW:
                     try:
                         message_status = self.process_message(m)
                     except:
+                        try:
+                            self.logger.error(traceback.format_exc())
+                        except:
+                            pass
                         print traceback.format_exc()
-                        message_status='error'
+                        message_status='unknown_error'
                 if message_status is None:
-                    message_status='error'
+                    message_status='error_bad_status'
 
                 # copy the message and mark it as deleted.
                 print "Processed message, got status", message_status
@@ -1042,7 +1046,7 @@ class MailGW:
         return 0
 
     def create_issue(self, message):
-        subject = message.subject
+        subject = message.subject 
         (content, attachments, content_type) = message.extract_content()
         if subject == "":
             subject = _("Unnamed issue")
@@ -1134,9 +1138,7 @@ class MailGW:
 
     def process_message(self, message):
         (content, attachments, content_type) = message.extract_content()
-        
         #print 'Processing message', message.subject
-
         id = extract_message_id(message.subject)
 
         if id is None:
