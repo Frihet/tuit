@@ -118,14 +118,21 @@ class ModelDict:
 #    def __setitem__(self, key, value):
 #        self.dict[key]=value
 
+properties = None
 
-class PropertyHandler:
+class PropertyHandler(object):
     """
     A loader/saver thingiee for ticket.model.Property lines
     """
     data=None
 
-    def __init__(self):
+    def __new__(cls):
+        global properties
+        if properties is None:
+            properties = object.__new__(cls)
+        return properties
+
+    def process_request(self, request):
         self.data = None
 
     def __load(self):
@@ -144,7 +151,6 @@ class PropertyHandler:
                     for i in item:
                         res.append(str_deep(i))
                 return item
-
 
             self.data=dict(map(lambda x: (x.name, encode_recursive(from_json(x.value))), Property.objects.all()))
 
@@ -178,7 +184,6 @@ class PropertyHandler:
 #        return self.data[name]
 
 properties = PropertyHandler()
-
 
 class DbHandler(logging.Handler):
     """
