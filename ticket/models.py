@@ -416,6 +416,8 @@ class Issue(models.Model):
         """
         The default columns to show when displaying an issue in a Widget
         """
+        if 'issue_default_columns' in properties:
+            return properties['issue_default_columns']
         return (('','id'),('','sep'),(_('Issue name'),'name'),(_('Priority'),'priority'),(_('Requester'),'requester'))
 
     @property
@@ -547,7 +549,7 @@ class Issue(models.Model):
                     return ''
                 return user.tuit_description
 
-            return {
+            formatted_cells = {
                 'id':lambda: "<a href='%s'>%d</a>" % (self.url_internal,self.id),
                 'sep': lambda: '-',
                 'name':lambda: "<a href='%s'>%s</a>" % (self.url_internal,cgi.escape(self.subject)),
@@ -556,7 +558,13 @@ class Issue(models.Model):
                 'requester':lambda: user_desc(self.requester),
                 'current_status':lambda: self.current_status.name,
                 'creation_date':lambda: date_format(self.creation_date),
-                }[col]() 
+                }
+
+            if col in formatted_cells:
+                return formatted_cells[col]() 
+
+            return getattr(self, col)
+
         except:
             logging.getLogger('ticket').error('Issue.html_cell failed while fetching column %s for issue %d' %
                                               (col,self.id))
