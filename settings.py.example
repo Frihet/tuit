@@ -59,6 +59,7 @@ TEMPLATE_LOADERS = (
 )
 
 MIDDLEWARE_CLASSES = (
+    'tuit.util.PropertyHandler', # Evil magic to let us reload properties at page load...
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
 #    'django.middleware.locale.LocaleMiddleware',
