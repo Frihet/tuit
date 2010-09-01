@@ -19,7 +19,7 @@ def view(request):
     keys = {}
     user=request.user
     status_closed = properties["issue_closed_id"]
-    w = Widget('Mine saker', Issue.objects.filter(requester=user).exclude(current_status__in = status_closed).order_by('creation_date'), request, 'new')
+    w = Widget('My requests', Issue.objects.filter(requester=user).exclude(current_status__in = status_closed).order_by('creation_date'), request, 'new')
     keys['widget'] = w
     keys['user'] = user
     keys['issue_default_status'] = properties['issue_default_status']

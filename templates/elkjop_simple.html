@@ -11,9 +11,56 @@ body
 
 h2
 {
-  font-size: 1.6em;
+  font-size: 1.2em;
+/*font-weight: normal;*/
   background-color: #eaeaea;
+  color: #666666;
+  padding-top:2pt;
+  padding-bottom:2pt;
+  padding-left:4pt;
+  padding-right:4pt;
+  text-transform: uppercase;
 }
+
+h3
+{
+  font-size: 1.2em;
+  background-color: #eaeaea;
+  color: #666666;
+  padding-top:2pt;
+  padding-bottom:2pt;
+  padding-left:4pt;
+  padding-right:4pt;
+  text-transform: uppercase;
+  margin-bottom: 4pt;
+}
+
+input.long
+{
+  /*
+    FIXME: Ugly temp hack. Put input in div with 100 % width and no border instead...
+  */
+  width: 99%;
+}
+
+label
+{
+  font-weight: bold;
+}
+
+table
+{
+  margin: 0pt;
+  padding:0pt;
+}
+
+.desc
+{
+  display: block;
+  margin-bottom: 10pt;
+  padding-left:4pt;
+}
+
 </style>
 
 {% for i in js_links %}    
@@ -41,107 +88,104 @@ Date.format = '{{ js_date_format }}';
     </script>
   </head>
   <h2>Raporter ny sak</h2>
-
   
-  <form method='post' action='/tuit/ticket/new/' accept-charset='utf-8'>
+  <form  enctype="multipart/form-data"  method='post' action='/tuit/ticket/new/' accept-charset='utf-8'>
     <input type='hidden' name='requester_string' value='{{ user.username|escape }}'>
     <input type='hidden' name='current_status_string' value='{{ issue_default_status }}'>
     <input type='hidden' name='new_url' value='/tuit/elkjop_frontend/'>
 
-<table>
 
-<tbody class='ticket_edit no_print'>
-<tr>
-      <td>
-	System*:
-      </td>
-      <td>
+
+    <h3>
+      <label>System*</label>:
+    </h3>
     {% for type in types %}
     <input type='radio' name='type_id' value='{{type.id}}' id='type_{{type.id}}'><label id='type_{{type.id}}_selector_label' for='type_{{type.id}}'>{{ type.name|escape }}</label><br>
     {% endfor %}
-      </td>
+    <h3>
+      <label for='tele'>Requesters phone number:</label>
+    </h3>
+    <input id='tele' name='tele' >
+    <h3>
+      <label for='subject'>{%trans "Subject" %}:</label>*
+    </h3>
+    <input class='long' id='subject' name='subject' value='{{ issue.subject|escape }}'/>
+    
+    <h3>
+      <label for='description'>Description of change:</label>*
+    </h3>
+    <textarea id='description' name='description' class='rich_edit' style='height:20em; width:100%;'>{{ issue.description }}</textarea>
+
+    <h3>
+      <label for='reason'>Reason for change:</label>*
+    </h3>
+    <div class='desc'>
+      What is the business reason for this change? (Enclose attachment if necessary)
+    </div>
+    <textarea id='reason' name='reason' class='rich_edit' style='height:20em; width:100%;'>{{ issue.reason }}</textarea>
+
+
+    <h3>
+      <label for='bs'>Business savings or upside:</label>*
+    </h3>
+    <div class='desc'>
+      What are the cost savings or other financial upside in NOK after 6 months?
+    </div>
+    <textarea id='bs' name='bs' class='rich_edit' style='height:10em; width:100%;'>{{ issue.description }}</textarea>
+
+
+    <h3>
+      <label for='other_systems'>What other systems are effected:</label>
+    </h3>
+    <input class='long' id='other_systems' name='other_systems' value='{{ issue.other_systems|escape }}'/>
+
+
+    <h3>
+      <label for='User count'>How many users are effected:</label>
+    </h3>
+    <input class='long' id='user_count' name='user_count' value='{{ issue.user_count|escape }}'/>
+
+
+    <h3>
+      <label for='prio'>Priority description:</label>
+    </h3>
+    <div class='desc'>
+      Your evaluation of the latest finish date.
+    </div>
+    <input class='long' id='prio' name='prio' value='{{ issue.prio|escape }}'/>
+    
+    <h3>
+	<label for='consequence'>Consequence of rejection:</label>*
+      </h3>
+        <textarea id='consequence' name='consequence' class='rich_edit' style='height:20em; width:100%;'></textarea>
+
+<table>
+
+<tbody id='file' class='ticket_edit'>
+  <tr>
+    <th colspan='3' class="odd">&nbsp;</th>
   </tr>
-    <tr>
-      <td>
-        <label for='subject'>{%trans "Subject" %}:</label>*
-      </td>
-      <td>
-        <input class='long' id='subject' name='subject' value='{{ issue.subject|escape }}'/>
-      </td>
-      <td></td>
-    </tr>
+  <tr>
+    <td>{%trans "Attached files:" %}</td>
+    <td>
+      <button type='button' onclick='javascript:tuit.addFileWidget();'>{%trans "Add file" %}</button>
+    </td>
 
-    <tr>
-      <td>
-        <label for='description'>{%trans "Description of problem" %}:</label>*
-      </td>
-      <td>
-        <textarea id='description' name='description' class='rich_edit' style='height:20em; width:80%;'>{{ issue.description }}</textarea>
-      </td>
-      <td></td>
-    </tr>
+  <td></td></tr>
+  <tr>
+    <td>
+      {% trans "Already uploaded files" %}: 
+    </td>
+    <td>
+      <ul class='uploaded'>
+      </ul>
+    </td>    
+  </tr>
+    
 
-    <tr>
-      <td>
-	<label for='tele'>Telefon:</label>
-      </td>
-      <td>
-        <input id='tele' name='tele' >
-      </td>
-      <td></td>
-    </tr>
-
-    <tr>
-      <td>
-	<label for='reason'>Reason for change:</label>
-      </td>
-      <td>
-        <textarea id='reason' name='reason' class='rich_edit' style='height:20em; width:80%;'></textarea>
-      </td>
-      <td></td>
-    </tr>
-
-    <tr>
-      <td>
-	<label for='other_systems'>What other systems are effected:</label>
-      </td>
-      <td>
-        <textarea id='other_systems' name='other_systems' class='rich_edit' style='height:20em; width:80%;'></textarea>
-      </td>
-      <td></td>
-    </tr>
-
-    <tr>
-      <td>
-	<label for='User count'>How many users are effected:</label>
-      </td>
-      <td>
-        <textarea id='user_count' name='user_count' class='rich_edit' style='height:20em; width:80%;'></textarea>
-      </td>
-      <td></td>
-    </tr>
-
-    <tr>
-      <td>
-	<label for='prio'>Priority description:</label>
-      </td>
-      <td>
-        <textarea id='prio' name='prio' class='rich_edit' style='height:20em; width:80%;'></textarea>
-      </td>
-      <td></td>
-    </tr>
-
-    <tr>
-      <td>
-	<label for='consequence'>Consequence of rejection:</label>
-      </td>
-      <td>
-        <textarea id='consequence' name='consequence' class='rich_edit' style='height:20em; width:80%;'></textarea>
-      </td>
-      <td></td>
-    </tr>
 
 </tbody>
+
 
 </table>
 
