@@ -11,3 +11,4 @@ settings.py
 build-indep-stamp
 configure-stamp
 build-arch-stamp
+json
