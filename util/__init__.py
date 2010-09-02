@@ -7,6 +7,7 @@ from django import template
 from tuit.json import to_json, from_json
 from tuit.settings import LOGIN_URL
 from urllib import quote
+from django.db import models
 import django.contrib.auth.models
 import cgi
 import time
@@ -14,8 +15,29 @@ import re
 import datetime
 import random
 import string
+import simplejson
+import datetime
 
 import logging
+
+def model_to_json(obj):
+    cls = type(obj)
+    res = dict((field.name, getattr(obj, field.name))
+               for field in cls._meta.fields)
+    res["__jsonclass__"] = [cls.__module__ + '.' + cls.__name__, []]
+    print res
+    return res
+
+models.Model.__to_json__ = model_to_json
+
+class JsonObjEncoder(simplejson.JSONEncoder):
+     def default(self, obj):
+         if hasattr(obj, '__to_json__'):
+             return obj.__to_json__()
+         elif isinstance(obj, (datetime.datetime, datetime.date)):
+             return str(obj)
+         #return {'__type_error__': repr(obj) + " is not JSON serializable"}
+         raise TypeError(repr(obj) + " is not JSON serializable")
 
 def tuit_render(name, keys, request):
     """
@@ -61,6 +83,9 @@ def tuit_render(name, keys, request):
 
     keys['js_date_format'] = js_date_format(properties['date_format']);
 
+    if 'application/json' in request.META.get('HTTP_ACCEPT', '') or request.GET.get('_HTTP_ACCEPT', '') == 'application/json':
+        return HttpResponse(simplejson.dumps(keys, cls=JsonObjEncoder),
+                            mimetype='application/json')
     return render_to_response(name, keys)
 
 class ModelWrapper:

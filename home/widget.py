@@ -28,6 +28,16 @@ class Widget:
         self.class_names = class_names
         self.style = style
 
+    def __to_json__(self):
+        return {"__jsonclass__":["Widget", []],
+                "name": self.name,
+                "items": list(self.items),
+                "columns": self.columns,
+                "slug": self.slug,
+                "item_count": self.item_count,
+                "class_names": self.class_names,
+                "style": self.style,
+                }
 
     @property
     def current_page(self):
