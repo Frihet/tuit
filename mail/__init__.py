@@ -85,7 +85,7 @@ import os
 
 from email.Header import decode_header
 from tuit.ticket.models import *
-from tuit.util import email_valid, properties
+from tuit.util import email_valid, properties, generate_password
 import tuit.scrubber
 
 import email.mime.image
@@ -1062,8 +1062,20 @@ class MailGW:
 
         u = User.objects.filter(email=message.from_address())
         if len(u) == 0:
-            self.logger.error('Unknown user: %s'% message.from_address())
-            return 'unmatched_user'
+            if (True):
+                email = message.from_address()
+                first_name = message.from_name
+                last_name = ''
+                if ' ' in first_name:
+                    first_name, last_name = first_name.split(' ', 1)
+                u = [User.objects.create_user(email.replace('@', '_').replace('.', '_'), email, '')]
+                u[0].first_name = first_name
+                u[0].last_name = last_name
+                u[0].set_password(generate_password())
+                u[0].save()
+            else:
+                self.logger.error('Unknown user: %s'% message.from_address())
+                return 'unmatched_user'
         
         user=u[0]
         
@@ -1155,13 +1167,9 @@ class MailGW:
             u = User.objects.filter(email=message.from_address())
             if len(u) == 0:
                 contact = make_contact(message.from_full)
-#                return "unmatched_user"
-#                u = Contact.objects.filter(email=message.from_address())
-#                if len(u) == 0:
-#                    self.logger.error("Recived email with subject %s from user %s, but no such user could be found" % )
             else:
                 user=u[0]
-        except:
+        except Exception, e:
             self.logger.error("Recived email from %s, but user is unknown" % message.from_address())
             return 'unmatched_user'
 

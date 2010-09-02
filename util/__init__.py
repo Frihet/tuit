@@ -12,6 +12,8 @@ import cgi
 import time
 import re
 import datetime
+import random
+import string
 
 import logging
 
@@ -316,3 +318,6 @@ def check_permission(perm, user):
         return user.is_staff
     return user.has_perm(perm)
 
+
+def generate_password(length=8, chars=string.letters + string.digits):
+    return ''.join(random.choice(chars) for i in xrange(length))
