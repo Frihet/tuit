@@ -494,9 +494,12 @@ menu_box1 .user_info {
 .content input.radio,
 .content input.checkbox
 {
-    min-width: none;
+    min-width: 0pt;
     width: auto;
+    border: none;
+    background: none;
 }
+
 .content_post {
  clear: both;
 }
