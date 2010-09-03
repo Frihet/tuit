@@ -581,6 +581,12 @@ var tuit = {
 	li.appendChild(b);
 
 	list.appendChild(li);
+    },
+    
+    updateWidget: function (name, url) {
+        jQuery.ajax({url: url + '&_HTTP_ACCEPT=application/json&_json_selector=["widgets_by_name","' +  name + '", "html"]', success: function(data, textStatus, request) {
+	   jQuery("#widget_" + name).replaceWith(data);
+        }});
     }
 };
 

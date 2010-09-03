@@ -83,8 +83,26 @@ def tuit_render(name, keys, request):
 
     keys['js_date_format'] = js_date_format(properties['date_format']);
 
+    if 'widgets' in keys:
+        keys['widgets_by_name'] = dict((widget.slug, widget) for widget in keys['widgets'])
+
     if 'application/json' in request.META.get('HTTP_ACCEPT', '') or request.GET.get('_HTTP_ACCEPT', '') == 'application/json':
-        return HttpResponse(simplejson.dumps(keys, cls=JsonObjEncoder),
+        data = keys
+        selector = request.GET.get('_json_selector', '')
+        if (selector):
+            selector = simplejson.loads(selector)
+            used_selector = []
+            for key in selector:
+                try:
+                    data = data[key]
+                except Exception:
+                    try:
+                        data = getattr(data, key)
+                    except Exception:
+                        raise Exception("Bad key in selector after %s: %s not in %s" % (simplejson.dumps(used_selector), key, simplejson.dumps(data, cls=JsonObjEncoder)))
+                used_selector.append(key)
+
+        return HttpResponse(simplejson.dumps(data, cls=JsonObjEncoder),
                             mimetype='application/json')
     return render_to_response(name, keys)
 

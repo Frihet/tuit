@@ -37,6 +37,7 @@ class Widget:
                 "item_count": self.item_count,
                 "class_names": self.class_names,
                 "style": self.style,
+                "html": self.html,
                 }
 
     @property
@@ -60,15 +61,18 @@ class Widget:
         def page_url(page):
             d={}#self.request.GET.copy()#dict(self.request.GET.iteritems())
             for i in self.request.GET:
-                d[i] = self.request.GET[i]
+                if i not in ("_HTTP_ACCEPT", "_json_selector"):
+                    d[i] = self.request.GET[i]
             d[self.slug + '_page'] = str(page)
             return "?" + "&".join(map(lambda (x,y):"%s=%s"%(x,y), d.iteritems()))
+
+        def page_click(page):
+            return "tuit.updateWidget('%s', '%s')" % (self.slug, page_url(page))
 
         def render_item(idx):
             if idx == self.current_page:
                 return str(idx)
-            return "<a href='%(url)s'>%(idx)d</a>" % {'url':page_url(idx),'idx':idx}
-        
+            return "<a href=\"javascript:%(click)s\">%(idx)d</a>" % {'url':page_url(idx),'click':page_click(idx), 'idx':idx}
         
         pages = ((self.items.count()-1)/self.item_count)+1
         if pages == 1:
@@ -142,7 +146,7 @@ class Widget:
                     time = 0.0+time.seconds + 0.000001*time.microseconds
                     if time > 0.75:
                         logging.getLogger('performance').warning('DB access for widget «%s», user %s took %.2f seconds' % (self.slug, self.request.user.username, time))                    
-                return "<div class='widget %s'><div class='widget_header'><h2>%s</h2>%s</div>%s</div>"%(self.class_names, self.name,message,table)
+                return "<div class='widget %s' id='widget_%s'><div class='widget_header'><h2>%s</h2>%s</div>%s</div>"%(self.class_names, self.slug, self.name,message,table)
             elif self.style == 'list':
                 hdr = "<li><h2>%s</h2></li>" % self.name
                 if len(self.items) == 0:
