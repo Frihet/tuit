@@ -13,4 +13,4 @@ fi
 
 dbc_go tuit $@
 
-rm /usr/share/python-support/tuit/tuit/settings.py
+rm /usr/share/pyshared/tuit/tuit/settings.py
