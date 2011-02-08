@@ -84,7 +84,8 @@ EOF
  python manage.py loaddata menu/fixtures/default_data.json 
  python manage.py loaddata search/fixtures/default_data.json 
 
- python /var/lib/python-support/python2.5/django/bin/compile-messages.py
+ #python /var/lib/python-support/python2.5/django/bin/compile-messages.py
+ python /usr/lib/python-django/bin/compile-messages.py
 )
 
 patch /usr/share/pyshared/tuit/tuit/settings.py <<EOF
