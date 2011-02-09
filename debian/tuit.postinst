@@ -161,7 +161,7 @@ for sequence in $(
 done |
  psql -U $dbc_dbuser $dbc_dbname
 
-a2enmod proxy_http
-a2enmod proxy
-a2enmod mod_python
-a2enmod rewrite
+a2enmod proxy_http >/dev/null
+a2enmod proxy >/dev/null
+a2enmod mod_python >/dev/null || a2enmod python >/dev/null
+a2enmod rewrite >/dev/null
