@@ -1,3 +1,16 @@
+tuit (1.0-6) unstable; urgency=low
+
+  * Some cleaning of mess, more adaption to newer distros (lucid) etc. Quiet down the installer.
+
+ -- Christian Bryn (FreeCode AS) <christian.bryn@freecode.no>  Wed, 09 Feb 2011 14:50:00 +0000
+
+tuit (1.0-5) unstable; urgency=low
+
+  * Overwrite rather than append to PGPASSFILE
+  * export PGHOST in order to fix ident auth failing with postgres (?)
+
+ -- Christian Bryn (FreeCode AS) <christian.bryn@freecode.no>  Wed, 09 Feb 2011 11:30:00 +0000
+
 tuit (1.0-4) unstable; urgency=low
 
   * Fix postinst bug (run compile-messages.py with correct path)
