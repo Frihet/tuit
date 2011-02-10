@@ -23,6 +23,8 @@ dbc_go tuit $@
 export PGPASSFILE=/usr/share/pyshared/tuit/tuit/pgpass
 chmod go-rwx $PGPASSFILE
 echo "$dbc_dbserver:*:$dbc_dbname:$dbc_dbuser:$dbc_dbpass" > $PGPASSFILE
+# possible hack: exporting PGHOST... ident auth fails as no tuit user exist and the 'hostname' field from PGPASSFILE is not interpreted as expected:
+export PGHOST="${dbc_dbserver}"
 
 cp /usr/share/pyshared/tuit/tuit/settings.py.example /usr/share/pyshared/tuit/tuit/settings.py
 patch /usr/share/pyshared/tuit/tuit/settings.py <<EOF
