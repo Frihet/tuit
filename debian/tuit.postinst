@@ -161,7 +161,13 @@ for sequence in $(
 done |
  psql -U $dbc_dbuser $dbc_dbname
 
-a2enmod proxy_http >/dev/null
-a2enmod proxy >/dev/null
-a2enmod mod_python >/dev/null || a2enmod python >/dev/null
-a2enmod rewrite >/dev/null
+apache_modules="proxy_http proxy rewrite"
+if ( test "${DISTRIB_CODENAME}" = "hardy" ); then
+       apache_python_module="mod_python"
+else
+       apache_python_module="python"
+fi
+apache_modules="${apache_modules} ${apache_python_module}"
+for module in ${apache_modules}; do
+       a2enmod ${module} >/dev/null
+done
