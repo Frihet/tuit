@@ -54,7 +54,8 @@ install-indep:
 
 	mkdir -p debian/tuit/usr/share/pyshared/tuit/tuit
 	ls | grep -v debian | grep -v foswiki | while read name; do cp -a "$$name" "debian/tuit/usr/share/pyshared/tuit/tuit/$$name"; done
-	(cd debian/tuit/usr/share/pyshared/tuit/tuit; ln -s /usr/share/pyshared/python-symmetric-jsonrpc/symmetricjsonrpc json; )
+	#(cd debian/tuit/usr/share/pyshared/tuit/tuit; ln -s /usr/share/pyshared/python-symmetric-jsonrpc/symmetricjsonrpc json; )
+	(cd debian/tuit/usr/share/pyshared/tuit/tuit; ln -s /usr/share/pyshared/symmetricjsonrpc json; )
 	rm debian/tuit/usr/share/pyshared/tuit/tuit/static/common
 	ln -s /usr/share/fccommon/static debian/tuit/usr/share/pyshared/tuit/tuit/static/common
 	mkdir -p debian/tuit/etc/apache2/conf.d
