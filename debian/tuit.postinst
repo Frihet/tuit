@@ -15,15 +15,19 @@ dbc_go tuit $@
 
 . /etc/dbconfig-common/tuit.conf
 
+. /etc/lsb-release
+
 # dbc_generate_include doesn't seem able to set the right password :(
 [ "$dbc_dbserver" ] || dbc_dbserver=localhost
 
-export PGPASSFILE=/usr/share/python-support/tuit/tuit/pgpass
+export PGPASSFILE=/usr/share/pyshared/tuit/tuit/pgpass
 chmod go-rwx $PGPASSFILE
-echo "$dbc_dbserver:*:$dbc_dbname:$dbc_dbuser:$dbc_dbpass" >> $PGPASSFILE
+echo "$dbc_dbserver:*:$dbc_dbname:$dbc_dbuser:$dbc_dbpass" > $PGPASSFILE
+# possible hack: exporting PGHOST... ident auth fails as no tuit user exist and the 'hostname' field from PGPASSFILE is not interpreted as expected:
+export PGHOST="${dbc_dbserver}"
 
-cp /usr/share/python-support/tuit/tuit/settings.py.example /usr/share/python-support/tuit/tuit/settings.py
-patch /usr/share/python-support/tuit/tuit/settings.py <<EOF
+cp /usr/share/pyshared/tuit/tuit/settings.py.example /usr/share/pyshared/tuit/tuit/settings.py
+patch /usr/share/pyshared/tuit/tuit/settings.py <<EOF
 --- settings.py.example	2010-03-18 11:55:35.000000000 +0100
 +++ settings.py	2010-03-18 13:08:28.000000000 +0100
 @@ -12,8 +12,8 @@
@@ -56,7 +60,7 @@ patch /usr/share/python-support/tuit/tuit/settings.py <<EOF
      # Always use forward slashes, even on Windows.
      # Don't forget to use absolute paths, not relative paths.
 -    '/var/www/tuit/templates/',
-+    '/usr/share/python-support/tuit/tuit/templates/',
++    '/usr/share/pyshared/tuit/tuit/templates/',
  )
  
  INSTALLED_APPS = (
@@ -78,16 +82,19 @@ EOF
 
 # Create tuit tables
 (
- cd /usr/share/python-support/tuit/tuit;
- yes no | python manage.py syncdb;
- python manage.py loaddata ticket/fixtures/default_data.json 
- python manage.py loaddata menu/fixtures/default_data.json 
- python manage.py loaddata search/fixtures/default_data.json 
+ cd /usr/share/pyshared/tuit/tuit;
+ yes no | python -Wignore manage.py syncdb >/dev/null; 
+ python -Wignore manage.py loaddata ticket/fixtures/default_data.json >/dev/null;
+ python -Wignore manage.py loaddata menu/fixtures/default_data.json >/dev/null;
+ python -Wignore manage.py loaddata search/fixtures/default_data.json >/dev/null;
 
- python /var/lib/python-support/python2.5/django/bin/compile-messages.py
+ #python /var/lib/python-support/python2.5/django/bin/compile-messages.py
+ python -Wignore /usr/lib/python-django/bin/compile-messages.py
+ # new django wants this instead, but we're still on the old one:
+ # python -Wignore /usr/lib/python-django/bin/django-admin.py compilemessages
 )
 
-patch /usr/share/python-support/tuit/tuit/settings.py <<EOF
+patch /usr/share/pyshared/tuit/tuit/settings.py <<EOF
 --- settings.py.orig	2010-03-18 13:11:06.000000000 +0100
 +++ settings.py	2010-03-18 13:11:21.000000000 +0100
 @@ -79,7 +79,6 @@
@@ -103,10 +110,10 @@ EOF
 # Install the following crontab entry for user www-data:
 crontab -u www-data - <<EOF
 # m h  dom mon dow   command
-* * * * * cd /usr/share/python-support/tuit/tuit/; python bin/mail.py
+* * * * * cd /usr/share/pyshared/tuit/tuit/; python bin/mail.py
 EOF
 
-psql -U $dbc_dbuser $dbc_dbname <<EOF
+psql -q -U $dbc_dbuser $dbc_dbname >/dev/null <<EOF
 insert into ticket_property (name, value) values ('issue_default_status', '1');
 insert into ticket_property (name, value) values ('username_case_insensitive', 'true');
 insert into ticket_property (name, value) values ('email_registration_confirmation', 'false');
@@ -150,7 +157,7 @@ EOF
 # Fix brain damage resulting from fixtures
 for sequence in $(
   echo "select c.relname FROM pg_catalog.pg_class c;" |
-   psql -U $dbc_dbuser $dbc_dbname |
+   psql -q -U $dbc_dbuser $dbc_dbname |
    grep -v "pg_" |
    grep -v "sql_" |
    grep "^ " |
@@ -158,9 +165,15 @@ for sequence in $(
  ); do
   echo "select setval('$sequence', 1000);"
 done |
- psql -U $dbc_dbuser $dbc_dbname
+ psql -q -U $dbc_dbuser $dbc_dbname >/dev/null
 
-a2enmod proxy_http
-a2enmod proxy
-a2enmod mod_python
-a2enmod rewrite
+apache_modules="proxy_http proxy rewrite"
+if ( test "${DISTRIB_CODENAME}" = "hardy" ); then
+       apache_python_module="mod_python"
+else
+       apache_python_module="python"
+fi
+apache_modules="${apache_modules} ${apache_python_module}"
+for module in ${apache_modules}; do
+       a2enmod ${module} >/dev/null
+done

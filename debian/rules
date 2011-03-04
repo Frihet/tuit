@@ -52,19 +52,20 @@ install-indep:
 	dh_clean -k -i 
 	dh_installdirs -i
 
-	mkdir -p debian/tuit/usr/share/python-support/tuit/tuit
-	ls | grep -v debian | grep -v foswiki | while read name; do cp -a "$$name" "debian/tuit/usr/share/python-support/tuit/tuit/$$name"; done
-	(cd debian/tuit/usr/share/python-support/tuit/tuit; ln -s /usr/share/python-support/python-symmetric-jsonrpc/symmetricjsonrpc json; )
-	rm debian/tuit/usr/share/python-support/tuit/tuit/static/common
-	ln -s /usr/share/fccommon/static debian/tuit/usr/share/python-support/tuit/tuit/static/common
+	mkdir -p debian/tuit/usr/share/pyshared/tuit/tuit
+	ls | grep -v debian | grep -v foswiki | while read name; do cp -a "$$name" "debian/tuit/usr/share/pyshared/tuit/tuit/$$name"; done
+	#(cd debian/tuit/usr/share/pyshared/tuit/tuit; ln -s /usr/share/pyshared/python-symmetric-jsonrpc/symmetricjsonrpc json; )
+	(cd debian/tuit/usr/share/pyshared/tuit/tuit; ln -s /usr/share/pyshared/symmetricjsonrpc json; )
+	rm debian/tuit/usr/share/pyshared/tuit/tuit/static/common
+	ln -s /usr/share/fccommon/static debian/tuit/usr/share/pyshared/tuit/tuit/static/common
 	mkdir -p debian/tuit/etc/apache2/conf.d
 	cp debian/apache.conf debian/tuit/etc/apache2/conf.d/tuit.conf
 
-	mkdir -p debian/tuit/usr/share/python-support/tuit/tuit/attachments
-	chmod ugo+rwx debian/tuit/usr/share/python-support/tuit/tuit/attachments
+	mkdir -p debian/tuit/usr/share/pyshared/tuit/tuit/attachments
+	chmod ugo+rwx debian/tuit/usr/share/pyshared/tuit/tuit/attachments
 
-	touch debian/tuit/usr/share/python-support/tuit/tuit/pgpass
-	chmod go-rwx debian/tuit/usr/share/python-support/tuit/tuit/pgpass
+	touch debian/tuit/usr/share/pyshared/tuit/tuit/pgpass
+	chmod go-rwx debian/tuit/usr/share/pyshared/tuit/tuit/pgpass
 
 	mkdir -p debian/tuit-foswiki/var/lib/foswiki/data
 	mkdir -p debian/tuit-foswiki/var/lib/foswiki/tuit-templates/

@@ -946,7 +946,7 @@ msgstr "type av saksavhengighet"
 #: ticket/models.py:681 ticket/models.py:700
 #, python-format
 msgid "Invalid value: %s."
-msgstr "Ugyldig verdi: s%."
+msgstr "Ugyldig verdi: %s."
 
 #: ticket/models.py:713 ticket/models.py:715
 msgid "This field is required."
@@ -1483,7 +1483,7 @@ msgstr ""
 "1234\n"
 "        i trackeren.\n"
 "\n"
-"Tittelen var: '%(tittel)s'\n"
+"Tittelen var: '%(subject)s'\n"
 
 #: mail/__init__.py:1541
 #, python-format
