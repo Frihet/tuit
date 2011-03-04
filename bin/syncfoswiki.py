@@ -11,7 +11,6 @@ os.environ["DJANGO_SETTINGS_MODULE"] = 'tuit.settings'
 import django.core.management
 import django.db.transaction
 
-import tuit.mail
 import logging
 import traceback
 import re
@@ -19,7 +18,7 @@ from django.contrib.auth.models import *
 
 admgrp = Group.objects.filter(name='AdminGroup')
 for g in admgrp:
-    val = ",".join(map(lambda x:x.username, g.user_set.all()))
+    val = ",".join(map(lambda x:x.username.lower(), g.user_set.all()))
     with open("/var/lib/foswiki/data/Main/AdminGroup.txt") as f:
         content = f.read()
 
