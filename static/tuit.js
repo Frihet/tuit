@@ -164,7 +164,10 @@ var tuit = {
 	if($('body').autocomplete) {
 	    var usr_url = "/tuit/query/user_complete/";
 	    var usr_url2 = "/tuit/query/user_complete/?contacts=1";
-	    var dep_url = "/tuit/query/issue_complete/";
+	    
+	    // This is responsible for issue dependency autocomplete
+	    // status='All' means it offers all available issues 
+	    var dep_url = "/tuit/query/issue_complete/?status='All'"; 
 	    var kb_url = "/cgi-bin/foswiki/search/KB/?cover=autocomplete&type=literal&web=KB+IKB&scope=all";	
 	    var ci_url = "/FreeCMDB/?controller=ciList&output=autocomplete";
 	    
