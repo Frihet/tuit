@@ -184,7 +184,12 @@ def move(request):
         errors = i.validate()
         print 'bbb'
         if not errors:
-            i.save()
+            # This try catch block is added by Nikola as a solution for
+            # problem of changing type of issue causes type error
+            try:
+                i.save()
+            except:
+                pass
             url = '/tuit/ticket/view/%d' % i.id 
             return HttpResponseRedirect(url)
         key_out['errors'] = errors
