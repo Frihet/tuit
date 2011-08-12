@@ -562,7 +562,7 @@ var tuit = {
 	li.id="dependency_" + id;
 	li.appendChild(document.createTextNode(dependency_type_field.options[dependency_type_field.selectedIndex].text));
 	li.appendChild(document.createTextNode(": "));
-	li.appendChild(document.createTextNode(dependency_field.value+ " "));
+	li.appendChild(document.createTextNode(dependency_field.value+ "            "));
 	var dep_type = document.createElement('input');
 	dep_type.type='hidden';
 	dep_type.name='dependency_' + id + '_type';
@@ -574,16 +574,36 @@ var tuit = {
 	dep_id.name='dependency_' + id + '_id';
 	dep_id.value=dependency_field.value.split(' ')[0];
 	li.appendChild(dep_id);
+//
+//  This bit of uglyness is here because IE handles button tags poorly
+//  This is also coupled with removeDependency function
+//
 	
-	var b=document.createElement('button');
-	b.className='dependency_remove';
-	b.type='button';
+//	var b=document.createElement('button');
+//	b.className='dependency_remove';
+//	b.type='button';
 	
-	b.onclick=function(){$('#dependency_' + id).remove();};	
-	b.appendChild(document.createTextNode("-"));
+//	b.onclick=function(){$('#dependency_' + id).remove();};	
+//	b.appendChild(document.createTextNode("-"));
+
+
+
+	var b = document.createElement('a')
+	b.setAttribute('href', "javascript:tuit.removeDependency("+id+")" );
+	img = document.createElement('img');
+	img.setAttribute("src", "/static/Images/remove.png")
+	b.appendChild(img);
 	li.appendChild(b);
 
 	list.appendChild(li);
+    },
+//
+//  Remove dependency function
+//  parm: Integer id of the child element to be removed from dependencies_list
+//    
+    removeDependency: function(i) {
+        var item = document.getElementById('dependency_' + i);
+        document.getElementById('dependencies_list').removeChild(item);
     },
     
     updateWidget: function (name, url) {
