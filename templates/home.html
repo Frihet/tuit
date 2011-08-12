@@ -3,23 +3,24 @@
 {% load tuit_extras %}
 
 {%block content %} 
-<!--
 
 <div class='widget widget_1'>
  {% if tip %}
+<!--
   <div class='tip'>
    <h2>{%trans "Tip of the week:" %} {{ tip.title|escape }}</h2>
    <p>
     {{ tip.body }}
    </p>
   </div>
+-->
  {% endif %}
 
  <div class='status'>
   <iframe src='/tuit/status/view' height='30%' frameborder='0'></iframe>
  </div>
 </div>
--->
+
 {% for widget in widgets %}
 {{ widget.html }}
 {% endfor %}
