@@ -36,12 +36,12 @@ class QLeftOuterJoins(Q):
         return joins, where, params
 
 # Go over all the words in the search, filter on all of them
-def make_Q(query, fld):
+def make_Q(query, fld, is_complete=True):
     q=None
     
     sub_q = query.split(' ')
 
-    if (len(sub_q)==1) or sub_q[1] == '-':
+    if is_complete and ((len(sub_q)==1) or sub_q[1] == '-'):
         try:
             num = int(sub_q[0])
             kw={'id__exact': num,}
@@ -116,8 +116,13 @@ def autofill(request):
         raise
 #        return HttpResponse("{}")
 
+
 @login_required
-def issue_complete(request):
+def issue_search(request):
+    return issue_complete(request, False)
+
+@login_required
+def issue_complete(request, is_complete=True):
     """
     Used for autocompleting issues and for searching for issues. Uses
     text format for autocompletion, and the json based Yahoo search
@@ -128,7 +133,7 @@ def issue_complete(request):
     if 'offset' in request.GET:
         offset = int(request.GET['offset'])
         
-    q = make_Q(query, ('subject','description','issueupdate__comment','requester__username','requester__first_name','requester__last_name'))
+    q = make_Q(query, ('subject','description','issueupdate__comment','requester__username','requester__first_name','requester__last_name'), is_complete)
     q = Issue.objects.filter(q)
     if not request.user.is_staff:
         q = q.filter(requester=request.user)

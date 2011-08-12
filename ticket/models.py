@@ -1219,15 +1219,6 @@ class IssueFieldGroupValue(models.Model):
         return "IssueFieldGroup:" + str(self.item_id) 
 #        return "IssueFieldGroup:" + str(self.issue_id) + " -> " + str(self.item_id)
 
-class IssueFieldValue(models.Model):                          
-    """
-    A value for a 'ticket_issuefield' extra field in text format.
-    """
-
-    issue = models.ForeignKey(Issue)                          
-    field = models.ForeignKey(IssueField)                     
-    value = models.CharField(maxlength=819200)                  
-   
 class IssueUpdate(models.Model):
     """
     This is a single update for a given ticket. It can represent
