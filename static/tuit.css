@@ -488,7 +488,7 @@ menu_box1 .user_info {
 .content select,
 .content input,
 .content textarea {
- min-width: 150pt;
+ min-width: 200pt;
 }
 
 .content input.radio,
