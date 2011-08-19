@@ -420,7 +420,10 @@ def view(request,id=None):
                 iu.save()
 
                 if 'update_dependants' in request.POST:
-                    update_dependants(i, iu, request.POST, set())
+                    try:
+                        update_dependants(i, iu, request.POST, set())
+                    except:
+                        pass
 
                 return HttpResponseRedirect('/tuit/ticket/view/%d' % i.id) # Redirect after successfull POST
         # We failed. Show errors!
