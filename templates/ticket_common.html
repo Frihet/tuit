@@ -217,7 +217,10 @@
       <ul id='dependencies_list'>
 	{% for dep in dependencies %}
 	<li id='dependency_{{ dep.idx }}'>
+	 <!--
 	  {{ dep.description|escape }}<button onclick='$("#dependency_{{ dep.idx }}").remove()'>-</button>
+	 -->
+	  {{ dep.description|escape }}<a href="javascript:tuit.removeDependency({{ dep.idx }})"><img src="/static/Images/remove.png"></a>
 	  <input type='hidden' name='dependency_{{ dep.idx }}_id' value='{{ dep.id }}'>
 	  <input type='hidden' name='dependency_{{ dep.idx }}_type' value='{{ dep.type }}'>
 	</li>
