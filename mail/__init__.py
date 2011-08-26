@@ -1059,13 +1059,16 @@ class MailGW:
 
         impact = properties['issue_default_impact']
         urgency = properties['issue_default_urgency']
-
-        u = User.objects.filter(email=message.from_address())
+        email = message.from_address()
+        if email == None:
+            email = 'Unknown'
+        u = User.objects.filter(email=email.lower())
         if len(u) == 0:
             if (True):
-                email = message.from_address()
                 first_name = message.from_name
                 last_name = ''
+                if first_name == None:
+                    first_name = 'Unknown'
                 if ' ' in first_name:
                     first_name, last_name = first_name.split(' ', 1)
                 u = [User.objects.create_user(email.replace('@', '_').replace('.', '_'), email, '')]
