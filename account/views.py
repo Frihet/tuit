@@ -74,11 +74,11 @@ def show(request, id=None, uname=None):
 
     keys['widgets'] = [
         Widget(_('All issues requested by this user'),
-               Issue.objects.filter(requester=user).order_by('creation_date'),
+               Issue.objects.filter(requester=user).order_by('-creation_date'),
                request,
                'requested'),
         Widget(_('Open issues assigned to this user'),
-               Issue.objects.exclude(current_status__in = status_closed).filter(assigned_to=user).order_by('creation_date'),
+               Issue.objects.exclude(current_status__in = status_closed).filter(assigned_to=user).order_by('-creation_date'),
                request,
                'owned'),
         Widget(_('This users last updates'),
