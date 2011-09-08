@@ -463,7 +463,11 @@ var external_default_mail = {{ external_default_mail_json }};
 	{% if show_internal or not update.internal %}
 	<tr>
 	  <td>
-	    {% trans "Update" %}: {{ update.summary }} 
+          {% if update.internal %}
+            {% trans "Internal update" %}: {{ update.summary }} 
+          {% else %}
+            {% trans "Update" %}: {{ update.summary }} 
+          {% endif %}
 	  </td>
 	  <td>
 	    <input id='update_{{ update.id }}' name='update_{{ update.id }}' class='checkbox' type='checkbox' checked />
