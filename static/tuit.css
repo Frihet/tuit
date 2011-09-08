@@ -518,6 +518,11 @@ menu_box1 .user_info {
  width: 610pt; /* 300*2 + 10, the 10 being for margin */
 }
 
+.widget_80 {
+ max-width: 110%;
+ min-width: 80%;
+}
+
 .widget_header {
  padding: 4pt;
 }
