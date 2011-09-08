@@ -596,6 +596,9 @@ var tuit = {
 	li.appendChild(b);
 
 	list.appendChild(li);
+    
+    // Clear text field
+    document.getElementById('p_depend').value=''
     },
 //
 //  Remove dependency function
