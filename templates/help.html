@@ -101,6 +101,14 @@ following components:
       A list of all <a href='#concepts_rfc'>RfCs</a> assigned to the logged in user, sorted by priority.
     </li>
   </ul>
+  
+  More detailed information on creating and modifying dashboard widgets can be found <a href='/static/documentation/widget_documentation.html'>here</a>. 
+  Archive with documentation in doc and html file formats, together with example widgets is also available for download.
+	<ul>
+		<a href='/static/documentation/widgets_docs.zip'>Download</a>
+	</ul>
+  
+  
 </p>
 
 <h1><a name='search'>Searching {{ application|escape }}</a></h1>
@@ -255,6 +263,17 @@ There are several variations on how user fields work:
 </p>
 <p>
   See the section <a href='#admin_quickfill'>Changing the available quick fills</a> for information on customizing the list of available quickfills.
+</p>
+
+<h3><a name='issues_creating_genericfill'>Using generic fills to fill out fields depending on given condition</a></h3>
+<p>
+  In many cases values of some fields are always the same depending on certain condition. 
+  For example if issue is registered by certain user, urgency of the issue is always one determined value. 
+  {{ application|escape }} provides a feature called Generic fills in order to automate this process.
+  This is just a simple set of rules, that define field values depending on certain conditions.
+</p>
+<p>
+  See the section <a href='#admin_genericfill'>Changing available generic fills</a> for information on customizing the list of available generic fills.
 </p>
 
 <h3><a name='issues_creating_copy'>Creating a new issue based on another issue</a></h3>
@@ -545,6 +564,55 @@ Knowledge base:
   {% endif %}
 </p>
 
+<h2><a name='admin_status_menu'>Changing top menu components</a></h2>
+<p>
+  Menu components are eidtable through the <a href='/tuit/admin/settings'>system administration backend</a>. 
+  It is possible to add any url to top menu, for example <a href='http://www.google.com'>www.google.com</a>. Below is list of most common 
+  {{ application|escape }} urls
+  <ol>
+  <li>Create a <em>Menu component</em>.</li>
+  <li>Menu component have four fields: alias; name that is displayed in top menu; url; permission; view order;</li>
+</ol>
+
+    Table of common {{ application|escape }} urls
+  <table class='striped'>
+      <tr>
+        <th>
+          URL
+        </th>
+        <th>
+          Description
+        </th>
+      </tr>
+      <tr>
+        <td>
+           /tuit
+        </td>
+        <td>
+          Main page
+        </td>
+      </tr>
+      <tr>
+        <td>
+           /tuit/ticket/new
+        </td>
+        <td>
+          New issue
+        </td>
+      </tr>
+      <tr>
+        <td>
+           /tuit/admin
+        </td>
+        <td>
+          Administration backend
+        </td>
+      </tr>
+  </table>
+  
+</p>
+
+
 <h2><a name='admin_status_category'>Changing the list of available statuses and categories</a></h2>
 <p>
   Issue statuses and categories are editable through
@@ -831,10 +899,31 @@ Quick fills are created using these steps:
 <ol>
   <li>First, enter the administration back end, by clicking the link at the top of the screen.</li>
   <li>First create a <em>Quick fill</em>. These only contain the description of what will be filled out.</li>
-  <li>Once that has been done, create a <em>Quick fill item</em>. A quick fill item contains three fields; the quick fill this item applies to (Pick the one you just created), the field which is filled out and the value to set the field to..</li>
+  <li>Once that has been done, create a <em>Quick fill item</em>. A quick fill item contains three fields; the quick fill this item applies to (Pick the one you just created), the field which is filled out and the value to set the field to.</li>
   <li>Repeat step 3 as many times as is suitable.</li>
 </ol>
 
+<h2><a name='admin_genericfill'>Changing available generic fills</a></h2>
+
+<p>
+  This action can only be performed by users with access rights to the
+  admin back end. 
+
+  {% if user.is_staff %}
+  You currently have this right, and can perform the steps below if you wish. Keep in mind that your changes will apply for all users, not just yourself.
+  {% else %}
+  You currently do not have this right and can not perform the steps described below.
+  {% endif %}
+</p>
+<p>
+Generic fills are created using these steps:
+</p>
+<ol>
+  <li>First, enter the administration back end, by clicking <a href='/tuit/admin/settings/'>here</a>.</li>
+  <li>Create a <em>Generic fill item</em>.</li>
+  <li>A generic fill item contains four fields; field that is filled out; value that is put in the field; conditional field; value inside the conditional field.</li>
+  <li>Repeat step 3 as many times as it is suitable.</li>
+</ol>
 
 
 
