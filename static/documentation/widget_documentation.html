@@ -1,0 +1,427 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=utf-8">
+	<TITLE>Widget documentation</TITLE>
+	<META NAME="GENERATOR" CONTENT="OpenOffice.org 3.2  (Unix)">
+	<META NAME="AUTHOR" CONTENT="Nikola Trandafilovic">
+	<META NAME="CREATED" CONTENT="20110721;14290200">
+	<META NAME="CHANGEDBY" CONTENT="Nikola Trandafilovic">
+	<META NAME="CHANGED" CONTENT="20110912;20082500">
+	<META NAME="Info 1" CONTENT="">
+	<META NAME="Info 2" CONTENT="">
+	<META NAME="Info 3" CONTENT="">
+	<META NAME="Info 4" CONTENT="">
+	<STYLE TYPE="text/css">
+	<!--
+		@page { margin: 0.79in }
+		P { margin-bottom: 0.08in; direction: ltr; color: #000000; text-align: left; widows: 0; orphans: 0 }
+		P.western { font-family: "Liberation Serif", "Times New Roman", serif; font-size: 12pt; so-language: en-US }
+		P.cjk { font-family: "DejaVu Sans"; font-size: 12pt; so-language: zh-CN }
+		P.ctl { font-family: "Lohit Hindi"; font-size: 12pt; so-language: hi-IN }
+		H1 { margin-bottom: 0.08in; direction: ltr; color: #000000; text-align: left; widows: 0; orphans: 0 }
+		H1.western { font-family: "Liberation Sans", "Arial", sans-serif; font-size: 16pt; so-language: en-US }
+		H1.cjk { font-family: "DejaVu Sans"; font-size: 16pt; so-language: zh-CN }
+		H1.ctl { font-family: "Lohit Hindi"; font-size: 16pt; so-language: hi-IN }
+		TD P { margin-bottom: 0in; direction: ltr; color: #000000; text-align: left; widows: 0; orphans: 0 }
+		TD P.western { font-family: "Liberation Serif", "Times New Roman", serif; font-size: 12pt; so-language: en-US }
+		TD P.cjk { font-family: "DejaVu Sans"; font-size: 12pt; so-language: zh-CN }
+		TD P.ctl { font-family: "Lohit Hindi"; font-size: 12pt; so-language: hi-IN }
+		A:link { so-language: zxx }
+	-->
+	</STYLE>
+</HEAD>
+<BODY LANG="en-US" TEXT="#000000" DIR="LTR">
+<P CLASS="western" STYLE="margin-bottom: 0in"><FONT SIZE=5 STYLE="font-size: 20pt"><B>Dashboard
+Widgets documentation</B></FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-left: 0.49in; margin-bottom: 0in">Dashboard
+Widgets can be created and edited in: 
+</P>
+<P CLASS="western" STYLE="margin-left: 0.49in; margin-bottom: 0in">Home
+&gt; Administration &gt; System Settings &gt; Dashboard Widgets</P>
+<P CLASS="western" STYLE="margin-left: 0.49in; margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-left: 0.49in; margin-bottom: 0in">Dashboard
+Widgets are basically Python scripts, so indentation is important.</P>
+<P CLASS="western" STYLE="margin-left: 0.49in; margin-bottom: 0in">It's
+recommended to create your dashboard widgets in your favorite python
+editor and copy/paste it in Tuit</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<H1 CLASS="western"><FONT SIZE=5>Variables</FONT></H1>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<H1 CLASS="western">status_closed</H1>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-left: 0.98in; margin-bottom: 0in"><FONT FACE="Liberation Mono, Courier New, monospace"><FONT SIZE=2>status_closed
+= properties[“issue_closed_id”]</FONT></FONT></P>
+<P CLASS="western" STYLE="margin-left: 0.49in; margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-left: 0.49in; margin-bottom: 0in">status_closed
+is array of statuses that are considered closed. We can have any name
+for this variable but this name describes perfectly and avoids
+confusion altogether.</P>
+<P CLASS="western" STYLE="margin-left: 0.49in; margin-bottom: 0in">Properties
+can be edited in:</P>
+<P CLASS="western" STYLE="margin-left: 0.49in; margin-bottom: 0in">Home
+&gt; Administration &gt; Issue Administration &gt; Properties</P>
+<P CLASS="western" STYLE="margin-left: 0.49in; margin-bottom: 0in">Where
+property issue_closed_id is array of status ids that are considered
+closed</P>
+<P CLASS="western" STYLE="margin-left: 0.49in; margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<H1 CLASS="western">result</H1>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-left: 0.49in; margin-bottom: 0in">result
+is array of widgets in dashboard widget. This variable has to have
+name <B>result</B>. We can add new widget to our result array with
+following command:</P>
+<P CLASS="western" STYLE="margin-left: 0.49in; margin-bottom: 0in"><BR>
+</P>
+<P LANG="zxx" CLASS="western" STYLE="margin-left: 0.98in; margin-bottom: 0in">
+<FONT FACE="Liberation Mono, Courier New, monospace"><FONT SIZE=2>result.append(Widget('Name
+of the widget', items, request, 'slug_name', status_columns,
+class_names = “widget_2”)</FONT></FONT></P>
+<P LANG="zxx" CLASS="western" STYLE="margin-left: 0.49in; margin-bottom: 0in">
+<BR>
+</P>
+<P CLASS="western" STYLE="margin-left: 0.49in; margin-bottom: 0in">This
+is basic way of adding widgets to our result array.</P>
+<P CLASS="western" STYLE="margin-left: 0.49in; margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-left: 0.49in; margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-left: 0.49in; margin-bottom: 0in"><U><B>Name
+of the widget</B></U></P>
+<P CLASS="western" STYLE="margin-left: 0.49in; margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-left: 0.98in; margin-bottom: 0in">This
+is simply string that is displayed on top of our widget. It can be
+entered as simple string like 'Name' or _('Name') if we want it
+translated</P>
+<P CLASS="western" STYLE="margin-left: 0.49in; margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-left: 0.49in; margin-bottom: 0in"><U><B>Items</B></U></P>
+<P CLASS="western" STYLE="margin-left: 0.49in; margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-left: 0.98in; margin-bottom: 0in">These
+are issues we want to display. We can also exclude, filter and order
+issues by parameter of our choice.</P>
+<P CLASS="western" STYLE="margin-left: 0.98in; margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-left: 0.98in; margin-bottom: 0in"><B>excluding
+and filtering</B></P>
+<P LANG="zxx" CLASS="western" STYLE="margin-left: 1.48in; margin-bottom: 0in">
+<BR>
+</P>
+<P LANG="zxx" CLASS="western" STYLE="margin-left: 1.48in; margin-bottom: 0in">
+We can get id of the specific status with:</P>
+<P LANG="zxx" CLASS="western" STYLE="margin-left: 1.48in; margin-bottom: 0in">
+<BR>
+</P>
+<P CLASS="western" STYLE="margin-left: 1.48in; margin-bottom: 0in"><SPAN LANG="zxx">	</SPAN><FONT FACE="Liberation Mono, Courier New, monospace"><FONT SIZE=2><SPAN LANG="zxx">utsatt_id
+= Status.objects.get(name='04 Utsatt – etter avtale').id</SPAN></FONT></FONT></P>
+<P LANG="zxx" CLASS="western" STYLE="margin-left: 1.48in; margin-bottom: 0in">
+<BR>
+</P>
+<P LANG="zxx" CLASS="western" STYLE="margin-left: 1.48in; margin-bottom: 0in">
+It is also possible to filter items by status ids</P>
+<P LANG="zxx" CLASS="western" STYLE="margin-left: 1.48in; margin-bottom: 0in">
+<BR>
+</P>
+<P CLASS="western" STYLE="margin-left: 1.48in; margin-bottom: 0in"><FONT FACE="Liberation Mono, Courier New, monospace"><SPAN LANG="zxx">	</SPAN></FONT><FONT FACE="Liberation Mono, Courier New, monospace"><FONT SIZE=2><SPAN LANG="zxx">Issue.objects.filter(current_status
+= 1004)</SPAN></FONT></FONT></P>
+<P CLASS="western" STYLE="margin-left: 1.48in; margin-bottom: 0in"><FONT FACE="Liberation Mono, Courier New, monospace"><FONT SIZE=2><SPAN LANG="zxx">	Issue.objects.filter(current_status
+= </SPAN></FONT></FONT><FONT FACE="Liberation Mono, Courier New, monospace"><FONT SIZE=2><SPAN LANG="zxx">utsatt_id)</SPAN></FONT></FONT></P>
+<P LANG="zxx" CLASS="western" STYLE="margin-left: 1.48in; margin-bottom: 0in">
+<BR>
+</P>
+<P CLASS="western" STYLE="margin-left: 1.48in; margin-bottom: 0in"><SPAN LANG="zxx">This
+will filter out all issues that don't have status id 1004 </SPAN><SPAN LANG="zxx">or
+id of the status Utsatt</SPAN></P>
+<P LANG="zxx" CLASS="western" STYLE="margin-left: 1.48in; margin-bottom: 0in">
+<BR>
+</P>
+<P LANG="zxx" CLASS="western" STYLE="margin-left: 1.48in; margin-bottom: 0in">
+We can also pass array as well for filtering by adding __in to
+parameter we are filtering by</P>
+<P LANG="zxx" CLASS="western" STYLE="margin-left: 1.48in; margin-bottom: 0in">
+<BR>
+</P>
+<P CLASS="western" STYLE="margin-left: 1.48in; margin-bottom: 0in"><SPAN LANG="zxx">	</SPAN><FONT FACE="Liberation Mono, Courier New, monospace"><FONT SIZE=2><SPAN LANG="zxx">Issue.objects.filter(current_status__in
+= [1004, 1005, utsatt_id])</SPAN></FONT></FONT></P>
+<P LANG="zxx" CLASS="western" STYLE="margin-left: 1.48in; margin-bottom: 0in">
+<BR>
+</P>
+<P CLASS="western" STYLE="margin-left: 1.48in; margin-bottom: 0in"><SPAN LANG="zxx">This
+will filter out all issues that don't have status ids  1004, 1005 </SPAN><SPAN LANG="zxx">and
+utsatt_id</SPAN></P>
+<P LANG="zxx" CLASS="western" STYLE="margin-left: 1.48in; margin-bottom: 0in">
+<BR>
+</P>
+<P LANG="zxx" CLASS="western" STYLE="margin-left: 1.48in; margin-bottom: 0in">
+And we can check if value is null as well by adding __isnull</P>
+<P LANG="zxx" CLASS="western" STYLE="margin-left: 1.48in; margin-bottom: 0in">
+<BR>
+</P>
+<P CLASS="western" STYLE="margin-left: 1.48in; margin-bottom: 0in"><FONT SIZE=2><SPAN LANG="zxx">	</SPAN></FONT><FONT FACE="Liberation Mono, Courier New, monospace"><FONT SIZE=2><SPAN LANG="zxx">Issue.objects.filter(assigned_to__isnull
+= True)</SPAN></FONT></FONT></P>
+<P LANG="zxx" CLASS="western" STYLE="margin-left: 1.48in; margin-bottom: 0in">
+<BR>
+</P>
+<P LANG="zxx" CLASS="western" STYLE="margin-left: 1.48in; margin-bottom: 0in">
+Same principle applies  for excluding issues. Status ids can be found
+in the database.</P>
+<P LANG="zxx" CLASS="western" STYLE="margin-left: 0.98in; margin-bottom: 0in">
+<BR>
+</P>
+<P LANG="zxx" CLASS="western" STYLE="margin-left: 0.98in; margin-bottom: 0in">
+<B>Ordering</B></P>
+<P LANG="zxx" CLASS="western" STYLE="margin-left: 1.48in; margin-bottom: 0in">
+<BR>
+</P>
+<P CLASS="western" STYLE="margin-left: 1.48in; margin-bottom: 0in"><SPAN LANG="zxx">	</SPAN><FONT FACE="Liberation Mono, Courier New, monospace"><FONT SIZE=2><SPAN LANG="zxx">Issue.objects.order_by('creation_date')</SPAN></FONT></FONT></P>
+<P LANG="zxx" CLASS="western" STYLE="margin-left: 1.48in; margin-bottom: 0in">
+<BR>
+</P>
+<P LANG="zxx" CLASS="western" STYLE="margin-left: 1.48in; margin-bottom: 0in">
+This will order issues by creation date. If we want reverse ordering
+we add -  in front of parameter we are ordering by</P>
+<P LANG="zxx" CLASS="western" STYLE="margin-left: 1.48in; margin-bottom: 0in">
+<BR>
+</P>
+<P CLASS="western" STYLE="margin-left: 1.48in; margin-bottom: 0in"><SPAN LANG="zxx">	</SPAN><FONT FACE="Liberation Mono, Courier New, monospace"><FONT SIZE=2><SPAN LANG="zxx">Issue.objects.order_by('-creation_date')</SPAN></FONT></FONT></P>
+<P LANG="zxx" CLASS="western" STYLE="margin-left: 1.48in; margin-bottom: 0in">
+<BR>
+</P>
+<P LANG="zxx" CLASS="western" STYLE="margin-left: 1.48in; margin-bottom: 0in">
+This will order issues by creation date in reverse</P>
+<P LANG="zxx" CLASS="western" STYLE="margin-left: 0.49in; margin-bottom: 0in">
+<BR>
+</P>
+<P LANG="zxx" CLASS="western" STYLE="margin-left: 0.49in; margin-bottom: 0in">
+<U><B>Status columns</B></U></P>
+<P LANG="zxx" CLASS="western" STYLE="margin-left: 0.49in; margin-bottom: 0in">
+<BR>
+</P>
+<P LANG="zxx" CLASS="western" STYLE="margin-left: 0.98in; margin-bottom: 0in">
+These define columns we want in our widget. Format is status_columns
+= (('name field', 'field'), …. ) if we want translation then it's 
+status_columns = ((_('name field'), 'field'), …. )</P>
+<P LANG="zxx" CLASS="western" STYLE="margin-left: 0.98in; margin-bottom: 0in">
+<BR>
+</P>
+<P LANG="zxx" CLASS="western" STYLE="margin-left: 0.98in; margin-bottom: 0in">
+Here is actual example:</P>
+<P LANG="zxx" CLASS="western" STYLE="margin-left: 0.98in; margin-bottom: 0in">
+<BR>
+</P>
+<P LANG="zxx" CLASS="western" STYLE="margin-left: 0.98in; margin-bottom: 0in">
+<FONT FACE="Liberation Mono, Courier New, monospace"><FONT SIZE=2>status_columns
+= ((_('Id of the issue'), 'id'), (_('Priority'), 'priority'),
+(_('Issue name'), 'name'), ('Created', 'creation_date'),
+(_('Requester'), 'requester'), (_('Assigned to'), 'assigned_to'),
+(_('Last updater'), 'last_updater'), (_('Co responsible'),
+'co_responsible_string'), (_('Location'), 'location'), (_('Status'),
+'current_status'))</FONT></FONT></P>
+<P LANG="zxx" CLASS="western" STYLE="margin-left: 0.98in; margin-bottom: 0in">
+<BR>
+</P>
+<P CLASS="western" STYLE="margin-left: 0.49in; margin-bottom: 0in"><U><B>Slug
+name</B></U></P>
+<P CLASS="western" STYLE="margin-left: 0.49in; margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-left: 0.98in; margin-bottom: 0in">Short
+description. Must be without spaces, dots etc. For example slug_name.
+And must be unique, as this is used to identify which widget should
+be updated (for example when page is clicked on the widget).</P>
+<P CLASS="western" STYLE="margin-left: 0.98in; margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-left: 0.5in; margin-bottom: 0in"><U><B>Class
+names</B></U></P>
+<P CLASS="western" STYLE="margin-left: 1in; margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-left: 1in; margin-bottom: 0in">class_names
+is used to get formating from the tuit.css.</P>
+<P CLASS="western" STYLE="margin-left: 1in; margin-bottom: 0in">Currently
+values that have formating are widget, widget_1, widget_2 and
+widget_80.</P>
+<P CLASS="western" STYLE="margin-left: 1in; margin-bottom: 0in">Here
+are formating values for these classes:</P>
+<P CLASS="western" STYLE="margin-left: 1in; margin-bottom: 0in"><BR>
+</P>
+<DL>
+	<DL>
+		<DL>
+			<DD>
+			<TABLE WIDTH=21% BORDER=0 CELLPADDING=4 CELLSPACING=0>
+				<COL WIDTH=87*>
+				<COL WIDTH=116*>
+				<COL WIDTH=53*>
+				<TR VALIGN=TOP>
+					<TD WIDTH=34%>
+						<P CLASS="western">widget</P>
+					</TD>
+					<TD WIDTH=45%>
+						<P CLASS="western"><BR>
+						</P>
+					</TD>
+					<TD WIDTH=21%>
+						<P CLASS="western"><BR>
+						</P>
+					</TD>
+				</TR>
+				<TR VALIGN=TOP>
+					<TD WIDTH=34%>
+						<P CLASS="western"><BR>
+						</P>
+					</TD>
+					<TD WIDTH=45%>
+						<P CLASS="western" ALIGN=CENTER>float</P>
+					</TD>
+					<TD WIDTH=21%>
+						<P CLASS="western">left</P>
+					</TD>
+				</TR>
+				<TR VALIGN=TOP>
+					<TD WIDTH=34%>
+						<P CLASS="western"><BR>
+						</P>
+					</TD>
+					<TD WIDTH=45%>
+						<P CLASS="western" ALIGN=CENTER>margin-right</P>
+					</TD>
+					<TD WIDTH=21%>
+						<P CLASS="western">10pt</P>
+					</TD>
+				</TR>
+				<TR VALIGN=TOP>
+					<TD WIDTH=34%>
+						<P CLASS="western"><BR>
+						</P>
+					</TD>
+					<TD WIDTH=45%>
+						<P CLASS="western" ALIGN=CENTER>margin-bottom</P>
+					</TD>
+					<TD WIDTH=21%>
+						<P CLASS="western">10pt</P>
+					</TD>
+				</TR>
+				<TR VALIGN=TOP>
+					<TD WIDTH=34%>
+						<P CLASS="western"><BR>
+						</P>
+						<P CLASS="western">widget_1</P>
+					</TD>
+					<TD WIDTH=45%>
+						<P CLASS="western" ALIGN=CENTER><BR>
+						</P>
+					</TD>
+					<TD WIDTH=21%>
+						<P CLASS="western"><BR>
+						</P>
+					</TD>
+				</TR>
+				<TR VALIGN=TOP>
+					<TD WIDTH=34%>
+						<P CLASS="western"><BR>
+						</P>
+					</TD>
+					<TD WIDTH=45%>
+						<P CLASS="western" ALIGN=CENTER>width</P>
+					</TD>
+					<TD WIDTH=21%>
+						<P CLASS="western">300pt</P>
+					</TD>
+				</TR>
+				<TR VALIGN=TOP>
+					<TD WIDTH=34%>
+						<P CLASS="western"><BR>
+						</P>
+						<P CLASS="western">widget_2</P>
+					</TD>
+					<TD WIDTH=45%>
+						<P CLASS="western" ALIGN=CENTER><BR>
+						</P>
+					</TD>
+					<TD WIDTH=21%>
+						<P CLASS="western"><BR>
+						</P>
+					</TD>
+				</TR>
+				<TR VALIGN=TOP>
+					<TD WIDTH=34%>
+						<P CLASS="western"><BR>
+						</P>
+					</TD>
+					<TD WIDTH=45%>
+						<P CLASS="western" ALIGN=CENTER>width 
+						</P>
+					</TD>
+					<TD WIDTH=21%>
+						<P CLASS="western">610pt</P>
+					</TD>
+				</TR>
+				<TR VALIGN=TOP>
+					<TD WIDTH=34%>
+						<P CLASS="western"><BR>
+						</P>
+						<P CLASS="western">widget_80 
+						</P>
+					</TD>
+					<TD WIDTH=45%>
+						<P CLASS="western" ALIGN=CENTER><BR>
+						</P>
+					</TD>
+					<TD WIDTH=21%>
+						<P CLASS="western"><BR>
+						</P>
+					</TD>
+				</TR>
+				<TR VALIGN=TOP>
+					<TD WIDTH=34%>
+						<P LANG="zxx" CLASS="western"><BR>
+						</P>
+					</TD>
+					<TD WIDTH=45%>
+						<P CLASS="western" ALIGN=CENTER><SPAN LANG="zxx">m</SPAN><SPAN LANG="zxx">in-width</SPAN></P>
+					</TD>
+					<TD WIDTH=21%>
+						<P LANG="zxx" CLASS="western">80%</P>
+					</TD>
+				</TR>
+				<TR VALIGN=TOP>
+					<TD WIDTH=34%>
+						<P LANG="zxx" CLASS="western"><BR>
+						</P>
+					</TD>
+					<TD WIDTH=45%>
+						<P LANG="zxx" CLASS="western" ALIGN=CENTER>max-width</P>
+					</TD>
+					<TD WIDTH=21%>
+						<P LANG="zxx" CLASS="western">110%</P>
+					</TD>
+				</TR>
+			</TABLE>
+		</DL>
+	</DL>
+</DL>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-left: 1in; margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-left: 1in; margin-bottom: 0in">	</P>
+<P CLASS="western" STYLE="margin-left: 0.49in; margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-left: 0.49in; margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+</BODY>
+</HTML>
