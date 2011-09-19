@@ -133,7 +133,7 @@ def issue_complete(request, is_complete=True):
     if 'offset' in request.GET:
         offset = int(request.GET['offset'])
         
-    q = make_Q(query, ('subject','description','issueupdate__comment','requester__username','requester__first_name','requester__last_name'), is_complete)
+    q = make_Q(query, ('subject','description','issueupdate__comment','requester__username','requester__first_name','requester__last_name','location'), is_complete)
     q = Issue.objects.filter(q)
     if not request.user.is_staff:
         q = q.filter(requester=request.user)
