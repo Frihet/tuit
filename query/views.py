@@ -204,3 +204,31 @@ def issue_complete(request, is_complete=True):
         u = map(lambda issue: "%s - %s" % (issue.id, issue.subject), q)
     return HttpResponse(to_json(u))
 
+
+def issue_by_id(request):
+    
+    try :
+        id_query = request.GET['query']
+    except:
+        pass
+        
+    if len(id_query)!=0:
+        text = request.GET['query'].split(' ')
+        ids = []
+        for i in text:
+            try: 
+                int(i)
+                ids.append(i)
+            except:
+                pass
+        
+        if len(ids)!=0:
+            q = Issue.objects.filter(id__in = ids).order_by('-id')
+            print q
+    tot_count = len(q)
+ 
+    u = {'ResultSet':{'totalResultsAvailable':tot_count,
+                          'totalResultsReturned':len(q),
+                          'Result':map(lambda issue: {'name':issue.subject,'description':'hejsan','url':'/tuit/ticket/view/%d'%issue.id}, q)
+             }}
+    return HttpResponse(to_json(u))
