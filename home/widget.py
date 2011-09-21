@@ -71,21 +71,22 @@ class Widget:
 
         def render_item(idx):
             if idx == self.current_page:
-                return str(idx)
+                #~ return str(idx)
+                return "<a style=\"font-size-adjust: 0.7; background: white; color: black; font-weight: bold;\">%(idx)d</a>" % {'idx':idx}
             return "<a href=\"javascript:%(click)s\">%(idx)d</a>" % {'url':page_url(idx),'click':page_click(idx), 'idx':idx}
         
         pages = ((self.items.count()-1)/self.item_count)+1
         if pages == 1:
             return ""
-        if pages < 12:
+        if pages < 50:
             return "&nbsp;".join(map(render_item, range(1,pages+1)))
 
-        if self.current_page > 5:
-            if self.current_page < pages - 6:
-                return render_item(1) + "..." + "&nbsp;".join(map(render_item, range(self.current_page-5,self.current_page+5))) + "..." + render_item(pages)
-            return render_item(1) + "..." + "&nbsp;".join(map(render_item, range(self.current_page-5,pages+1)))
+        if self.current_page > 25:
+            if self.current_page < pages - 26:
+                return render_item(1) + "..." + "&nbsp;".join(map(render_item, range(self.current_page-25,self.current_page+25))) + "..." + render_item(pages)
+            return render_item(1) + "..." + "&nbsp;".join(map(render_item, range(self.current_page-25,pages+1)))
         else:
-            return "&nbsp;".join(map(render_item, range(1,self.current_page+5))) + "..." + render_item(pages) 
+            return "&nbsp;".join(map(render_item, range(1,self.current_page+25))) + "..." + render_item(pages) 
 
 
     @property
@@ -105,7 +106,7 @@ class Widget:
             stop = min(start+num_items, count)
 #            print "Show items", start, "to", stop
             items_shown = self.items[start:stop]
-
+            pages = ((count-1)/self.item_count)+1
             if len(self.items) > 0:
                 if self.columns is None:
                     self.columns = self.items[0].html_default_columns
@@ -120,7 +121,8 @@ class Widget:
 
                     message = _("Showing items %(first)d to %(last)d of %(total)d") % {'first':start+1,'last':stop,'total':count}
                     col_name = map(lambda x:x[1], self.columns)
-                    col_desc = "<thead><tr>" + "\n".join(map(lambda x:"<th>%s</th>"%x[0], self.columns)) + "</tr></thead>"
+                    col_desc = "<thead><tr>" + "\n".join(map(lambda x:"<th><a href=\"aaa_%s\">%s</a></th>" % (x[1], x[0]), self.columns)) + "</tr></thead>"
+                    print col_desc
 
                     def row_class_string(row):
                         if hasattr(row, 'row_class'):
@@ -135,7 +137,24 @@ class Widget:
                     
                     pager=self.pager
                     if pager != "":
-                        pager_row ="<tr><td colspan='%d'>%s: %s</td></tr>" % (len(self.columns),_('Page'),self.pager)
+                        #~ pager_row ="<tr><td colspan='%d'>%s: %s</td></tr>" % (len(self.columns),_('Page'),self.pager)
+                        pager_str = "<tr><td colspan='%d'> " % len(self.columns)
+                        pager_str += "&nbsp;<a href=\"javascript:tuit.updateWidget('%(slug)s', '?%(slug)s_page=1')\"><<</a>&nbsp;" % {'slug': self.slug}
+                        
+                        prev = self.current_page-1
+                        if prev < 1:
+                            prev = 1
+                        ne = self.current_page+1
+                        if ne > pages:
+                            ne = pages
+                        pager_str += "<a href=\"javascript:tuit.updateWidget('%(slug)s', '?%(slug)s_page=%(prev)d')\"><</a>&nbsp;" % {'slug': self.slug, 'prev': prev}
+                        pager_str += "%s" % (self.pager)
+                        print pager_str
+                        pager_str += "&nbsp;<a href=\"javascript:tuit.updateWidget('%(slug)s', '?%(slug)s_page=%(next)d')\">></a>&nbsp;" % {'slug': self.slug, 'next': ne}
+                    
+                        pager_str += "<a href=\"javascript:tuit.updateWidget('%(slug)s', '?%(slug)s_page=%(count)d')\">>></a>&nbsp;" % {'slug': self.slug, 'count': pages}
+                        pager_row = pager_str + "</td></tr>"
+                        #~ print pager_row
                     else:
                         pager_row = ""
 
