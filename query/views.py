@@ -206,7 +206,7 @@ def issue_complete(request, is_complete=True):
 
 
 def issue_by_id(request):
-    
+    q = []
     try :
         id_query = request.GET['query']
     except:
