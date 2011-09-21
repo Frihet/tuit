@@ -122,7 +122,6 @@ class Widget:
                     message = _("Showing items %(first)d to %(last)d of %(total)d") % {'first':start+1,'last':stop,'total':count}
                     col_name = map(lambda x:x[1], self.columns)
                     col_desc = "<thead><tr>" + "\n".join(map(lambda x:"<th><a href=\"aaa_%s\">%s</a></th>" % (x[1], x[0]), self.columns)) + "</tr></thead>"
-                    print col_desc
 
                     def row_class_string(row):
                         if hasattr(row, 'row_class'):
