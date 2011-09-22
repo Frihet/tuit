@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-08-18 10:43+0200\n"
-"PO-Revision-Date: 2011-09-08 10:33+0100\n"
+"PO-Revision-Date: 2011-09-22 13:41+0100\n"
 "Last-Translator: Nikola Trandafilovic <nt@freecode.no>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -378,7 +378,7 @@ msgstr "Avbryt"
 
 #: templates/home.html:11
 msgid "Tip of the week:"
-msgstr "ukens tips:"
+msgstr "Ukens tips:"
 
 #: templates/ticket_email.html:12
 #, python-format
@@ -497,7 +497,7 @@ msgstr "Avhenger av saker"
 #: templates/admin/index.html:35
 #: templates/admin/ticket.html:19
 msgid "Add"
-msgstr "Legg til"
+msgstr "Legg til ny"
 
 #: templates/ticket_common.html:242
 #: templates/elkjop_simple.html:65
@@ -1334,7 +1334,7 @@ msgstr "Oppdatering"
 #: ticket/models.py:1763
 #, fuzzy
 msgid "Name"
-msgstr "navn"
+msgstr "Navn"
 
 #: ticket/models.py:1764
 #, fuzzy
@@ -1789,6 +1789,9 @@ msgstr ""
 #: mail/__init__.py:1962
 msgid "not of form [arg=value,value,...;arg=value,value,...]"
 msgstr "har ikke formen [arg=verdi,verdi,...;arg=verdi,verdi,...]"
+
+msgid "Save and add another"
+msgstr "Lagre og legg til ny"
 
 #~ msgid "Depended on by these issues"
 #~ msgstr "Disse sakene avhenger av denne"
