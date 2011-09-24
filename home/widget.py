@@ -121,7 +121,7 @@ class Widget:
 
                     message = _("Showing items %(first)d to %(last)d of %(total)d") % {'first':start+1,'last':stop,'total':count}
                     col_name = map(lambda x:x[1], self.columns)
-                    col_desc = "<thead><tr>" + "\n".join(map(lambda x:"<th><a href=\"aaa_%s\">%s</a></th>" % (x[1], x[0]), self.columns)) + "</tr></thead>"
+                    col_desc = "<thead><tr>" + "\n".join(map(lambda x:"<th><a id=\"%(slug)s_%(column)s\"href=\"javascript:tuit.updateWidget('%(slug)s', '?%(slug)s_order_by=%(column)s')\">%(name)s</a></th>" % {'slug': self.slug, 'column': x[1], 'name': x[0]}, self.columns)) + "</tr></thead>"
 
                     def row_class_string(row):
                         if hasattr(row, 'row_class'):
