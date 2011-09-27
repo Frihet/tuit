@@ -27,7 +27,23 @@ class Widget:
         self.request = request
         self.class_names = class_names
         self.style = style
-
+        try: 
+            order_by = request.GET[self.slug + '_order_by']
+            
+            order_by = order_by.replace('name', 'subject')
+            order_by = order_by.replace('owner', 'assigned_to')
+            order_by = order_by.replace('update', 'comment')
+            
+            baned_ordering = ['last_updater', 'last_update_date', 'priority', 'co_responsible_string', 'last_commentr', 'last_comment_date']
+            for i in baned_ordering:
+                if order_by == i or order_by == '-' + i:
+                    order_by = 'id'
+                    
+            self.items= self.items.order_by(order_by)
+        except:
+            pass
+    
+    
     def __to_json__(self):
         return {"__jsonclass__":["Widget", []],
                 "name": self.name,
@@ -122,7 +138,12 @@ class Widget:
                     message = _("Showing items %(first)d to %(last)d of %(total)d") % {'first':start+1,'last':stop,'total':count}
                     col_name = map(lambda x:x[1], self.columns)
                     col_desc = "<thead><tr>" + "\n".join(map(lambda x:"<th><a id=\"%(slug)s_%(column)s\"href=\"javascript:tuit.updateWidget('%(slug)s', '?%(slug)s_order_by=%(column)s')\">%(name)s</a></th>" % {'slug': self.slug, 'column': x[1], 'name': x[0]}, self.columns)) + "</tr></thead>"
-
+                    try:
+                        order_by = self.request.GET[self.slug + '_order_by']
+                        col_desc = col_desc.replace("updateWidget('" + self.slug + "', '?" + self.slug +"_order_by=" + order_by +"", "updateWidget('" + self.slug + "', '?" + self.slug +"_order_by=-" + order_by + "")
+                    except:
+                        pass
+                    
                     def row_class_string(row):
                         if hasattr(row, 'row_class'):
                             return 'class="%s"' % row.row_class
@@ -148,12 +169,10 @@ class Widget:
                             ne = pages
                         pager_str += "<a href=\"javascript:tuit.updateWidget('%(slug)s', '?%(slug)s_page=%(prev)d')\"><</a>&nbsp;" % {'slug': self.slug, 'prev': prev}
                         pager_str += "%s" % (self.pager)
-                        print pager_str
                         pager_str += "&nbsp;<a href=\"javascript:tuit.updateWidget('%(slug)s', '?%(slug)s_page=%(next)d')\">></a>&nbsp;" % {'slug': self.slug, 'next': ne}
                     
                         pager_str += "<a href=\"javascript:tuit.updateWidget('%(slug)s', '?%(slug)s_page=%(count)d')\">>></a>&nbsp;" % {'slug': self.slug, 'count': pages}
                         pager_row = pager_str + "</td></tr>"
-                        #~ print pager_row
                     else:
                         pager_row = ""
 
