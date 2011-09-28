@@ -27,6 +27,11 @@ class Widget:
         self.request = request
         self.class_names = class_names
         self.style = style
+        
+        
+        
+        
+        
         try: 
             order_by = request.GET[self.slug + '_order_by']
             
@@ -68,13 +73,9 @@ class Widget:
 #            tb.print_exc()
             return 1
 
-    @property
-    def pager(self):
-        """
-        Returns html for a complete pager thingee. Code is currently a
-        bit hackish.
-        """
-        def page_url(page):
+
+
+    def page_url(self, page):
             d={}#self.request.GET.copy()#dict(self.request.GET.iteritems())
             for i in self.request.GET:
                 if i not in ("_HTTP_ACCEPT", "_json_selector"):
@@ -82,14 +83,21 @@ class Widget:
             d[self.slug + '_page'] = str(page)
             return "?" + "&".join(map(lambda (x,y):"%s=%s"%(x,y), d.iteritems()))
 
+    @property
+    def pager(self):
+        """
+        Returns html for a complete pager thingee. Code is currently a
+        bit hackish.
+        """
+    
         def page_click(page):
-            return "tuit.updateWidget('%s', '%s')" % (self.slug, page_url(page))
+            return "tuit.updateWidget('%s', '%s')" % (self.slug, self.page_url(page))
 
         def render_item(idx):
             if idx == self.current_page:
                 #~ return str(idx)
                 return "<a style=\"font-size-adjust: 0.7; background: white; color: black; font-weight: bold;\">%(idx)d</a>" % {'idx':idx}
-            return "<a href=\"javascript:%(click)s\">%(idx)d</a>" % {'url':page_url(idx),'click':page_click(idx), 'idx':idx}
+            return "<a href=\"javascript:%(click)s\">%(idx)d</a>" % {'url':self.page_url(idx),'click':page_click(idx), 'idx':idx}
         
         pages = ((self.items.count()-1)/self.item_count)+1
         if pages == 1:
@@ -159,7 +167,7 @@ class Widget:
                     if pager != "":
                         #~ pager_row ="<tr><td colspan='%d'>%s: %s</td></tr>" % (len(self.columns),_('Page'),self.pager)
                         pager_str = "<tr><td colspan='%d'> " % len(self.columns)
-                        pager_str += "&nbsp;<a href=\"javascript:tuit.updateWidget('%(slug)s', '?%(slug)s_page=1')\"><<</a>&nbsp;" % {'slug': self.slug}
+                        pager_str += "&nbsp;<a href=\"javascript:tuit.updateWidget('%(slug)s', '%(page_url)s')\"><<</a>&nbsp;" % {'slug': self.slug, 'page_url':self.page_url(1)}
                         
                         prev = self.current_page-1
                         if prev < 1:
@@ -167,11 +175,10 @@ class Widget:
                         ne = self.current_page+1
                         if ne > pages:
                             ne = pages
-                        pager_str += "<a href=\"javascript:tuit.updateWidget('%(slug)s', '?%(slug)s_page=%(prev)d')\"><</a>&nbsp;" % {'slug': self.slug, 'prev': prev}
+                        pager_str += "&nbsp;<a href=\"javascript:tuit.updateWidget('%(slug)s', '%(page_url)s')\"><</a>&nbsp;" % {'slug': self.slug, 'page_url':self.page_url(prev)}
                         pager_str += "%s" % (self.pager)
-                        pager_str += "&nbsp;<a href=\"javascript:tuit.updateWidget('%(slug)s', '?%(slug)s_page=%(next)d')\">></a>&nbsp;" % {'slug': self.slug, 'next': ne}
-                    
-                        pager_str += "<a href=\"javascript:tuit.updateWidget('%(slug)s', '?%(slug)s_page=%(count)d')\">>></a>&nbsp;" % {'slug': self.slug, 'count': pages}
+                        pager_str += "&nbsp;<a href=\"javascript:tuit.updateWidget('%(slug)s', '%(page_url)s')\">></a>&nbsp;" % {'slug': self.slug, 'page_url':self.page_url(ne)}
+                        pager_str += "&nbsp;<a href=\"javascript:tuit.updateWidget('%(slug)s', '%(page_url)s')\">>></a>&nbsp;" % {'slug': self.slug, 'page_url':self.page_url(pages)}
                         pager_row = pager_str + "</td></tr>"
                     else:
                         pager_row = ""
