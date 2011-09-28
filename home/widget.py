@@ -31,14 +31,18 @@ class Widget:
         
         
         
+    def do_ordering(self):
+        """
+        This will look for ordering and widget slug name by in request.GET
+        and if it exists order by given parameter
+        """
         
         try: 
-            order_by = request.GET[self.slug + '_order_by']
-            
+            order_by = self.request.GET[self.slug + '_order_by']
+            print order_by
             order_by = order_by.replace('name', 'subject')
             order_by = order_by.replace('owner', 'assigned_to')
             order_by = order_by.replace('update', 'comment')
-            
             baned_ordering = ['last_updater', 'last_update_date', 'priority', 'co_responsible_string', 'last_commentr', 'last_comment_date']
             for i in baned_ordering:
                 if order_by == i or order_by == '-' + i:
@@ -89,7 +93,7 @@ class Widget:
         Returns html for a complete pager thingee. Code is currently a
         bit hackish.
         """
-    
+        
         def page_click(page):
             return "tuit.updateWidget('%s', '%s')" % (self.slug, self.page_url(page))
 
@@ -118,6 +122,7 @@ class Widget:
         """
         Render the widget to html, with pagers, header and everything.
         """
+        self.do_ordering()
         start_time = datetime.now()
 
         page = self.current_page
