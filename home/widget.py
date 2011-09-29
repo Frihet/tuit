@@ -36,19 +36,20 @@ class Widget:
         This will look for ordering and widget slug name by in request.GET
         and if it exists order by given parameter
         """
-        
+        if self.slug == 'updates':
+            return
         try: 
             order_by = self.request.GET[self.slug + '_order_by']
-            print order_by
             order_by = order_by.replace('name', 'subject')
             order_by = order_by.replace('owner', 'assigned_to')
             order_by = order_by.replace('update', 'comment')
             baned_ordering = ['last_updater', 'last_update_date', 'priority', 'co_responsible_string', 'last_commentr', 'last_comment_date']
             for i in baned_ordering:
                 if order_by == i or order_by == '-' + i:
-                    order_by = 'id'
-                    
-            self.items= self.items.order_by(order_by)
+                    return
+                    #~ order_by = 'id'
+            self.items = self.items.order_by(order_by)
+
         except:
             pass
     
