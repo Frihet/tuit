@@ -60,7 +60,11 @@ following components:
   site. This menu does not usually change depending on what part of
   {{ application|escape }} you are using, but because different users have access to
   different parts of the site, it will vary depending on who is logged
-  in.
+  in. Top menu is also highly customisable, and information on chnaging top 
+  menu components can be found here:
+  <ol>
+    <a href="#admin_top_menu">Changing top menu components</a>
+  </ol>
 </p>
 <p>
   The top menu also allows you to quickly search the system. Just
@@ -127,6 +131,10 @@ following components:
   {{ application|escape }} shows the following types of search results:
 
   <ul>
+    <li>
+      <em>IDs</em>. If issue id or multiple ids separated by space are entered in search box,
+      this search type will show them regardles of their status or type.
+    </li>  
     <li>
       <em><a href='#concepts_issue'>Issues</a></em>. This shows both Incidents, Problems and
       RfCs. Freetext searches the subject, the description, all
@@ -564,7 +572,20 @@ Knowledge base:
   {% endif %}
 </p>
 
-<h2><a name='admin_status_menu'>Changing top menu components</a></h2>
+<h2><a name='admin_user_permissions'>User permissions</a></h2>
+<p>
+  User permissions are used with top menu component, widgets etc. to define who can access
+  these items. Beside standard <b>is_staff</b> and <b>is_admin</b> permissions there are additional
+  permissions that are defined in following form:
+  <ol>
+      &lt;app label&gt;.&lt;permission codename&gt;
+  </ol> 
+  This means that Site | Can change site will have permission sites.can_change_site.
+  <p>Complete list of app labels and codenames can be found in <a href='/static/documentation/permissions_table.html'>permissions table</a>.</p>  
+</p>
+
+
+<h2><a name='admin_top_menu'>Changing top menu components</a></h2>
 <p>
   Menu components are eidtable through the <a href='/tuit/admin/settings'>system administration backend</a>. 
   It is possible to add any url to top menu, for example <a href='http://www.google.com'>www.google.com</a>. Below is list of most common 
@@ -925,7 +946,17 @@ Generic fills are created using these steps:
   <li>Repeat step 3 as many times as it is suitable.</li>
 </ol>
 
-
+<h2><a name='admin_db_overview'>{{ application|escape }} database overview</a></h2>
+<p>
+  {{ application|escape }} uses relational database, and entity-relationship diagram can be found <a href='/static/documentation/ER_diagram.png'>here</a>. </br>
+  Also detailed description of database tables is available <a href='/static/documentation/DB_Tables.html'>here</a>.
+</p>
+<p>
+  Archive with ER diagram and database descriptions in multiple file formats is alvailable for download.
+  <ul>
+		<a href='/static/documentation/DB_Tables.zip'>Download</a>
+  </ul>
+</p>
 
 <h1><a name='concepts'>{{ application|escape }} concepts</a></h1>
 
