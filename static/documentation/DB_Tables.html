@@ -1,0 +1,2571 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=utf-8">
+	<TITLE></TITLE>
+	<META NAME="GENERATOR" CONTENT="OpenOffice.org 3.2  (Unix)">
+	<META NAME="AUTHOR" CONTENT="Nikola Trandafilovic">
+	<META NAME="CREATED" CONTENT="20110620;15212300">
+	<META NAME="CHANGEDBY" CONTENT="Nikola Trandafilovic">
+	<META NAME="CHANGED" CONTENT="20110704;11581700">
+	<META NAME="Info 1" CONTENT="">
+	<META NAME="Info 2" CONTENT="">
+	<META NAME="Info 3" CONTENT="">
+	<META NAME="Info 4" CONTENT="">
+	<STYLE TYPE="text/css">
+	<!--
+		@page { size: 8.27in 11.69in; margin: 0.5in }
+		P { margin-bottom: 0.08in; direction: ltr; color: #000000; text-align: left; widows: 0; orphans: 0 }
+		P.western { font-family: "Liberation Serif", "Times New Roman", serif; font-size: 12pt; so-language: en-US }
+		P.cjk { font-family: "DejaVu Sans"; font-size: 12pt; so-language: zh-CN }
+		P.ctl { font-family: "DejaVu Sans"; font-size: 12pt; so-language: hi-IN }
+		H1 { margin-bottom: 0.08in; direction: ltr; color: #000000; text-align: left; widows: 0; orphans: 0 }
+		H1.western { font-family: "Liberation Sans", "Arial", sans-serif; font-size: 16pt; so-language: en-US }
+		H1.cjk { font-family: "DejaVu Sans"; font-size: 16pt; so-language: zh-CN }
+		H1.ctl { font-family: "DejaVu Sans"; font-size: 16pt; so-language: hi-IN }
+		H3 { margin-bottom: 0.08in; direction: ltr; color: #000000; text-align: left; widows: 0; orphans: 0 }
+		H3.western { font-family: "Liberation Sans", "Arial", sans-serif; so-language: en-US }
+		H3.cjk { font-family: "DejaVu Sans"; so-language: zh-CN }
+		H3.ctl { font-family: "DejaVu Sans"; so-language: hi-IN }
+		TD P { margin-bottom: 0in; direction: ltr; color: #000000; text-align: left; widows: 0; orphans: 0 }
+		TD P.western { font-family: "Liberation Serif", "Times New Roman", serif; font-size: 12pt; so-language: en-US }
+		TD P.cjk { font-family: "DejaVu Sans"; font-size: 12pt; so-language: zh-CN }
+		TD P.ctl { font-family: "DejaVu Sans"; font-size: 12pt; so-language: hi-IN }
+		H3.table-name-western { font-family: "Liberation Sans", "Arial", sans-serif; font-size: 20pt; so-language: en-US; text-decoration: underline }
+		H3.table-name-cjk { font-family: "DejaVu Sans"; font-size: 20pt; so-language: zh-CN; text-decoration: underline }
+		H3.table-name-ctl { font-family: "DejaVu Sans"; so-language: hi-IN; text-decoration: underline }
+	-->
+	</STYLE>
+</HEAD>
+<BODY LANG="en-US" TEXT="#000000" DIR="LTR">
+<H3 CLASS="table-name-western">Ticket tables</H3>
+<P CLASS="western"><BR><BR>
+</P>
+<H1 CLASS="western">ticket_issue</H1>
+<P CLASS="western" STYLE="text-indent: 0.2in; margin-bottom: 0in">This
+is the main issue table. Contains the bulk of the data about an issue
+except for updates. Note that this data is not static - the status
+column in this table always has the latest status of the issue, not
+any history. We need to check the json-data to find the historic data
+for a specific point in time. 
+</P>
+<P CLASS="western" STYLE="text-indent: 0.2in; margin-bottom: 0in"><BR>
+</P>
+<TABLE WIDTH=1186 BORDER=1 BORDERCOLOR="#000000" CELLPADDING=4 CELLSPACING=0>
+	<COL WIDTH=233>
+	<COL WIDTH=541>
+	<COL WIDTH=386>
+	<TR VALIGN=TOP>
+		<TD WIDTH=233>
+			<P CLASS="western"><FONT SIZE=2>Name</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Type</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Description</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=233>
+			<P CLASS="western"><FONT SIZE=2>current_status</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>FK(ticket_status) </FONT>
+			</P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Current status of the issue</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=233>
+			<P CLASS="western"><FONT SIZE=2>type</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>FK(ticket_issuetype)</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Type of the  issue</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=233>
+			<P CLASS="western"><FONT SIZE=2>category</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>FK(ticket_category)</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Category of the  issue</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=233>
+			<P CLASS="western"><FONT SIZE=2>assigned_to</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>FK(auth_user)</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>User ticket is assigned to</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=233>
+			<P CLASS="western"><FONT SIZE=2>co_responsible</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>MM(ticket_issue_co_responsible_issue_id)</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>User co responsible for the  issue</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=233>
+			<P CLASS="western"><FONT SIZE=2>cc_user</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>MM(ticket_issue_cc_user_issue_id)</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>User to receive carbon copy</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=233>
+			<P CLASS="western"><FONT SIZE=2>cc_contact</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>MM(ticket_issue_cc_contact_issue_id)</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Contact to receive carbon copy</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=233>
+			<P CLASS="western"><FONT SIZE=2>requester</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>FK(auth_user)</FONT></P>
+			<P CLASS="western"><FONT SIZE=2>null = True</FONT></P>
+			<P CLASS="western"><FONT SIZE=2>blank = True</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>User that requested issue</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=233>
+			<P CLASS="western"><FONT SIZE=2>subject</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Char (256)</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Subject</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=233>
+			<P CLASS="western"><FONT SIZE=2>description</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Char (819200)</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Description of the issue</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=233>
+			<P CLASS="western"><FONT SIZE=2>impact</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Int</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Severity of the issue</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=233>
+			<P CLASS="western"><FONT SIZE=2>urgency</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Int</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Urgency of the issue</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=233>
+			<P CLASS="western"><FONT SIZE=2>creation_date</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>DateTime</FONT></P>
+			<P CLASS="western"><FONT SIZE=2>auto_now_add = True</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Date issue is created</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=233>
+			<P CLASS="western"><FONT SIZE=2>create_description</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Char(819200)</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>JSON formated issue description</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=233>
+			<P CLASS="western"><FONT SIZE=2>creator</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>FK(auth_user)</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>User that created issue</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=233>
+			<P CLASS="western"><FONT SIZE=2>location</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Char(256)</FONT></P>
+			<P CLASS="western"><FONT SIZE=2>blank = True</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Location</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=233>
+			<P CLASS="western"><FONT SIZE=2>building</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Char(256)</FONT></P>
+			<P CLASS="western"><FONT SIZE=2>blank = True</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Building</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=233>
+			<P CLASS="western"><FONT SIZE=2>office</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Char(256)</FONT></P>
+			<P CLASS="western"><FONT SIZE=2>blank = True</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Office</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=233>
+			<P CLASS="western"><FONT SIZE=2>telephone</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Text(512)</FONT></P>
+			<P CLASS="western"><FONT SIZE=2>blank = True</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Telephone number</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=233>
+			<P CLASS="western"><FONT SIZE=2>mobile</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Text(512)</FONT></P>
+			<P CLASS="western"><FONT SIZE=2>blank = True</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Mobile phone number</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=233>
+			<P CLASS="western"><FONT SIZE=2>pc</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Text(512)</FONT></P>
+			<P CLASS="western"><FONT SIZE=2>blank = True</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>PC name</FONT></P>
+		</TD>
+	</TR>
+</TABLE>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<H1 CLASS="western">ticket_status</H1>
+<P CLASS="western" STYLE="text-indent: 0.2in; margin-bottom: 0in">This
+table contains statuses of the tickets, e.g. 'Open', 'Closed', etc.</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<TABLE WIDTH=1185 BORDER=1 BORDERCOLOR="#000000" CELLPADDING=4 CELLSPACING=0>
+	<COL WIDTH=232>
+	<COL WIDTH=541>
+	<COL WIDTH=386>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>Name</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Type</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Description</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>name</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Char(64)</FONT></P>
+			<P CLASS="western"><FONT SIZE=2>unique = True</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Name of the status</FONT></P>
+		</TD>
+	</TR>
+</TABLE>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<H1 CLASS="western">ticket_issuetype</H1>
+<P CLASS="western" STYLE="text-indent: 0.21in; margin-bottom: 0in">This
+table contains types of issues, e.g. incident, problem or RfC</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<TABLE WIDTH=1185 BORDER=1 BORDERCOLOR="#000000" CELLPADDING=4 CELLSPACING=0>
+	<COL WIDTH=232>
+	<COL WIDTH=541>
+	<COL WIDTH=386>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>Name</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Type</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Description</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>name</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Char(64)</FONT></P>
+			<P CLASS="western"><FONT SIZE=2>unique = True</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Name of the issue type</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>has_location</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Bool</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Use location fields (use location,
+			building etc.)</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>extra_fields</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>MM(ticket_issue_type_extra_fields_issuetype_id)</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Additional fields</FONT></P>
+		</TD>
+	</TR>
+</TABLE>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<H1 CLASS="western">ticket_category</H1>
+<P CLASS="western" STYLE="text-indent: 0.2in; margin-bottom: 0in">This
+table defines issue categories, e.g. Hardware, Office etc.</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<TABLE WIDTH=1185 BORDER=1 BORDERCOLOR="#000000" CELLPADDING=4 CELLSPACING=0>
+	<COL WIDTH=232>
+	<COL WIDTH=541>
+	<COL WIDTH=386>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>Name</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Type</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Description</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>name</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Char(64)</FONT></P>
+			<P CLASS="western"><FONT SIZE=2>unique = True</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Name of the issue category</FONT></P>
+		</TD>
+	</TR>
+</TABLE>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<H1 CLASS="western">ticket_quickfill</H1>
+<P CLASS="western" STYLE="text-indent: 0.21in; margin-bottom: 0in">This
+table contains quick fills. Quick fills are used in creating new
+issues to fill in standard field, for example user has forgotten
+password.</P>
+<P CLASS="western" STYLE="text-indent: 0.21in; margin-bottom: 0in"><BR>
+</P>
+<TABLE WIDTH=1185 BORDER=1 BORDERCOLOR="#000000" CELLPADDING=4 CELLSPACING=0>
+	<COL WIDTH=232>
+	<COL WIDTH=541>
+	<COL WIDTH=386>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>Name</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Type</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Description</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>name</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Char(512)</FONT></P>
+			<P CLASS="western"><FONT SIZE=2>unique = True</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Name of the quick fill</FONT></P>
+		</TD>
+	</TR>
+</TABLE>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<H1 CLASS="western">ticket_quickfillitem</H1>
+<P CLASS="western" STYLE="text-indent: 0.21in; margin-bottom: 0in">This
+table contains field values for quick fill, e.g. user has forgotten
+password we can have issue field subject. One quick fill can have
+several quick fill items 
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<TABLE WIDTH=1185 BORDER=1 BORDERCOLOR="#000000" CELLPADDING=4 CELLSPACING=0>
+	<COL WIDTH=232>
+	<COL WIDTH=541>
+	<COL WIDTH=386>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>Name</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Type</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Description</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>fill</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>FK(ticket_quickfill)</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Quick fill </FONT>
+			</P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>field</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>FK(ticket_issuefield)</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Field</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>value</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Char(32000)</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Value to be put in the field</FONT></P>
+		</TD>
+	</TR>
+</TABLE>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<H1 CLASS="western">ticket_contact</H1>
+<P CLASS="western" STYLE="text-indent: 0.21in; margin-bottom: 0in">This
+table contains name and e-mail of the contact. A contact is a person
+who is not a user, but still is included in a ticket cc list or the
+originator of an issue update.</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<TABLE WIDTH=1185 BORDER=1 BORDERCOLOR="#000000" CELLPADDING=4 CELLSPACING=0>
+	<COL WIDTH=232>
+	<COL WIDTH=541>
+	<COL WIDTH=386>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>Name</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Type</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Description</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>email</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Char(320)</FONT></P>
+			<P CLASS="western"><FONT SIZE=2>unique =True</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>E-mail of the contact</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>name</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Char(512)</FONT></P>
+			<P CLASS="western"><FONT SIZE=2>blank = True</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Name of the contact</FONT></P>
+		</TD>
+	</TR>
+</TABLE>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<H1 CLASS="western">ticket_cidependency</H1>
+<P CLASS="western" STYLE="text-indent: 0.2in; margin-bottom: 0in">This
+table contains issue dependencies on a configuration items (CI) from
+the configuration management database (CMDB). Because we want to
+allow the CMDB and the issue system to run on different servers
+without dependencies, the ci_id here is in fact not a true foreign
+key, it is simply an integer.</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<TABLE WIDTH=1185 BORDER=1 BORDERCOLOR="#000000" CELLPADDING=4 CELLSPACING=0>
+	<COL WIDTH=232>
+	<COL WIDTH=541>
+	<COL WIDTH=386>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>Name</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Type</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Description</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>issue</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>FK(ticket_issue)</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Issue that has CI dependency </FONT>
+			</P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>ci_id</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Int</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Id of the configuration items</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>description</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Char(512)</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Description of the CI</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>view_order</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Int</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Sorting priority, where lower
+			number is higher priority (element with view_order = 10 comes
+			before the component with view_order = 11)</FONT></P>
+		</TD>
+	</TR>
+</TABLE>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<H1 CLASS="western">ticket_issuedependencytype</H1>
+<P CLASS="western" STYLE="text-indent: 0.21in; margin-bottom: 0in">This
+table defines issue dependency types</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<TABLE WIDTH=1185 BORDER=1 BORDERCOLOR="#000000" CELLPADDING=4 CELLSPACING=0>
+	<COL WIDTH=232>
+	<COL WIDTH=541>
+	<COL WIDTH=386>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>Name</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Type</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Description</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>name</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Char(256)</FONT></P>
+			<P CLASS="western"><FONT SIZE=2>unique = True</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Name of the issue dependency type</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>reverse_name</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Char(256)</FONT></P>
+			<P CLASS="western"><FONT SIZE=2>unique = True</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Name when used in reverse
+			direction</FONT></P>
+		</TD>
+	</TR>
+</TABLE>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<H1 CLASS="western">ticket_issuedependency</H1>
+<P CLASS="western" STYLE="text-indent: 0.23in; margin-bottom: 0in">This
+table contains dependencies between issues.</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<TABLE WIDTH=1185 BORDER=1 BORDERCOLOR="#000000" CELLPADDING=4 CELLSPACING=0>
+	<COL WIDTH=232>
+	<COL WIDTH=541>
+	<COL WIDTH=386>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>Name</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Type</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Description</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>dependent</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>FK(ticket_issue)</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Issue that is dependent</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>dependency</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>FK(ticket_issue)</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Issue depends on given issue</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>type</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>FK(ticket_issuedependencytype)</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Type of the issue dependency</FONT></P>
+		</TD>
+	</TR>
+</TABLE>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<H1 CLASS="western">ticket_issuefield</H1>
+<P CLASS="western" STYLE="text-indent: 0.2in; margin-bottom: 0in">This
+table defines extra issue field, used to create extra fields for
+specific issue types</P>
+<P CLASS="western" STYLE="text-indent: 0.2in; margin-bottom: 0in"><BR>
+</P>
+<TABLE WIDTH=1185 BORDER=1 BORDERCOLOR="#000000" CELLPADDING=4 CELLSPACING=0>
+	<COL WIDTH=232>
+	<COL WIDTH=541>
+	<COL WIDTH=386>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>Name</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Type</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Description</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>name</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Char(64)</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>This is a short name that should
+			contain only letters, numbers and underscores. This will not be
+			shown to the user</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>short_description</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Char(64)</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Short description of the issue
+			field</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>long_description</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Char(256)</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Description of the issue field
+			that goes into more details</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>field_type</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Char(16)</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Type of the field</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>blank</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Bool</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>If the field can be blank</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>view_order</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Int</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Sorting priority, where lower
+			number is higher priority (element with view_order = 10 comes
+			before the component with view_order = 11)</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>internal</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Bool</FONT></P>
+			<P CLASS="western"><FONT SIZE=2>default = False</FONT></P>
+			<P CLASS="western"><FONT SIZE=2>editable = False</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>This sets flag if issue field is
+			built in field</FONT></P>
+		</TD>
+	</TR>
+</TABLE>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<H1 CLASS="western">ticket_issuefielddropdownitem</H1>
+<P CLASS="western" STYLE="text-indent: 0.2in; margin-bottom: 0in">This
+table contains items for dropdown (select) widget</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<TABLE WIDTH=1185 BORDER=1 BORDERCOLOR="#000000" CELLPADDING=4 CELLSPACING=0>
+	<COL WIDTH=232>
+	<COL WIDTH=541>
+	<COL WIDTH=386>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>Name</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Type</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Description</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>field</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>FK(ticket_issuefield)</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Issue field e.g. change type</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>name</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Char(64)</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Name of the issue field drop down
+			item (Liten endring, liten risiko)</FONT></P>
+		</TD>
+	</TR>
+</TABLE>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<H1 CLASS="western">ticket_issuefielddropdownvalue</H1>
+<P CLASS="western" STYLE="text-indent: 0.2in; margin-bottom: 0in">This
+table contains values for drop-down widget</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<TABLE WIDTH=1185 BORDER=1 BORDERCOLOR="#000000" CELLPADDING=4 CELLSPACING=0>
+	<COL WIDTH=232>
+	<COL WIDTH=541>
+	<COL WIDTH=386>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>Name</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Type</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Description</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>issue</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>FK(ticket_issue)</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Issue</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>field</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>FK(ticket_issuefield)</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Issue field</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>item</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>FK(ticket_issuefielddropdownitem)</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Issue field drop-down item</FONT></P>
+		</TD>
+	</TR>
+</TABLE>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<H1 CLASS="western">ticket_issuefieldgroupvalue</H1>
+<P CLASS="western" STYLE="text-indent: 0.2in; margin-bottom: 0in">This
+table contains value field group type</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<TABLE WIDTH=1185 BORDER=1 BORDERCOLOR="#000000" CELLPADDING=4 CELLSPACING=0>
+	<COL WIDTH=232>
+	<COL WIDTH=541>
+	<COL WIDTH=386>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>Name</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Type</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Description</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>issue</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>FK(ticket_issue)</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Issue</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>field</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>FK(ticket_issuefield)</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Issue field</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>item</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>FK(auth_group)</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Group, e.g. AdminGroup</FONT></P>
+		</TD>
+	</TR>
+</TABLE>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<H1 CLASS="western">ticket_issueupdate</H1>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0.2in; margin-bottom: 0in">This
+is single update for a given ticket. It can represent either update
+sent through web interface or through e-mail. Either user or contact
+must be set, but <B>never</B> both. The contact or user pointed to is
+the originator of this update</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<TABLE WIDTH=1185 BORDER=1 BORDERCOLOR="#000000" CELLPADDING=4 CELLSPACING=0>
+	<COL WIDTH=232>
+	<COL WIDTH=541>
+	<COL WIDTH=386>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>Name</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Type</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Description</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>user</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>FK(auth_user)</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>User that is originator of the
+			update</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>contact</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>FK(ticket_contact)</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Contact that is originator of the
+			update</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>comment</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Char(819200)</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Comment of the update (HTML is OK
+			in this field)</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>description</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Char(819200)</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Optional additional information
+			about update, serialized in JSON format</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>creation_date</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>DateTime</FONT></P>
+			<P CLASS="western"><FONT SIZE=2>auto_add_now = True</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Date update is created on</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>internal</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Bool</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>If set, update is only visible to
+			SD staff</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>issue</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>FK(ticket_issue)</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Issue that is updated</FONT></P>
+		</TD>
+	</TR>
+</TABLE>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<H1 CLASS="western">ticket_issueattachment</H1>
+<P CLASS="western" STYLE="text-indent: 0.2in; margin-bottom: 0in">This
+table contains attachments for issues, e.g. screen shots, logs, etc.</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<TABLE WIDTH=1185 BORDER=1 BORDERCOLOR="#000000" CELLPADDING=4 CELLSPACING=0>
+	<COL WIDTH=232>
+	<COL WIDTH=541>
+	<COL WIDTH=386>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>Name</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Type</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Description</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>issue</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>FK(ticket_issue)</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Issue that included attachment</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>update</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>FK(ticket_issueupdate)</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Issue update that included
+			attachment</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>name</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Char(8192)</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Original filename of the
+			attachment, e.g. name of the file in the e-mail or under what name
+			it was uploaded</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>file_name</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Char(8192)</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Filename of the attachment on disk</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>mime</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Char(128)</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Type of the file, e.g. image/jpeg</FONT></P>
+		</TD>
+	</TR>
+</TABLE>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<H1 CLASS="western">ticket_issuefieldvalue</H1>
+<P CLASS="western" STYLE="text-indent: 0.2in; margin-bottom: 0in">This
+table contains values for issue fields</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<TABLE WIDTH=1185 BORDER=1 BORDERCOLOR="#000000" CELLPADDING=4 CELLSPACING=0>
+	<COL WIDTH=232>
+	<COL WIDTH=541>
+	<COL WIDTH=386>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>Name</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Type</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Description</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>issue</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>FK(ticket_issue)</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Issue that is updated</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>field</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>FK(ticket_issuefield)</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Field that is updated</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>value</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Char(64)</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>New value</FONT></P>
+		</TD>
+	</TR>
+</TABLE>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<H1 CLASS="western">ticket_property</H1>
+<P CLASS="western" STYLE="text-indent: 0.2in; margin-bottom: 0in">Issue
+propreties, e.g. default urgency etc. 
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<TABLE WIDTH=1185 BORDER=1 BORDERCOLOR="#000000" CELLPADDING=4 CELLSPACING=0>
+	<COL WIDTH=232>
+	<COL WIDTH=541>
+	<COL WIDTH=386>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>Name</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Type</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Description</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>name</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Char(1024)</FONT></P>
+			<P CLASS="western"><FONT SIZE=2>unique = True</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Name of the issue property (for
+			example: default urgency)</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>value</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Text(8192)</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Value (for example: 3)</FONT></P>
+		</TD>
+	</TR>
+</TABLE>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<H1 CLASS="western">ticket_smtpconfiguration</H1>
+<P CLASS="western" STYLE="text-indent: 0.2in; margin-bottom: 0in">Smtp
+e-mail configuration data</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<TABLE WIDTH=1185 BORDER=1 BORDERCOLOR="#000000" CELLPADDING=4 CELLSPACING=0>
+	<COL WIDTH=232>
+	<COL WIDTH=541>
+	<COL WIDTH=386>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>Name</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Type</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Description</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>host</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Char(256)</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Host name</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>port</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Int</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Port</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>username</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Char(256)</FONT></P>
+			<P CLASS="western"><FONT SIZE=2>null = True</FONT></P>
+			<P CLASS="western"><FONT SIZE=2>blank = True</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Username</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>password</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Char(256)</FONT></P>
+			<P CLASS="western"><FONT SIZE=2>null = True</FONT></P>
+			<P CLASS="western"><FONT SIZE=2>blank = True</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Password</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>use_ssl</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Bool</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Do we use ssl</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>use_tls</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Bool</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Do we use tls</FONT></P>
+		</TD>
+	</TR>
+</TABLE>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<H1 CLASS="western">ticket_imapconfiguration</H1>
+<P CLASS="western" STYLE="text-indent: 0.2in; margin-bottom: 0in">IMAP
+e-mail configuration data</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<TABLE WIDTH=1185 BORDER=1 BORDERCOLOR="#000000" CELLPADDING=4 CELLSPACING=0>
+	<COL WIDTH=232>
+	<COL WIDTH=541>
+	<COL WIDTH=386>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>Name</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Type</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Description</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>host</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Char(256)</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Host name</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>port</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Int</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Port</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>mailbox</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Char(256)</FONT></P>
+			<P CLASS="western"><FONT SIZE=2>blank = true</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Mailbox</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>username</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Char(256)</FONT></P>
+			<P CLASS="western"><FONT SIZE=2>null = True</FONT></P>
+			<P CLASS="western"><FONT SIZE=2>blank = True</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Username</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>password</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Char(256)</FONT></P>
+			<P CLASS="western"><FONT SIZE=2>null = True</FONT></P>
+			<P CLASS="western"><FONT SIZE=2>blank = True</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Password</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>use_ssl</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Bool</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Do we use ssl</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>email</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Email(320)</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>E-mail</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>name</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Char(256)</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Name</FONT></P>
+		</TD>
+	</TR>
+</TABLE>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<H1 CLASS="western">ticket_emailtemplate</H1>
+<P CLASS="western" STYLE="text-indent: 0.2in; margin-bottom: 0in">Email
+template used for sending e-mails after e.g. issue update</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<TABLE WIDTH=1185 BORDER=1 BORDERCOLOR="#000000" CELLPADDING=4 CELLSPACING=0>
+	<COL WIDTH=232>
+	<COL WIDTH=541>
+	<COL WIDTH=386>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>Name</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Type</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Description</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>subject</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Char(1024)</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Subject of e-mail</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>body</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Text(8192)</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Main message</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>name</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Char(512)</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Name of the e-mail template</FONT></P>
+		</TD>
+	</TR>
+</TABLE>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<H1 CLASS="western"><A NAME="__DdeLink__4228_768387272"></A>ticket_dblogrecordtype</H1>
+<P CLASS="western" STYLE="text-indent: 0.2in; margin-bottom: 0in">This
+table contains database log record types, e.g. account, ticket, etc.</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<TABLE WIDTH=1185 BORDER=1 BORDERCOLOR="#000000" CELLPADDING=4 CELLSPACING=0>
+	<COL WIDTH=232>
+	<COL WIDTH=541>
+	<COL WIDTH=386>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>Name</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Type</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Description</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>name</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Char(64)</FONT></P>
+			<P CLASS="western"><FONT SIZE=2>blank = True</FONT></P>
+			<P CLASS="western"><FONT SIZE=2>unique = True</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Name of the record type</FONT></P>
+		</TD>
+	</TR>
+</TABLE>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<H1 CLASS="western">ticket_dblogrecord</H1>
+<P CLASS="western" STYLE="text-indent: 0.2in; margin-bottom: 0in">This
+table contains database log records</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<TABLE WIDTH=1185 BORDER=1 BORDERCOLOR="#000000" CELLPADDING=4 CELLSPACING=0>
+	<COL WIDTH=232>
+	<COL WIDTH=541>
+	<COL WIDTH=386>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>Name</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Type</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Description</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>record_type</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>FK(ticket_dblogrecordtype)</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Type of the record, e.g. account</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>lvl</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Int</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><BR>
+			</P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>msg</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Text(8192)</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Message, e.g. user someone loged
+			in....</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>log_date</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>DateTime</FONT></P>
+			<P CLASS="western"><FONT SIZE=2>auto_add_now = True</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Date of the log creation</FONT></P>
+		</TD>
+	</TR>
+</TABLE>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<H1 CLASS="western">ticket_event</H1>
+<P CLASS="western" STYLE="text-indent: 0.2in; margin-bottom: 0in">This
+table contains events</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<TABLE WIDTH=1185 BORDER=1 BORDERCOLOR="#000000" CELLPADDING=4 CELLSPACING=0>
+	<COL WIDTH=232>
+	<COL WIDTH=541>
+	<COL WIDTH=386>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>Name</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Type</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Description</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>description</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Text(256)</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Description of the event</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>event</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Char(64)</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Type of event, e.g. mail_update</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>code</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Text(8192)</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Code to be executed</FONT></P>
+		</TD>
+	</TR>
+</TABLE>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<H1 CLASS="western">ticket_userprofile</H1>
+<P CLASS="western" STYLE="text-indent: 0.2in">This table contains
+additional user information</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<TABLE WIDTH=1185 BORDER=1 BORDERCOLOR="#000000" CELLPADDING=4 CELLSPACING=0>
+	<COL WIDTH=232>
+	<COL WIDTH=541>
+	<COL WIDTH=386>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>Name</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Type</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Description</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>user</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>FK(auth_user)</FONT></P>
+			<P CLASS="western"><FONT SIZE=2>unique = True</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>User</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>location</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Text(512)</FONT></P>
+			<P CLASS="western"><FONT SIZE=2>blank = True</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Location</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>building</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Text(512)</FONT></P>
+			<P CLASS="western"><FONT SIZE=2>blank = True</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Building</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>office</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Text(512)</FONT></P>
+			<P CLASS="western"><FONT SIZE=2>blank = True</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Office</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>telephone</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Text(512)</FONT></P>
+			<P CLASS="western"><FONT SIZE=2>blank = True</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Telephone number</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>mobile</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Text(512)</FONT></P>
+			<P CLASS="western"><FONT SIZE=2>blank = True</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Mobile phone number</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>pc</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Text(512)</FONT></P>
+			<P CLASS="western"><FONT SIZE=2>blank = True</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>PC name</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>signature</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Text(2048)</FONT></P>
+			<P CLASS="western"><FONT SIZE=2>blank = True</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Signature</FONT></P>
+		</TD>
+	</TR>
+</TABLE>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<H3 CLASS="table-name-western">Query tables</H3>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<H1 CLASS="western">query_genericfillitem</H1>
+<P CLASS="western" STYLE="text-indent: 0.2in; margin-bottom: 0in">This
+table contains generic fill items. Specific value is put in specified
+field when condition field gets conditional value. 
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<TABLE WIDTH=1185 BORDER=1 BORDERCOLOR="#000000" CELLPADDING=4 CELLSPACING=0>
+	<COL WIDTH=232>
+	<COL WIDTH=541>
+	<COL WIDTH=386>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>Name</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Type</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Description</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>field</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>FK(ticket_issuefield)</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Issue field that should get
+			specified value</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>value</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Char(32000)</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Value that should be entered in
+			the issue field if condition is satisfied</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>condition_name</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>FK(ticket_issuefield)</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Conditional issue field </FONT>
+			</P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>condition_value</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Char(64)</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Conditional field</FONT></P>
+		</TD>
+	</TR>
+</TABLE>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<H3 CLASS="table-name-western">Home tables</H3>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<H1 CLASS="western">home_tip</H1>
+<P CLASS="western" STYLE="text-indent: 0.2in; margin-bottom: 0in">Tip
+of the week table</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<TABLE WIDTH=1185 BORDER=1 BORDERCOLOR="#000000" CELLPADDING=4 CELLSPACING=0>
+	<COL WIDTH=232>
+	<COL WIDTH=541>
+	<COL WIDTH=386>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>Name</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Type</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Description</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>title</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Char(128)</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Title of the tip</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>body</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Text(4096)</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Tip message</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>display_date</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Date</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Display date</FONT></P>
+		</TD>
+	</TR>
+</TABLE>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<H1 CLASS="western">home_dashboardwidget</H1>
+<P CLASS="western" STYLE="text-indent: 0.2in; margin-bottom: 0in">Additional
+home page widgets</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<TABLE WIDTH=1185 BORDER=1 BORDERCOLOR="#000000" CELLPADDING=4 CELLSPACING=0>
+	<COL WIDTH=232>
+	<COL WIDTH=541>
+	<COL WIDTH=386>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>Name</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Type</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Description</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>code</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Text(819200)</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Code to be executed</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>view_order</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Int</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Sorting priority, where lower
+			number is higher priority (element with view_order = 10 comes
+			before the component with view_order = 11)</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>permission</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Char(64)</FONT></P>
+			<P CLASS="western"><FONT SIZE=2>blank = True</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Permissions</FONT></P>
+		</TD>
+	</TR>
+</TABLE>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<H3 CLASS="table-name-western">Comment tables</H3>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<H1 CLASS="western">comment_comment</H1>
+<P CLASS="western" STYLE="text-indent: 0.2in; margin-bottom: 0in">Comment
+about a tuit page</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<TABLE WIDTH=1185 BORDER=1 BORDERCOLOR="#000000" CELLPADDING=4 CELLSPACING=0>
+	<COL WIDTH=232>
+	<COL WIDTH=541>
+	<COL WIDTH=386>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>Name</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Type</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Description</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>text</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Text(4096)</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Text of the comment</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>user</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>FK(auth_user)</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>User that posted comment</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>creation_date</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>DateTime</FONT></P>
+			<P CLASS="western"><FONT SIZE=2>auto_now_add = True</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Date comment is posted</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>url</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Char(1024)</FONT></P>
+			<P CLASS="western"><FONT SIZE=2>db_index = True</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>URL, e.g. /tuit</FONT></P>
+		</TD>
+	</TR>
+</TABLE>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<H3 CLASS="table-name-western">Status tables</H3>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<H1 CLASS="western">status_status</H1>
+<P CLASS="western" STYLE="text-indent: 0.2in; margin-bottom: 0in">This
+table contains status articles</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<TABLE WIDTH=1185 BORDER=1 BORDERCOLOR="#000000" CELLPADDING=4 CELLSPACING=0>
+	<COL WIDTH=232>
+	<COL WIDTH=541>
+	<COL WIDTH=386>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>Name</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Type</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Description</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>body</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Text(65535)</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Status text</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>creation_date</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>DateTime</FONT></P>
+			<P CLASS="western"><FONT SIZE=2>auto_now_add</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Date status is posted</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>user</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>FK(auth_user)</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>User that  posted status</FONT></P>
+		</TD>
+	</TR>
+</TABLE>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<H3 CLASS="table-name-western">Menu tables</H3>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<H1 CLASS="western">menu_component</H1>
+<P CLASS="western" STYLE="text-indent: 0.2in; margin-bottom: 0in">This
+table defines menu components in the top menu bar.</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<TABLE WIDTH=1185 BORDER=1 BORDERCOLOR="#000000" CELLPADDING=4 CELLSPACING=0>
+	<COL WIDTH=232>
+	<COL WIDTH=541>
+	<COL WIDTH=386>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>Name</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Type</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Description</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>alias</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Chart(64)</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Allias of the menu component</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>name</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Char(512)</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Name of the menu component</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>url</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Char(512)</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>URL of the menu component</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>permission</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Char(64)</FONT></P>
+			<P CLASS="western"><FONT SIZE=2>blank = True</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Permission for accessing menu
+			component</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>view_order</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Int</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Sorting priority of the component,
+			where lower number is higher priority (element with view_order =
+			10 comes before the component with view_order = 11)</FONT></P>
+		</TD>
+	</TR>
+</TABLE>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<H3 CLASS="table-name-western">Search tables</H3>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<H1 CLASS="western">search_searchtype</H1>
+<P CLASS="western" STYLE="text-indent: 0.2in; margin-bottom: 0in">This
+table defines search types, e.g. Cases, Users etc.</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<TABLE WIDTH=1185 BORDER=1 BORDERCOLOR="#000000" CELLPADDING=4 CELLSPACING=0>
+	<COL WIDTH=232>
+	<COL WIDTH=541>
+	<COL WIDTH=386>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>Name</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Type</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Description</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>name</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Char(512)</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Name of the search type</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>url</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Char(512)</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>URL of the search, e.g.
+			/issues/?query=...</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>view_order</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Int</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Sorting priority, where lower
+			number is higher priority (element with view_order = 10 comes
+			before the component with view_order = 11)</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>permission</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Char(64)</FONT></P>
+			<P CLASS="western"><FONT SIZE=2>blank = True</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Permission for accessing search
+			type</FONT></P>
+		</TD>
+	</TR>
+</TABLE>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<H1 CLASS="western">search_search</H1>
+<P CLASS="western" STYLE="text-indent: 0.2in; margin-bottom: 0in">Main
+search table</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<TABLE WIDTH=1185 BORDER=1 BORDERCOLOR="#000000" CELLPADDING=4 CELLSPACING=0>
+	<COL WIDTH=232>
+	<COL WIDTH=541>
+	<COL WIDTH=386>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>Name</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Type</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Description</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>type</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>FK(search_searchtype)</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Search type</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>name</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Char(512)</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><BR>
+			</P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>update_date</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>DateTime</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Updated after date</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>freetext</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Char(2048)</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Text entered by the user</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>status</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Char(32)</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Status of the issue</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>from_date</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>DateTime</FONT></P>
+			<P CLASS="western"><FONT SIZE=2>null = True</FONT></P>
+			<P CLASS="western"><FONT SIZE=2>blank = True</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Created after given date</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>minimum_priority</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Int</FONT></P>
+			<P CLASS="western"><FONT SIZE=2>null = True</FONT></P>
+			<P CLASS="western"><FONT SIZE=2>blank = True</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Issue minimum priority</FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=232>
+			<P CLASS="western"><FONT SIZE=2>maximum_priority</FONT></P>
+		</TD>
+		<TD WIDTH=541>
+			<P CLASS="western"><FONT SIZE=2>Int</FONT></P>
+			<P CLASS="western"><FONT SIZE=2>null = True</FONT></P>
+			<P CLASS="western"><FONT SIZE=2>blank = True</FONT></P>
+		</TD>
+		<TD WIDTH=386>
+			<P CLASS="western"><FONT SIZE=2>Issue maximum priority</FONT></P>
+		</TD>
+	</TR>
+</TABLE>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+</BODY>
+</HTML>
