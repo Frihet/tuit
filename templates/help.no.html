@@ -59,12 +59,16 @@ Toolbox", en samling programvarekomponenter som er konstruert for
   delene av nettstedet.  Denne menyen endres normalt ikke etter hvilken
   del av {{ application|escape}} du bruker, men siden forskjellige brukere har adgang til
   forskjellige deler av nettstedet, vil innholdet variere etter hvem
-  som er logget inn.
+  som er logget inn. Menyen kan også tilpasses, og informasjon om hvordan
+  du endrer menypunktene finner du her:
+  <ol>
+    <a href="#admin_top_menu">Changing top menu components</a>
+  </ol>
 </p>
 <p>
   Menyen øverst i skjermbildet gir deg også mulighet til å søke raskt 
   i systemet.  Du skriver nøkkelord inn i søkefeltet og trykker på «enter»-tasten. 
-  For mer informasjon om søking see <a href='#search'>søk</a>.
+  For mer informasjon om søking se <a href='#search'>søk</a>.
 </p>
 
 <h2><a name='overview_leftmenu'>Menyen til venstre</a></h1>
@@ -121,6 +125,10 @@ Toolbox", en samling programvarekomponenter som er konstruert for
   {{ application|escape}} viser følgende typer søkeresultater:
 
   <ul>
+    <li>
+      <em>IDer</em>. Om ett eller flere saks-ID'er legges inn i søket,
+      vil dette søket vise dem uavhengig av status eller type.
+    </li>
     <li>
       <em><a href='#concepts_issue'>Saker</a></em>. Dette viser saker av type Incident, Problem og
       RfC.  Utfører fritekstsøk i tittel, beskrivelse, alle oppdateringer og navnet til brukeren
@@ -528,7 +536,7 @@ sidene med nytting informasjon om bruk av kunnskapsbasen:
 
   {% if user.is_staff %} 
 
-  Du har administrstorrettigheter, så du kan fritt utforske <a href='/tuit/admin/doc/'>administrasjonsgrensesnittet</a>.
+  Du har administratorrettigheter, så du kan fritt utforske <a href='/tuit/admin/doc/'>administrasjonsgrensesnittet</a>.
 
   {% else %} 
 
@@ -536,6 +544,65 @@ sidene med nytting informasjon om bruk av kunnskapsbasen:
   adgang til å tilpasse denne {{ application|escape}}-installasjonen.
 
   {% endif %}
+</p>
+
+<h2><a name='admin_user_permissions'>Brukerrettigheter</a></h2>
+<p>
+  Brukerrettigheter blir brukt sammen med toppmeny-komponenten, widgets osv. for å bestemme
+  hvem som har tilgang til ulike elementer.
+  Foruten standardrettighetene <b>is_staff</b> og <b>is_admin</b> finnes det ytterligere
+  rettigheter som er definert på følgende form:
+  <ol>
+      &lt;app-etikett&gt;.&lt;rettighetskodenavn&gt;
+  </ol>
+  Dette betyr at <em>Site | Can change site</em> vil ha rettigheten site.can_change_site.
+  <p>En komplett oversikt over app-etiketter og kodenavn er listet i <a href='/static/documentation/permissions_table.html'>rettighetstabellen</a>.</p>
+</p>
+
+<h2><a name='admin_top_menu'>Endring av toppmeny-elementer</a></h2>
+<p>
+  Menykomponentene kan redigeres i <a href='/tuit/admin/settings'>systemadministrasjonen</a>.
+  Det er mulig å legge inn hvilken url som helst i toppmenyen, for eksempel <a href='http://www.google.com'>www.google.com</a>. Under finner du en liste over de mest brukte    {{ application|escape }} url'ene
+  <ol>
+  <li>Lag en ny <em>Meny-komponent</em>.</li>
+  <li>Meny-komponenten har fire felt: alias; teksten som vises i toppmenyen; url; rettighet; sortering;</li>
+</ol>
+
+    Liste over mest brukte {{ application|escape }} url'er
+  <table class='striped'>
+      <tr>
+        <th>
+          URL
+        </th>
+        <th>
+          Beskrivelse
+        </th>
+      </tr>
+      <tr>
+        <td>
+           /tuit
+        </td>
+        <td>
+          Hovedside
+        </td>
+      </tr>
+      <tr>
+        <td>
+           /tuit/ticket/new
+        </td>
+        <td>
+          Ny sak
+        </td>
+      </tr>
+      <tr>
+        <td>
+           /tuit/admin
+        </td>
+        <td>
+          Administrasjonssystem
+        </td>
+      </tr>
+  </table>
 </p>
 
 <h2><a name='admin_status_category'>Endre listen over tilgjengelige statuser og kategorier</a></h2>
@@ -819,10 +886,43 @@ Hurtigutfyllinger lages slik:
   <li>Gå inn i adminstrasjonsgrensesnittet ved å klikke på koblingen øverst i skjermbildet.</li>
   <li>Lag først en <em>Hurtigutfylling</em>. Disse inneholder bare en beskrivelse av hva som skal fylles ut.</li>
   <li>Når dette er gjort, lager du <em>Hurtigutfyllingslemement</em>. Et utfyllingselement inneholder tre felter: hurtigutfyllingen dette gjelder (velg den du akkurat laget), feltet som skal fylles ut og verdien feltet skal settes til.</li>
-  <li>Gjenta steg 3 så mange ganger som passer.</li>
+  <li>Gjenta steg 3 så mange ganger som nødvendig.</li>
 </ol>
 
 
+<h2><a name='admin_genericfill'>Endre tilgjengelige generiske hurtigutfyllinger</a></h2>
+
+<p>
+  Denne handlingen kan bare utføres av brukere som har tilgangsrettigheter til
+  administratorgrensesnittet.
+
+  {% if user.is_staff %}
+  Du har tilstrekkelig tilgang, og kan utføre stegene nedenfor dersom du ønsker det.  Husk på at endringene du gjør, vil gjelde for alle brukere, ikke bare deg selv.
+  {% else %}
+  Du har ikke tilstrekkelig tilgang, og kan ikke utføre stegene som er beskrevet nedenfor.
+  {% endif %}
+</p>
+<p>
+Generiske hurtigutfyllinger lages slik:
+</p>
+<ol>
+  <li>Gå inn i adminstrasjonsgrensesnittet ved å klikke på koblingen øverst i skjermbildet.</li>
+  <li>Lag først en <em>Generisk hurtigutfylling</em>.</li>
+  <li>Et generisk hurtigutfyllingselement inneholder fire felter; feltet som fylles ut; verdien som puttes i feltet; feltet for betingelsen; verdien i betingelsesfeltet.</li>
+  <li>Gjenta steg 3 så mange ganger som nødvendig.</li>
+</ol>
+
+<h2><a name='admin_db_overview'>{{ application|escape }} database oversikt</a></h2>
+<p>
+  {{ application|escape }} bruker en relasjonsdatabase. Diagram over entitets-forholdene kan du finne <a href='/static/documentation/ER_diagram.png'>her</a>. </br>
+  En detaljert beskrivelse over tabellene i databasen finner du <a href='/static/documentation/DB_Tables.html'>her</a>.
+</p>
+<p>
+  Et arkiv med ER-diagram og databasebeskrivelser i ulike filformat er tilgjengelig for nedlastning.
+  <ul>
+                <a href='/static/documentation/DB_Tables.zip'>Last ned</a>
+  </ul>
+</p>
 
 
 <h1><a name='concepts'>{{ application|escape}}-begreper</a></h1>
