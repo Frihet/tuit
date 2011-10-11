@@ -1046,16 +1046,24 @@ class MailGW:
         return 0
 
     def create_issue(self, message):
-        subject = message.subject 
+        subject = message.subject
         (content, attachments, content_type) = message.extract_content()
         if subject == "":
             subject = _("Unnamed issue")
         elif len(subject) > 250:
             if content_type == 'text/html':
-                content = cgi.escape(subject) + "<br>" + content
+                content = cgi.escape(subject).decode('utf-8') + "<br>" + content
             else:
                 content = subject + "\n" + content
-            subject = subject[0:250]
+            
+            #~ This try/except block is needed because sometimes cutof can be made in the middle of unicode char, 
+            #~ and that will in return raise unexpected end of data error
+            try: 
+                subject = subject[0:250].decode('utf-8')
+            except:
+                subject = subject[0:249].decode('utf-8')
+        else:
+            subject = subject.decode('utf-8')
 
         impact = properties['issue_default_impact']
         urgency = properties['issue_default_urgency']
